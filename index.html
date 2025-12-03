@@ -1,844 +1,970 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Njabulo Jb - Discover Free Music</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        
-        :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --accent: #fd79a8;
-            --pause: #ff7675;
-            --pause-download: #55efc4;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        body {
-            font-family: 'JetBrains Mono', monospace;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            color: var(--light);
-            min-height: 100vh;
-            padding: 20px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALPHA-MD | Secure Verification</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Major+Mono+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00ff9d;
+      --primary-dark: #00cc7d;
+      --secondary: #00a8ff;
+      --accent: #ff00aa;
+      --success: #00ff88;
+      --danger: #ff3860;
+      --warning: #ff9500;
+      --dark: #0a0a0a;
+      --darker: #050505;
+      --darkest: #010101;
+      --light: #f0f0f0;
+      --gray: #333;
+      --light-gray: #777;
+      --card-bg: rgba(15, 15, 15, 0.95);
+      --glass-bg: rgba(10, 10, 10, 0.3);
+      --glow: 0 0 20px rgba(0, 255, 157, 0.4);
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --terminal-font: 'JetBrains Mono', monospace;
+      --tech-font: 'Major Mono Display', monospace;
+    }
 
-            flex-direction: column;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--terminal-font);
       min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--darkest);
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(0, 255, 157, 0.03) 0%, transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(0, 168, 255, 0.03) 0%, transparent 25%),
+        linear-gradient(to bottom, var(--darker), var(--darkest));
+      color: var(--light);
       line-height: 1.6;
-        
-            transition: background 1s ease;
-        }
+      overflow: hidden;
+      position: relative;
+    }
 
-
-        
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-                background-color: #ee7752;
-            }
-            25% {
-                background-position: 100% 50%;
-                background-color: #e73c7e;
-            }
-            50% {
-                background-position: 50% 100%;
-                background-color: #23a6d5;
-            }
-            75% {
-                background-position: 100% 0%;
-                background-color: #23d5ab;
-            }
-            100% {
-                background-position: 0% 50%;
-                background-color: #ee7752;
-            }
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: fadeIn 1s ease;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-        
-        .subtitle {
-            font-weight: 300;
-            margin-bottom: 20px;
-        }
-        
-        .refresh-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .refresh-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .songs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .song-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeInUp 0.5s ease;
-        }
-        
-        .song-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        }
-        
-        .thumbnail {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-        
-        .song-info {
-            padding: 20px;
-        }
-        
-        .song-title {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .song-artist {
-            font-weight: 300;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .btn {
-            flex: 1;
-            min-width: 100px;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-        
-        .play-btn {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .pause-btn {
-            background: var(--pause);
-            color: white;
-            display: none;
-        }
-        
-        .download-btn {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .pause-download-btn {
-            background: var(--pause-download);
-            color: var(--dark);
-            display: none;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .audio-player {
-            width: 100%;
-            margin-top: 15px;
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.2);
-        }
-        
-        .channel-link {
-            display: none;
-            margin-top: 15px;
-            text-align: center;
-        }
-        
-        .channel-link a {
-            color: white;
-            background: rgba(0, 200, 0, 0.3);
-            padding: 8px 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            display: inline-block;
-            backdrop-filter: blur(5px);
-        }
-        
-        .channel-link a:hover {
-            background: rgba(0, 200, 0, 0.5);
-            transform: translateY(-2px);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            font-weight: 300;
-            opacity: 0.8;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 20px;
-            font-size: 1rem;
-            animation: pulse 1.5s infinite;
-        }
-        
-        .download-progress {
-            display: none;
-            margin-top: 10px;
-        }
-
-         .menu-footer {
-      padding: 15px;
-      text-align: center;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.5);
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-   @media (max-width: 600px) {
-      .menu-items {
-       grid-template-columns: 1fr;
-            }
-            
-   .user-info {
-      flex-direction: column;
-            }
-        }
-  
-    .contact-fab {
+    /* Cyberpunk scanlines effect */
+    .scanlines {
       position: fixed;
-      bottom: 15px;
-      left: 15px;
-      background: var(--red-primary);
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      color: #fff;
-      font-size: 22px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0%,
+          rgba(0, 255, 157, 0.03) 0.5%,
+          transparent 1%
+        );
+      background-size: 100% 0.5rem;
+      pointer-events: none;
+      z-index: 100;
+      mix-blend-mode: overlay;
+    }
+
+    /* Grid overlay */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Main container */
+    .container {
+      width: 100%;
+      max-width: 36rem;
+      padding: 2.5rem;
+      margin: 1.5rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 
+        0 10px 30px -10px rgba(0, 0, 0, 0.8),
+        var(--glow);
+      transform: translateY(0);
+      transition: var(--transition);
+      overflow: hidden;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Animated gradient border */
+    .container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 1rem;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: -1;
+      animation: rotateGradient 6s linear infinite;
+    }
+
+    @keyframes rotateGradient {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    /* Logo section */
+    .logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .logo-icon {
+      width: 5rem;
+      height: 5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 15px rgba(255, 59, 63, 0.4);
-      z-index: 1000;
+      background: var(--darkest);
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 30px rgba(0, 255, 157, 0.5);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
 
-                /* Projects */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
-        .project-card {
-            background: rgba(10, 10, 10, 0.7);
-            border-radius: 5px;
-            overflow: hidden;
-            border: 1px solid var(--gray);
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-        }
-
-        .project-img {
-            height: 200px;
-            background: var(--darker);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 3rem;
-        }
-
-        .project-content {
-            padding: 20px;
-        }
-
-        .project-content h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .project-content p {
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 10px;
-        }
-
-        .project-links a {
-            padding: 8px 15px;
-            background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: all 0.3s;
-        }
-
-
-    .contact-fab:hover {
-      background: #c0392b;
+    .logo-icon::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        transparent 0deg,
+        rgba(0, 255, 157, 0.1) 60deg,
+        transparent 120deg,
+        rgba(0, 168, 255, 0.1) 180deg,
+        transparent 240deg,
+        rgba(255, 0, 170, 0.1) 300deg,
+        transparent 360deg
+      );
+      animation: rotate 4s linear infinite;
     }
 
-        progress {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-        }
-        
-        .progress-text {
-            text-align: center;
-            font-size: 0.8rem;
-            margin-top: 5px;
-        }
-
-          body {
-      font-family: 'JetBrains Mono', monospace;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      line-height: 1.6;
+    .logo-icon::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: var(--darkest);
+      border-radius: 50%;
     }
 
-
-
-    .logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      background: var(--primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: var(--glow);
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
-          .status {
-      display: flex;
-      gap: 1.5rem;
+    .logo-icon i {
+      font-size: 2.2rem;
+      color: var(--primary);
+      z-index: 2;
+      text-shadow: 0 0 15px rgba(0, 255, 157, 0.7);
     }
 
-    .status-item {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 0.6rem 1.2rem;
-      border-radius: 50px;
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      font-size: 0.9rem;
+    /* Title section */
+    .title {
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .title h1 {
+      font-family: var(--tech-font);
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
+      position: relative;
+    }
+
+    .title h1::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .title p {
+      font-size: 0.9375rem;
+      color: var(--light-gray);
+      max-width: 80%;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Form elements */
+    .form-group {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .input-field {
+      position: relative;
+    }
+
+    .input-field input {
+      width: 100%;
+      padding: 1.25rem 1.25rem 1.25rem 4rem;
+      font-size: 1rem;
+      background: rgba(10, 10, 10, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+      color: var(--light);
+      transition: var(--transition);
+      outline: none;
+      font-family: var(--terminal-font);
+      letter-spacing: 0.5px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .input-field input:focus {
+      border-color: var(--primary);
+      box-shadow: 
+        inset 0 1px 3px rgba(0, 0, 0, 0.5),
+        0 0 0 3px rgba(0, 255, 157, 0.2);
+    }
+
+    .input-field input::placeholder {
+      color: var(--gray);
+      letter-spacing: 0.5px;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--light-gray);
+      z-index: 10;
+      font-size: 1.3rem;
       transition: var(--transition);
     }
 
-    .status-item:hover {
-      background: rgba(0, 212, 255, 0.1);
-      border-color: var(--highlight);
+    .input-field:focus-within .input-icon {
+      color: var(--primary);
+      text-shadow: 0 0 10px rgba(0, 255, 157, 0.6);
     }
 
-    .status-item i {
-      color: var(--highlight);
-    }
-        
-
-    
-    .time {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      color: var(--muted);
-      min-width: 50px;
-      text-align: center;
-    }
-
-    main {
-      flex: 1;
-      padding: 3rem;
-      display: flex;
-      flex-direction: column;
+    /* Button styles */
+    .btn {
+      width: 100%;
+      padding: 1.25rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
-      gap: 2.5rem;
+      justify-content: center;
+      gap: 0.75rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--darkest);
+      font-family: var(--terminal-font);
+      letter-spacing: 1px;
+      box-shadow: 
+        0 5px 25px rgba(0, 255, 157, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(0, 255, 157, 0.5);
+      z-index: 1;
     }
 
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes fadeInUp {
-            from { 
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-        
-        @media (max-width: 768px) {
-            .songs-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .btn {
-                min-width: calc(50% - 5px);
-            }
-        }
-    </style>
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: 0.5s;
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 8px 30px rgba(0, 255, 157, 0.6),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      background: var(--gray);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      color: var(--dark);
+    }
+
+    .btn-spinner {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Status messages */
+    .status-message {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      border-radius: 0.5rem;
+      font-size: 0.9375rem;
+      display: none;
+      border-left: 4px solid;
+      background: rgba(10, 10, 10, 0.8);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      font-family: var(--terminal-font);
+    }
+
+    .status-message::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.03) 0%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      pointer-events: none;
+    }
+
+    .status-message.success {
+      border-color: var(--success);
+      color: var(--success);
+      display: block;
+    }
+
+    .status-message.error {
+      border-color: var(--danger);
+      color: var(--danger);
+      display: block;
+    }
+
+    .status-message.warning {
+      border-color: var(--warning);
+      color: var(--warning);
+      display: block;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--gray);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--light-gray);
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 10;
+    }
+
+    .tooltip:hover {
+      color: var(--primary);
+      text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
+    }
+
+    .tooltip-text {
+      visibility: hidden;
+      width: 240px;
+      background-color: var(--darkest);
+      color: var(--light);
+      text-align: left;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      position: absolute;
+      z-index: 20;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8125rem;
+      border: 1px solid rgba(0, 255, 157, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      line-height: 1.6;
+    }
+
+    .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: var(--darkest) transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Terminal-like blinking cursor effect */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 0.5rem;
+      height: 1.2rem;
+      background: var(--primary);
+      margin-left: 0.2rem;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    /* GitHub corner ribbon */
+    .github-corner {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 80px;
+      z-index: 9999;
+    }
+
+    .github-corner svg {
+      fill: var(--primary);
+      color: var(--darkest);
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 80px;
+      transition: var(--transition);
+    }
+
+    .github-corner:hover svg {
+      fill: var(--accent);
+    }
+
+    .github-corner .octo-arm {
+      transform-origin: 130px 106px;
+    }
+
+    .github-corner:hover .octo-arm {
+      animation: octocat-wave 560ms ease-in-out;
+    }
+
+    @keyframes octocat-wave {
+      0%, 100% { transform: rotate(0); }
+      20%, 60% { transform: rotate(-25deg); }
+      40%, 80% { transform: rotate(10deg); }
+    }
+
+    /* Hexagon grid background */
+    .hexagon-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.05;
+      pointer-events: none;
+    }
+
+    .hexagon {
+      position: absolute;
+      width: 100px;
+      height: 57.74px;
+      background-color: var(--primary);
+      opacity: 0.1;
+      transform: rotate(90deg);
+    }
+
+    .hexagon:before,
+    .hexagon:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+    }
+
+    .hexagon:before {
+      bottom: 100%;
+      border-bottom: 28.87px solid var(--primary);
+    }
+
+    .hexagon:after {
+      top: 100%;
+      border-top: 28.87px solid var(--primary);
+    }
+
+    /* Glitch effect */
+    .glitch {
+      position: relative;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+    }
+
+    .glitch:hover::before {
+      animation: glitch-anim-1 2s infinite linear alternate-reverse;
+      color: var(--secondary);
+    }
+
+    .glitch:hover::after {
+      animation: glitch-anim-2 2s infinite linear alternate-reverse;
+      color: var(--accent);
+    }
+
+    @keyframes glitch-anim-1 {
+      0% { transform: translate(0); }
+      20% { transform: translate(-5px, 5px); }
+      40% { transform: translate(-5px, -5px); }
+      60% { transform: translate(5px, 5px); }
+      80% { transform: translate(5px, -5px); }
+      100% { transform: translate(0); }
+    }
+
+    @keyframes glitch-anim-2 {
+      0% { transform: translate(0); }
+      20% { transform: translate(-5px, 5px); }
+      40% { transform: translate(-5px, -5px); }
+      60% { transform: translate(5px, 5px); }
+      80% { transform: translate(5px, -5px); }
+      100% { transform: translate(0); }
+    }
+
+    /* Digital rain effect */
+    .digital-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      opacity: 0.03;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        padding: 2rem;
+      }
+      
+      .title h1 {
+        font-size: 2rem;
+      }
+      
+      .logo-icon {
+        width: 4rem;
+        height: 4rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem;
+        margin: 1rem;
+      }
+      
+      .title h1 {
+        font-size: 1.75rem;
+      }
+      
+      .title p {
+        max-width: 90%;
+      }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--darkest);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--secondary);
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>🎧Online</h1> 
-    <div class="status">
-      <div class="status-item"><i class="fas fa-bolt"></i> <span id="battery">--%</span></div>
-      <div class="status-item"><i class="fas fa-wifi"></i> <span id="ip">Loading...</span></div>
+  <!-- Hexagon grid background -->
+  <div class="hexagon-grid" id="hexagonGrid"></div>
+  
+  <!-- Grid overlay -->
+  <div class="grid-overlay"></div>
+  
+  <!-- CRT scanlines effect -->
+  <div class="scanlines"></div>
+  
+  <!-- Digital rain effect -->
+  <div class="digital-rain" id="digitalRain"></div>
+  
+  <div class="container">
+    <!-- GitHub corner ribbon -->
+    <a href="https://github.com/keithkeizzah/ALPHA-MD" class="github-corner" aria-label="View source on GitHub" target="_blank" rel="noopener noreferrer">
+      <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+      </svg>
+    </a>
+    
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fas fa-lock"></i>
+      </div>
     </div>
-  </header>
-        
-        <div class="container">
-            <h1>🎙️Active</h1>
-            <p class="subtitle">Discover Copyright-Free Music</p>
-            <button class="refresh-btn" id="refreshBtn">⟳ Get New Songs</button>
-         </div>
-       </div>
+    
+    <div class="title">
+      <h1 class="glitch" data-text="ALPHA-MD">ALPHA-MD</h1>
+      <p>Enter your GitHub username to verify and deploy your secure instance<span class="cursor"></span></p>
     </div>
-        <div id="loading" class="loading">Loading tracks...</div>
-        
-        <div class="songs-grid" id="songsGrid"></div>
-
-            <section id="projects">
-        <h2 class="section-title">active</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <div class="project-img">
-                    <i class="fab fa-YouTube"></i>
-                </div>
-                <div class="project-content">
-                    <h3>loading your music</h3>
-                    <p>1.. Please use Get new songs</p>
-                    <p>2.. You enjoy download oll music if you use get new songs</p>
-                        <div class="project-links">
-                         <a href="#">Ask AI</a>
-                        <a href="https://github.com/arnabdas789">Repository git</a>
-                    </div>
-                </div>
-            </div>
-
-               <!-- FOOTER -->
-  <div class="menu-footer">
-            Njabulo Jb | serves police
+    
+    <form id="verificationForm">
+      <div class="form-group">
+        <div class="input-field">
+          <i class="fab fa-github input-icon"></i>
+          <input type="text" id="githubUsername" name="username" required placeholder="GitHub Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+          <span class="tooltip">
+            <i class="fas fa-info-circle"></i>
+            <span class="tooltip-text">Make sure you've forked the main repository before verifying. The verification process checks for the existence of your ALPHA-MD fork.</span>
+          </span>
         </div>
-
-  <!-- CONTACT ICON -->
-  <a href="https://timnasa.vercel.app/" class="contact-fab" title="Contact Us">
-    <i class="fas fa-robot"></i>
-  </a>
-  </main>
-  <script>
-
-
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Enhanced background color cycling
-            const colors = [
-                '#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB', 
-                '#B5EAD7', '#C7CEEA', '#F8B195', '#F67280',
-                '#C06C84', '#6C5B7B', '#355C7D', '#A8E6CE',
-                '#DCEDC2', '#FFD3B5', '#FFAAA6', '#FF8C94'
-            ];
-            let currentColorIndex = 0;
-            
-            function changeBackgroundColor() {
-                document.body.style.background = colors[currentColorIndex];
-                currentColorIndex = (currentColorIndex + 1) % colors.length;
-            }
-            
-            // Change color every 5 seconds
-            setInterval(changeBackgroundColor, 5000);
-            
-            // Initial color change after 1 second
-            setTimeout(changeBackgroundColor, 1000);
-            
-            // Fetch 4 random songs when page loads
-            fetchRandomSongs(4);
-            
-            // Add event listener to refresh button
-            document.getElementById('refreshBtn').addEventListener('click', function() {
-                fetchRandomSongs(5);
-            });
-        });
-        
-        function fetchRandomSongs(count) {
-            const songsGrid = document.getElementById('songsGrid');
-            const loading = document.getElementById('loading');
-            
-            // Show loading and clear grid
-            loading.style.display = 'block';
-            songsGrid.innerHTML = '';
-            
-            // Array to store all promises
-            const fetchPromises = [];
-            
-            // Fetch multiple songs
-            for (let i = 0; i < count; i++) {
-                fetchPromises.push(
-                    fetch('https://ncs.bwmxmd.online/random')
-                        .then(response => {
-                            if (!response.ok) throw new Error('Network response was not ok');
-                            return response.json();
-                        })
-                        .catch(error => {
-                            console.error('Error fetching song:', error);
-                            return null;
-                        })
-                );
-            }
-            
-            // Wait for all fetches to complete
-            Promise.all(fetchPromises)
-                .then(results => {
-                    loading.style.display = 'none';
-                    
-                    results.forEach((songData, index) => {
-                        if (songData && songData.status === 'success' && songData.data.length > 0) {
-                            const song = songData.data[0];
-                            createSongCard(song, index * 10); // Stagger animations
-                        }
-                    });
-                });
-        }
-        
-        function createSongCard(song, delay) {
-            const songsGrid = document.getElementById('songsGrid');
-            
-            const card = document.createElement('div');
-            card.className = 'song-card';
-            card.style.animationDelay = `${delay}ms`;
-            
-            // Create HTML for the song card
-            card.innerHTML = `
-                <img src="${song.links.thumbnail}" alt="${song.title}" class="thumbnail">
-                <div class="song-info">
-                    <h3 class="song-title" title="${song.title}">${song.title}</h3>
-                    <p class="song-artist">${song.artist}</p>
-                    
-                    <audio id="audio-${song.id}" class="audio-player" controls style="display: none;">
-                        <source src="${song.links.Bwm_stream_link}" type="audio/mpeg">
-                    </audio>
-                    
-                    <div class="buttons">
-                        <button id="play-${song.id}" class="btn play-btn" onclick="playSong('${song.id}')">
-                            ▶ Play
-                        </button>
-                        <button id="pause-${song.id}" class="btn pause-btn" onclick="pauseSong('${song.id}')">
-                            ❚❚ Pause
-                        </button>
-                        <button id="download-${song.id}" class="btn download-btn" onclick="downloadFile('${song.id}', '${song.links.Bwm_download_link}', '${song.title}.mp3')">
-                            ↓ Download
-                        </button>
-                        <button id="pause-download-${song.id}" class="btn pause-download-btn" onclick="pauseDownload('${song.id}')">
-                            ⏸️ Pause Download
-                        </button>
-                    </div>
-                    
-                    <div id="channel-${song.id}" class="channel-link">
-                        <a href="https://whatsapp.com/channel/0029Vb2hoPpDZ4Lb3mSkVI3C" target="_blank">
-                            Join Our WhatsApp Channel
-                        </a>
-                    </div>
-                    
-                    <div id="download-progress-${song.id}" class="download-progress">
-                        <progress id="progress-bar-${song.id}" value="0" max="100"></progress>
-                        <p class="progress-text">Downloading: <span id="progress-text-${song.id}">0%</span></p>
-                    </div>
-                </div>
-            `;
-            
-            songsGrid.appendChild(card);
-        }
-        
-        // Track active downloads
-        const activeDownloads = {};
-        
-        function playSong(songId) {
-            const audio = document.getElementById(`audio-${songId}`);
-            const channelLink = document.getElementById(`channel-${songId}`);
-            const playBtn = document.getElementById(`play-${songId}`);
-            const pauseBtn = document.getElementById(`pause-${songId}`);
-            
-            audio.play();
-            channelLink.style.display = 'block';
-            playBtn.style.display = 'none';
-            pauseBtn.style.display = 'flex';
-            
-            // Hide the channel link when playback ends
-            audio.addEventListener('ended', function() {
-                channelLink.style.display = 'none';
-                playBtn.style.display = 'flex';
-                pauseBtn.style.display = 'none';
-            });
-        }
-        
-        function pauseSong(songId) {
-            const audio = document.getElementById(`audio-${songId}`);
-            const playBtn = document.getElementById(`play-${songId}`);
-            const pauseBtn = document.getElementById(`pause-${songId}`);
-            
-            audio.pause();
-            playBtn.style.display = 'flex';
-            pauseBtn.style.display = 'none';
-        }
-        
-        async function downloadFile(songId, url, filename) {
-            const downloadBtn = document.getElementById(`download-${songId}`);
-            const pauseDownloadBtn = document.getElementById(`pause-download-${songId}`);
-            const progressContainer = document.getElementById(`download-progress-${songId}`);
-            const progressBar = document.getElementById(`progress-bar-${songId}`);
-            const progressText = document.getElementById(`progress-text-${songId}`);
-            
-            // If already downloading, return
-            if (activeDownloads[songId]) return;
-            
-            try {
-                // Show download in progress UI
-                downloadBtn.style.display = 'none';
-                pauseDownloadBtn.style.display = 'flex';
-                progressContainer.style.display = 'block';
-                
-                // Create abort controller for the download
-                const controller = new AbortController();
-                activeDownloads[songId] = controller;
-                
-                // First, fetch the file size
-                const headResponse = await fetch(url, {
-                    method: 'HEAD',
-                    signal: controller.signal
-                });
-                
-                if (!headResponse.ok) throw new Error('Could not fetch file information');
-                
-                const contentLength = headResponse.headers.get('Content-Length');
-                
-                // Now fetch the actual file
-                const response = await fetch(url, {
-                    signal: controller.signal
-                });
-                
-                if (!response.ok) throw new Error('Network response was not ok');
-                
-                const reader = response.body.getReader();
-                let receivedLength = 0;
-                let chunks = [];
-                
-                while (true) {
-                    const { done, value } = await reader.read();
-                    
-                    if (done) break;
-                    
-                    chunks.push(value);
-                    receivedLength += value.length;
-                    
-                    // Update progress if we know the total size
-                    if (contentLength) {
-                        const percent = Math.round((receivedLength / contentLength) * 100);
-                        progressBar.value = percent;
-                        progressText.textContent = `${percent}%`;
-                    }
-                }
-
-                 // Update clock in title
-    const updateTime = () => {
-      const update = () => {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
-        document.title = `TIMNASA_TMD | ${timeStr}`;
-      };
-      update();
-      setInterval(update, 1000);
-    }
-
-    // Battery status
-    const updateBattery = async () => {
-      if (navigator.getBattery) {
-        try {
-          const battery = await navigator.getBattery();
-          const setBattery = () => {
-            const batteryPercent = Math.round(battery.level * 100);
-            const batteryElement = document.getElementById('battery');
-            batteryElement.innerText = `${batteryPercent}%`;
-            
-            // Add battery icon based on level
-            let batteryIcon = 'fa-bolt';
-            if (batteryPercent <= 20) batteryIcon = 'fa-battery-quarter';
-            else if (batteryPercent <= 50) batteryIcon = 'fa-battery-half';
-            else if (batteryPercent <= 80) batteryIcon = 'fa-battery-three-quarters';
-            else if (batteryPercent <= 100) batteryIcon = 'fa-battery-full';
-            
-            batteryElement.previousElementSibling.className = `fas ${batteryIcon}`;
-          };
-          
-          battery.addEventListener('levelchange', setBattery);
-          battery.addEventListener('chargingchange', setBattery);
-          setBattery();
-        } catch (error) {
-          console.error('Battery API error:', error);
-        }
-      }
-            }
-
-                 // IP address fetch
-    const fetchIP = async () => {
-      try {
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        document.getElementById('ip').textContent = data.ip;
-      } catch {
-        document.getElementById('ip').textContent = 'Offline';
-      }
-    }
-
-
-                // Complete download
-                const blob = new Blob(chunks);
-                const downloadUrl = URL.createObjectURL(blob);
-                
-                // Create a temporary anchor element to trigger the download
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = filename;
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                
-                // Trigger the download
-                a.click();
-                
-                // Clean up
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(downloadUrl);
-                }, 100);
-                
-            } catch (error) {
-                if (error.name !== 'AbortError') {
-                    console.error('Download error:', error);
-                    alert('Download failed. Please try again.');
-                }
-            } finally {
-                // Reset UI
-                downloadBtn.style.display = 'flex';
-                pauseDownloadBtn.style.display = 'none';
-                progressContainer.style.display = 'none';
-                progressBar.value = 0;
-                progressText.textContent = '0%';
-                
-                // Clean up download reference
-                delete activeDownloads[songId];
-            }
-        }
+      </div>
       
-    // Initialize everything
-    const init = () => {
-      updateTime();
-      updateBattery();
-      fetchIP();
-      setupToolHover();
-    };
-        
-        function pauseDownload(songId) {
-            if (activeDownloads[songId]) {
-                activeDownloads[songId].abort();
-                delete activeDownloads[songId];
-            }
+      <button type="button" id="verifyBtn" class="btn">
+        <i class="fas fa-fingerprint"></i>
+        <span>Verify & Deploy</span>
+      </button>
+      
+      <div id="statusMessage" class="status-message"></div>
+    </form>
+    
+    <div class="footer">
+      <p>© 2023 ALPHA-MD | Secure Deployment Portal v3.0</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Create hexagon grid background
+      const hexagonGrid = document.getElementById('hexagonGrid');
+      const hexagonSize = 100;
+      const hexagonHeight = Math.sqrt(3) * hexagonSize / 2;
+      const cols = Math.ceil(window.innerWidth / (hexagonSize * 1.5)) + 1;
+      const rows = Math.ceil(window.innerHeight / hexagonHeight) + 1;
+      
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          const hexagon = document.createElement('div');
+          hexagon.classList.add('hexagon');
+          
+          // Position hexagons in a grid
+          const x = j * hexagonSize * 1.5;
+          const y = i * hexagonHeight;
+          
+          // Offset every other row
+          if (i % 2 === 1) {
+            hexagon.style.left = `${x + hexagonSize * 0.75}px`;
+          } else {
+            hexagon.style.left = `${x}px`;
+          }
+          
+          hexagon.style.top = `${y}px`;
+          hexagon.style.opacity = Math.random() * 0.1;
+          
+          // Random animation delay
+          hexagon.style.animation = `pulse ${Math.random() * 10 + 5}s infinite ${Math.random() * 5}s`;
+          
+          hexagonGrid.appendChild(hexagon);
         }
-    </script>
+      }
+      
+      // Create digital rain effect
+      const digitalRain = document.getElementById('digitalRain');
+      const characters = ['0', '1', '0', '1', '0', '1', '0', '1'];
+      const columns = Math.floor(window.innerWidth / 20);
+      
+      for (let i = 0; i < columns; i++) {
+        const column = document.createElement('div');
+        column.style.position = 'absolute';
+        column.style.top = '0';
+        column.style.left = `${i * 20}px`;
+        column.style.width = '20px';
+        column.style.height = '100vh';
+        column.style.fontFamily = 'var(--tech-font)';
+        column.style.color = 'var(--primary)';
+        column.style.fontSize = '18px';
+        column.style.lineHeight = '20px';
+        column.style.textAlign = 'center';
+        column.style.overflow = 'hidden';
+        
+        // Create characters with random delays
+        const charCount = Math.floor(Math.random() * 15) + 10;
+        for (let j = 0; j < charCount; j++) {
+          const char = document.createElement('div');
+          char.textContent = characters[Math.floor(Math.random() * characters.length)];
+          char.style.opacity = Math.random() * 0.5;
+          char.style.animation = `matrixRain ${Math.random() * 5 + 3}s linear ${Math.random() * 5}s infinite`;
+          column.appendChild(char);
+        }
+        
+        digitalRain.appendChild(column);
+      }
+      
+      // Form elements
+      const verifyBtn = document.getElementById('verifyBtn');
+      const githubUsername = document.getElementById('githubUsername');
+      const statusMessage = document.getElementById('statusMessage');
+      
+      // Add input validation
+      githubUsername.addEventListener('input', () => {
+        statusMessage.style.display = 'none';
+      });
+      
+      // Handle form submission
+      verifyBtn.addEventListener('click', async () => {
+        const username = githubUsername.value.trim();
+        
+        if (!username) {
+          showStatus('ERROR: Please enter your GitHub username', 'error');
+          githubUsername.focus();
+          return;
+        }
+        
+        // Validate username format
+        if (!/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(username)) {
+          showStatus('ERROR: Invalid GitHub username format', 'error');
+          return;
+        }
+        
+        try {
+          // Update button state
+          verifyBtn.disabled = true;
+          verifyBtn.innerHTML = `<i class="fas fa-spinner btn-spinner"></i><span>Verifying...</span>`;
+          
+          // Show initial status
+          showStatus('> Starting verification process...', 'success');
+          
+          // Simulate verification steps
+          await simulateVerificationSteps(username);
+          
+          // Check if the repository exists
+          const response = await axios.get(
+            `https://api.github.com/repos/${username}/ALPHA-MD`,
+            { 
+              timeout: 10000,
+              headers: {
+                'Accept': 'application/vnd.github.v3+json'
+              }
+            }
+          );
+          
+          // If repository exists, redirect to deployment
+          typeStatusMessage('> Verification successful!', () => {
+            typeStatusMessage('> Repository found: ALPHA-MD', () => {
+              typeStatusMessage('> Initializing deployment sequence...', () => {
+                setTimeout(() => {
+                  window.location.href = `https://dashboard.heroku.com/new?template=https://github.com/${username}/ALPHA-MD`;
+                }, 1000);
+              });
+            });
+          });
+          
+        } catch (error) {
+          verifyBtn.disabled = false;
+          verifyBtn.innerHTML = `<i class="fas fa-fingerprint"></i><span>Verify & Deploy</span>`;
+          
+          if (error.response && error.response.status === 404) {
+            const shouldFork = confirm('Repository not found. You need to fork the main ALPHA-MD repository first. Would you like to fork it now?');
+            if (shouldFork) {
+              window.open('https://github.com/keithkeizzah/ALPHA-MD/fork', '_blank');
+              showStatus('INFO: Please fork the repository and try again', 'warning');
+            }
+          } else if (error.code === 'ECONNABORTED') {
+            showStatus('ERROR: Connection timeout. Check your network', 'error');
+          } else if (error.response && error.response.status === 403) {
+            showStatus('ERROR: API rate limit exceeded. Try again later', 'error');
+          } else {
+            showStatus('ERROR: Verification failed. Try again', 'error');
+            console.error('Verification error:', error);
+          }
+        }
+      });
+      
+      // Simulate verification steps with clean messages
+      async function simulateVerificationSteps(username) {
+        const steps = [
+          `> Checking GitHub user: ${username}`,
+          '> Verifying account status...',
+          '> Searching for ALPHA-MD repository...',
+          '> Checking repository permissions...',
+          '> Validating deployment requirements...'
+        ];
+        
+        for (const msg of steps) {
+          typeStatusMessage(msg, null, false);
+          await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 500));
+        }
+      }
+      
+      // Helper function to show status messages
+      function showStatus(message, type) {
+        statusMessage.textContent = message;
+        statusMessage.className = `status-message ${type}`;
+        statusMessage.style.display = 'block';
+      }
+      
+      // Terminal-like typing effect
+      function typeStatusMessage(message, callback, clear = true) {
+        if (clear) {
+          statusMessage.textContent = '';
+        } else {
+          statusMessage.textContent += '\n';
+        }
+        
+        statusMessage.className = 'status-message success';
+        statusMessage.style.display = 'block';
+        
+        let i = 0;
+        const typingInterval = setInterval(() => {
+          if (i < message.length) {
+            statusMessage.textContent += message.charAt(i);
+            i++;
+            // Scroll to bottom of status message
+            statusMessage.scrollTop = statusMessage.scrollHeight;
+          } else {
+            clearInterval(typingInterval);
+            if (callback) callback();
+          }
+        }, 20 + Math.random() * 20);
+      }
+      
+      // Add keyboard support
+      githubUsername.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          verifyBtn.click();
+        }
+      });
+      
+      // Add focus effect
+      githubUsername.addEventListener('focus', () => {
+        document.querySelector('.input-icon').style.color = 'var(--primary)';
+        document.querySelector('.input-icon').style.textShadow = '0 0 10px rgba(0, 255, 157, 0.6)';
+      });
+      
+      githubUsername.addEventListener('blur', () => {
+        document.querySelector('.input-icon').style.color = 'var(--light-gray)';
+        document.querySelector('.input-icon').style.textShadow = 'none';
+      });
+      
+      // Add animation to container on load
+      setTimeout(() => {
+        document.querySelector('.container').style.transform = 'translateY(0)';
+        document.querySelector('.container').style.opacity = '1';
+      }, 100);
+    });
+  </script>
 </body>
 </html>
