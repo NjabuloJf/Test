@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DML TECH - Discover Free Music</title>
+    <title>Njabulo Jb - Discover Free Music</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
         
@@ -25,14 +25,22 @@
         }
         
         body {
+            font-family: 'JetBrains Mono', monospace;
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
             color: var(--light);
             min-height: 100vh;
             padding: 20px;
+
+            flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.6;
+        
             transition: background 1s ease;
         }
+
+
         
         @keyframes gradient {
             0% {
@@ -247,7 +255,108 @@
             display: none;
             margin-top: 10px;
         }
+
+         .menu-footer {
+      padding: 15px;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
         
+   @media (max-width: 600px) {
+      .menu-items {
+       grid-template-columns: 1fr;
+            }
+            
+   .user-info {
+      flex-direction: column;
+            }
+        }
+  
+    .contact-fab {
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      background: var(--red-primary);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px rgba(255, 59, 63, 0.4);
+      z-index: 1000;
+    }
+
+                /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: rgba(10, 10, 10, 0.7);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--gray);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .project-img {
+            height: 200px;
+            background: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 3rem;
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .project-content p {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .project-links a {
+            padding: 8px 15px;
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+
+    .contact-fab:hover {
+      background: #c0392b;
+    }
+
         progress {
             width: 100%;
             height: 8px;
@@ -259,6 +368,75 @@
             font-size: 0.8rem;
             margin-top: 5px;
         }
+
+          body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: var(--glow);
+    }
+
+          .status {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .status-item {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+    }
+
+    .status-item:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: var(--highlight);
+    }
+
+    .status-item i {
+      color: var(--highlight);
+    }
+        
+
+    
+    .time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--muted);
+      min-width: 50px;
+      text-align: center;
+    }
+
+    main {
+      flex: 1;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
         
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -298,23 +476,57 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>DML TECH</h1>
+  <header>
+    <h1>🎧Online</h1> 
+    <div class="status">
+      <div class="status-item"><i class="fas fa-bolt"></i> <span id="battery">--%</span></div>
+      <div class="status-item"><i class="fas fa-wifi"></i> <span id="ip">Loading...</span></div>
+    </div>
+  </header>
+        
+        <div class="container">
+            <h1>🎙️Active</h1>
             <p class="subtitle">Discover Copyright-Free Music</p>
             <button class="refresh-btn" id="refreshBtn">⟳ Get New Songs</button>
-        </header>
-        
+         </div>
+       </div>
+    </div>
         <div id="loading" class="loading">Loading tracks...</div>
         
         <div class="songs-grid" id="songsGrid"></div>
+
+            <section id="projects">
+        <h2 class="section-title">active</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-img">
+                    <i class="fab fa-YouTube"></i>
+                </div>
+                <div class="project-content">
+                    <h3>loading your music</h3>
+                    <p>1.. Please use Get new songs</p>
+                    <p>2.. You enjoy download oll music if you use get new songs</p>
+                        <div class="project-links">
+                         <a href="#">Ask AI</a>
+                        <a href="https://github.com/arnabdas789">Repository git</a>
+                    </div>
+                </div>
+            </div>
+
+               <!-- FOOTER -->
+  <div class="menu-footer">
+            Njabulo Jb | serves police
+        </div>
+
+  <!-- CONTACT ICON -->
+  <a href="https://timnasa.vercel.app/" class="contact-fab" title="Contact Us">
+    <i class="fas fa-robot"></i>
+  </a>
+  </main>
+  <script>
+
+
         
-        <footer>
-            © 2025 All Rights Reserved - DML TECH
-        </footer>
-    </div>
-    
-    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Enhanced background color cycling
             const colors = [
@@ -341,7 +553,7 @@
             
             // Add event listener to refresh button
             document.getElementById('refreshBtn').addEventListener('click', function() {
-                fetchRandomSongs(4);
+                fetchRandomSongs(5);
             });
         });
         
@@ -379,7 +591,7 @@
                     results.forEach((songData, index) => {
                         if (songData && songData.status === 'success' && songData.data.length > 0) {
                             const song = songData.data[0];
-                            createSongCard(song, index * 100); // Stagger animations
+                            createSongCard(song, index * 10); // Stagger animations
                         }
                     });
                 });
@@ -522,7 +734,59 @@
                         progressText.textContent = `${percent}%`;
                     }
                 }
-                
+
+                 // Update clock in title
+    const updateTime = () => {
+      const update = () => {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
+        document.title = `TIMNASA_TMD | ${timeStr}`;
+      };
+      update();
+      setInterval(update, 1000);
+    }
+
+    // Battery status
+    const updateBattery = async () => {
+      if (navigator.getBattery) {
+        try {
+          const battery = await navigator.getBattery();
+          const setBattery = () => {
+            const batteryPercent = Math.round(battery.level * 100);
+            const batteryElement = document.getElementById('battery');
+            batteryElement.innerText = `${batteryPercent}%`;
+            
+            // Add battery icon based on level
+            let batteryIcon = 'fa-bolt';
+            if (batteryPercent <= 20) batteryIcon = 'fa-battery-quarter';
+            else if (batteryPercent <= 50) batteryIcon = 'fa-battery-half';
+            else if (batteryPercent <= 80) batteryIcon = 'fa-battery-three-quarters';
+            else if (batteryPercent <= 100) batteryIcon = 'fa-battery-full';
+            
+            batteryElement.previousElementSibling.className = `fas ${batteryIcon}`;
+          };
+          
+          battery.addEventListener('levelchange', setBattery);
+          battery.addEventListener('chargingchange', setBattery);
+          setBattery();
+        } catch (error) {
+          console.error('Battery API error:', error);
+        }
+      }
+            }
+
+                 // IP address fetch
+    const fetchIP = async () => {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        document.getElementById('ip').textContent = data.ip;
+      } catch {
+        document.getElementById('ip').textContent = 'Offline';
+      }
+    }
+
+
                 // Complete download
                 const blob = new Blob(chunks);
                 const downloadUrl = URL.createObjectURL(blob);
@@ -560,6 +824,14 @@
                 delete activeDownloads[songId];
             }
         }
+      
+    // Initialize everything
+    const init = () => {
+      updateTime();
+      updateBattery();
+      fetchIP();
+      setupToolHover();
+    };
         
         function pauseDownload(songId) {
             if (activeDownloads[songId]) {
