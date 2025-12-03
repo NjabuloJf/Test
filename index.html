@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube MP3 Downloader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+                         'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: grid;
+            place-items: center;
+            height: 100vh;
+            background: #fff;               /* plain white background */
+        }
+
+        .main-container {
+            width: 40%;
+            padding: 1rem;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            margin-bottom: 10rem;
+        }
+
+        .main-heading {
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        #user-url {
+            width: 70%;
+            background: linear-gradient(135deg, #0e7a5d, #437584);
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            padding: .5rem 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        #user-url:focus {
+            outline: none;
+            border: none;
+            box-shadow: 1px 1px 1px #292317;
+        }
+
+        #user-url::placeholder {
+            text-align: center;
+            color: white;
+            opacity: 0.4;
+            font-weight: 500;
+        }
+
+        #download-button {
+            display: inline;
+            background-color: rgb(36, 199, 36);
+            width: 100px;
+            color: white;
+            border-radius: 10px;
+            padding: .5rem;
+            margin-left: .5rem;
+            outline: none;
+            border: none;
+            transition: all .5s ease;
+        }
+
+        #download-button:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+            background-color: blue;
+        }
+
+        @media only screen and (max-width: 1030px) {
+            .main-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            #download-button {
+                margin-top: 1rem;
+                margin: auto;
+            }
+            #user-url {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 800px) {
+            .main-heading {
+                font-size: 1.2rem;
+            }
+            .main-container {
+                width: 50%;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            .main-container {
+                width: 70%;
+            }
+            .main-heading {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <p class="main-heading">YouTube Audio Downloader</p>
+        <input type="text" id="user-url" placeholder="Enter YouTube URL">
+        <input type="button" id="download-button" value="Download">
+    </div>
+
+    <script>
+        const downloadButton = document.getElementById('download-button');
+        const userUrl = document.getElementById('user-url');
+
+        // Extract the video ID from a YouTube URL
+        const extractVideoId = (url) => {
+            const parsedUrl = new URL(url);
+
+            if (parsedUrl.searchParams.has('v')) {
+                return parsedUrl.searchParams.get('v');
+            }
+
+            // Fallback for shortened URLs like youtu.be/abc12345678
+            const segments = parsedUrl.pathname.split('/');
+            return segments.find(seg => seg.length === 11);
+        };
+
+        // Trigger the actual download once we have the MP3 link
+        const downloadAudio = (result) => {
+            const link = document.createElement('a');
+            link.href = result.link;
+            link.download = `${result.title}.mp3`;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        // Call the RapidAPI endpoint to get the MP3 download URL
+        const getData = async () => {
+            const videoId = extractVideoId(userUrl.value);
+            if (!videoId) {
+                alert('Could not extract video ID. Please check the URL.');
+                return;
+            }
+
+            const apiUrl = `https://youtube-mp36.p.rapidapi.com/dl?id=${videoId}`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-key': 'e4090088damshcb08340bb1f1a44p1ace42jsncdacbbef480e',
+                    'x-rapidapi-host': 'youtube-mp36.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, options);
+                const result = await response.json();
+                downloadAudio(result);
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('Something went wrong. Check the console for details.');
+            }
+        };
+
+        downloadButton.addEventListener('click', getData);
+    </script>
+</body>
+  </html> 
