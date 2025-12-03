@@ -1,857 +1,572 @@
-<!doctype html>
-<html lang="en" class="scroll-smooth">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="cryptomus" content="2b0bf5e4" />
-
-    <!-- SEO Optimized Meta Tags -->
-    <title>
-        VelixAI | The AI Customer Service Agent for Web, Social & Voice
-    </title>
-    <meta name="description"
-        content="VelixAI is more than a chatbot. It's an autonomous AI customer service agent that learns your business and provides 24/7, human-like support across your website, WhatsApp, Instagram, Telegram, and phone calls." />
-    <meta name="keywords"
-        content="AI customer service, AI agent, automate support, voice AI, whatsapp bot, instagram automation, customer support AI, VelixAI" />
-
-    <!-- Favicon -->
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 5L5 30V70L50 95L95 70V30L50 5Z%22 fill=%22url(%23g1)%22/><path d=%22M5 70L50 45V95L5 70Z%22 fill=%22url(%23g2)%22/><path d=%22M50 5L5 30L50 45L95 30L50 5Z%22 stroke=%22rgba(255,255,255,0.2)%22 stroke-width=%221%22/><defs><linearGradient id=%22g1%22 x1=%220%22 y1=%2250%22 x2=%22100%22 y2=%2250%22><stop stop-color=%22%233b82f6%22/><stop offset=%221%22 stop-color=%22%238b5cf6%22/></linearGradient><linearGradient id=%22g2%22 x1=%220%22 y1=%2270%22 x2=%2250%22 y2=%2270%22><stop stop-color=%22%231e40af%22/><stop offset=%221%22 stop-color=%22%235b21b6%22/></linearGradient></defs></svg>" />
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Three.js for 3D Background -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DML TECH - Discover Free Music</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
         :root {
-            --color-primary: #8b5cf6;
-            /* violet-500 */
-            --color-primary-dark: #7c3aed;
-            /* violet-600 */
-            --color-secondary: #3b82f6;
-            /* blue-500 */
-            --color-secondary-dark: #2563eb;
-            /* blue-600 */
-            --color-bg: #f8fafc;
-            /* slate-50 */
-            --color-text-header: #0f172a;
-            /* slate-900 */
-            --color-text-body: #475569;
-            /* slate-600 */
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --accent: #fd79a8;
+            --pause: #ff7675;
+            --pause-download: #55efc4;
         }
-
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
         body {
-            font-family: "Inter", sans-serif;
-            background-color: var(--color-bg);
-            color: var(--color-text-body);
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            transition: background 1s ease;
         }
-
-        .text-gradient {
-            background: linear-gradient(to right,
-                    var(--color-secondary),
-                    var(--color-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+                background-color: #ee7752;
+            }
+            25% {
+                background-position: 100% 50%;
+                background-color: #e73c7e;
+            }
+            50% {
+                background-position: 50% 100%;
+                background-color: #23a6d5;
+            }
+            75% {
+                background-position: 100% 0%;
+                background-color: #23d5ab;
+            }
+            100% {
+                background-position: 0% 50%;
+                background-color: #ee7752;
+            }
         }
-
-        .bg-gradient-primary {
-            background: linear-gradient(135deg,
-                    var(--color-secondary),
-                    var(--color-primary));
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-
-        .hover\:bg-gradient-primary-hover:hover {
-            background: linear-gradient(135deg,
-                    var(--color-secondary-dark),
-                    var(--color-primary-dark));
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease;
         }
-
-        .animate-fade-in-up {
-            opacity: 0;
-            transform: translateY(20px);
-            transition:
-                opacity 0.8s ease-out,
-                transform 0.8s ease-out;
-            transition-delay: var(--delay, 0s);
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
-
-        .animate-fade-in-up.visible {
-            opacity: 1;
+        
+        .subtitle {
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .song-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        .song-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .thumbnail {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .song-info {
+            padding: 20px;
+        }
+        
+        .song-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .song-artist {
+            font-weight: 300;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .play-btn {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .pause-btn {
+            background: var(--pause);
+            color: white;
+            display: none;
+        }
+        
+        .download-btn {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .pause-download-btn {
+            background: var(--pause-download);
+            color: var(--dark);
+            display: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
             transform: translateY(0);
         }
-
-        .glow-cta {
-            box-shadow:
-                0 0 20px rgba(139, 92, 246, 0.25),
-                0 0 8px rgba(59, 130, 246, 0.15);
+        
+        .audio-player {
+            width: 100%;
+            margin-top: 15px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
         }
-
-        .glow-cta:hover {
-            box-shadow:
-                0 0 30px rgba(139, 92, 246, 0.4),
-                0 0 12px rgba(59, 130, 246, 0.3);
-            transform: translateY(-3px);
+        
+        .channel-link {
+            display: none;
+            margin-top: 15px;
+            text-align: center;
         }
-
-        .platform-icon {
+        
+        .channel-link a {
+            color: white;
+            background: rgba(0, 200, 0, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            display: inline-block;
+            backdrop-filter: blur(5px);
         }
-
-        .platform-icon:hover {
-            transform: scale(1.1);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        
+        .channel-link a:hover {
+            background: rgba(0, 200, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-weight: 300;
+            opacity: 0.8;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .download-progress {
+            display: none;
+            margin-top: 10px;
+        }
+        
+        progress {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        @media (max-width: 768px) {
+            .songs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                min-width: calc(50% - 5px);
+            }
         }
     </style>
 </head>
-
-<body class="antialiased">
-    <!-- Header -->
-    <header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
-        <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-3">
-                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="url(#lg1)" />
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="rgba(255,255,255,0.2)" stroke-width="0.5" />
-                    <path d="M2 17L12 12V22L2 17Z" fill="url(#lg2)" />
-                    <defs>
-                        <linearGradient id="lg1" x1="2" y1="12" x2="22" y2="12" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#3b82f6" />
-                            <stop offset="1" stop-color="#8b5cf6" />
-                        </linearGradient>
-                        <linearGradient id="lg2" x1="2" y1="17" x2="12" y2="17" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#1e40af" />
-                            <stop offset="1" stop-color="#5b21b6" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <span class="text-2xl font-bold text-slate-800">VelixAI</span>
-            </a>
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="#platforms"
-                    class="text-slate-600 hover:text-violet-500 transition-colors duration-300 font-medium">Platforms</a>
-                <a href="#how-it-works"
-                    class="text-slate-600 hover:text-violet-500 transition-colors duration-300 font-medium">How It
-                    Works</a>
-                <a href="#features"
-                    class="text-slate-600 hover:text-violet-500 transition-colors duration-300 font-medium">Features</a>
-                <a href="#pricing"
-                    class="text-slate-600 hover:text-violet-500 transition-colors duration-300 font-medium">Pricing</a>
-            </nav>
-            <div class="flex items-center space-x-4">
-                <a href="#pricing"
-                    class="hidden md:block bg-gradient-primary text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-gradient-primary-hover transition-all duration-300 shadow-lg shadow-violet-500/10 hover:shadow-violet-500/20">Get
-                    Started</a>
-                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-full text-slate-600 -mr-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-lg">
-            <nav class="flex flex-col items-center space-y-6 py-8">
-                <a href="#platforms" class="text-slate-700 text-lg font-medium">Platforms</a>
-                <a href="#how-it-works" class="text-slate-700 text-lg font-medium">How It Works</a>
-                <a href="#features" class="text-slate-700 text-lg font-medium">Features</a>
-                <a href="#pricing" class="text-slate-700 text-lg font-medium">Pricing</a>
-                <a href="#pricing" class="bg-gradient-primary text-white font-semibold px-8 py-3 rounded-lg mt-4">Get
-                    Started</a>
-            </nav>
-        </div>
-    </header>
-
-    <main>
-        <!-- Hero Section -->
-        <section id="hero"
-            class="relative min-h-screen flex items-center justify-center text-center overflow-hidden pt-24 pb-12">
-            <div id="three-canvas" class="absolute inset-0 z-0 bg-slate-50"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-slate-50/30 to-transparent z-10"></div>
-            <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[80vw] h-[50vh] bg-gradient-radial from-violet-400/15 via-blue-400/10 to-transparent blur-3xl animate-pulse">
-            </div>
-
-            <div class="relative z-20 container mx-auto px-4 sm:px-6">
-                <h1
-                    class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 mb-6 animate-fade-in-up leading-tight">
-                    Meet Your New Best<br /><span class="text-gradient">Customer Service Agent</span>
-                </h1>
-                <p class="text-lg md:text-xl max-w-3xl mx-auto text-slate-600 mb-10 animate-fade-in-up"
-                    style="--delay: 0.2s">
-                    VelixAI isn't just a chatbot. It's a fully autonomous
-                    agent that learns your business and provides instant,
-                    human-like support across your website, social media,
-                    and phone calls.
-                </p>
-                <a href="#pricing"
-                    class="inline-block bg-gradient-primary text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-gradient-primary-hover glow-cta transition-all duration-300 animate-fade-in-up"
-                    style="--delay: 0.4s">Deploy Your AI Agent Now</a>
-            </div>
-        </section>
-
-        <!-- What is VelixAI Section -->
-        <section id="why-velixai" class="py-24 sm:py-32 bg-white">
-            <div class="container mx-auto px-4 sm:px-6">
-                <div class="text-center max-w-3xl mx-auto mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 animate-fade-in-up">
-                        Stop Answering Questions. Start Solving Problems.
-                    </h2>
-                    <p class="mt-4 text-lg text-slate-600 animate-fade-in-up" style="--delay: 0.2s">
-                        A basic chatbot gives basic answers. An AI Agent
-                        understands intent, performs tasks, and delivers a
-                        support experience that feels truly human.
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    <!-- Before -->
-                    <div class="bg-gradient-to-br from-slate-100 to-slate-50 border border-slate-200 p-8 rounded-2xl animate-fade-in-up shadow-sm"
-                        style="--delay: 0.4s">
-                        <h3 class="text-2xl font-bold text-slate-500 mb-4">
-                            Basic Chatbots
-                        </h3>
-                        <ul class="space-y-3 text-slate-600">
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 text-red-400 mr-3 mt-1 flex-shrink-0" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                        clip-rule="evenodd"></path>
-                                </svg><span>Follow rigid scripts and often
-                                    fail.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 text-red-400 mr-3 mt-1 flex-shrink-0" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                        clip-rule="evenodd"></path>
-                                </svg><span>Only available on your website.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 text-red-400 mr-3 mt-1 flex-shrink-0" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                        clip-rule="evenodd"></path>
-                                </svg><span>Requires constant manual updates.</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- After -->
-                    <div class="bg-gradient-to-br from-violet-600 to-violet-700 text-white p-8 rounded-2xl shadow-xl shadow-violet-500/20 animate-fade-in-up"
-                        style="--delay: 0.6s">
-                        <h3 class="text-2xl font-bold mb-4 flex items-center">
-                            <span class="text-gradient bg-gradient-to-r from-white to-violet-200">VelixAI Agent</span>
-                        </h3>
-                        <ul class="space-y-3 text-violet-100">
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 text-white mr-3 mt-1 flex-shrink-0" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                        clip-rule="evenodd"></path>
-                                </svg><span>Understands context and solves complex
-                                    queries.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 text-white mr-3 mt-1 flex-shrink-0" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                        clip-rule="evenodd"></path>
-                                </svg><span>Works 24/7 on your site, social media &
-                                    phone.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 text-white mr-3 mt-1 flex-shrink-0" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                        clip-rule="evenodd"></path>
-                                </svg><span>Learns and improves from every
-                                    interaction.</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Supported Platforms Section -->
-        <section id="platforms" class="py-24 sm:py-32 bg-slate-50">
-            <div class="container mx-auto px-4 sm:px-6">
-                <div class="text-center max-w-3xl mx-auto mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 animate-fade-in-up">
-                        Be Where Your Customers Are
-                    </h2>
-                    <p class="mt-4 text-lg text-slate-600 animate-fade-in-up" style="--delay: 0.2s">
-                        One AI brain, deployed everywhere. Provide
-                        consistent, world-class support on every channel
-                        your customers use, without extra effort.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
-                    <!-- Website -->
-                    <div class="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.3s">
-                        <img src="https://img.icons8.com/?size=100&id=gT9pvmzT6K9Y&format=png&color=000000"
-                            alt="Website" class="w-12 h-12 mb-4" />
-                        <h3 class="font-semibold text-slate-700">
-                            Website
-                        </h3>
-                    </div>
-
-                    <!-- WhatsApp -->
-                    <div class="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.4s">
-                        <img src="https://img.icons8.com/?size=100&id=QkXeKixybttw&format=png&color=000000"
-                            alt="WhatsApp" class="w-12 h-12 mb-4" />
-                        <h3 class="font-semibold text-slate-700">
-                            WhatsApp
-                        </h3>
-                    </div>
-
-                    <!-- Telegram -->
-                    <div class="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.5s">
-                        <img src="https://img.icons8.com/?size=100&id=63306&format=png&color=000000" alt="Telegram"
-                            class="w-12 h-12 mb-4" />
-                        <h3 class="font-semibold text-slate-700">
-                            Telegram
-                        </h3>
-                    </div>
-
-                    <!-- Facebook Messenger -->
-                    <div class="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.6s">
-                        <img src="https://img.icons8.com/?size=100&id=yGcWL8copNNQ&format=png&color=000000"
-                            alt="Facebook Messenger" class="w-12 h-12 mb-4" />
-                        <h3 class="font-semibold text-slate-700">
-                            Messenger
-                        </h3>
-                    </div>
-
-                    <!-- Instagram -->
-                    <div class="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.7s">
-                        <img src="https://img.icons8.com/?size=100&id=32323&format=png&color=000000" alt="Instagram"
-                            class="w-12 h-12 mb-4" />
-                        <h3 class="font-semibold text-slate-700">
-                            Instagram
-                        </h3>
-                    </div>
-
-                    <!-- Phone -->
-                    <div class="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.8s">
-                        <img src="https://img.icons8.com/?size=100&id=oN2D9Q33fnQi&format=png&color=000000" alt="Phone"
-                            class="w-12 h-12 mb-4" />
-                        <h3 class="font-semibold text-slate-700">
-                            Voice Calls
-                        </h3>
-                    </div>
-                    <div class="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-white to-slate-50 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.8s">
-                        <img src="https://img.icons8.com/?size=100&id=phOKFKYpe00C&format=png&color=000000" alt="X"
-                            class="w-12 h-12 mb-4" />
-                        <h3 class="font-semibold text-slate-700">X</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- How It Works Section -->
-        <section id="how-it-works" class="py-24 sm:py-32 bg-white">
-            <div class="container mx-auto px-4 sm:px-6">
-                <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
-                    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 animate-fade-in-up">
-                        Onboard Your AI Agent in 3 Steps
-                    </h2>
-                    <p class="mt-4 text-lg text-slate-600 animate-fade-in-up" style="--delay: 0.2s">
-                        Go from raw data to a fully operational support
-                        agent. No coding required.
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center max-w-6xl mx-auto">
-                    <div class="animate-fade-in-up bg-gradient-to-br from-white to-slate-50 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300"
-                        style="--delay: 0.4s">
-                        <div
-                            class="mb-6 flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 mx-auto">
-                            <svg class="w-8 h-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M3.75 9.75h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5-13.5h16.5M3.75 6h16.5M3.75 18h16.5M5.25 9.75h13.5M5.25 14.25h13.5M5.25 18.75h13.5M12 2.25c-2.485 0-4.5 2.015-4.5 4.5s2.015 4.5 4.5 4.5 4.5-2.015 4.5-4.5S14.485 2.25 12 2.25z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">
-                            1. Feed the Brain
-                        </h3>
-                        <p class="text-slate-500">
-                            Connect your knowledge sources. Upload files,
-                            scrape your website, or link to your help docs.
-                            VelixAI reads and understands everything.
-                        </p>
-                    </div>
-                    <div class="animate-fade-in-up bg-gradient-to-br from-white to-slate-50 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300"
-                        style="--delay: 0.6s">
-                        <div
-                            class="mb-6 flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-violet-100 to-violet-200 mx-auto">
-                            <svg class="w-8 h-8 text-violet-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.438.995s.145.755.438.995l1.003.827c.48.398.668 1.054.26 1.431l-1.296 2.247a1.125 1.125 0 01-1.37.49l-1.217-.456c-.355-.133-.75-.072-1.075.124a6.57 6.57 0 01-.22.127c-.331.185-.581.496-.645.87l-.213 1.281c-.09.543-.56.94-1.11.94h-2.593c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.063-.374-.313-.686-.645-.87a6.52 6.52 0 01-.22-.127c-.324-.196-.72-.257-1.075-.124l-1.217.456a1.125 1.125 0 01-1.37-.49l-1.296-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.437-.995s-.145-.755-.437-.995l-1.004-.827a1.125 1.125 0 01-.26-1.431l1.296-2.247a1.125 1.125 0 011.37-.49l1.217.456c.355.133.75.072 1.075-.124.073-.044.146-.087.22-.127.332-.185.582-.496.645-.87l.213-1.281z" />
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">
-                            2. Define its Role
-                        </h3>
-                        <p class="text-slate-500">
-                            Set its personality, tone of voice, and
-                            operational rules. Define when it should
-                            escalate a conversation to a human agent.
-                        </p>
-                    </div>
-                    <div class="animate-fade-in-up bg-gradient-to-br from-white to-slate-50 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300"
-                        style="--delay: 0.8s">
-                        <div
-                            class="mb-6 flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200 mx-auto">
-                            <svg class="w-8 h-8 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.17 48.17 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">
-                            3. Deploy Everywhere
-                        </h3>
-                        <p class="text-slate-500">
-                            Embed on your website with one line of code.
-                            Connect to your social and voice channels with a
-                            few clicks. Your AI agent is now live.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Key Features Section -->
-        <section id="features" class="py-24 sm:py-32 bg-slate-50">
-            <div class="container mx-auto px-4 sm:px-6">
-                <div class="text-center max-w-3xl mx-auto mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 animate-fade-in-up">
-                        The Toolkit for a Smarter Support Team
-                    </h2>
-                    <p class="mt-4 text-lg text-slate-600 animate-fade-in-up" style="--delay: 0.2s">
-                        VelixAI is packed with powerful features designed to
-                        improve your support, engage users, and uncover
-                        valuable insights.
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="p-8 bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.3s">
-                        <h3 class="text-xl font-semibold mb-2 text-slate-800">
-                            A Continuously Learning Brain
-                        </h3>
-                        <p class="text-slate-500">
-                            The more it interacts, the smarter it gets. Your
-                            agent learns from conversations to improve its
-                            accuracy and performance over time.
-                        </p>
-                    </div>
-                    <div class="p-8 bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.4s">
-                        <h3 class="text-xl font-semibold mb-2 text-slate-800">
-                            Full Oversight & Control
-                        </h3>
-                        <p class="text-slate-500">
-                            Review every interaction. Understand user needs,
-                            identify content gaps, and take over chats when
-                            a human touch is needed.
-                        </p>
-                    </div>
-                    <div class="p-8 bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.5s">
-                        <h3 class="text-xl font-semibold mb-2 text-slate-800">
-                            Seamless Human Handoff
-                        </h3>
-                        <p class="text-slate-500">
-                            Set rules to automatically route complex or
-                            sensitive queries to your live support team,
-                            with the full chat history for seamless context.
-                        </p>
-                    </div>
-                    <div class="p-8 bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.6s">
-                        <h3 class="text-xl font-semibold mb-2 text-slate-800">
-                            Uncover Customer Intelligence
-                        </h3>
-                        <p class="text-slate-500">
-                            Discover what your customers are *really* asking
-                            for. Identify product feedback, feature
-                            requests, and points of confusion.
-                        </p>
-                    </div>
-                    <div class="p-8 bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.7s">
-                        <h3 class="text-xl font-semibold mb-2 text-slate-800">
-                            Enterprise-Grade Security
-                        </h3>
-                        <p class="text-slate-500">
-                            Your data is yours alone. We use
-                            state-of-the-art encryption and are fully GDPR
-                            compliant. Your knowledge is never used to train
-                            other models.
-                        </p>
-                    </div>
-                    <div class="p-8 bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
-                        style="--delay: 0.8s">
-                        <h3 class="text-xl font-semibold mb-2 text-slate-800">
-                            Proactive Engagement
-                        </h3>
-                        <p class="text-slate-500">
-                            Don't just wait for questions. Configure your
-                            agent to proactively start conversations based
-                            on user behavior, page visits, or time on site.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Pricing Section -->
-        <section id="pricing" class="py-24 sm:py-32 bg-white">
-            <div class="container mx-auto px-4 sm:px-6">
-                <div class="text-center max-w-3xl mx-auto mb-12">
-                    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 animate-fade-in-up">
-                        Simple, Transparent Pricing
-                    </h2>
-                    <p class="mt-4 text-lg text-slate-600 animate-fade-in-up" style="--delay: 0.2s">
-                        Join our early access program to lock in a special
-                        rate and help shape the future of AI customer
-                        service.
-                    </p>
-                </div>
-                <div class="max-w-md mx-auto bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-8 shadow-2xl shadow-violet-500/20 animate-fade-in-up"
-                    style="--delay: 0.4s">
-                    <h3 class="text-2xl font-semibold">
-                        Early Adopter Plan
-                    </h3>
-                    <p class="mt-2 text-slate-400">
-                        Limited spots available for our private beta.
-                    </p>
-                    <div class="my-8">
-                        <span class="text-5xl font-bold">$49</span><span class="text-lg text-slate-400">/ month</span>
-                    </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-violet-400 mr-3" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg><span class="text-slate-300">1 AI Agent</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-violet-400 mr-3" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg><span class="text-slate-300">All Platforms (Web, Social, Voice)</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-violet-400 mr-3" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg><span class="text-slate-300">5,000 interactions / month</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-violet-400 mr-3" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg><span class="text-slate-300">Priority beta support & onboarding</span>
-                        </li>
-                    </ul>
-                    <!-- Hidden iframe to prevent page reload -->
-                    <iframe name="form-target" style="display:none;"></iframe>
-
-                    <!-- Your waitlist form -->
-                    <form action="https://formsubmit.co/seanjacob283@gmail.com" method="POST" target="form-target"
-                        class="space-y-4" id="waitlist-form">
-                        <input type="email" id="email" name="email" placeholder="you@company.com"
-                            class="w-full p-3 rounded-lg text-slate-800 bg-slate-100 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-400 transition-all duration-300 placeholder:text-slate-400"
-                            required />
-
-                        <!-- Optional hidden fields -->
-                        <input type="hidden" name="_subject" value="🚀 New Waitlist Signup!">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_next" value="javascript:void(0);">
-
-                        <button type="submit"
-                            class="w-full bg-gradient-primary text-white py-3 rounded-lg font-semibold hover:bg-gradient-primary-hover transition-all duration-300 shadow-lg shadow-violet-500/20 hover:shadow-violet-500/30">
-                            Claim Your Early Adopter Spot
-                        </button>
-                    </form>
-
-                    <!-- Thank you message (hidden by default) -->
-                    <div id="thank-you-message"
-                        class="hidden text-green-600 text-center mt-6 p-4 border border-green-300 bg-green-50 rounded-lg shadow">
-                        ✅ Thank you! You're officially on the waitlist.
-                    </div>
-                    <p id="form-message" class="mt-4 text-sm text-center h-5"></p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-white border-t border-slate-200">
-        <div class="container mx-auto px-4 sm:px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-                <div class="flex flex-col items-center md:items-start">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="url(#lgf1)" />
-                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="rgba(255,255,255,0.2)" stroke-width="0.5" />
-                            <path d="M2 17L12 12V22L2 17Z" fill="url(#lgf2)" />
-                            <defs>
-                                <linearGradient id="lgf1" x1="2" y1="12" x2="22" y2="12" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#3b82f6" />
-                                    <stop offset="1" stop-color="#8b5cf6" />
-                                </linearGradient>
-                                <linearGradient id="lgf2" x1="2" y1="17" x2="12" y2="17" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#1e40af" />
-                                    <stop offset="1" stop-color="#5b21b6" />
-                                </linearGradient>
-                            </defs>
-                        </svg><span class="text-xl font-bold text-slate-800">VelixAI</span>
-                    </div>
-                    <p class="text-sm text-slate-500">
-                        The AI Customer Service Agent for modern teams.
-                    </p>
-                    <div class="flex space-x-6 mt-6">
-                        <a href="#" class="text-slate-400 hover:text-violet-500 transition"><span
-                                class="sr-only">Twitter</span><svg class="w-6 h-6" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84">
-                                </path>
-                            </svg></a>
-                        <a href="#" class="text-slate-400 hover:text-violet-500 transition"><span
-                                class="sr-only">LinkedIn</span><svg class="w-6 h-6" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                            </svg></a>
-                    </div>
-                </div>
-                <div class="text-sm text-slate-500 flex flex-col items-center md:items-start space-y-3">
-                    <h4 class="font-semibold text-slate-700 mb-2">
-                        Platform
-                    </h4>
-                    <a href="#platforms" class="hover:text-violet-500">Supported Platforms</a><a href="#how-it-works"
-                        class="hover:text-violet-500">How It Works</a><a href="#features"
-                        class="hover:text-violet-500">Features</a><a href="#pricing"
-                        class="hover:text-violet-500">Pricing</a>
-                </div>
-                <div class="text-sm text-slate-500 flex flex-col items-center md:items-start space-y-3">
-                    <h4 class="font-semibold text-slate-700 mb-2">Legal</h4>
-                    <a href="#" class="hover:text-violet-500">Privacy Policy</a><a href="#"
-                        class="hover:text-violet-500">Terms of Service</a>
-                </div>
-            </div>
-            <div class="mt-12 pt-8 border-t border-slate-200 text-center text-sm text-slate-400">
-                © 2025 VelixAI. All Rights Reserved.
-            </div>
-        </div>
-    </footer>
-
+<body>
+    <div class="container">
+        <header>
+            <h1>DML TECH</h1>
+            <p class="subtitle">Discover Copyright-Free Music</p>
+            <button class="refresh-btn" id="refreshBtn">⟳ Get New Songs</button>
+        </header>
+        
+        <div id="loading" class="loading">Loading tracks...</div>
+        
+        <div class="songs-grid" id="songsGrid"></div>
+        
+        <footer>
+            © 2025 All Rights Reserved - DML TECH
+        </footer>
+    </div>
+    
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // --- Basic Page Scripts (Navbar, Mobile Menu, Animations, Form) ---
-            const navbar = document.getElementById("navbar");
-            window.addEventListener("scroll", () => {
-                navbar.classList.toggle("bg-white/80", window.scrollY > 20);
-                navbar.classList.toggle(
-                    "backdrop-blur-lg",
-                    window.scrollY > 20,
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enhanced background color cycling
+            const colors = [
+                '#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB', 
+                '#B5EAD7', '#C7CEEA', '#F8B195', '#F67280',
+                '#C06C84', '#6C5B7B', '#355C7D', '#A8E6CE',
+                '#DCEDC2', '#FFD3B5', '#FFAAA6', '#FF8C94'
+            ];
+            let currentColorIndex = 0;
+            
+            function changeBackgroundColor() {
+                document.body.style.background = colors[currentColorIndex];
+                currentColorIndex = (currentColorIndex + 1) % colors.length;
+            }
+            
+            // Change color every 5 seconds
+            setInterval(changeBackgroundColor, 5000);
+            
+            // Initial color change after 1 second
+            setTimeout(changeBackgroundColor, 1000);
+            
+            // Fetch 4 random songs when page loads
+            fetchRandomSongs(4);
+            
+            // Add event listener to refresh button
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                fetchRandomSongs(4);
+            });
+        });
+        
+        function fetchRandomSongs(count) {
+            const songsGrid = document.getElementById('songsGrid');
+            const loading = document.getElementById('loading');
+            
+            // Show loading and clear grid
+            loading.style.display = 'block';
+            songsGrid.innerHTML = '';
+            
+            // Array to store all promises
+            const fetchPromises = [];
+            
+            // Fetch multiple songs
+            for (let i = 0; i < count; i++) {
+                fetchPromises.push(
+                    fetch('https://ncs.bwmxmd.online/random')
+                        .then(response => {
+                            if (!response.ok) throw new Error('Network response was not ok');
+                            return response.json();
+                        })
+                        .catch(error => {
+                            console.error('Error fetching song:', error);
+                            return null;
+                        })
                 );
-                navbar.classList.toggle("shadow-sm", window.scrollY > 20);
-            });
-
-            const mobileMenuBtn =
-                document.getElementById("mobile-menu-btn");
-            const mobileMenu = document.getElementById("mobile-menu");
-            mobileMenuBtn.addEventListener("click", () =>
-                mobileMenu.classList.toggle("hidden"),
-            );
-            mobileMenu.addEventListener("click", (e) => {
-                if (e.target.tagName === "A")
-                    mobileMenu.classList.add("hidden");
-            });
-
-            const animatedElements = document.querySelectorAll(
-                ".animate-fade-in-up",
-            );
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add("visible");
-                            observer.unobserve(entry.target);
+            }
+            
+            // Wait for all fetches to complete
+            Promise.all(fetchPromises)
+                .then(results => {
+                    loading.style.display = 'none';
+                    
+                    results.forEach((songData, index) => {
+                        if (songData && songData.status === 'success' && songData.data.length > 0) {
+                            const song = songData.data[0];
+                            createSongCard(song, index * 100); // Stagger animations
                         }
                     });
-                },
-                { threshold: 0.15 },
-            );
-            animatedElements.forEach((el) => observer.observe(el));
-            //waitlist
-            const form = document.getElementById('waitlist-form');
-            form.addEventListener('submit', () => {
-                setTimeout(() => {
-                    const message = document.getElementById('thank-you-message');
-                    message.classList.remove('hidden');
-                    form.reset();
-                }, 1000); // slight delay to allow submission
+                });
+        }
+        
+        function createSongCard(song, delay) {
+            const songsGrid = document.getElementById('songsGrid');
+            
+            const card = document.createElement('div');
+            card.className = 'song-card';
+            card.style.animationDelay = `${delay}ms`;
+            
+            // Create HTML for the song card
+            card.innerHTML = `
+                <img src="${song.links.thumbnail}" alt="${song.title}" class="thumbnail">
+                <div class="song-info">
+                    <h3 class="song-title" title="${song.title}">${song.title}</h3>
+                    <p class="song-artist">${song.artist}</p>
+                    
+                    <audio id="audio-${song.id}" class="audio-player" controls style="display: none;">
+                        <source src="${song.links.Bwm_stream_link}" type="audio/mpeg">
+                    </audio>
+                    
+                    <div class="buttons">
+                        <button id="play-${song.id}" class="btn play-btn" onclick="playSong('${song.id}')">
+                            ▶ Play
+                        </button>
+                        <button id="pause-${song.id}" class="btn pause-btn" onclick="pauseSong('${song.id}')">
+                            ❚❚ Pause
+                        </button>
+                        <button id="download-${song.id}" class="btn download-btn" onclick="downloadFile('${song.id}', '${song.links.Bwm_download_link}', '${song.title}.mp3')">
+                            ↓ Download
+                        </button>
+                        <button id="pause-download-${song.id}" class="btn pause-download-btn" onclick="pauseDownload('${song.id}')">
+                            ⏸️ Pause Download
+                        </button>
+                    </div>
+                    
+                    <div id="channel-${song.id}" class="channel-link">
+                        <a href="https://whatsapp.com/channel/0029Vb2hoPpDZ4Lb3mSkVI3C" target="_blank">
+                            Join Our WhatsApp Channel
+                        </a>
+                    </div>
+                    
+                    <div id="download-progress-${song.id}" class="download-progress">
+                        <progress id="progress-bar-${song.id}" value="0" max="100"></progress>
+                        <p class="progress-text">Downloading: <span id="progress-text-${song.id}">0%</span></p>
+                    </div>
+                </div>
+            `;
+            
+            songsGrid.appendChild(card);
+        }
+        
+        // Track active downloads
+        const activeDownloads = {};
+        
+        function playSong(songId) {
+            const audio = document.getElementById(`audio-${songId}`);
+            const channelLink = document.getElementById(`channel-${songId}`);
+            const playBtn = document.getElementById(`play-${songId}`);
+            const pauseBtn = document.getElementById(`pause-${songId}`);
+            
+            audio.play();
+            channelLink.style.display = 'block';
+            playBtn.style.display = 'none';
+            pauseBtn.style.display = 'flex';
+            
+            // Hide the channel link when playback ends
+            audio.addEventListener('ended', function() {
+                channelLink.style.display = 'none';
+                playBtn.style.display = 'flex';
+                pauseBtn.style.display = 'none';
             });
-            // --- Three.js 3D Background (Optimized) ---
-            const canvasContainer = document.getElementById("three-canvas");
-            if (canvasContainer) {
-                let scene,
-                    camera,
-                    renderer,
-                    points,
-                    particles = [];
-
-                function initThreeJS() {
-                    scene = new THREE.Scene();
-                    camera = new THREE.PerspectiveCamera(
-                        75,
-                        canvasContainer.offsetWidth /
-                        canvasContainer.offsetHeight,
-                        0.1,
-                        1000,
-                    );
-                    camera.position.z = 50;
-
-                    renderer = new THREE.WebGLRenderer({
-                        antialias: true,
-                        alpha: true,
-                    });
-                    renderer.setSize(
-                        canvasContainer.offsetWidth,
-                        canvasContainer.offsetHeight,
-                    );
-                    renderer.setPixelRatio(
-                        Math.min(window.devicePixelRatio, 2),
-                    );
-                    canvasContainer.appendChild(renderer.domElement);
-
-                    const particleCount = 150; // Reduced for performance
-                    const positions = new Float32Array(particleCount * 3);
-
-                    for (let i = 0; i < particleCount; i++) {
-                        const i3 = i * 3;
-                        positions[i3] = (Math.random() - 0.5) * 80;
-                        positions[i3 + 1] = (Math.random() - 0.5) * 80;
-                        positions[i3 + 2] = (Math.random() - 0.5) * 80;
-                        particles.push({
-                            position: new THREE.Vector3(
-                                positions[i3],
-                                positions[i3 + 1],
-                                positions[i3 + 2],
-                            ),
-                            velocity: new THREE.Vector3(
-                                (Math.random() - 0.5) * 0.06,
-                                (Math.random() - 0.5) * 0.06,
-                                (Math.random() - 0.5) * 0.06,
-                            ),
-                        });
-                    }
-
-                    const pointsGeometry = new THREE.BufferGeometry();
-                    pointsGeometry.setAttribute(
-                        "position",
-                        new THREE.BufferAttribute(positions, 3),
-                    );
-                    const pointsMaterial = new THREE.PointsMaterial({
-                        color: 0x8b5cf6,
-                        size: 0.6,
-                        transparent: true,
-                        opacity: 0.7,
-                    });
-                    points = new THREE.Points(
-                        pointsGeometry,
-                        pointsMaterial,
-                    );
-                    scene.add(points);
-                }
-
-                const mouse = new THREE.Vector2(-10, -10);
-                window.addEventListener("mousemove", (event) => {
-                    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-                    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+        
+        function pauseSong(songId) {
+            const audio = document.getElementById(`audio-${songId}`);
+            const playBtn = document.getElementById(`play-${songId}`);
+            const pauseBtn = document.getElementById(`pause-${songId}`);
+            
+            audio.pause();
+            playBtn.style.display = 'flex';
+            pauseBtn.style.display = 'none';
+        }
+        
+        async function downloadFile(songId, url, filename) {
+            const downloadBtn = document.getElementById(`download-${songId}`);
+            const pauseDownloadBtn = document.getElementById(`pause-download-${songId}`);
+            const progressContainer = document.getElementById(`download-progress-${songId}`);
+            const progressBar = document.getElementById(`progress-bar-${songId}`);
+            const progressText = document.getElementById(`progress-text-${songId}`);
+            
+            // If already downloading, return
+            if (activeDownloads[songId]) return;
+            
+            try {
+                // Show download in progress UI
+                downloadBtn.style.display = 'none';
+                pauseDownloadBtn.style.display = 'flex';
+                progressContainer.style.display = 'block';
+                
+                // Create abort controller for the download
+                const controller = new AbortController();
+                activeDownloads[songId] = controller;
+                
+                // First, fetch the file size
+                const headResponse = await fetch(url, {
+                    method: 'HEAD',
+                    signal: controller.signal
                 });
-
-                function animate() {
-                    requestAnimationFrame(animate);
-                    const posAttribute =
-                        points.geometry.attributes.position;
-
-                    for (let i = 0; i < particles.length; i++) {
-                        const p = particles[i];
-                        p.position.add(p.velocity);
-                        if (Math.abs(p.position.x) > 40) p.velocity.x *= -1;
-                        if (Math.abs(p.position.y) > 40) p.velocity.y *= -1;
-                        if (Math.abs(p.position.z) > 40) p.velocity.z *= -1;
-                        posAttribute.setXYZ(
-                            i,
-                            p.position.x,
-                            p.position.y,
-                            p.position.z,
-                        );
-                    }
-
-                    posAttribute.needsUpdate = true;
-
-                    camera.position.x +=
-                        (mouse.x * 4 - camera.position.x) * 0.03;
-                    camera.position.y +=
-                        (-mouse.y * 4 - camera.position.y) * 0.03;
-                    camera.lookAt(scene.position);
-
-                    renderer.render(scene, camera);
-                }
-
-                initThreeJS();
-                animate();
-
-                window.addEventListener("resize", () => {
-                    camera.aspect =
-                        canvasContainer.offsetWidth /
-                        canvasContainer.offsetHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(
-                        canvasContainer.offsetWidth,
-                        canvasContainer.offsetHeight,
-                    );
+                
+                if (!headResponse.ok) throw new Error('Could not fetch file information');
+                
+                const contentLength = headResponse.headers.get('Content-Length');
+                
+                // Now fetch the actual file
+                const response = await fetch(url, {
+                    signal: controller.signal
                 });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const reader = response.body.getReader();
+                let receivedLength = 0;
+                let chunks = [];
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    
+                    if (done) break;
+                    
+                    chunks.push(value);
+                    receivedLength += value.length;
+                    
+                    // Update progress if we know the total size
+                    if (contentLength) {
+                        const percent = Math.round((receivedLength / contentLength) * 100);
+                        progressBar.value = percent;
+                        progressText.textContent = `${percent}%`;
+                    }
+                }
+                
+                // Complete download
+                const blob = new Blob(chunks);
+                const downloadUrl = URL.createObjectURL(blob);
+                
+                // Create a temporary anchor element to trigger the download
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = filename;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                
+                // Trigger the download
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(downloadUrl);
+                }, 100);
+                
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    console.error('Download error:', error);
+                    alert('Download failed. Please try again.');
+                }
+            } finally {
+                // Reset UI
+                downloadBtn.style.display = 'flex';
+                pauseDownloadBtn.style.display = 'none';
+                progressContainer.style.display = 'none';
+                progressBar.value = 0;
+                progressText.textContent = '0%';
+                
+                // Clean up download reference
+                delete activeDownloads[songId];
             }
-        });
+        }
+        
+        function pauseDownload(songId) {
+            if (activeDownloads[songId]) {
+                activeDownloads[songId].abort();
+                delete activeDownloads[songId];
+            }
+        }
     </script>
 </body>
-
 </html>
