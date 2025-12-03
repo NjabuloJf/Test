@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Camera Showcase</title>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+
+    <style>
+        /* Basic page reset */
+        body{margin:0;font-family:sans-serif;overflow-x:hidden}
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s, transform .5s}
+        .reveal.active{opacity:1;transform:none}
+    </style>
+</head>
+<body>
+
+<div class="swiper product-swiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="c.jpg" alt="Camera Front"></div>
+        <div class="swiper-slide"><img src="g.jpg" alt="Camera Back"></div>
+        <div class="swiper-slide"><img src="e.jpg" alt="Camera Side"></div>
+        <div class="swiper-slide"><img src="d.jpg" alt="Camera Case"></div>
+        <div class="swiper-slide"><img src="h.jpg" alt="Accessories"></div>
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script>
+    // Initialize Swiper
+    new Swiper('.product-swiper', {
+        loop: true,
+        pagination: { el: '.swiper-pagination' },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
+    });
+
+    // Scroll‑reveal function (you already have it)
+    function reveal() {
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach(r => {
+            const windowHeight = window.innerHeight;
+            const elementTop = r.getBoundingClientRect().top;
+            const elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                r.classList.add('active');
+            } else {
+                r.classList.remove('active');
+            }
+        });
+    }
+    window.addEventListener('scroll', reveal);
+    reveal(); // run on load
+</script>
+
+</body>
+  </html> 
