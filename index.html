@@ -1,123 +1,721 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media Downloader</title>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box;user-select:none;font-family:'Lucida Sans','Lucida Sans Regular','Lucida Grande','Lucida Sans Unicode',Geneva,Verdana,sans-serif}
-        body{display:grid;place-items:center;min-height:100vh;background:#fff}
-        .main-container{width:90%;max-width:600px;padding:1rem;border-radius:10px;background-color:rgba(0,0,0,.5);backdrop-filter:blur(5px);margin-bottom:2rem;text-align:center}
-        .main-heading{color:#fff;font-size:1.5rem;margin-bottom:1rem}
-        #user-url{width:70%;background:linear-gradient(135deg,#0e7a5d,#437584);color:#fff;font-weight:bold;border-radius:10px;border:none;padding:.5rem 1rem;margin-bottom:1rem}
-        #user-url::placeholder{text-align:center;color:#fff;opacity:.4;font-weight:500}
-        #download-button{background-color:rgb(36,199,36);width:100px;color:#fff;border-radius:10px;padding:.5rem;outline:none;border:none;transition:all .5s ease}
-        #download-button:hover{transform:scale(1.1);cursor:pointer;background-color:blue}
-        .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:30px}
-        .project-card{background:rgba(10,10,10,.7);border-radius:5px;overflow:hidden;border:1px solid var(--gray);transition:transform .3s,border-color .3s}
-        .project-card:hover{transform:translateY(-10px);border-color:var(--primary)}
-        .project-img{height:200px;background:var(--darker);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:3rem}
-        .project-content{padding:20px}
-        .project-content h3{font-size:1.3rem;margin-bottom:10px;color:var(--primary)}
-        .project-content p{margin-bottom:15px;font-size:.9rem;color:#ccc}
-        .project-img .netflix-img{width:100%;height:100%;object-fit:cover}
-        .project-links{display:flex;gap:10px}
-        .project-links a{padding:8px 15px;background:transparent;color:var(--primary);border:1px solid var(--primary);text-decoration:none;font-size:.8rem;transition:all .3s}
-        .project-links a:hover{background:var(--primary);color:var(--dark)}
-        :root{--primary:#0e7a5d;--gray:#555;--darker:#111;--dark:#000}
+    <title>My Shop – Action Camera Store</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+   <style>
+        /* বেসিক রিসেট */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', Arial, sans-serif; }
+        body {
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- লাল বৃত্ত এবং এনিমেশনের CSS --- */
+
+        /* মূল টেক্সটের স্টাইল */
+        .offer-headline {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        /* "Camera" শব্দের চারপাশের লাল বৃত্তের স্টাইল */
+        .pulsing-red-circle {
+            background-color: #ff3b3b; /* উজ্জ্বল লাল রঙ */
+            color: white; /* লেখার রঙ সাদা */
+            padding: 8px 25px; /* বৃত্তাকার করার জন্য প্যাডিং */
+            border-radius: 50px; /* গোলাকার কোণা (Pill shape) */
+            display: inline-block; /* এনিমেশন ঠিকমতো কাজ করার জন্য জরুরি */
+            white-space: nowrap; /* লেখা যেন ভেঙে নিচে না নামে */
+            box-shadow: 0 0 0 0 rgba(255, 59, 59, 0.7); /* প্রাথমিক ছায়া */
+            
+            /* এনিমেশন যুক্ত করা (নাম: pulse-red, সময়: 2s, লুপ: infinite) */
+            animation: pulse-red 2s infinite; 
+        }
+
+        /* লোপ এনিমেশনের কি-ফ্রেম (Keyframes) */
+        @keyframes pulse-red {
+            0% {
+                transform: scale(1); /* স্বাভাবিক সাইজ */
+                box-shadow: 0 0 0 0 rgba(255, 59, 59, 0.7); /* কোনো ছড়ানো ছায়া নেই */
+            }
+            50% {
+                transform: scale(1.05); /* সামান্য বড় হবে */
+                box-shadow: 0 0 20px 10px rgba(255, 59, 59, 0); /* ছায়াটি ছড়িয়ে মিলিয়ে যাবে */
+            }
+            100% {
+                transform: scale(1); /* আবার স্বাভাবিক সাইজে ফিরে আসবে */
+                box-shadow: 0 0 0 0 rgba(255, 59, 59, 0);
+            }
+        }
+
+        /* মোবাইল রেসপন্সিভ */
+        @media (max-width: 600px) {
+            .offer-headline {
+                font-size: 1.5rem;
+            }
+            .pulsing-red-circle {
+                padding: 5px 15px;
+            }
+        }
+        /* --- ফন্ট এবং বেসিক সেটআপ --- */
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', 'SolaimanLipi', Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            /* জীবন্ত ব্যাকগ্রাউন্ড */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- মেইন কন্টেইনার --- */
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            overflow: hidden;
+        }
+
+        /* --- হেডার --- */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        header h1 { 
+            font-size: 1.6rem; 
+            color: #2c3e50; 
+            font-weight: 700; 
+        }
+
+        /* --- হিরো সেকশন --- */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: radial-gradient(circle at center, #fff 0%, #f3f4f6 100%);
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+        
+        .hero h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            background: -webkit-linear-gradient(#e74c3c, #c0392b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .hero img {
+            width: 85%;
+            max-width: 380px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            transform: perspective(1000px) rotateX(5deg);
+            transition: transform 0.5s ease;
+        }
+        .hero img:hover {
+            transform: perspective(1000px) rotateX(0deg) scale(1.05);
+        }
+
+        .price-tag {
+            font-size: 1.4rem;
+            margin: 20px 0;
+            background: #fff;
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .old-price { text-decoration: line-through; color: #95a5a6; margin-right: 15px; font-size: 1.1rem; }
+        .new-price { color: #e74c3c; font-weight: 900; font-size: 1.8rem; }
+
+        /* --- বাটন স্টাইল --- */
+        .btn-order {
+            position: relative;
+            display: block;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 18px 30px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(255, 75, 43, 0.5);
+            margin: 25px auto;
+            cursor: pointer;
+            border: none;
+            width: 90%;
+            text-align: center;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        .btn-order:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 75, 43, 0.7); }
+
+        .guarantee-box {
+            background: #fffbe6;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 12px;
+            border: 2px dashed #ffe58f;
+            font-weight: 600;
+            color: #d48806;
+            text-align: center;
+        }
+
+        /* --- Slider CSS (NEW) --- */
+        .product-swiper {
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 300px;
+            height: 300px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .swiper-pagination-bullet-active {
+            background: #e74c3c !important;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: #e74c3c !important;
+            background: rgba(255,255,255,0.8);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            backdrop-filter: blur(2px);
+        }
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 18px !important;
+            font-weight: bold;
+        }
+
+        /* --- সেকশন টাইটেল --- */
+        .section-title {
+            text-align: center;
+            margin: 50px 0 30px;
+            font-size: 1.8rem;
+            color: #34495e;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #e74c3c;
+        }
+
+        .content-section { padding: 0 20px; margin-bottom: 40px; }
+
+        /* --- ফিচার গ্রিড --- */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .feature-card {
+            background: #fff;
+            padding: 25px 15px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.4s;
+            border: 1px solid #f0f0f0;
+        }
+        .feature-card:hover { transform: translateY(-10px); border-color: #e74c3c; }
+
+        /* --- ভিডিও প্লেয়ার --- */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #000;
+        }
+        .video-thumbnail img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+        }
+        .play-button {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease;
+        }
+        .video-thumbnail:hover .play-button { transform: translate(-50%, -50%) scale(1.1); }
+        .video-thumbnail.playing .play-button, .video-thumbnail.playing img { display: none; }
+        .video-thumbnail iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* --- রিভিউ কার্ডস --- */
+        .review-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border-left: 5px solid #e74c3c;
+            margin-bottom: 20px;
+        }
+        .user-info { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .user-img { width: 50px; height: 50px; border-radius: 50%; }
+
+        /* --- অর্ডার ফর্ম --- */
+        .order-form-container {
+            background: #fff;
+            padding: 30px 25px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            margin-top: 40px;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group input {
+            width: 100%; padding: 15px; border: 2px solid #f1f2f6;
+            border-radius: 10px; font-size: 1rem; background: #f9f9f9;
+        }
+        .order-summary {
+            background: #fff5f5; padding: 20px; border-radius: 12px; border: 1px solid #ffcccc; margin: 25px 0;
+        }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .total-row { font-weight: bold; font-size: 1.2rem; color: #e74c3c; border-top: 1px solid #ffcccc; padding-top: 10px; }
+
+        /* --- ফ্লোটিং বাটন --- */
+        .floating-wa {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #25D366; color: white; width: 60px; height: 60px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4);
+            z-index: 2000; animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* --- Scroll Reveal --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        footer { text-align: center; padding: 20px; color: #666; font-size: 0.9rem; }
+
+       /* --- ১. লাল বৃত্তের ডিজাইন (Red Circle) --- */
+.circle-text {
+    position: relative;
+    display: inline-block;
+    color: #2c3e50; /* টেক্সট কালার */
+    z-index: 1;
+}
+
+.circle-text::after {
+    content: '';
+    position: absolute;
+    top: -5px;    /* টেক্সট থেকে কতটুকু উপরে */
+    left: -15px;  /* বামে কতটুকু */
+    right: -15px; /* ডানে কতটুকু */
+    bottom: -5px; /* নিচে কতটুকু */
+    border: 2px solid red; /* লাল বর্ডার */
+    border-radius: 50%;    /* গোল করার জন্য */
+    transform: rotate(-5deg); /* হালকা বাঁকানো স্টাইল */
+    z-index: -1; /* লেখার নিচে থাকবে */
+}
+
+/* --- ২. হোয়াটসঅ্যাপ পালস/তরঙ্গ এনিমেশন (Pulse Animation) --- */
+.floating-wa {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 2000;
+    /* বাউন্স এনিমেশনটা সরিয়ে পালস দেওয়া হলো, চাইলে রাখতেও পারেন */
+    transition: all 0.3s ease;
+}
+
+/* তরঙ্গের জন্য ::before এবং ::after ব্যবহার */
+.floating-wa::before,
+.floating-wa::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background: #25D366; /* আইকনের রঙের সাথে মিল */
+    z-index: -1; /* আইকনের পেছনে থাকবে */
+    opacity: 0.7;
+    animation: wave-pulse 2s infinite; /* এনিমেশন নাম ও সময় */
+}
+
+/* দ্বিতীয় তরঙ্গের জন্য একটু দেরি (delay) দেওয়া */
+.floating-wa::after {
+    animation-delay: 0.5s;
+}
+
+/* এনিমেশন তৈরির কোড */
+@keyframes wave-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(2.5); /* কতটুকু বড় হবে */
+        opacity: 0;   /* শেষে মিলিয়ে যাবে */
+    }
+}
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <p class="main-heading">YouTube Audio Downloader</p>
-        <input type="text" id="user-url" placeholder="Enter YouTube URL">
-        <input type="button" id="download-button" value="Download">
+
+<div class="container">
+    <header>
+        <div class="offer-headline">
+        সেরা দামে 
+        <span class="pulsing-red-circle">Camera</span> 
+        কিনুন
+    </div>
+        <h1> ভ্রমনের স্মৃতিগুলো CAMERA বন্দী করুন</h1>
+    </header>
+
+    <div class="hero">
+        <h2>🎥 4K Action Camera</h2>
+        <div class="price-tag reveal">
+            <span class="old-price reveal">৳3800</span>
+            <span class="new-price reveal">এখন মাত্র ৳2500</span>
+        </div>
+        <img src="a.jpg" alt="Action Camera">
+        <a href="#order" class="btn-order">🛒 অর্ডার করুন</a>
     </div>
 
-    <section id="projects">
-        <div class="projects-grid">
-            <div class="project-card">
-                <div class="project-img">
-                    <img id="thumbnail" src="" alt="Video thumbnail">
+    <div class="guarantee-box">
+    <h3>🛡️ ১২ দিনের রিপ্লেসমেন্ট <span class="circle-text">গ্যারান্টি</span></h3>
+</div>
+
+    <div class="content-section">
+        <h3 class="section-title">প্রোডাক্ট এর কিছু ছবি</h3>
+        
+        <div class="swiper product-swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="c.jpg" alt="Camera Front">
                 </div>
-                <div class="project-content">
-                    <h3 id="video-title">All is Njabulo Jb🤖</h3>
-                    <p id="video-info"></p>
-                    <div class="project-links">
-                        <input type="button" id="download-button" value="Download"> 
-                       <input type="button " id="download-button" value="Download"> 
-                    </div>
+                <div class="swiper-slide">
+                    <img src="g.jpg" alt="Camera Back">
+                </div>
+                <div class="swiper-slide">
+                    <img src="e.jpg" alt="Camera Side">
+                </div>
+                <div class="swiper-slide">
+                    <img src="d.jpg" alt="Camera Case">
+                </div>
+                <div class="swiper-slide">
+                    <img src="h.jpg" alt="Accessories">
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+    <div class="content-section reveal" style="margin-top: 30px;">
+        <h3 class="section-title reveal" style="display:block; text-align:center;">বিস্তারিত ভিডিও</h3>
+
+        <div class="video-wrapper">
+            <div class="video-thumbnail" data-video-id="uPDBeQ4QVTg">
+                <img src="f.jpg" alt="Video Thumbnail">
+                <div class="play-button">
+                    <svg viewBox="0 0 68 68" width="68" height="68">
+                        <circle cx="34" cy="34" r="32" fill="rgba(0,0,0,0.5)" stroke="#fff" stroke-width="2"/>
+                        <path d="M26 22 L26 46 L48 34 Z" fill="#fff"/>
+                    </svg>
                 </div>
             </div>
         </div>
-    </section>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="#order" class="btn-order">🛒 অর্ডার করুন</a>
+        </div>
+    </div>
 
-    <script>
-        const downloadButton = document.getElementById('download-button');
-        const userUrl = document.getElementById('user-url');
-        const thumbImg = document.getElementById('thumbnail');
-        const titleEl = document.getElementById('video-title');
-        const infoEl = document.getElementById('video-info');
-        const audioLink = document.getElementById('audio-link');
-        const videoLink = document.getElementById('video-link');
+    <div class="content-section reveal">
+        <h3 class="section-title reveal" style="display:block; text-align:center;">কেন এই ক্যামেরা কিনবেন?</h3>
+        <ul style="list-style: disc; padding-left: 20px; color: #444;">
+            <li style="margin-bottom: 10px;"><strong>বাজেট ফ্রেন্ডলি:</strong> মাত্র ২৫০০ টাকায় এমন মানের ক্যামেরা আর কোথাও পাবেন না।</li>
+            <li style="margin-bottom: 10px;"><strong>4K / 30fps:</strong> ইউটিউব, ফেসবুক বা টিকটকের জন্য একদম পারফেক্ট।</li>
+            <li style="margin-bottom: 10px;"><strong>পোর্টেবল:</strong> সহজে ব্যাগে রাখা যায়, ভ্রমণে বহন করা ঝামেলাহীন।</li>
+            <li><strong>ওয়াটারপ্রুফ:</strong> বৃষ্টি বা পানির নিচেও শুট করতে পারবেন।</li>
+        </ul>
+        <img src="h.jpg" style="width:100%; border-radius:15px; margin-top:20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+    </div>
 
-        const extractVideoId = (url) => {
-            const parsedUrl = new URL(url);
-            if (parsedUrl.searchParams.has('v')) return parsedUrl.searchParams.get('v');
-            const segments = parsedUrl.pathname.split('/');
-            return segments.find(seg => seg.length === 11);
-        };
+    <div class="content-section reveal">
+        <h3 class="section-title reveal" style="display:block; text-align:center;">কি কি সুবিধা পাচ্ছেন!</h3>
+        <div class="feature-grid">
+            <div class="feature-card reveal">
+                <div style="font-size: 2.5rem;">📸</div>
+                <h4>4K Quality</h4>
+                <p>ক্রিস্টাল ক্লিয়ার ছবি</p>
+            </div>
+            <div class="feature-card reveal">
+                <div style="font-size: 2.5rem;">🔋</div>
+                <h4>ব্যাটারি</h4>
+                <p>১ ঘন্টা ব্যাকআপ</p>
+            </div>
+            <div class="feature-card reveal">
+                <div style="font-size: 2.5rem;">🎥</div>
+                <h4>ভিডিও</h4>
+                <p>প্রফেশনাল রেকর্ড</p>
+            </div>
+            <div class="feature-card reveal">
+                <div style="font-size: 2.5rem;">💧</div>
+                <h4>ওয়াটারপ্রুফ</h4>
+                <p>পানির নিচে নিরাপদ</p>
+            </div>
+        </div>
+    </div>
 
-        const downloadAudio = (result) => {
-            const link = document.createElement('a');
-            link.href = result.link;
-            link.download = `${result.title}.mp3`;
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
+    <div class="content-section">
+        <h3 class="section-title" style="display:block; text-align:center;">কাস্টমারদের মতামত!</h3>
+        
+        <div class="review-card reveal">
+            <div class="user-info">
+                <img src="https://placehold.co/50x50/23a6d5/fff?text=R" class="user-img" alt="User">
+                <div>
+                    <strong>রাইসা খাতুন</strong><br>
+                    <span style="color: gold;">⭐⭐⭐⭐⭐</span>
+                </div>
+            </div>
+            <p>আমি ভ্রমণের প্রতিটি মুহূর্ত ধরে রাখতে চাই। এই ক্যামেরাটা হালকা এবং ওয়াটারপ্রুফ। সত্যিই অসাধারণ!</p>
+        </div>
 
-        const getData = async () => {
-            const videoId = extractVideoId(userUrl.value);
-            if (!videoId) {
-                alert('Could not extract video ID. Please check the URL.');
-                return;
+        <div class="review-card reveal">
+            <div class="user-info">
+                <img src="https://placehold.co/50x50/e73c7e/fff?text=A" class="user-img" alt="User">
+                <div>
+                    <strong>আরিফ হাসান</strong><br>
+                    <span style="color: gold;">⭐⭐⭐⭐⭐</span>
+                </div>
+            </div>
+            <p>মাত্র ২৫০০ টাকায় এত সুন্দর কোয়ালিটি বিশ্বাসই হচ্ছিল না! ইউটিউব ভিডিওর জন্য সেরা।</p>
+        </div>
+    </div>
+
+    <div id="order" class="order-form-container reveal">
+        <h3 class="section-title" style="margin-top:0; border:none;">অর্ডার কনফার্ম করুন</h3>
+        
+        <form action="https://formspree.io/f/mkgklkga" method="POST">
+            <div class="form-group">
+                <label>আপনার নাম *</label>
+                <input type="text" name="name" placeholder="নাম লিখুন" required>
+            </div>
+            <div class="form-group reveal">
+                <label>আপনার ঠিকানা *</label>
+                <input type="text" name="address" placeholder="পূর্ণ ঠিকানা লিখুন" required>
+            </div>
+            <div class="form-group reveal">
+                <label>মোবাইল নম্বর *</label>
+                <input type="tel" name="phone" placeholder="মোবাইল নম্বর লিখুন" required>
+            </div>
+
+            <div class="form-group shipping-options reveal">
+                <label style="font-weight: bold; margin-bottom: 10px; display:block;">শিপিং এরিয়া:</label>
+                <label style="margin-right: 15px;">
+                    <input type="radio" name="shipping" value="100" checked onchange="updateTotal()"> ঢাকার ভিতরে (১০০৳)
+                </label>
+                <label>
+                    <input type="radio" name="shipping" value="150" onchange="updateTotal()"> ঢাকার বাহিরে (১৫০৳)
+                </label>
+            </div>
+
+            <div class="order-summary reveal">
+                <h4>অর্ডার সামারি</h4>
+                <div class="summary-row">
+                    <span>4K Action Camera x 1</span>
+                    <span>2500৳</span>
+                </div>
+                <div class="summary-row">
+                    <span>ডেলিভারি চার্জ</span>
+                    <span id="shipping-cost">100৳</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span>সর্বমোট</span>
+                    <span id="total-price">2600৳</span>
+                </div>
+            </div>
+
+            <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px; text-align: center;">
+                * পণ্য হাতে পেয়ে ডেলিভারি ম্যানকে টাকা পরিশোধ করবেন।
+            </p>
+
+            <button type="submit" class="btn-order" style="width: 100%;">অর্ডার কনফার্ম করুন</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>© 2025 ai school. All rights reserved.</p>
+        <p>Hotline: 01715-247588</p>
+    </footer>
+
+    <a href="https://wa.me/8801715247588" class="floating-wa" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592z"/>
+        </svg>
+    </a>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    // --- 1. Initialize Swiper (SLIDER SCRIPT) ---
+    var swiper = new Swiper(".product-swiper", {
+        effect: "coverflow", // কার্ড ইফেক্ট
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: "auto",
+        coverflowEffect: {
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+        },
+        loop: true, // লুপ চালু
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+
+    // --- 2. Price Calculation Script ---
+    function updateTotal() {
+        const productPrice = 2500;
+        const shippingRadios = document.getElementsByName('shipping');
+        let shippingCost = 0;
+
+        for (const radio of shippingRadios) {
+            if (radio.checked) {
+                shippingCost = parseInt(radio.value);
+                break;
             }
+        }
 
-            const apiUrl = `https://youtube-mp36.p.rapidapi.com/dl?id=${videoId}`;
-            const options = {
-                method: 'GET',
-                headers: {
-                    'x-rapidapi-key': 'e4090088damshcb08340bb1f1a44p1ace42jsncdacbbef480e',
-                    'x-rapidapi-host': 'youtube-mp36.p.rapidapi.com'
-                }
-            };
+        const total = productPrice + shippingCost;
+        document.getElementById('shipping-cost').innerText = shippingCost + '৳';
+        document.getElementById('total-price').innerText = total + '৳';
+    }
 
-            try {
-                const response = await fetch(apiUrl, options);
-                const result = await response.json();
-                titleEl.textContent = result.title || 'Unknown title';
-                infoEl.textContent = result.duration ? `Duration: ${result.duration}s` : '';
-                downloadAudio(result);
-            } catch (error) {
-                console.error('Fetch error:', error);
-                alert('Something went wrong. Check the console for details.');
-            }
-        };
-
-        userUrl.addEventListener('input', () => {
-            const vid = extractVideoId(userUrl.value);
-            if (vid) {
-                thumbImg.src = `https://img.youtube.com/vi/${vid}/default.jpg`;
-                thumbImg.alt = `Thumbnail for video ${vid}`;
-            } else {
-                thumbImg.src = '';
-                thumbImg.alt = 'Video thumbnail';
-            }
+    // --- 3. Video Player Script ---
+    document.querySelectorAll('.video-thumbnail').forEach(thumb => {
+        thumb.addEventListener('click', function() {
+            const videoId = this.dataset.videoId;
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            this.appendChild(iframe);
+            this.classList.add('playing');
         });
+    });
 
-        downloadButton.addEventListener('click', getData);
-    </script>
+    // --- 4. Scroll Animation Script ---
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            } else {
+                reveals[i].classList.remove("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal(); // Trigger on load
+</script>
+
 </body>
-                                                                                                      </html>
+</html>
