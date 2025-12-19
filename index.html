@@ -594,6 +594,76 @@
             z-index: 100;
         }
 
+        
+        /* Media Controls */
+        .media-controls {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .media-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 5, 5, 0.8);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .media-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+        }
+
+        /* Video Gallery */
+        .video-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .video-item {
+            background: rgba(10, 10, 10, 0.7);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--gray);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .video-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .video-player {
+            width: 100%;
+            height: 250px;
+            background: var(--darker);
+            /* Removed flex properties, added object-fit */
+            object-fit: cover; 
+        }
+
+        .video-content {
+            padding: 20px;
+        }
+
+        .video-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
 
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); }
@@ -851,6 +921,49 @@
             });
         });
 
+                // WhatsApp Button
+        document.getElementById('whatsapp-btn').addEventListener('click', function() {
+            window.open('https://wa.me/26772592531?text=Hello%20NjabuloJb%20HACKER%20I%20need%20your%20help%20my%20name%20is%20___', '_blank');
+        });
+
+        // AI Assistant Button
+        document.getElementById('ai-btn').addEventListener('click', function() {
+            window.open('https://njabulojb-ai.vercel.app/', '_blank');
+        });
+
+        // Music System
+        const bgMusic = document.getElementById('bg-music');
+        const playMusicBtn = document.getElementById('play-music');
+        let musicPlaying = false;
+
+        playMusicBtn.addEventListener('click', function() {
+            if (musicPlaying) {
+                bgMusic.pause();
+                playMusicBtn.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                bgMusic.play();
+                playMusicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            musicPlaying = !musicPlaying;
+        });
+
+        // Video System
+        const videoModal = document.getElementById('video-modal');
+        const bgVideo = document.getElementById('bg-video');
+        const playVideoBtn = document.getElementById('play-video');
+        const closeVideoBtn = document.getElementById('close-video');
+
+        playVideoBtn.addEventListener('click', function() {
+            videoModal.style.display = 'flex';
+            bgVideo.play();
+        });
+
+        closeVideoBtn.addEventListener('click', function() {
+            videoModal.style.display = 'none';
+            bgVideo.pause();
+        });
+
+
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         const animateOnScroll = () => {
@@ -900,6 +1013,7 @@
 </body>
 
 </html>
+
 
 
 
