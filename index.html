@@ -542,58 +542,58 @@
             animation: float linear infinite;
         }
 
-                /* Skills */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+
+                /* Floating Buttons */
+        .floating-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
         }
 
-        .skill-category {
-            background: rgba(10, 10, 10, 0.7);
-            padding: 25px;
-            border-radius: 5px;
-            border: 1px solid var(--gray);
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .skill-category:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-
-        .skill-category h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--primary);
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: none;
         }
 
-        .skill-category h3 i {
-            margin-right: 10px;
+        .floating-btn:hover {
+            transform: scale(1.1);
         }
 
-        .skill-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+        .whatsapp-btn {
+            background: #25D366;
         }
 
-        .skill-item {
-            background: var(--darker);
-            padding: 8px 15px;
-            border-radius: 20px;
+        .ai-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .datetime {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(5, 5, 5, 0.8);
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid var(--primary);
             font-size: 0.9rem;
-            border: 1px solid var(--gray);
-            transition: all 0.3s;
+            color: var(--primary);
+            z-index: 100;
         }
 
-        .skill-item:hover {
-            background: var(--primary);
-            color: var(--dark);
-            border-color: var(--primary);
-        }
 
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); }
@@ -763,6 +763,41 @@
                 </ul>
             </div>
         </div>
+
+            <div class="floating-buttons">
+        <button class="floating-btn whatsapp-btn" id="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+        </button>
+        <button class="floating-btn ai-btn" id="ai-btn">
+            <i class="fas fa-robot"></i>
+        </button>
+    </div>
+
+    <div class="datetime" id="datetime"></div>
+
+    <div class="media-controls">
+        <button class="media-btn" id="play-music">
+            <i class="fas fa-music"></i>
+        </button>
+        <button class="media-btn" id="play-video">
+            <i class="fas fa-video"></i>
+        </button>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="https://files.catbox.moe/5zf4p2.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="video-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center;">
+        <video id="bg-video" controls style="max-width: 90%; max-height: 90%;">
+            <source src="https://files.catbox.moe/ucj1dp.mp4" type="video/mp4">
+        </video>
+        <button id="close-video" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 2rem; cursor: pointer;">×</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+
         
         <div class="copyright">
             &copy; <span id="currentYear"></span> Made with <i class="fas fa-heart" style="color: var(--accent);"></i> by <a href="https://www.giftedtech.web.id" target="_blank">Njabulo Jb</a>
@@ -865,6 +900,7 @@
 </body>
 
 </html>
+
 
 
 
