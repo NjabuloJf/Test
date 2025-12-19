@@ -542,6 +542,59 @@
             animation: float linear infinite;
         }
 
+                /* Skills */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-category {
+            background: rgba(10, 10, 10, 0.7);
+            padding: 25px;
+            border-radius: 5px;
+            border: 1px solid var(--gray);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .skill-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .skill-category h3 i {
+            margin-right: 10px;
+        }
+
+        .skill-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-item {
+            background: var(--darker);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid var(--gray);
+            transition: all 0.3s;
+        }
+
+        .skill-item:hover {
+            background: var(--primary);
+            color: var(--dark);
+            border-color: var(--primary);
+        }
+
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); }
             100% { transform: translateY(-100vh) rotate(360deg); }
@@ -579,6 +632,20 @@
             </div>
         </div>
     </nav>
+
+    <section id="skills">
+        <h2 class="section-title">Hosting</h2>
+        <div class="skills-container">
+            <div class="skill-category">
+                <h3><i class="fas fa-rocket"></i>Deploy bot</h3>
+                <div class="skill-items">
+                      <a href='movie.html' class="skill-item">Website Deploy</a>      
+                     <div class="skill-item">Social Engineering</div>
+                    <p>1.. Hy please press website deploy to see you favourites</p>
+                    <p>2.. It's time to active you whatsapp bot</p>
+                </div>
+            </div>
+    </section>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -811,6 +878,7 @@
 </body>
 
 </html>
+
 
 
 
