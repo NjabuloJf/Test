@@ -1,4 +1,4 @@
-![Mr loft](https://github.com/Xmdloft23/Xmdloft23/blob/main/animated_name.svg)
+![Mr Njabulo](https://github.com/NjabuloJf/test/blob/main/animated_name.svg)
 
 
 
