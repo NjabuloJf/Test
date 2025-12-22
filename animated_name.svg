@@ -9,29 +9,36 @@
     svg text {
       animation: stroke 5s infinite alternate;
       stroke-width: 2;
-      stroke: #365FA0;
       font-size: 100px;
     }
     @keyframes stroke {
       0% {
         fill: rgba(72, 138, 204, 0);
-        stroke: rgba(54, 95, 160, 1);
+        stroke: #FF69B4; /* Hot Pink */
         stroke-dashoffset: 25%;
         stroke-dasharray: 0 50%;
         stroke-width: 2;
       }
-      70% {
+      20% {
         fill: rgba(72, 138, 204, 0);
-        stroke: rgba(54, 95, 160, 1);
+        stroke: #33CC33; /* Lime Green */
+      }
+      40% {
+        fill: rgba(72, 138, 204, 0);
+        stroke: #6666FF; /* Blue */
+      }
+      60% {
+        fill: rgba(72, 138, 204, 0);
+        stroke: #FF9900; /* Orange */
       }
       80% {
         fill: rgba(72, 138, 204, 0);
-        stroke: rgba(54, 95, 160, 1);
+        stroke: #CC33CC; /* Purple */
         stroke-width: 3;
       }
       100% {
         fill: rgba(72, 138, 204, 1);
-        stroke: rgba(54, 95, 160, 0);
+        stroke: #FF0000; /* Red */
         stroke-dashoffset: -25%;
         stroke-dasharray: 50% 0;
         stroke-width: 0;
