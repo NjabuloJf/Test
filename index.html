@@ -435,7 +435,7 @@
             </div>
         </section>
 
-
+        
 <!-- PLATFORMS SECTION -->
 <section class="platforms-section">
   <h2 class="section-title">Choose Deployment Platform</h2>
@@ -443,10 +443,10 @@
     Select your preferred hosting platform. All platforms support automatic deployment from GitHub.
   </p>
   <div class="platforms-grid">
-    <!-- BMW -->
+    <!-- HEROKU -->
     <div class="platform-card">
-      <div class="platform-icon bmw-icon">
-        <i class="fab fa-bmw"></i>
+      <div class="platform-icon heroku-icon">
+        <i class="fas fa-benz"></i>
       </div>
       <h3 class="platform-title">NjabuloJb elite</h3>
       <div class="status status-warning">
@@ -462,18 +462,18 @@
         <li><i class="fas fa-check"></i> Easy scaling</li>
       </ul>
       <div style="display: flex; gap: 5px; margin-top: 1.5rem;">
-        <button class="btn btn-secondary" onclick="showInstructions('bmw')">
+        <button class="btn btn-secondary" onclick="showInstructions('heroku')">
           <i class="fas fa-book"></i> rules
         </button>
-        <button class="btn btn-primary" onclick="window.open('https://bmw.com', '_blank')">
+        <button class="btn btn-primary" onclick="window.open('https://heroku.com/deploy', '_blank')">
           <i class="fas fa-link"></i> Pair code
         </button>
       </div>
     </div>
-    <!-- Mercedes-Benz -->
+    <!-- RAILWAY -->
     <div class="platform-card">
-      <div class="platform-icon benz-icon">
-        <i class="fab fa-mercedes"></i>
+      <div class="platform-icon railway-icon">
+        <i class="fas fa-cloud-upload-alt"></i>
       </div>
       <h3 class="platform-title">Njabulo-Jb</h3>
       <div class="status status-success">
@@ -489,10 +489,10 @@
         <li><i class="fas fa-check"></i> Auto HTTPS</li>
       </ul>
       <div style="display: flex; gap: 5px; margin-top: 1.5rem;">
-        <button class="btn btn-secondary" onclick="showInstructions('benz')">
+        <button class="btn btn-secondary" onclick="showInstructions('railway')">
           <i class="fas fa-book"></i> Rules
         </button>
-        <button class="btn btn-primary" onclick="window.open('https://mercedes-benz.com', '_blank')">
+        <button class="btn btn-primary" onclick="window.open('https://railway.app/deploy', '_blank')">
           <i class="fas fa-rocket"></i> Code
         </button>
       </div>
@@ -505,6 +505,8 @@
     alert(`Showing instructions for ${platform}`);
   }
 </script>
+
+
 
 
 
