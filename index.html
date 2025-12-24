@@ -2,960 +2,1134 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Njabulo Jb general start use bot</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ibrahim Adams | AI & Quantum Developer | BWM XMD Founder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #7c3aed;
-            --primary-dark: #5b21b6;
-            --secondary: #06b6d4;
-            --accent: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --background: #0f172a;
-            --surface: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+                :root {
+            --primary: #00f7ff;
+            --secondary: #ff00f7;
+            --bg: #0a0a12;
+            --text: #e0e0ff;
+            --card-bg: rgba(10, 10, 30, 0.7);
+            --glow: 0 0 10px var(--primary);
+            --matrix-green: #00ff41;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Courier New', monospace;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--background);
-            color: var(--text-primary);
-            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 247, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 247, 0.05) 0%, transparent 20%);
+            min-height: 100vh;
+        }
+        
+        /* Cursor Trail */
+        .cursor-trail {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: screen;
+            z-index: 9999;
+            transition: width 0.2s, height 0.2s;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        .cursor-trail::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
         }
 
-        /* HEADER */
-        .header {
-            text-align: center;
-            padding: 3rem 0 2rem;
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-        }
-
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            color: white;
-        }
-
-        .logo h1 {
-            font-size: 2.8rem;
-            background: var(--gradient);
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            text-shadow: var(--glow);
         }
 
-        .tagline {
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            line-height: 1.6;
-        }
-
-        /* GITHUB VERIFICATION SECTION */
-        .verification-section {
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 2rem auto;
-            max-width: 800px;
-            border: 2px solid rgba(124, 58, 237, 0.3);
-            text-align: center;
-        }
-
-        .verification-step {
+        .theme-switcher {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: 12px;
-            text-align: left;
+            gap: 1rem;
         }
 
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: var(--gradient);
+        .theme-btn {
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
+            border: 2px solid var(--text);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--glow);
+        }
+
+        .theme-btn.cyberpunk {
+            background: linear-gradient(135deg, #00f7ff, #ff00f7);
+        }
+
+        .theme-btn.matrix {
+            background: #000;
+            border-color: var(--matrix-green);
+        }
+
+        .theme-btn.quantum {
+            background: linear-gradient(135deg, #ffffff, #00a8ff);
+        }
+
+        .theme-btn.hacker {
+            background: linear-gradient(135deg, #000, #ff0000);
+        }
+
+        /* Hero Section */
+        .hero {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
+            min-height: 80vh;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
         }
 
-        .verification-input {
-            display: flex;
-            gap: 10px;
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--glow);
+            position: relative;
+        }
+
+        .typewriter {
+            border-right: 3px solid var(--primary);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--primary); }
+        }
+
+        .avatar-container {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary);
+            position: relative;
             margin: 2rem 0;
+            overflow: hidden;
+            transition: all 0.5s;
         }
 
-        input[type="text"] {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border: 2px solid rgba(124, 58, 237, 0.3);
-            background: rgba(15, 23, 42, 0.8);
-            color: var(--text-primary);
-            font-size: 1rem;
+        .avatar-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--primary), 0 0 60px var(--primary);
         }
 
-        input[type="text"]:focus {
-            outline: none;
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        /* Projects Section */
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 3rem 0;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            box-shadow: var(--glow);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 247, 255, 0.3);
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 247, 255, 0.3);
             border-color: var(--primary);
         }
 
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            border: none;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 247, 255, 0.1), rgba(255, 0, 247, 0.1));
+            z-index: -1;
+        }
+
+        .project-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 70%, var(--card-bg) 100%);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .project-btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
             text-decoration: none;
-        }
-
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: rgba(124, 58, 237, 0.15);
-            color: var(--text-primary);
-            border: 2px solid rgba(124, 58, 237, 0.5);
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
-        }
-
-        /* PLATFORMS GRID */
-        .platforms-section {
-            margin: 3rem 0;
-        }
-
-        .section-title {
-            font-size: 2.2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: white;
-        }
-
-        .platforms-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .platform-card {
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 18px;
-            padding: 2rem;
-            border: 2px solid rgba(124, 58, 237, 0.2);
+            border-radius: 5px;
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
         }
 
-        .platform-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.2);
+        .project-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.3), transparent);
+            transition: all 0.5s;
         }
 
-        .platform-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: inline-block;
+        .project-btn:hover {
+            background: rgba(0, 247, 255, 0.1);
+            box-shadow: 0 0 10px var(--primary);
         }
 
-        .heroku-icon { color: #6762A6; }
-        .railway-icon { color: #0B0D0E; }
-        .render-icon { color: #46E3B7; }
-        .koyeb-icon { color: #121212; }
-        .replit-icon { color: #667881; }
-
-        .platform-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: white;
+        .project-btn:hover::before {
+            left: 100%;
         }
 
-        .platform-desc {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-            line-height: 1.5;
+        /* Social Hub */
+        .social-hub {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 0, 247, 0.3);
+            box-shadow: 0 0 20px rgba(255, 0, 247, 0.1);
         }
 
-        .platform-features {
-            list-style: none;
-            margin: 1rem 0;
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
-        .platform-features li {
-            padding: 0.5rem 0;
-            color: var(--text-secondary);
+        .social-card {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            background: rgba(10, 10, 30, 0.5);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--text);
         }
 
-        .platform-features li i {
-            color: var(--accent);
+        .social-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+            box-shadow: 0 5px 15px rgba(255, 0, 247, 0.2);
+        }
+
+        .social-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .social-name {
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 2rem;
+        }
+
+        .skills-graph {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.2);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .skill-name {
             font-size: 0.9rem;
         }
 
-        /* MODALS */
-        .modal {
-            display: none;
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(0, 247, 255, 0.2);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px var(--primary); }
+            50% { box-shadow: 0 0 20px var(--primary); }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 3s infinite;
+        }
+
+        /* Terminal Easter Egg */
+        .terminal-container {
+            position: fixed;
+            bottom: -400px;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            border-top: 2px solid var(--primary);
+            z-index: 1000;
+            transition: bottom 0.5s;
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .terminal-close {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .terminal-body {
+            color: #00ff41;
+        }
+
+        .terminal-input {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .terminal-prompt {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        .terminal-cmd {
+            background: transparent;
+            border: none;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            width: calc(100% - 20px);
+            outline: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .skills-graph {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Theme variants */
+        body.matrix-theme {
+            --primary: var(--matrix-green);
+            --secondary: #008f11;
+            --bg: #000;
+            --text: #00ff41;
+            --card-bg: rgba(0, 0, 0, 0.7);
+            --glow: 0 0 10px var(--matrix-green);
+            background-image: none;
+        }
+
+        body.matrix-theme::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+            background: 
+                linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: -2;
+            opacity: 0.2;
         }
 
-        .modal-content {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 2.5rem;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 2px solid var(--primary);
-            position: relative;
+        body.quantum-theme {
+            --primary: #0077ff;
+            --secondary: #00a8ff;
+            --bg: #f0f8ff;
+            --text: #003366;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --glow: 0 0 10px rgba(0, 119, 255, 0.5);
         }
 
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            cursor: pointer;
+        body.hacker-theme {
+            --primary: #ff0000;
+            --secondary: #ff5555;
+            --bg: #000;
+            --text: #ff5555;
+            --card-bg: rgba(20, 0, 0, 0.7);
+            --glow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
-        .modal-title {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: white;
-        }
-
-        /* INSTRUCTIONS */
-        .instructions {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: 12px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .instructions ol {
-            padding-left: 1.5rem;
-            margin: 1rem 0;
-        }
-
-        .instructions li {
-            margin: 0.8rem 0;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* STATUS INDICATORS */
-        .status {
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin: 0.5rem 0;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-success {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--accent);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-
-        .status-warning {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--warning);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-
-        .status-error {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--danger);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        /* FOOTER */
-        .footer {
-            text-align: center;
-            padding: 3rem 0 2rem;
-            color: var(--text-secondary);
-            border-top: 1px solid rgba(124, 58, 237, 0.2);
-            margin-top: 3rem;
-        }
-
-        .contact-links {
+        /* Audio controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
             display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .contact-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: 1px solid rgba(124, 58, 237, 0.3);
+        .audio-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             transition: all 0.3s;
         }
 
-        .contact-links a:hover {
-            background: rgba(124, 58, 237, 0.1);
-            color: white;
+        .audio-btn:hover {
+            background: var(--primary);
+            color: var(--bg);
+            box-shadow: var(--glow);
         }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .container { padding: 15px; }
-            .logo h1 { font-size: 2.2rem; }
-            .platforms-grid { grid-template-columns: 1fr; }
-            .verification-input { flex-direction: column; }
-            .section-title { font-size: 1.8rem; }
+    
+        .typewriter {
+            white-space: pre-wrap;
+            overflow: hidden;
+            max-width: 100%;
+            display: inline-block;
+        }
+        
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .audio-btn {
+            background: none;
+            border: none;
+            color: #00ff00;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .theme-switcher {
+            position: relative;
+        }
+        
+        .theme-btn {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: transform 0.3s;
+        }
+        
+        .theme-btn.active {
+            display: inline-block;
+        }
+        
+        .theme-switcher:hover .theme-btn {
+            display: inline-block;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            min-width: 150px;
+            margin: 0.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            color: #00ff00;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- HEADER -->
-        <header class="header">
-            <div class="logo">
-                <div class="">
-                 
+    <!-- Cursor Trail -->
+    <div class="cursor-trail"></div>
+
+    <!-- Audio Controls - Only mute button visible by default -->
+    <div class="audio-controls">
+        <button id="soundToggle" class="audio-btn" title="Toggle Voice">
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">BWM XMD</div>
+        <div class="theme-switcher">
+            <div class="theme-btn cyberpunk active" data-theme="default"></div>
+            <div class="theme-btn matrix" data-theme="matrix"></div>
+            <div class="theme-btn quantum" data-theme="quantum"></div>
+            <div class="theme-btn hacker" data-theme="hacker"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="typewriter" id="typewriter"></h1>
+        <div class="avatar-container floating pulse-glow">
+            <img src="https://files.catbox.moe/lb4lze.jpeg" alt="Ibrahim Adams">
+            <div class="particles" id="particles"></div>
+        </div>
+        <p>AI & Quantum Developer | Tech Innovator | BWM XMD Founder</p>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-container">
+        <div class="stat-card">
+            <div class="stat-number">10+</div>
+            <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Projects Completed</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Client Satisfaction</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Support Available</div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section>
+        <h2 class="section-title">Quantum Projects</h2>
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card" data-voice="BWM XMD Chat - An advanced AI chatting platform">
+                <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2232&q=80');"></div>
+                <div class="project-content">
+                    <h3 class="project-title">BWM XMD Chat</h3>
+                    <p class="project-desc">Advanced AI chatting platform with quantum encryption and neural response systems.</p>
+                    <a href="https://ibrahimadams.site/bwm_xmd_chatting_room" class="project-btn">Enter Portal</a>
                 </div>
             </div>
-    
-            <p class="tagline">
-                       <span class="status status-success" style="margin-top: 1rem; display: inline-block;">
-                    <i class="fas fa-shield-alt"></i> Secure Deployment Required
-                </span>
-            </p>
-        </header>
-
-        <!-- GITHUB VERIFICATION -->
-        <section class="verification-section">
-            <h2 style="color: white; margin-bottom: 1rem;">GitHub VerifyRequired</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-                For security and to enable automatic deployment, you need to fork the repository first.
-            </p>
-
-            <div class="verification-step">
-                <div class="step-number">1</div>
-                <div>
-                    <h4 style="color: white;">Enter GitHub Username</h4>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                        We'll check if you have forked the Njabulo-Jb repository
-                    </p>
+            
+            <!-- Project 2 -->
+            <div class="project-card" data-voice="API Portal - The gateway to quantum computing APIs">
+                <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');"></div>
+                <div class="project-content">
+                    <h3 class="project-title">API Portal</h3>
+                    <p class="project-desc">Gateway to quantum computing APIs with real-time analytics and documentation.</p>
+                    <a href="https://api.bwmxmd.online" class="project-btn">Access APIs</a>
                 </div>
             </div>
-
-            <div class="verification-input">
-                <input type="text" id="githubUsername" placeholder="Enter your GitHub username">
-                <button class="btn btn-primary" id="verifyBtn">
-                    <i class="fab fa-github"></i> Verify & Check Fork
-                </button>
+            
+            <!-- Project 3 -->
+            <div class="project-card" data-voice="Payment System - Blockchain-based secure transactions">
+                <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2232&q=80');"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Payment System</h3>
+                    <p class="project-desc">Blockchain-based secure transaction platform with multi-crypto support.</p>
+                    <a href="https://payment.bwmxmd.online" class="project-btn">Process Payments</a>
+                </div>
             </div>
-
-            <div id="verificationResult"></div>
-
-            <div class="instructions">
-                <h4 style="color: white; margin-bottom: 1rem;">📋 Why Forking is Required:</h4>
-                <ol>
-                    <li>Security: Prevents unauthorized deployments</li>
-                    <li>Customization: You can modify the bot for your needs</li>
-                    <li>Updates: You can sync with original repository</li>
-                    <li>Ownership: You control your deployment</li>
-                </ol>
+            
+            <!-- Project 4 -->
+            <div class="project-card" data-voice="Business Portal - Enterprise solutions dashboard">
+                <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Business Portal</h3>
+                    <p class="project-desc">Comprehensive enterprise solutions dashboard with AI-driven analytics.</p>
+                    <a href="https://business.bwmxmd.online" class="project-btn">Launch Dashboard</a>
+                </div>
             </div>
-        </section>
-
-        
-<!-- PLATFORMS SECTION -->
-<section class="platforms-section">
-  <h2 class="section-title"></h2>
-  <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;"> 
-                     <i class="fas fa-shield-alt"></i> Secure Deployment Required   Select your preferred hosting platform. All platforms support automatic deployment from GitHub.
-  </p>
-  <div class="platforms-grid">
-    <!-- HEROKU -->
-    <div class="platform-card">
-      <div class="platform-icon heroku-icon">
-        <i class="fas fa-book"></i>
-      </div>
-      <h3 class="platform-title">NjabuloJb elite</h3>
-      <div class="status status-warning">
-        <i class="fas fa-info-circle"></i> Free tier available
-      </div>
-      <p class="platform-desc">
-        Popular platform with easy deployment. Free dynos available (sleep after 30 mins inactivity).
-      </p>
-      <ul class="platform-features">
-        <li><i class="fas fa-check"></i> Free bot available</li>
-        <li><i class="fas fa-check"></i> Auto-hosting</li>
-        <li><i class="fas fa-check"></i> PostgreSQL database NjabuloJb</li>
-        <li><i class="fas fa-check"></i> please press rules</li>
-        <li><i class="fas fa-check"></i> Easy use NjabuloJb elite</li>
-      </ul>
-      <div style="display: flex; gap: 5px; margin-top: 1.5rem;">
-        <button class="btn btn-secondary" onclick="showInstructions('railway')">
-          <i class="fas fa-book"></i> rules
-        </button>
-        <button class="btn btn-primary" onclick="window.open('https://heroku.com/deploy', '_blank')">
-          <i class="fas fa-link"></i> Pair code
-        </button>
-      </div>
-    </div>
-    <!-- RAILWAY -->
-    <div class="platform-card">
-      <div class="platform-icon railway-icon">
-        <i class="fas fa-book"></i>
-      </div>
-      <h3 class="platform-title">Njabulo-Jb</h3>
-      <div class="status status-success">
-        <i class="fas fa-bolt"></i> session id
-               <button class="btn btn-primary" onclick="window.open('https://railway.app/deploy', '_blank')">
-          <i class="fas fa-link"></i> pair Code
-      </div>
-      <p class="platform-desc">
-        Modern platform with generous free ai. Perfect for WhatsApp bots with always-on capability.
-      </p>
-      <ul class="platform-features">
-        <li><i class="fas fa-check"></i> welcome to normal bot Njabulo-Jb</li>
-        <li><i class="fas fa-check"></i> Instant deployment technology</li>
-        <li><i class="fas fa-check"></i> Built-in data bass fana/njabulo</li>
-        <li><i class="fas fa-check"></i> Auto HTTPS</li>
-      </ul>
-      <div style="display: flex; gap: 5px; margin-top: 1.5rem;">
-        <button class="btn btn-secondary" onclick="showInstructions('heroku')">
-          <i class="fas fa-book"></i> Rules
-        </button>
-        <button class="btn btn-primary" onclick="window.open('https://railway.app/deploy', '_blank')">
-          <i class="fas fa-cloud-upload-alt"></i> HEROKU
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<script>
-  function showInstructions(platform) {
-    alert(`Showing instructions for ${platform}`);
-  }
-</script>
-
-
-
-
-
-
-
-
-
-        <!-- MODALS -->
-        <div id="instructionsModal" class="modal">
-            <div class="modal-content">
-                <button class="close-modal" onclick="closeModal()">&times;</button>
-                <h3 class="modal-title" id="modalTitle">Deployment Instructions</h3>
-                <div id="modalContent">
-                    <!-- Instructions will be loaded here -->
+            
+            <!-- Project 5 -->
+            <div class="project-card" data-voice="Main Website - Central hub for all projects">
+                <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80');"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Main Website</h3>
+                    <p class="project-desc">Central hub connecting all quantum technology projects and services.</p>
+                    <a href="https://www.ibrahimadams.site" class="project-btn">Visit Hub</a>
+                </div>
+            </div>
+            
+            <!-- Project 6 -->
+            <div class="project-card" data-voice="Deployment Hub - Cloud deployment center">
+                <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Deployment Hub</h3>
+                    <p class="project-desc">Cloud deployment center with automated scaling and quantum security.</p>
+                    <a href="https://www.ibrahimadams.site/Deploy" class="project-btn">Deploy Now</a>
+                </div>
+            </div>
+            
+            <!-- Project 7 -->
+            <div class="project-card" data-voice="GitHub Quantum - Open source quantum computing">
+                <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                <div class="project-content">
+                    <h3 class="project-title">GitHub Quantum</h3>
+                    <p class="project-desc">Open source quantum computing libraries and frameworks.</p>
+                    <a href="https://github.com/ibrahimadams254/BWM-XMD-QUANTUM" class="project-btn">View Code</a>
+                </div>
+            </div>
+            
+            <!-- Project 8 -->
+            <div class="project-card" data-voice="Scan Tool - Network security scanner">
+                <div class="project-image" style="background-image: url('https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Scan Tool</h3>
+                    <p class="project-desc">Advanced network security scanner with quantum encryption analysis.</p>
+                    <a href="https://www.ibrahimadams.site/scanner" class="project-btn">Run Scan</a>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div id="forkModal" class="modal">
-            <div class="modal-content">
-                <button class="close-modal" onclick="closeForkModal()">&times;</button>
-                <h3 class="modal-title">🚀 Fork Repository Required</h3>
-                <div style="text-align: center; padding: 2rem 0;">
-                    <div style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;">
-                        <i class="fab fa-github"></i>
-                    </div>
-                    <h3 style="color: white; margin-bottom: 1rem;">Fork Njabulo-Jb Repository</h3>
-                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
-                        You need to fork the repository to your GitHub account before deploying.
-                    </p>
-                    
-                    <div class="instructions" style="text-align: left; margin-bottom: 2rem;">
-                        <h4 style="color: white; margin-bottom: 1rem;">Steps to Fork:</h4>
-                        <ol>
-                            <li>Go to: <a href="https://github.com/NjabuloJf/Njabulo-Jb" target="_blank" style="color: var(--secondary);">github.com/NjabuloJf/Njabulo-Jb/fork</a></li>
-                            <li>Click the <strong>"Fork"</strong> button (top right)</li>
-                            <li>Wait for forking to complete</li>
-                            <li>Return here and click "I've Forked"</li>
-                        </ol>
-                    </div>
+    <!-- Social Hub -->
+    <section class="social-hub">
+        <h2 class="section-title">Neon Connection Hub</h2>
+        <div class="social-grid">
+            <!-- Telegram Group -->
+            <a href="https://t.me/+Xw2gNHsEpCRmZTNk" class="social-card" target="_blank">
+                <i class="fab fa-telegram social-icon"></i>
+                <span class="social-name">Telegram Group</span>
+            </a>
+            
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/ibrahimadamstech" class="social-card" target="_blank">
+                <i class="fab fa-instagram social-icon"></i>
+                <span class="social-name">Instagram</span>
+            </a>
+            
+            <!-- Personal Telegram -->
+            <a href="https://t.me/ibraahadams" class="social-card" target="_blank">
+                <i class="fab fa-telegram-plane social-icon"></i>
+                <span class="social-name">Personal Telegram</span>
+            </a>
+            
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@ibrahimai_adams" class="social-card" target="_blank">
+                <i class="fab fa-tiktok social-icon"></i>
+                <span class="social-name">TikTok</span>
+            </a>
+            
+            <!-- WhatsApp Channel -->
+            <a href="https://whatsapp.com/channel/0029VaZuGSxEawdxZK9CzM0Y" class="social-card" target="_blank">
+                <i class="fab fa-whatsapp social-icon"></i>
+                <span class="social-name">WhatsApp Channel</span>
+            </a>
+            
+            <!-- YouTube Tutorial -->
+            <a href="https://youtu.be/NpJ4_Y4xR9I" class="social-card" target="_blank">
+                <i class="fab fa-youtube social-icon"></i>
+                <span class="social-name">YouTube Tutorial</span>
+            </a>
+            
+            <!-- TikTok Tutorial -->
+            <a href="https://vm.tiktok.com/ZMBbuoxop" class="social-card" target="_blank">
+                <i class="fab fa-tiktok social-icon"></i>
+                <span class="social-name">TikTok Tutorial</span>
+            </a>
+        </div>
+    </section>
 
-                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                        <a href="https://github.com/NjabuloJf/Njabulo-Jb" target="_blank" class="btn btn-primary">
-                            <i class="fab fa-github"></i> Go to Repository
-                        </a>
-                        <button class="btn btn-secondary" onclick="checkForkAgain()">
-                            <i class="fas fa-sync-alt"></i> Check Again
-                        </button>
-                        <button class="btn btn-primary" onclick="simulateFork()" id="simulateForkBtn">
-                            <i class="fas fa-magic"></i> Simulate Fork (Demo)
-                        </button>
-                    </div>
-                </div>
+    <!-- Tech Stack -->
+    <section class="tech-stack">
+        <h2 class="section-title">Quantum Tech Stack</h2>
+        <div class="skills-graph">
+            <div class="skill-item">
+                <i class="fas fa-atom skill-icon"></i>
+                <span class="skill-name">Quantum Computing</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-brain skill-icon"></i>
+                <span class="skill-name">AI/ML</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-link skill-icon"></i>
+                <span class="skill-name">Blockchain</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-shield-alt skill-icon"></i>
+                <span class="skill-name">Cyber Security</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-server skill-icon"></i>
+                <span class="skill-name">Cloud Architecture</span>
+            </div>
+            <div class="skill-item">
+                <i class="fab fa-python skill-icon"></i>
+                <span class="skill-name">Python</span>
+            </div>
+            <div class="skill-item">
+                <i class="fab fa-js skill-icon"></i>
+                <span class="skill-name">JavaScript</span>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-database skill-icon"></i>
+                <span class="skill-name">Quantum DB</span>
             </div>
         </div>
+    </section>
 
-        <!-- FOOTER -->
-        <footer class="footer">
-            <h3 style="color: white; margin-bottom: 1rem;">Need Help?</h3>
-            <div class="contact-links">
-                <a href="" target="_blank">
-                    <i class="fab fa-whatsapp"></i> WhatsApp Support
-                </a>
-                <a href="" target="_blank">
-                    <i class="fab fa-github"></i> GitHub Issues
-                </a>
-                <a href="">
-                    <i class="fas fa-envelope"></i> Email Support
-                </a>
-                <a href="" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Community Group
-                </a>
-            </div>
-            <p style="margin-top: 2rem; font-size: 0.9rem;">
-                Njabulo Jb 
-            </p>
-        </footer>
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Ibrahim Adams | BWM XMD Quantum Technologies</p>
+        <p>All systems operational | Quantum encryption active</p>
+    </footer>
+
+    <!-- Terminal Easter Egg -->
+    <div class="terminal-container" id="terminal">
+        <div class="terminal-header">
+            <span>Quantum Terminal v3.1.4</span>
+            <span class="terminal-close" id="closeTerminal">×</span>
+        </div>
+        <div class="terminal-body" id="terminalOutput">
+            <p>BWM XMD Quantum Terminal initialized...</p>
+            <p>Type 'help' for command list</p>
+        </div>
+        <div class="terminal-input">
+            <span class="terminal-prompt">>_</span>
+            <input type="text" class="terminal-cmd" id="terminalInput" autocomplete="off">
+        </div>
     </div>
+
+    <!-- Audio Elements -->
+    <audio id="hoverSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+    <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-modern-click-box-check-1120.mp3" preload="auto"></audio>
+    <audio id="voiceGreeting">
+        <source src="https://actions.google.com/sounds/v1/science_fiction/computer_processing.ogg" type="audio/ogg">
+    </audio>
 
     <script>
-        // STATE MANAGEMENT
-        let currentUser = null;
-        let hasFork = false;
-        let userVerified = false;
+        // Typewriter Effect
+        const typewriterElement = document.getElementById('typewriter');
+        const text = "Ibrahim Adams | AI & Quantum Developer | BWM XMD Founder";
+        let i = 0;
 
-        // DOM ELEMENTS
-        const verifyBtn = document.getElementById('verifyBtn');
-        const verificationResult = document.getElementById('verificationResult');
-        const deployButtons = {
-            heroku: document.getElementById('herokuBtn'),
-            railway: document.getElementById('railwayBtn'),
-            render: document.getElementById('renderBtn'),
-            koyeb: document.getElementById('koyebBtn'),
-            replit: document.getElementById('replitBtn')
-        };
-
-        // GITHUB API CONFIG
-        const REPO_OWNER = 'NjabuloJf';
-        const REPO_NAME = 'Njabulo-Jb';
-        const GITHUB_API = 'https://api.github.com';
-
-        // VERIFY GITHUB USER
-        verifyBtn.addEventListener('click', async () => {
-            const username = document.getElementById('githubUsername').value.trim();
-            
-            if (!username) {
-                showResult('Please enter your GitHub username', 'error');
-                return;
+        function typeWriter() {
+            if (i < text.length) {
+                typewriterElement.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            } else {
+                typewriterElement.classList.remove('typewriter');
+                // Play voice greeting when typing completes
+                document.getElementById('voiceGreeting').play();
             }
+        }
 
-            showResult('Checking GitHub account...', 'loading');
-            currentUser = username;
+        // Start typing after a short delay
+        setTimeout(typeWriter, 500);
 
-            try {
-                // Check if user exists
-                const userRes = await fetch(`${GITHUB_API}/users/${username}`);
-                if (!userRes.ok) {
-                    showResult('GitHub user not found. Please check username.', 'error');
-                    return;
-                }
+        // Particles Effect
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 50;
 
-                // Check if user has forked the repo
-                const forksRes = await fetch(`${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/forks`);
-                const forks = await forksRes.json();
-                
-                const userFork = forks.find(fork => fork.owner.login.toLowerCase() === username.toLowerCase());
-                
-                if (userFork) {
-                    hasFork = true;
-                    userVerified = true;
-                    showResult(`✅ Repository forked! Found fork at: ${userFork.html_url}`, 'success');
-                    enableDeployButtons();
-                    
-                    // Check if starred
-                    const starsRes = await fetch(`${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/stargazers`);
-                    const stars = await starsRes.json();
-                    const hasStarred = stars.some(star => star.login.toLowerCase() === username.toLowerCase());
-                    
-                    if (!hasStarred) {
-                        showResult('⭐ Please star the repository to support the project!', 'warning');
-                    }
-                } else {
-                    hasFork = false;
-                    showResult('Repository not forked. Please fork to continue.', 'warning');
-                    showForkModal();
-                }
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random properties
+            const size = Math.random() * 5 + 2;
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            const delay = Math.random() * 5;
+            const duration = Math.random() * 10 + 5;
+            const opacity = Math.random() * 0.5 + 0.2;
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${posX}%`;
+            particle.style.top = `${posY}%`;
+            particle.style.animationDelay = `${delay}s`;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.opacity = opacity;
+            
+            particlesContainer.appendChild(particle);
+        }
 
-            } catch (error) {
-                console.error('Verification error:', error);
-                showResult('Error checking GitHub. Please try again.', 'error');
+        // Cursor Trail Effect
+        const cursor = document.querySelector('.cursor-trail');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+            
+            // Enlarge cursor when hovering interactive elements
+            const target = e.target;
+            if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.classList.contains('project-card')) {
+                cursor.style.width = '20px';
+                cursor.style.height = '20px';
+            } else {
+                cursor.style.width = '10px';
+                cursor.style.height = '10px';
             }
         });
 
-        // SHOW RESULT MESSAGE
-        function showResult(message, type) {
-            let icon = 'ℹ️';
-            let className = 'status';
-            
-            if (type === 'success') {
-                icon = '✅';
-                className += ' status-success';
-            } else if (type === 'error') {
-                icon = '❌';
-                className += ' status-error';
-            } else if (type === 'warning') {
-                icon = '⚠️';
-                className += ' status-warning';
-            } else if (type === 'loading') {
-                icon = '⏳';
-                className += ' status-warning';
-            }
-
-            verificationResult.innerHTML = `
-                <div class="${className}">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : 
-                                      type === 'error' ? 'exclamation-circle' : 
-                                      type === 'warning' ? 'exclamation-triangle' : 'spinner fa-spin'}"></i>
-                    ${message}
-                </div>
-            `;
-        }
-
-        // ENABLE DEPLOY BUTTONS
-        function enableDeployButtons() {
-            Object.values(deployButtons).forEach(btn => {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-rocket"></i> Deploy Now';
-            });
-        }
-
-        // SHOW FORK MODAL
-        function showForkModal() {
-            document.getElementById('forkModal').style.display = 'flex';
-        }
-
-        function closeForkModal() {
-            document.getElementById('forkModal').style.display = 'none';
-        }
-
-        // SIMULATE FORK FOR DEMO
-        function simulateFork() {
-            hasFork = true;
-            userVerified = true;
-            showResult('✅ Repository forked successfully! (Demo mode)', 'success');
-            enableDeployButtons();
-            closeForkModal();
-            
-            // In production, you would make an actual API call to create fork
-            // fetch(`${GITHUB_API}/repos/${REPO_OWNER}/${REPO_NAME}/forks`, {
-            //     method: 'POST',
-            //     headers: { 'Authorization': 'token YOUR_TOKEN' }
-            // })
-        }
-
-        // CHECK FORK AGAIN
-        function checkForkAgain() {
-            if (currentUser) {
-                verifyBtn.click();
-            }
-        }
-
-        // DEPLOY TO PLATFORM
-        function deployTo(platform) {
-            if (!userVerified || !hasFork) {
-                showResult('Please verify GitHub and fork first', 'error');
-                showForkModal();
-                return;
-            }
-
-            const username = currentUser;
-            const forkRepo = `${username}/${REPO_NAME}`;
-            
-            // Deployment URLs with user's forked repo
-            const deployUrls = {
-                heroku: `https://heroku.com/deploy?template=https://github.com/${forkRepo}`,
-                railway: `https://railway.app/new?repository=https://github.com/${forkRepo}`,
-                render: `https://render.com/deploy?repository=https://github.com/${forkRepo}`,
-                koyeb: `https://app.koyeb.com/deploy?repository=https://github.com/${forkRepo}`,
-                replit: `https://replit.com/github/${forkRepo}`
-            };
-
-            // Show loading
-            const btn = deployButtons[platform];
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting...';
-            btn.disabled = true;
-
-            // Redirect to deployment page
-            setTimeout(() => {
-                window.open(deployUrls[platform], '_blank');
-                btn.innerHTML = originalText;
-                btn.disabled = false;
+        // Theme Switcher
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        themeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove all theme classes
+                document.body.classList.remove('matrix-theme', 'quantum-theme', 'hacker-theme');
                 
-                // Show success message
-                showResult(`✅ Redirected to ${platform} deployment page!`, 'success');
-            }, 1500);
-        }
-
-        // SHOW INSTRUCTIONS
-        function showInstructions(platform) {
-            const instructions = {
-                heroku: `
-                    <div class="instructions">
-                        <h4 style="color: white; margin-bottom: 1rem;">Heroku Deployment Steps:</h4>
-                        <ol>
-                            <li>Click "pair cods sessionidNow" (requires verified GitHub fork)</li>
-                            <li>after press pair code</li
-                            <li>Put your number use WhatsApp</li>
-                            <li>copy code put on your linked device</li>
-                            <li>Check messages on your in box you see sessionid basse64</li>
-                            <li>copy basse64 go back on website press HEROKU</li>
-                            <li>Log in to Heroku or create new account</li>
-                            <li>Choose app name and region</li>
-                            <li>Set up environment variables:
-                                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                                    <li><code>SESSION_ID</code> - Your session ID</li>
-                                    <li><code>PREFIX</code> - Command prefix (!)</li>
-                                    <li><code>MODS</code> - Your phone number</li>
-                                </ul>
-                            </li>
-                            <li>Click "Deploy App"</li>
-                            <li>Wait for build to complete</li>
-                            <li>Open logs to see QR code</li>
-                        </ol>
-                    </div>
-                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(103, 98, 166, 0.1); border-radius: 8px;">
-                        <h5 style="color: white;"><i class="fas fa-lightbulb"></i> Pro Tips:</h5>
-                        <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
-                            <li>Use Njabulo-Jb for testing (sleeps after 30 mins)</li>
-                            <li>Upgrade to Hobby Dyno for 24/7 operation ($7/month)</li>
-                            <li>Add Redis for session persistence</li>
-                        </ul>
-                    </div>
-                `,
-                railway: `
-                    <div class="instructions">
-                        <h4 style="color: white; margin-bottom: 1rem;">Railway Deployment Steps:</h4>
-                        <ol>
-                            <li>Click "Deploy Now" (requires verified GitHub fork)</li>
-                            <li>Hy my friend</li>
-                            <li>Authorize use Njabulojb elite</li>
-                            <li>Select "Just pair code"</li>
-                            <li>copy code put on you WhatsApp linked device</li>
-                            <li>bot automatic send message on your in box</li>
-                            <li>After see message use .menu or ping</li>
-                            <li>Deployment starts automatically</li>
-                            <li>Check logs for QR code</li>
-                        </ol>
-                    </div>
-                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(11, 13, 14, 0.1); border-radius: 8px;">
-                        <h5 style="color: white;"><i class="fas fa-lightbulb"></i> Pro Tips:</h5>
-                        <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
-                            <li>free has generous free tier (always-on)</li>
-                            <li>Auto HTTPS included</li>
-                            <li>Built-in fana/njablo available</li>
-                            <li>Easy scaling options</li>
-                        </ul>
-                    </div>
-                `,
-                        render: `
-                    <div class="instructions">
-                        <h4 style="color: white; margin-bottom: 1rem;">Render Deployment Steps:</h4>
-                        <ol>
-                            <li>Click "Deploy Now" (requires verified GitHub fork)</li>
-                            <li>Sign up on Render (GitHub login)</li>
-                            <li>Select "New Web Service"</li>
-                            <li>Connect your GitHub account</li>
-                            <li>Select your forked repository</li>
-                            <li>Configure:
-                                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                                    <li>Name: fee-xmd-bot</li>
-                                    <li>Region: Choose closest</li>
-                                    <li>Branch: main</li>
-                                    <li>Build Command: npm install</li>
-                                    <li>Start Command: npm start</li>
-                                </ul>
-                            </li>
-                            <li>Add environment variables</li>
-                            <li>Click "Create Web Service"</li>
-                        </ol>
-                    </div>
-                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(70, 227, 183, 0.1); border-radius: 8px;">
-                        <h5 style="color: white;"><i class="fas fa-lightbulb"></i> Pro Tips:</h5>
-                        <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
-                            <li>Free instance sleeps after 15 mins inactivity</li>
-                            <li>Auto SSL certificates</li>
-                            <li>Custom domain support</li>
-                            <li>Simple scaling</li>
-                        </ul>
-                    </div>
-                `,
-                koyeb: `
-                    <div class="instructions">
-                        <h4 style="color: white; margin-bottom: 1rem;">Koyeb Deployment Steps:</h4>
-                        <ol>
-                            <li>Click "Deploy Now" (requires verified GitHub fork)</li>
-                            <li>Create Koyeb account</li>
-                            <li>Go to "Apps" section</li>
-                            <li>Click "Create App"</li>
-                            <li>Select "GitHub" as source</li>
-                            <li>Authorize and select your fork</li>
-                            <li>Configure app:
-                                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                                    <li>App name: fee-xmd</li>
-                                    <li>Region: (auto-selected)</li>
-                                    <li>Instance type: Nano (free)</li>
-                                </ul>
-                            </li>
-                            <li>Add environment variables</li>
-                            <li>Click "Deploy"</li>
-                        </ol>
-                    </div>
-                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(18, 18, 18, 0.1); border-radius: 8px;">
-                        <h5 style="color: white;"><i class="fas fa-lightbulb"></i> Pro Tips:</h5>
-                        <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
-                            <li>2 always-free nano instances</li>
-                            <li>No credit card required</li>
-                            <li>Global edge network</li>
-                            <li>Native Docker support</li>
-                        </ul>
-                    </div>
-                `,
-                replit: `
-                    <div class="instructions">
-                        <h4 style="color: white; margin-bottom: 1rem;">Replit Deployment Steps:</h4>
-                        <ol>
-                            <li>Click "Deploy Now" (requires verified GitHub fork)</li>
-                            <li>Log in to Replit (GitHub login)</li>
-                            <li>Click "Create Repl"</li>
-                            <li>Select "Import from GitHub"</li>
-                            <li>Paste your forked repo URL</li>
-                            <li>Select "Node.js" template</li>
-                            <li>Click "Import from GitHub"</li>
-                            <li>Wait for import to complete</li>
-                            <li>Add environment variables in Secrets</li>
-                            <li>Click "Run" to start bot</li>
-                        </ol>
-                    </div>
-                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(102, 120, 129, 0.1); border-radius: 8px;">
-                        <h5 style="color: white;"><i class="fas fa-lightbulb"></i> Pro Tips:</h5>
-                        <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
-                            <li>Always-on available with Replit Pro</li>
-                            <li>Live code editing</li>
-                            <li>Built-in terminal</li>
-                            <li>Team collaboration features</li>
-       
-                        </ul>
-                    </div>
-                `
-            };
-
-            const titles = {
-                heroku: 'Heroku Deployment Guide',
-                railway: 'Railway Deployment Guide',
-                render: 'Render Deployment Guide',
-                koyeb: 'Koyeb Deployment Guide',
-                replit: 'Replit Deployment Guide'
-            };
-
-            document.getElementById('modalTitle').textContent = titles[platform];
-            document.getElementById('modalContent').innerHTML = instructions[platform];
-            document.getElementById('instructionsModal').style.display = 'flex';
-        }
-
-        // CLOSE MODAL
-        function closeModal() {
-            document.getElementById('instructionsModal').style.display = 'none';
-        }
-
-        // INITIAL SETUP
-        document.addEventListener('DOMContentLoaded', () => {
-            // Close modals when clicking outside
-            window.onclick = function(event) {
-                const modals = document.getElementsByClassName('modal');
-                for (let modal of modals) {
-                    if (event.target == modal) {
-                        modal.style.display = 'none';
-                    }
+                // Play click sound
+                document.getElementById('clickSound').play();
+                
+                // Apply selected theme
+                const theme = button.dataset.theme;
+                if (theme !== 'default') {
+                    document.body.classList.add(`${theme}-theme`);
                 }
-            };
+                
+                // Add active class to clicked button
+                themeButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
 
-            // Enter key for GitHub input
-            document.getElementById('githubUsername').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    verifyBtn.click();
+        // Project Card Voice Descriptions
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Prevent default if it's a link
+                if (e.target.tagName === 'A') return;
+                
+                // Play hover sound
+                document.getElementById('hoverSound').currentTime = 0;
+                document.getElementById('hoverSound').play();
+                
+                // Read description automatically
+                const voiceText = card.dataset.voice;
+                if (voiceText && window.speechSynthesis) {
+                    const utterance = new SpeechSynthesisUtterance(voiceText);
+                    utterance.rate = 0.9;
+                    window.speechSynthesis.cancel(); // Cancel any ongoing speech
+                    window.speechSynthesis.speak(utterance);
                 }
             });
+        });
+
+        // Terminal Easter Egg
+        const terminal = document.getElementById('terminal');
+        const terminalInput = document.getElementById('terminalInput');
+        const terminalOutput = document.getElementById('terminalOutput');
+        const closeTerminal = document.getElementById('closeTerminal');
+        
+        // Show terminal with secret key combination
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.altKey && e.key === 't') {
+                terminal.style.bottom = '0';
+            }
+        });
+        
+        // Close terminal
+        closeTerminal.addEventListener('click', () => {
+            terminal.style.bottom = '-400px';
+        });
+        
+        // Terminal commands
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = terminalInput.value.toLowerCase();
+                terminalInput.value = '';
+                
+                // Add command to output
+                const cmdElement = document.createElement('p');
+                cmdElement.innerHTML = `<span class="terminal-prompt">>_</span> ${command}`;
+                terminalOutput.appendChild(cmdElement);
+                
+                // Process command
+                let response = '';
+                switch(command) {
+                    case 'help':
+                        response = 'Available commands:<br>help - Show this help<br>about - About BWM XMD<br>projects - List projects<br>clear - Clear terminal<br>contact - Show contact info';
+                        break;
+                    case 'about':
+                        response = 'BWM XMD Quantum Technologies<br>Founded by Ibrahim Adams<br>Specializing in AI, Quantum Computing and Blockchain solutions';
+                        break;
+                    case 'projects':
+                        response = 'Current projects:<br>- BWM XMD Chat<br>- Quantum API Portal<br- Secure Payment System<br>- Business Portal<br>- Deployment Hub';
+                        break;
+                    case 'clear':
+                        terminalOutput.innerHTML = '';
+                        return;
+                    case 'contact':
+                        response = 'Telegram: @ibraahadams<br>Email: contact@bwmxmd.online';
+                        break;
+                    default:
+                        response = `Command not found: ${command}<br>Type 'help' for available commands`;
+                }
+                
+                const responseElement = document.createElement('p');
+                responseElement.innerHTML = response;
+                terminalOutput.appendChild(responseElement);
+                
+                // Scroll to bottom
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        });
+
+        // Sound Toggle (only mute button now)
+        const soundToggle = document.getElementById('soundToggle');
+        
+        soundToggle.addEventListener('click', () => {
+            soundToggle.classList.toggle('active');
+            if (soundToggle.classList.contains('active')) {
+                soundToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+            } else {
+                soundToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                window.speechSynthesis.cancel(); // Stop any speech
+            }
+        });
+
+        // Auto-read text when clicked
+        document.addEventListener('click', (e) => {
+            // Don't read if sound is muted
+            if (soundToggle.classList.contains('active') && 
+                !e.target.classList.contains('audio-btn') && 
+                !e.target.closest('.project-card') && 
+                e.target.textContent.trim().length > 0) {
+                
+                const textToRead = e.target.textContent.trim();
+                if (textToRead && window.speechSynthesis) {
+                    const utterance = new SpeechSynthesisUtterance(textToRead);
+                    utterance.rate = 0.9;
+                    window.speechSynthesis.cancel();
+                    window.speechSynthesis.speak(utterance);
+                }
+            }
         });
     </script>
 </body>
