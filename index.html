@@ -435,77 +435,79 @@
             </div>
         </section>
 
-        <!-- PLATFORMS SECTION -->
-        <section class="platforms-section">
-            <h2 class="section-title">Choose Deployment Platform</h2>
-            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
-                Select your preferred hosting platform. All platforms support automatic deployment from GitHub.
-            </p>
+        😊 Here's an updated index.html with working buttons for Heroku and Railway:
 
-            <div class="platforms-grid">
-                <!-- HEROKU -->
-                <div class="platform-card">
-                    <div class="platform-icon heroku-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3 class="platform-title">NjabuloJb elite</h3>
-                    <div class="status status-warning">
-                        <i class="fas fa-info-circle"></i> Free tier available
-                    </div>
-                    <p class="platform-desc">
-                        Popular platform with easy deployment. Free dynos available (sleep after 30 mins inactivity).
-                    </p>
-                    <ul class="platform-features">
-                        <li><i class="fas fa-check"></i> Free tier available</li>
-                        <li><i class="fas fa-check"></i> Auto-deploy from GitHub</li>
-                        <li><i class="fas fa-check"></i> PostgreSQL database</li>
-                        <li><i class="fas fa-check"></i> Easy scaling</li>
-                    </ul>
-                    <div style="display: flex; gap: 5px; margin-top: 1.5rem;">
-                        <button class="btn btn-secondary" onclick="showInstructions('heroku')">
-                            <i class="fas fa-book"></i> rules
-                        </button>
-                        <button class="btn btn-primary" onclick="deployTo('https://github.com')" disabled id="herokuBtn">
-                            <i class="fas fa-link"></i> Pair code
-                        </button>
-                    </div>
-                </div>
+<!-- PLATFORMS SECTION -->
+<section class="platforms-section">
+  <h2 class="section-title">Choose Deployment Platform</h2>
+  <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;"> 
+    Select your preferred hosting platform. All platforms support automatic deployment from GitHub.
+  </p>
+  <div class="platforms-grid">
+    <!-- HEROKU -->
+    <div class="platform-card">
+      <div class="platform-icon heroku-icon">
+        <i class="fas fa-robot"></i>
+      </div>
+      <h3 class="platform-title">NjabuloJb elite</h3>
+      <div class="status status-warning">
+        <i class="fas fa-info-circle"></i> Free tier available
+      </div>
+      <p class="platform-desc">
+        Popular platform with easy deployment. Free dynos available (sleep after 30 mins inactivity).
+      </p>
+      <ul class="platform-features">
+        <li><i class="fas fa-check"></i> Free tier available</li>
+        <li><i class="fas fa-check"></i> Auto-deploy from GitHub</li>
+        <li><i class="fas fa-check"></i> PostgreSQL database</li>
+        <li><i class="fas fa-check"></i> Easy scaling</li>
+      </ul>
+      <div style="display: flex; gap: 5px; margin-top: 1.5rem;">
+        <button class="btn btn-secondary" onclick="showInstructions('heroku')">
+          <i class="fas fa-book"></i> rules
+        </button>
+        <button class="btn btn-primary" onclick="window.open('https://heroku.com/deploy', '_blank')">
+          <i class="fas fa-link"></i> Pair code
+        </button>
+      </div>
+    </div>
+    <!-- RAILWAY -->
+    <div class="platform-card">
+      <div class="platform-icon railway-icon">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </div>
+      <h3 class="platform-title">Njabulo-Jb</h3>
+      <div class="status status-success">
+        <i class="fas fa-bolt"></i> session id
+      </div>
+      <p class="platform-desc">
+        Modern platform with generous free tier. Perfect for WhatsApp bots with always-on capability.
+      </p>
+      <ul class="platform-features">
+        <li><i class="fas fa-check"></i> Always-on free tier</li>
+        <li><i class="fas fa-check"></i> Instant deployment</li>
+        <li><i class="fas fa-check"></i> Built-in MongoDB</li>
+        <li><i class="fas fa-check"></i> Auto HTTPS</li>
+      </ul>
+      <div style="display: flex; gap: 5px; margin-top: 1.5rem;">
+        <button class="btn btn-secondary" onclick="showInstructions('railway')">
+          <i class="fas fa-book"></i> Rules
+        </button>
+        <button class="btn btn-primary" onclick="window.open('https://railway.app/deploy', '_blank')">
+          <i class="fas fa-rocket"></i> Code
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <!-- RAILWAY -->
-                <div class="platform-card">
-                    <ul class="platform-features">
-                    <div class="platform-icon railway-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <h3 class="platform-title">Njabulo-Jb</h3>
-                    <div class="status status-success">
-                        <i class="fas fa-bolt"></i> session id
-                        <ul class="platform-features">
-                        <button class="btn btn-primary" onclick="deployTo('railway')" disabled id="railwayBtn">
-                            <i class="fas fa-rocket"></i> Code
-                            
-                    </div>
-                    <p class="platform-desc">
-                        Modern platform with generous free tier. Perfect for WhatsApp bots with always-on capability.
-                    </p>
-                    <ul class="platform-features">
-                        <li><i class="fas fa-check"></i> Always-on free tier</li>
-                        <li><i class="fas fa-check"></i> Instant deployment</li>
-                        <li><i class="fas fa-check"></i> Built-in MongoDB</li>
-                        <li><i class="fas fa-check"></i> Auto HTTPS</li>
-                    </ul>
-                    <div style="display: flex; gap: 5px; margin-top: 1.5rem;">
-                        <button class="btn btn-secondary" onclick="showInstructions('heroku')">
-                            <i class="fas fa-book"></i> Rules
-                        </button>
-                        <button class="btn btn-primary" onclick="deployTo('heroku')" disabled id="herokuBtn">
-                            <i class="fas fa-cloud-upload-alt"></i> Heroku
-                            
-                        
-            
-                </div>
+<script>
+  function showInstructions(platform) {
+    alert(`Showing instructions for ${platform}`);
+  }
+</script>
 
-                        </section>
+
 
         <!-- MODALS -->
         <div id="instructionsModal" class="modal">
