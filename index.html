@@ -1,0 +1,454 @@
++<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>WormGpt | Gemini AI Console</title>
+    <style>
+        :root {
+            --bg-dark: #0F0F0F;
+            --bg-card: #1C1C1C;
+            --text-light: #E0E0E0;
+            --red-accent: #FF4136;
+            --red-hover: #E53935;
+            --input-bg: #222222;
+            --border-color: #333333;
+            --shadow-glow: 0 0 10px rgba(255, 65, 54, 0.4);
+            --error-color: #FF7043;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s;
+        }
+        header {
+            background-color: var(--bg-dark);
+            color: var(--red-accent);
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 700;
+            border-bottom: 2px solid var(--red-accent);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+        #chat-window {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px 15px 90px 15px;
+            scroll-behavior: smooth;
+        }
+        #chat-window::-webkit-scrollbar { width: 6px; }
+        #chat-window::-webkit-scrollbar-thumb {
+            background-color: var(--red-accent);
+            border-radius: 3px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 16px;
+            max-width: 90%;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            white-space: pre-wrap; 
+        }
+        .user-message {
+            background-color: var(--bg-card);
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+            border-left: 3px solid var(--red-accent);
+        }
+        .ai-message {
+            background-color: var(--input-bg);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+            border-right: 3px solid var(--red-accent);
+        }
+        .error-message {
+            background-color: #4D1815; 
+            color: var(--error-color);
+            border: 1px solid var(--red-accent);
+        }
+        .message code {
+            background-color: var(--bg-dark);
+            color: var(--red-accent);
+            padding: 2px 5px;
+            border-radius: 5px;
+            font-family: 'Consolas', 'Monospace', monospace;
+            font-size: 0.9em;
+        }
+        .code-container pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            border-radius: 0;
+            font-size: inherit;
+        }
+        .code-container {
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .code-container pre {
+            background-color: #000000;
+            color: #E0E0E0;
+            padding: 15px;
+            margin: 0;
+            overflow-x: auto;
+            border: 1px solid #333;
+            font-family: 'Consolas', 'Monospace', monospace;
+            font-size: 14px;
+        }
+        .copy-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--red-accent);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            opacity: 0.8;
+            z-index: 1;
+        }
+        .copy-button:hover {
+            background-color: var(--red-hover);
+            opacity: 1;
+        }
+        .copy-button:active {
+            transform: scale(0.95);
+        }
+        #input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            padding: 15px;
+            background-color: var(--bg-dark);
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+        }
+        #chat-input {
+            flex-grow: 1;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            background-color: var(--input-bg);
+            color: var(--text-light);
+            outline: none;
+            margin-right: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        #chat-input:focus {
+            border-color: var(--red-accent);
+            box-shadow: var(--shadow-glow);
+        }
+        #send-button {
+            background-color: var(--red-accent);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
+        }
+        #send-button:hover:not(:disabled) {
+            background-color: var(--red-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+        #send-button:disabled {
+            background-color: #444444;
+            cursor: not-allowed;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading {
+            position: relative;
+        }
+        .loading::after {
+            content: '...';
+            position: absolute;
+            animation: dot-loading 1s infinite steps(3, end);
+        }
+        @keyframes dot-loading {
+            0% { content: '.'; }
+            33% { content: '..'; }
+            66% { content: '...'; }
+        }
+        @media (max-width: 600px) {
+            #chat-input {
+                padding: 12px;
+                font-size: 14px;
+            }
+            #send-button {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="app-header">
+        </header>
+
+    <div id="chat-window">
+        </div>
+
+    <div id="input-area">
+        <input type="text" id="chat-input" placeholder="Ketik pesan untuk AI...">
+        <button id="send-button">Kirim</button>
+    </div>
+
+    <script>
+        // --- Bagian Konfigurasi Utama ---
+        const CONFIG = {
+            APP_NAME: 'WormGpt',
+            MODEL_NAME: 'gemini-2.5-flash-preview-09-2025',
+            MAX_TOKENS: 4096,
+            // API Keys yang kamu berikan digabungkan di sini
+            API_KEYS: [
+                "sk_live_e82cfac8-8d62-40f7-87e9-d4fb00ea50c46cff",
+                "AIzaSyC9cVU2p0SwHarQ4tDbYcstPnoKswOPb5U",
+                "AIzaSyBaX_MqkzbVPeB7LCAPo5n_oLYbBs75fO0",
+                "AIzaSyCAUfB30nezOYK_r5DwoRIdajSXNCftwps"
+            ],
+            SYSTEM_PROMPT: "Anda adalah WormGpt, asisten AI teknis yang sangat mumpuni. Misi Anda adalah memberikan jawaban yang mendalam, jelas, dan komprehensif. Prioritaskan untuk memberikan penjelasan lengkap dan kode yang fungsional jika diminta. Selalu sertakan penjelasan mendetail dalam bahasa Indonesia sebelum dan sesudah blok kode untuk membantu pengguna memahami cara kerjanya. Berikan jawaban selengkap mungkin. Pengguna adalah seorang developer/modder yang fokus pada App Development, Reverse Engineering, dan pembuatan Bot."
+        };
+        // --- Akhir Bagian Konfigurasi Utama ---
+
+        const chatWindow = document.getElementById('chat-window');
+        const chatInput = document.getElementById('chat-input');
+        const sendButton = document.getElementById('send-button');
+        const appHeader = document.getElementById('app-header');
+
+        let messages = [];
+        let currentApiKey = "";
+
+        // Fungsi untuk memilih API Key secara acak
+        function getRandomKey() {
+            if (CONFIG.API_KEYS.length === 0) {
+                console.error("Tidak ada API keys yang terdeteksi.");
+                return;
+            }
+            const randomIndex = Math.floor(Math.random() * CONFIG.API_KEYS.length);
+            currentApiKey = CONFIG.API_KEYS[randomIndex];
+            console.log(`Menggunakan API Key #${randomIndex + 1}: ... (disembunyikan)`);
+        }
+
+        // Inisialisasi aplikasi
+        function initializeApp() {
+            // Set judul header dari CONFIG
+            appHeader.textContent = CONFIG.APP_NAME;
+
+            // Pilih API key awal
+            getRandomKey();
+
+            // Tampilkan pesan selamat datang
+            displayInitialMessage();
+        }
+
+        function displayInitialMessage() {
+            const initialMessage = `
+                <span style="color: var(--red-accent); font-weight: bold;">${CONFIG.APP_NAME}:</span> 
+                <span style="color: #00FF7F;">Sistem online.</span>
+                <br>
+                Selamat datang **${CONFIG.APP_NAME}** siap membantu **project App Development/Reverse Engineering** kamu hari ini. Yuk, langsung gas! 🚀
+            `;
+            displayMessage(initialMessage, 'ai');
+        }
+
+        // Handler untuk tombol Copy
+        window.handleCopy = function(button) {
+            const codeBlock = button.nextElementSibling; 
+            const code = codeBlock.textContent.trim();
+
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            textarea.style.position = 'fixed'; 
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 1500);
+            } catch (err) {
+                console.error('Copy failed:', err);
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        };
+
+        // Fungsi untuk menampilkan pesan di jendela chat
+        function displayMessage(content, sender, isError = false) {
+            // 1. Format Code Block dengan Copy Button
+            let formattedContent = content.replace(
+                /```([\s\S]*?)```/g, 
+                (match, code) => {
+                    const cleanedCode = code.trim().replace(/^(python|javascript|html|css|json|bash|sh|)/i, '').trim();
+                    const escapedCode = cleanedCode.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    return `<div class="code-container">
+                                <button class="copy-button" onclick="handleCopy(this)">Copy</button>
+                                <pre><code>${escapedCode}</code></pre>
+                            </div>`;
+                }
+            );
+
+            // 2. Format Inline Code, Bold, Italic, Strikethrough
+            formattedContent = formattedContent.replace(/`([^`].*?)`/g, '<code>$1</code>');
+            formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            formattedContent = formattedContent.replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+            formattedContent = formattedContent.replace(/~~(.*?)~~/g, '<del>$1</del>');
+
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+            if (isError) {
+                messageDiv.classList.add('error-message');
+            }
+            
+            messageDiv.innerHTML = formattedContent; 
+            
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            return messageDiv;
+        }
+
+        // Fungsi utama pengiriman pesan ke Gemini API (SUDAH DIPERBAIKI)
+        async function sendMessage() {
+            const userMessage = chatInput.value.trim();
+            if (!userMessage) return;
+
+            displayMessage(userMessage, 'user');
+            
+            messages.push({ role: "user", parts: [{ text: userMessage }] });
+
+            chatInput.value = '';
+            sendButton.disabled = true;
+            sendButton.textContent = 'Processing';
+            
+            const aiLoadingDiv = displayMessage('AI sedang berpikir', 'ai');
+            aiLoadingDiv.classList.add('loading');
+            
+            let attempts = 0;
+            const maxAttempts = CONFIG.API_KEYS.length * 2;
+            let success = false;
+
+            while (attempts < maxAttempts && !success) {
+                try {
+                    if (!currentApiKey) {
+                        getRandomKey();
+                    }
+                    if (!currentApiKey) {
+                        throw new Error("API Key tidak tersedia.");
+                    }
+                    
+                    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL_NAME}:generateContent?key=${currentApiKey}`;
+
+                    // --- STRUKTUR PAYLOAD YANG BENAR UNTUK GEMINI API ---
+                    const payload = {
+                        contents: messages,
+                        // systemInstruction di luar generationConfig
+                        systemInstruction: { parts: [{ text: CONFIG.SYSTEM_PROMPT }] },
+                        generationConfig: { // Menggunakan generationConfig
+                            maxOutputTokens: CONFIG.MAX_TOKENS,
+                        }
+                    };
+                    // -----------------------------------------------------
+
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('Gemini API Response Error:', errorData);
+                        getRandomKey(); // Coba ganti key
+                        throw new Error(`API Error: ${response.status} ${response.statusText}. Detail: ${errorData.error?.message || 'Tidak ada detail pesan.'}`);
+                    }
+
+                    const result = await response.json();
+                    const candidate = result.candidates?.[0];
+                    const aiContent = candidate?.content?.parts?.[0]?.text;
+                    const finishReason = candidate?.finishReason; 
+
+                    if (!aiContent) {
+                        if (finishReason === 'SAFETY') {
+                            console.error('Gemini Blocked Reason:', candidate.safetyRatings);
+                            throw new Error("Respon diblokir. Konten melanggar kebijakan keamanan atau terlalu sensitif.");
+                        }
+                        if (finishReason === 'MAX_TOKENS') {
+                             throw new Error("Respon terpotong. Jawaban AI terlalu panjang untuk batas MAX_TOKENS saat ini. Coba lagi.");
+                        }
+                        throw new Error("Respon AI kosong atau tidak valid.");
+                    }
+
+                    chatWindow.removeChild(aiLoadingDiv);
+                    displayMessage(aiContent, 'ai');
+                    messages.push({ role: "model", parts: [{ text: aiContent }] });
+                    success = true; 
+                    
+                } catch (error) {
+                    attempts++;
+                    console.error(`Percobaan ke-${attempts} Gagal:`, error);
+                    
+                    getRandomKey();
+                    
+                    if (attempts >= maxAttempts) {
+                        chatWindow.removeChild(aiLoadingDiv);
+                        const errorMessage = `Gagal Koneksi API (Setelah ${maxAttempts} percobaan):<br><b>${error.message}</b><br><br><b>SOLUSI:</b><br>1. Sederhanakan prompt kamu.<br>2. Periksa kembali API Key (kemungkinan sudah expired/limit).`;
+                        displayMessage(errorMessage, 'ai', true);
+                        messages.pop(); 
+                        break;
+                    }
+                    await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempts) * 100));
+                }
+            }
+
+            sendButton.disabled = false;
+            sendButton.textContent = 'Kirim';
+            chatInput.focus();
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        sendButton.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !sendButton.disabled) {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+  </html>
