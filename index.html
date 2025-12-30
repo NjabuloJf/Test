@@ -205,6 +205,41 @@
                 padding: 12px;
                 font-size: 14px;
             }
+                @media (max-width: 500px) {
+      .container {
+        padding: 15px;
+      }
+
+      .box {
+        padding: 30px 25px;
+        border-radius: 18px;
+      }
+
+      .bot-icon {
+        width: 70px;
+        height: 70px;
+      }
+
+      .bot-head {
+        width: 60px;
+        height: 60px;
+      }
+
+      .bot-screen {
+        width: 45px;
+        height: 20px;
+      }
+
+      h3 {
+        font-size: 24px;
+      }
+
+      .input-container {
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+      }
+
             #send-button {
                 padding: 0 20px;
             }
@@ -218,6 +253,24 @@
 
     <div id="chat-window">
         </div>
+    <div class="container">
+    <div class="box" id="box">
+      <div id="text">
+        <div class="bot-icon">
+          <div class="bot-head">
+            <div class="bot-screen">
+              <div class="screen-content">
+                <div class="screen-line"></div>
+                <div class="screen-dot"></div>
+                <div class="screen-dot"></div>
+                <div class="screen-dot"></div>
+                <div class="screen-dot"></div>
+              </div>
+            </div>
+          </div>
+          <div class="bot-body"></div>
+        </div>
+
 
     <div id="input-area">
         <input type="text" id="chat-input" placeholder="Ketik pesan untuk AI...">
