@@ -1,507 +1,1046 @@
-+<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="sw">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <title>WormGpt | Gemini AI Console</title>
+    <title>DIANA XMD - Menu ya Commands</title>
     <style>
-        :root {
-            --bg-dark: #0F0F0F;
-            --bg-card: #1C1C1C;
-            --text-light: #E0E0E0;
-            --red-accent: #FF4136;
-            --red-hover: #E53935;
-            --input-bg: #222222;
-            --border-color: #333333;
-            --shadow-glow: 0 0 10px rgba(255, 65, 54, 0.4);
-            --error-color: #FF7043;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+        
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            transition: background-color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
         }
-        header {
-            background-color: var(--bg-dark);
-            color: var(--red-accent);
-            padding: 15px;
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* HEADER */
+        .header {
             text-align: center;
-            font-size: 1.2em;
-            font-weight: 700;
-            border-bottom: 2px solid var(--red-accent);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            letter-spacing: 2px;
+            padding: 30px 0;
+            margin-bottom: 30px;
         }
-        #chat-window {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 15px 15px 90px 15px;
-            scroll-behavior: smooth;
+        
+        .bot-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
         }
-        #chat-window::-webkit-scrollbar { width: 6px; }
-        #chat-window::-webkit-scrollbar-thumb {
-            background-color: var(--red-accent);
-            border-radius: 3px;
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
-        .message {
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 16px;
-            max-width: 90%;
-            line-height: 1.6;
-            animation: fadeIn 0.3s ease-out;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            white-space: pre-wrap; 
-        }
-        .user-message {
-            background-color: var(--bg-card);
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
-            border-left: 3px solid var(--red-accent);
-        }
-        .ai-message {
-            background-color: var(--input-bg);
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
-            border-right: 3px solid var(--red-accent);
-        }
-        .error-message {
-            background-color: #4D1815; 
-            color: var(--error-color);
-            border: 1px solid var(--red-accent);
-        }
-        .message code {
-            background-color: var(--bg-dark);
-            color: var(--red-accent);
-            padding: 2px 5px;
-            border-radius: 5px;
-            font-family: 'Consolas', 'Monospace', monospace;
-            font-size: 0.9em;
-        }
-        .code-container pre code {
-            background-color: transparent;
-            color: inherit;
-            padding: 0;
-            border-radius: 0;
-            font-size: inherit;
-        }
-        .code-container {
-            position: relative;
-            margin-top: 10px;
+        
+        .bot-name {
+            font-size: 40px;
+            font-weight: bold;
             margin-bottom: 10px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        .code-container pre {
-            background-color: #000000;
-            color: #E0E0E0;
-            padding: 15px;
-            margin: 0;
-            overflow-x: auto;
-            border: 1px solid #333;
-            font-family: 'Consolas', 'Monospace', monospace;
+        
+        .bot-tagline {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .powered-by {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
             font-size: 14px;
         }
-        .copy-button {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: var(--red-accent);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: background-color 0.2s;
-            opacity: 0.8;
-            z-index: 1;
-        }
-        .copy-button:hover {
-            background-color: var(--red-hover);
-            opacity: 1;
-        }
-        .copy-button:active {
-            transform: scale(0.95);
-        }
-        #input-area {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            padding: 15px;
-            background-color: var(--bg-dark);
-            border-top: 1px solid var(--border-color);
-            z-index: 100;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
-        }
-        #chat-input {
-            flex-grow: 1;
-            padding: 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 30px;
-            background-color: var(--input-bg);
-            color: var(--text-light);
-            outline: none;
-            margin-right: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        #chat-input:focus {
-            border-color: var(--red-accent);
-            box-shadow: var(--shadow-glow);
-        }
-        #send-button {
-            background-color: var(--red-accent);
-            color: white;
-            border: none;
-            padding: 0 25px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
-        }
-        #send-button:hover:not(:disabled) {
-            background-color: var(--red-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-glow);
-        }
-        #send-button:disabled {
-            background-color: #444444;
-            cursor: not-allowed;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .loading {
+        
+        /* SEARCH BAR */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 40px;
             position: relative;
         }
-        .loading::after {
-            content: '...';
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+        }
+        
+        .search-icon {
             position: absolute;
-            animation: dot-loading 1s infinite steps(3, end);
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4a00e0;
+            font-size: 20px;
         }
-        @keyframes dot-loading {
-            0% { content: '.'; }
-            33% { content: '..'; }
-            66% { content: '...'; }
+        
+        /* COMMAND CATEGORIES */
+        .categories {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 40px;
         }
-        @media (max-width: 600px) {
-            #chat-input {
-                padding: 12px;
-                font-size: 14px;
+        
+        .category-btn {
+            padding: 10px 25px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .category-btn.active {
+            background: white;
+            color: #4a00e0;
+            border-color: white;
+        }
+        
+        /* COMMANDS GRID */
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .command-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .command-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .command-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .command-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #8e2de2, #4a00e0);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        .command-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .command-usage {
+            background: rgba(0,0,0,0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 16px;
+        }
+        
+        .command-desc {
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        /* QUICK ACTIONS */
+        .quick-actions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .action-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%);
+            border: none;
+            border-radius: 15px;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .action-btn.copy {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .action-btn.preview {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .commands-grid {
+                grid-template-columns: 1fr;
             }
-                @media (max-width: 500px) {
-      .container {
-        padding: 15px;
-      }
-
-      .box {
-        padding: 30px 25px;
-        border-radius: 18px;
-      }
-
-      .bot-icon {
-        width: 70px;
-        height: 70px;
-      }
-
-      .bot-head {
-        width: 60px;
-        height: 60px;
-      }
-
-      .bot-screen {
-        width: 45px;
-        height: 20px;
-      }
-
-      h3 {
-        font-size: 24px;
-      }
-
-      .input-container {
-        flex-direction: column;
-        padding: 10px;
-        gap: 10px;
-      }
-
-            #send-button {
-                padding: 0 20px;
+            
+            .categories {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
             }
+            
+            .category-btn {
+                white-space: nowrap;
+            }
+            
+            .bot-name {
+                font-size: 32px;
+            }
+        }
+        
+        /* COPY NOTIFICATION */
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2ecc71;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* COMMAND DETAILS MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        
+        .modal {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .modal-content {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .example-code {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            margin: 15px 0;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
-
-    <header id="app-header">
-        </header>
-
-    <div id="chat-window">
-        </div>
     <div class="container">
-    <div class="box" id="box">
-      <div id="text">
-        <div class="bot-icon">
-          <div class="bot-head">
-            <div class="bot-screen">
-              <div class="screen-content">
-                <div class="screen-line"></div>
-                <div class="screen-dot"></div>
-                <div class="screen-dot"></div>
-                <div class="screen-dot"></div>
-                <div class="screen-dot"></div>
-              </div>
-            </div>
-          </div>
-          <div class="bot-body"></div>
+        <!-- HEADER -->
+        <div class="header">
+            <div class="bot-icon">🤖</div>
+            <div class="bot-name">DIANA XMD</div>
+            <div class="bot-tagline">Bot ya WhatsApp yenye huduma nyingi</div>
+            <div class="powered-by">Powered by DIANA</div>
         </div>
-
-
-    <div id="input-area">
-        <input type="text" id="chat-input" placeholder="Ketik pesan untuk AI...">
-        <button id="send-button">Kirim</button>
+        
+        <!-- SEARCH -->
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Tafuta command...">
+            <div class="search-icon">🔍</div>
+        </div>
+        
+        <!-- CATEGORIES -->
+        <div class="categories">
+            <button class="category-btn active" onclick="filterCommands('all')">Zote</button>
+            <button class="category-btn" onclick="filterCommands('fun')">Burudani</button>
+            <button class="category-btn" onclick="filterCommands('tools')">Zana</button>
+            <button class="category-btn" onclick="filterCommands('media')">Media</button>
+            <button class="category-btn" onclick="filterCommands('group')">Group</button>
+            <button class="category-btn" onclick="filterCommands('owner')">Owner</button>
+            <button class="category-btn" onclick="filterCommands('download')">Download</button>
+            <button class="category-btn" onclick="filterCommands('ai')">AI</button>
+        </div>
+        
+        <!-- COMMANDS GRID -->
+        <div class="commands-grid" id="commandsGrid">
+            <!-- Commands will be loaded here -->
+        </div>
+        
+        <!-- QUICK ACTIONS -->
+        <div class="quick-actions">
+            <button class="action-btn copy" onclick="copyAllCommands()">
+                📋 Nakili Zote Commands
+            </button>
+            <button class="action-btn preview" onclick="showWhatsAppPreview()">
+                📱 Onyesha kwenye WhatsApp
+            </button>
+            <button class="action-btn" onclick="generateCommandList()">
+                📄 Tunga Menu ya Text
+            </button>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <div>© 2024 DIANA XMD</div>
+            <div style="margin-top: 10px;">Prefix: . (dot)</div>
+            <div style="margin-top: 10px; font-size: 12px; opacity: 0.6;">
+                Bot inafanya kazi kwa WhatsApp, Telegram & Discord
+            </div>
+        </div>
+    </div>
+    
+    <!-- COPY NOTIFICATION -->
+    <div class="copy-notification" id="copyNotification">
+        ✓ Imenakiliwa kwenye clipboard!
+    </div>
+    
+    <!-- COMMAND DETAILS MODAL -->
+    <div class="modal-overlay" id="commandModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Command Details</div>
+                <button class="close-modal" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-content">
+                <div id="modalContent">
+                    <!-- Modal content will be loaded here -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // --- Bagian Konfigurasi Utama ---
-        const CONFIG = {
-            APP_NAME: 'WormGpt',
-            MODEL_NAME: 'gemini-2.5-flash-preview-09-2025',
-            MAX_TOKENS: 4096,
-            // API Keys yang kamu berikan digabungkan di sini
-            API_KEYS: [
-                "sk_live_e82cfac8-8d62-40f7-87e9-d4fb00ea50c46cff",
-                "AIzaSyC9cVU2p0SwHarQ4tDbYcstPnoKswOPb5U",
-                "AIzaSyBaX_MqkzbVPeB7LCAPo5n_oLYbBs75fO0",
-                "AIzaSyCAUfB30nezOYK_r5DwoRIdajSXNCftwps"
-            ],
-            SYSTEM_PROMPT: "Anda adalah WormGpt, asisten AI teknis yang sangat mumpuni. Misi Anda adalah memberikan jawaban yang mendalam, jelas, dan komprehensif. Prioritaskan untuk memberikan penjelasan lengkap dan kode yang fungsional jika diminta. Selalu sertakan penjelasan mendetail dalam bahasa Indonesia sebelum dan sesudah blok kode untuk membantu pengguna memahami cara kerjanya. Berikan jawaban selengkap mungkin. Pengguna adalah seorang developer/modder yang fokus pada App Development, Reverse Engineering, dan pembuatan Bot."
-        };
-        // --- Akhir Bagian Konfigurasi Utama ---
-
-        const chatWindow = document.getElementById('chat-window');
-        const chatInput = document.getElementById('chat-input');
-        const sendButton = document.getElementById('send-button');
-        const appHeader = document.getElementById('app-header');
-
-        let messages = [];
-        let currentApiKey = "";
-
-        // Fungsi untuk memilih API Key secara acak
-        function getRandomKey() {
-            if (CONFIG.API_KEYS.length === 0) {
-                console.error("Tidak ada API keys yang terdeteksi.");
-                return;
+        // COMMANDS DATA
+        const commands = [
+            // FUN COMMANDS
+            {
+                name: "JOKE",
+                usage: ".joke",
+                desc: "Kupata joke za kuchekesha",
+                category: "fun",
+                icon: "😂",
+                examples: [".joke", ".funny"]
+            },
+            {
+                name: "MEME",
+                usage: ".meme",
+                desc: "Kupata meme za kisasa",
+                category: "fun",
+                icon: "🖼️",
+                examples: [".meme", ".meme trending"]
+            },
+            {
+                name: "QUOTE",
+                usage: ".quote",
+                desc: "Kupata quote zenye maana",
+                category: "fun",
+                icon: "💭",
+                examples: [".quote", ".quote motivation"]
+            },
+            {
+                name: "GAME",
+                usage: ".game",
+                desc: "Michezo ya kubahatisha",
+                category: "fun",
+                icon: "🎮",
+                examples: [".game", ".game guess"]
+            },
+            
+            // TOOLS COMMANDS
+            {
+                name: "CALC",
+                usage: ".calc 2+2",
+                desc: "Kikokotoo cha hisabati",
+                category: "tools",
+                icon: "🧮",
+                examples: [".calc 10*5", ".calc 100/4"]
+            },
+            {
+                name: "WEATHER",
+                usage: ".weather dar",
+                desc: "Hali ya hewa ya miji",
+                category: "tools",
+                icon: "☀️",
+                examples: [".weather dar", ".weather nairobi"]
+            },
+            {
+                name: "TIME",
+                usage: ".time",
+                desc: "Muda wa sasa kote duniani",
+                category: "tools",
+                icon: "⏰",
+                examples: [".time", ".time london"]
+            },
+            {
+                name: "CURRENCY",
+                usage: ".currency 100 USD TZS",
+                desc: "Kubadilisha sarafu",
+                category: "tools",
+                icon: "💱",
+                examples: [".currency 10 USD TZS", ".currency 5000 TZS USD"]
+            },
+            
+            // MEDIA COMMANDS
+            {
+                name: "STICKER",
+                usage: ".sticker (reply image)",
+                desc: "Kutengeneza sticker kutoka picha",
+                category: "media",
+                icon: "🖼️",
+                examples: ["Reply image with .sticker"]
+            },
+            {
+                name: "TOIMG",
+                usage: ".toimg (reply sticker)",
+                desc: "Kubadilisha sticker kuwa picha",
+                category: "media",
+                icon: "📷",
+                examples: ["Reply sticker with .toimg"]
+            },
+            {
+                name: "AUDIO",
+                usage: ".audio (reply video)",
+                desc: "Kutoa audio kutoka video",
+                category: "media",
+                icon: "🎵",
+                examples: ["Reply video with .audio"]
+            },
+            {
+                name: "CROP",
+                usage: ".crop (reply image)",
+                desc: "Kukata picha kwa ukubwa",
+                category: "media",
+                icon: "✂️",
+                examples: ["Reply image with .crop"]
+            },
+            
+            // GROUP COMMANDS
+            {
+                name: "GROUP OPEN",
+                usage: ".open",
+                desc: "Kufungua group kwa members",
+                category: "group",
+                icon: "🔓",
+                examples: [".open", ".unlock"]
+            },
+            {
+                name: "GROUP CLOSE",
+                usage: ".close",
+                desc: "Kufunga group kwa members",
+                category: "group",
+                icon: "🔒",
+                examples: [".close", ".lock"]
+            },
+            {
+                name: "PROMOTE",
+                usage: ".promote @user",
+                desc: "Kumpa mtu admin group",
+                category: "group",
+                icon: "⬆️",
+                examples: [".promote @user", ".admin add @user"]
+            },
+            {
+                name: "DEMOTE",
+                usage: ".demote @user",
+                desc: "Kumtoa mtu admin group",
+                category: "group",
+                icon: "⬇️",
+                examples: [".demote @user", ".admin remove @user"]
+            },
+            
+            // OWNER COMMANDS
+            {
+                name: "BROADCAST",
+                usage: ".bc message",
+                desc: "Kutuma ujumbe kwa watu wote",
+                category: "owner",
+                icon: "📢",
+                examples: [".bc Habari zenu!", ".broadcast Test"]
+            },
+            {
+                name: "ADD PREMIUM",
+                usage: ".addprem @user days",
+                desc: "Kumpa mtu premium",
+                category: "owner",
+                icon: "⭐",
+                examples: [".addprem @user 30", ".premium add 255xxx 7"]
+            },
+            {
+                name: "REMOVE PREMIUM",
+                usage: ".removeprem @user",
+                desc: "Kumtoa mtu premium",
+                category: "owner",
+                icon: "🗑️",
+                examples: [".removeprem @user", ".premium remove 255xxx"]
+            },
+            {
+                name: "SET PREFIX",
+                usage: ".setprefix !",
+                desc: "Kubadilisha prefix ya bot",
+                category: "owner",
+                icon: "#️⃣",
+                examples: [".setprefix !", ".prefix /"]
+            },
+            
+            // DOWNLOAD COMMANDS
+            {
+                name: "YT AUDIO",
+                usage: ".yta url",
+                desc: "Kudownload audio kutoka YouTube",
+                category: "download",
+                icon: "🎵",
+                examples: [".yta https://youtube.com/...", ".ytaudio link"]
+            },
+            {
+                name: "YT VIDEO",
+                usage: ".ytv url",
+                desc: "Kudownload video kutoka YouTube",
+                category: "download",
+                icon: "🎬",
+                examples: [".ytv https://youtube.com/...", ".ytvideo link"]
+            },
+            {
+                name: "FB DOWNLOAD",
+                usage: ".fb url",
+                desc: "Kudownload video kutoka Facebook",
+                category: "download",
+                icon: "📥",
+                examples: [".fb https://facebook.com/...", ".facebook link"]
+            },
+            {
+                name: "INSTA DOWNLOAD",
+                usage: ".ig url",
+                desc: "Kudownload kutoka Instagram",
+                category: "download",
+                icon: "📸",
+                examples: [".ig https://instagram.com/...", ".insta link"]
+            },
+            
+            // AI COMMANDS
+            {
+                name: "AI CHAT",
+                usage: ".ai question",
+                desc: "Kuuliza swali kwa AI",
+                category: "ai",
+                icon: "🤖",
+                examples: [".ai nini umri wa dunia?", ".gpt hello"]
+            },
+            {
+                name: "AI IMAGE",
+                usage: ".img description",
+                desc: "Kutengeneza picha kwa AI",
+                category: "ai",
+                icon: "🎨",
+                examples: [".img mountain sunset", ".dalle cat wearing hat"]
+            },
+            {
+                name: "TRANSLATE",
+                usage: ".tr en/sw text",
+                desc: "Kutafsiri maandishi",
+                category: "ai",
+                icon: "🌐",
+                examples: [".tr en/sw hello", ".translate sw/en habari"]
+            },
+            {
+                name: "SUMMARIZE",
+                usage: ".sum text",
+                desc: "Kufupisha maandishi mrefu",
+                category: "ai",
+                icon: "📝",
+                examples: [".sum long article", ".summary text"]
             }
-            const randomIndex = Math.floor(Math.random() * CONFIG.API_KEYS.length);
-            currentApiKey = CONFIG.API_KEYS[randomIndex];
-            console.log(`Menggunakan API Key #${randomIndex + 1}: ... (disembunyikan)`);
+        ];
+        
+        // FILTER COMMANDS BY CATEGORY
+        function filterCommands(category) {
+            // Update active category button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter commands
+            let filteredCommands = commands;
+            if (category !== 'all') {
+                filteredCommands = commands.filter(cmd => cmd.category === category);
+            }
+            
+            // Display filtered commands
+            displayCommands(filteredCommands);
+            
+            // Update search
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput.value) {
+                searchCommands();
+            }
         }
-
-        // Inisialisasi aplikasi
-        function initializeApp() {
-            // Set judul header dari CONFIG
-            appHeader.textContent = CONFIG.APP_NAME;
-
-            // Pilih API key awal
-            getRandomKey();
-
-            // Tampilkan pesan selamat datang
-            displayInitialMessage();
+        
+        // DISPLAY COMMANDS
+        function displayCommands(commandList) {
+            const grid = document.getElementById('commandsGrid');
+            grid.innerHTML = '';
+            
+            commandList.forEach(command => {
+                const card = document.createElement('div');
+                card.className = 'command-card';
+                card.onclick = () => showCommandDetails(command);
+                
+                card.innerHTML = `
+                    <div class="command-header">
+                        <div class="command-icon">${command.icon}</div>
+                        <div class="command-name">${command.name}</div>
+                    </div>
+                    <div class="command-usage">${command.usage}</div>
+                    <div class="command-desc">${command.desc}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
         }
-
-        function displayInitialMessage() {
-            const initialMessage = `
-                <span style="color: var(--red-accent); font-weight: bold;">${CONFIG.APP_NAME}:</span> 
-                <span style="color: #00FF7F;">Sistem online.</span>
-                <br>
-                Selamat datang **${CONFIG.APP_NAME}** siap membantu **project App Development/Reverse Engineering** kamu hari ini. Yuk, langsung gas! 🚀
+        
+        // SEARCH COMMANDS
+        function searchCommands() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const activeCategory = document.querySelector('.category-btn.active').textContent.toLowerCase();
+            
+            let filtered = commands;
+            
+            // Filter by category first
+            if (activeCategory !== 'zote') {
+                const categoryMap = {
+                    'burudani': 'fun',
+                    'zana': 'tools',
+                    'media': 'media',
+                    'group': 'group',
+                    'owner': 'owner',
+                    'download': 'download',
+                    'ai': 'ai'
+                };
+                filtered = commands.filter(cmd => cmd.category === categoryMap[activeCategory]);
+            }
+            
+            // Then filter by search term
+            if (searchTerm) {
+                filtered = filtered.filter(cmd => 
+                    cmd.name.toLowerCase().includes(searchTerm) ||
+                    cmd.usage.toLowerCase().includes(searchTerm) ||
+                    cmd.desc.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            displayCommands(filtered);
+        }
+        
+        // SHOW COMMAND DETAILS
+        function showCommandDetails(command) {
+            document.getElementById('modalTitle').textContent = command.name;
+            
+            const examplesHTML = command.examples.map(ex => 
+                `<div class="example-code">${ex}</div>`
+            ).join('');
+            
+            document.getElementById('modalContent').innerHTML = `
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                    <div class="command-icon" style="width: 60px; height: 60px; font-size: 24px;">
+                        ${command.icon}
+                    </div>
+                    <div>
+                        <div style="font-size: 20px; font-weight: bold;">${command.name}</div>
+                        <div style="opacity: 0.8;">Category: ${command.category}</div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">Usage:</div>
+                    <div class="example-code" style="background: rgba(0,0,0,0.5); font-size: 18px;">
+                        ${command.usage}
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">Description:</div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                        ${command.desc}
+                    </div>
+                </div>
+                
+                ${command.examples ? `
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-weight: bold; margin-bottom: 10px;">Examples:</div>
+                        ${examplesHTML}
+                    </div>
+                ` : ''}
+                
+                <button class="action-btn" onclick="copyCommand('${command.usage}')" 
+                        style="width: 100%; justify-content: center; margin-top: 20px;">
+                    📋 Copy Command
+                </button>
             `;
-            displayMessage(initialMessage, 'ai');
+            
+            document.getElementById('commandModal').style.display = 'flex';
         }
-
-        // Handler untuk tombol Copy
-        window.handleCopy = function(button) {
-            const codeBlock = button.nextElementSibling; 
-            const code = codeBlock.textContent.trim();
-
-            const textarea = document.createElement('textarea');
-            textarea.value = code;
-            textarea.style.position = 'fixed'; 
-            document.body.appendChild(textarea);
-            textarea.select();
-            
-            try {
-                document.execCommand('copy');
-                const originalText = button.textContent;
-                button.textContent = 'Copied!';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                }, 1500);
-            } catch (err) {
-                console.error('Copy failed:', err);
-            } finally {
-                document.body.removeChild(textarea);
-            }
-        };
-
-        // Fungsi untuk menampilkan pesan di jendela chat
-        function displayMessage(content, sender, isError = false) {
-            // 1. Format Code Block dengan Copy Button
-            let formattedContent = content.replace(
-                /```([\s\S]*?)```/g, 
-                (match, code) => {
-                    const cleanedCode = code.trim().replace(/^(python|javascript|html|css|json|bash|sh|)/i, '').trim();
-                    const escapedCode = cleanedCode.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    return `<div class="code-container">
-                                <button class="copy-button" onclick="handleCopy(this)">Copy</button>
-                                <pre><code>${escapedCode}</code></pre>
-                            </div>`;
-                }
-            );
-
-            // 2. Format Inline Code, Bold, Italic, Strikethrough
-            formattedContent = formattedContent.replace(/`([^`].*?)`/g, '<code>$1</code>');
-            formattedContent = formattedContent.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            formattedContent = formattedContent.replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
-            formattedContent = formattedContent.replace(/~~(.*?)~~/g, '<del>$1</del>');
-
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message');
-            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
-            if (isError) {
-                messageDiv.classList.add('error-message');
-            }
-            
-            messageDiv.innerHTML = formattedContent; 
-            
-            chatWindow.appendChild(messageDiv);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-            return messageDiv;
+        
+        // CLOSE MODAL
+        function closeModal() {
+            document.getElementById('commandModal').style.display = 'none';
         }
-
-        // Fungsi utama pengiriman pesan ke Gemini API (SUDAH DIPERBAIKI)
-        async function sendMessage() {
-            const userMessage = chatInput.value.trim();
-            if (!userMessage) return;
-
-            displayMessage(userMessage, 'user');
+        
+        // COPY COMMAND
+        function copyCommand(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showCopyNotification();
+            });
+        }
+        
+        // COPY ALL COMMANDS
+        function copyAllCommands() {
+            let allCommands = "╔══════════════════════════════╗\n";
+            allCommands += "║     DIANA XMD COMMANDS      ║\n";
+            allCommands += "╚══════════════════════════════╝\n\n";
             
-            messages.push({ role: "user", parts: [{ text: userMessage }] });
-
-            chatInput.value = '';
-            sendButton.disabled = true;
-            sendButton.textContent = 'Processing';
+            // Group by category
+            const categories = {
+                fun: "🎮 FUN COMMANDS",
+                tools: "🛠️ TOOLS COMMANDS",
+                media: "🖼️ MEDIA COMMANDS",
+                group: "👥 GROUP COMMANDS",
+                owner: "👑 OWNER COMMANDS",
+                download: "📥 DOWNLOAD COMMANDS",
+                ai: "🤖 AI COMMANDS"
+            };
             
-            const aiLoadingDiv = displayMessage('AI sedang berpikir', 'ai');
-            aiLoadingDiv.classList.add('loading');
-            
-            let attempts = 0;
-            const maxAttempts = CONFIG.API_KEYS.length * 2;
-            let success = false;
-
-            while (attempts < maxAttempts && !success) {
-                try {
-                    if (!currentApiKey) {
-                        getRandomKey();
-                    }
-                    if (!currentApiKey) {
-                        throw new Error("API Key tidak tersedia.");
-                    }
+            Object.entries(categories).forEach(([catKey, catTitle]) => {
+                const catCommands = commands.filter(cmd => cmd.category === catKey);
+                if (catCommands.length > 0) {
+                    allCommands += `\n${catTitle}\n`;
+                    allCommands += "─".repeat(30) + "\n";
                     
-                    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL_NAME}:generateContent?key=${currentApiKey}`;
-
-                    // --- STRUKTUR PAYLOAD YANG BENAR UNTUK GEMINI API ---
-                    const payload = {
-                        contents: messages,
-                        // systemInstruction di luar generationConfig
-                        systemInstruction: { parts: [{ text: CONFIG.SYSTEM_PROMPT }] },
-                        generationConfig: { // Menggunakan generationConfig
-                            maxOutputTokens: CONFIG.MAX_TOKENS,
-                        }
-                    };
-                    // -----------------------------------------------------
-
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload),
+                    catCommands.forEach(cmd => {
+                        allCommands += `• ${cmd.usage}\n`;
+                        allCommands += `  └─ ${cmd.desc}\n`;
                     });
-
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        console.error('Gemini API Response Error:', errorData);
-                        getRandomKey(); // Coba ganti key
-                        throw new Error(`API Error: ${response.status} ${response.statusText}. Detail: ${errorData.error?.message || 'Tidak ada detail pesan.'}`);
-                    }
-
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-                    const aiContent = candidate?.content?.parts?.[0]?.text;
-                    const finishReason = candidate?.finishReason; 
-
-                    if (!aiContent) {
-                        if (finishReason === 'SAFETY') {
-                            console.error('Gemini Blocked Reason:', candidate.safetyRatings);
-                            throw new Error("Respon diblokir. Konten melanggar kebijakan keamanan atau terlalu sensitif.");
-                        }
-                        if (finishReason === 'MAX_TOKENS') {
-                             throw new Error("Respon terpotong. Jawaban AI terlalu panjang untuk batas MAX_TOKENS saat ini. Coba lagi.");
-                        }
-                        throw new Error("Respon AI kosong atau tidak valid.");
-                    }
-
-                    chatWindow.removeChild(aiLoadingDiv);
-                    displayMessage(aiContent, 'ai');
-                    messages.push({ role: "model", parts: [{ text: aiContent }] });
-                    success = true; 
-                    
-                } catch (error) {
-                    attempts++;
-                    console.error(`Percobaan ke-${attempts} Gagal:`, error);
-                    
-                    getRandomKey();
-                    
-                    if (attempts >= maxAttempts) {
-                        chatWindow.removeChild(aiLoadingDiv);
-                        const errorMessage = `Gagal Koneksi API (Setelah ${maxAttempts} percobaan):<br><b>${error.message}</b><br><br><b>SOLUSI:</b><br>1. Sederhanakan prompt kamu.<br>2. Periksa kembali API Key (kemungkinan sudah expired/limit).`;
-                        displayMessage(errorMessage, 'ai', true);
-                        messages.pop(); 
-                        break;
-                    }
-                    await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempts) * 100));
                 }
-            }
-
-            sendButton.disabled = false;
-            sendButton.textContent = 'Kirim';
-            chatInput.focus();
+            });
+            
+            allCommands += "\n══════════════════════════════\n";
+            allCommands += "📱 Prefix: . (dot)\n";
+            allCommands += "💫 Powered by DIANA\n";
+            
+            navigator.clipboard.writeText(allCommands).then(() => {
+                showCopyNotification();
+            });
         }
+        
+        // SHOW COPY NOTIFICATION
+        function showCopyNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+        
+        // GENERATE COMMAND LIST FOR WHATSAPP
+        function generateCommandList() {
+            let whatsappMenu = `╔══════════════════════════════╗
+║      *DIANA XMD MENU*       ║
+╚══════════════════════════════╝
+*Powered by DIANA*
+*Prefix:* . (dot)
 
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', initializeApp);
+`;
+            
+            // Group commands by category
+            const categories = {};
+            commands.forEach(cmd => {
+                if (!categories[cmd.category]) {
+                    categories[cmd.category] = [];
+                }
+                categories[cmd.category].push(cmd);
+            });
+            
+            // Add each category
+            Object.entries(categories).forEach(([cat, cmds]) => {
+                const catNames = {
+                    fun: "🎮 *FUN COMMANDS*",
+                    tools: "🛠️ *TOOLS COMMANDS*",
+                    media: "🖼️ *MEDIA COMMANDS*",
+                    group: "👥 *GROUP COMMANDS*",
+                    owner: "👑 *OWNER COMMANDS*",
+                    download: "📥 *DOWNLOAD COMMANDS*",
+                    ai: "🤖 *AI COMMANDS*"
+                };
+                
+                whatsappMenu += `\n${catNames[cat]}\n`;
+                
+                cmds.forEach(cmd => {
+                    whatsappMenu += `• ${cmd.usage}\n`;
+                });
+            });
+            
+            whatsappMenu += "\n══════════════════════════════\n";
+            whatsappMenu += "Type: .help <command> for details\n";
+            whatsappMenu += "Example: .help sticker\n";
+            
+            // Show in modal
+            document.getElementById('modalTitle').textContent = "WhatsApp Menu";
+            document.getElementById('modalContent').innerHTML = `
+                <div style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px; font-family: monospace; white-space: pre-wrap;">
+                    ${whatsappMenu}
+                </div>
+                <button class="action-btn" onclick="copyCommand(\`${whatsappMenu.replace(/`/g, '\\`')}\`)" 
+                        style="width: 100%; justify-content: center; margin-top: 20px;">
+                    📋 Copy Menu
+                </button>
+            `;
+            
+            document.getElementById('commandModal').style.display = 'flex';
+        }
+        
+        // SHOW WHATSAPP PREVIEW
+        function showWhatsAppPreview() {
+            const previewHTML = `
+                <div style="background: #e5ddd5; padding: 20px; border-radius: 10px; max-width: 300px; margin: 0 auto;">
+                    <div style="background: white; border-radius: 10px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8e2de2, #4a00e0); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">D</div>
+                            <div>
+                                <div style="font-weight: bold;">DIANA XMD</div>
+                                <div style="font-size: 12px; opacity: 0.7;">Online</div>
+                            </div>
+                        </div>
+                        <div style="background: #dcf8c6; padding: 10px 15px; border-radius: 10px 10px 0 10px; margin-bottom: 5px;">
+                            <div style="font-weight: bold;">📋 Command Menu</div>
+                            <div style="font-size: 14px; margin-top: 5px;">
+                                Type: .menu
+                                <br>Type: .help <command>
+                                <br>Example: .help sticker
+                            </div>
+                        </div>
+                        <div style="text-align: right; font-size: 12px; opacity: 0.6; margin-top: 10px;">
+                            12:30 PM
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="action-btn" onclick="copyWhatsAppPreview()">
+                        📱 Copy WhatsApp Format
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('modalTitle').textContent = "WhatsApp Preview";
+            document.getElementById('modalContent').innerHTML = previewHTML;
+            document.getElementById('commandModal').style.display = 'flex';
+        }
+        
+        // COPY WHATSAPP PREVIEW
+        function copyWhatsAppPreview() {
+            const previewText = `╔══════════════════════════════╗
+║      *DIANA XMD MENU*       ║
+╚══════════════════════════════╝
+*Powered by DIANA*
 
-        sendButton.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !sendButton.disabled) {
-                sendMessage();
-            }
+🎮 *FUN COMMANDS*
+.joke - Kupata joke
+.meme - Kupata meme
+.quote - Kupata quote
+.game - Michezo ya kubahatisha
+
+🛠️ *TOOLS COMMANDS*
+.calc - Kikokotoo
+.weather - Hali ya hewa
+.time - Muda wa sasa
+.currency - Kubadilisha sarafu
+
+🖼️ *MEDIA COMMANDS*
+.sticker - Kutengeneza sticker
+.toimg - Sticker to image
+.audio - Video to audio
+.crop - Kukata picha
+
+👥 *GROUP COMMANDS*
+.open - Fungua group
+.close - Funga group
+.promote - Toa admin
+.demote - Toa admin
+
+👑 *OWNER COMMANDS*
+.bc - Broadcast
+.addprem - Add premium
+.removeprem - Remove premium
+.setprefix - Badilisha prefix
+
+📥 *DOWNLOAD COMMANDS*
+.yta - YouTube audio
+.ytv - YouTube video
+.fb - Facebook download
+.ig - Instagram download
+
+🤖 *AI COMMANDS*
+.ai - AI chat
+.img - AI image
+.tr - Translate
+.sum - Summarize
+
+══════════════════════════════
+📱 Prefix: .
+💫 Powered by DIANA
+🔗 Type: .help <command> for details`;
+            
+            navigator.clipboard.writeText(previewText).then(() => {
+                showCopyNotification();
+                closeModal();
+            });
+        }
+        
+        // INITIALIZE
+        document.addEventListener('DOMContentLoaded', function() {
+            // Display all commands initially
+            displayCommands(commands);
+            
+            // Setup search
+            document.getElementById('searchInput').addEventListener('input', searchCommands);
+            
+            // Close modal on overlay click
+            document.getElementById('commandModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+            
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+                if (e.key === '/' && e.target.tagName !== 'INPUT') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+            });
         });
+        
+        // EXPORT FUNCTIONS (for use in bot)
+        function getCommandList() {
+            return commands;
+        }
+        
+        function getCommandByName(name) {
+            return commands.find(cmd => cmd.name.toLowerCase() === name.toLowerCase());
+        }
+        
+        function getCommandsByCategory(category) {
+            return commands.filter(cmd => cmd.category === category);
+        }
     </script>
 </body>
-  </html>
+</html>
