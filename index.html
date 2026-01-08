@@ -4,21 +4,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Njabulo Jb</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://files.catbox.moe/ojjflr.jpeg">
-  <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/ojjflr.jpeg">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js');
-    }
-  </script>
+  <title>VPS Calling Panel - Bot Config</title>
 </head>
 <body>
-  <h1>Njabulo Jb AI</h1>
-  <a href="https://vercel.app/Njabulo_Jb.apk" download>
-    <button>Download APK</button>
-  </a>
+  <h1>Bot Configuration</h1>
+  <form id="config-form">
+    <label>PREFIX: 🔠 choose your prefix of bot</label>
+    <input type="text" id="prefix" value="." required>
+    <br>
+
+    <label>AUTO_READ_STATUS: ♻️ Your contact status will be read automatically</label>
+    <select id="auto-read-status">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+    <br>
+
+    <label>AUTO_DOWNLOAD_STATUS: 🟢 Auto download contact status</label>
+    <select id="auto-download-status">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+    <br>
+
+    <label>AUTOREACT_STATUS: 🎊 Auto like status</label>
+    <select id="autoreact-status">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+    <br>
+
+    <label>PM_PERMIT: 🚫 Block PM usage</label>
+    <select id="pm-permit">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+    <br>
+
+    <label>BOT_NAME: 👤 Bot Name</label>
+    <input type="text" id="bot-name" value="Njabulo_Jb">
+    <br>
+
+    <label>BOT_MENU_LINKS: 🖼️ Menu links (comma-separated)</label>
+    <input type="text" id="bot-menu-links">
+    <br>
+
+    <label>PUBLIC_MODE: 🌐 Public mode</label>
+    <select id="public-mode">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+    <br>
+
+    <label>HEROKU_APY_KEY: 📡 Heroku API Key</label>
+    <input type="text" id="heroku-api-key" value="HRKU-AAa4OvbTCLDEK8R9CIpjZDInu5zGLmQfqkA0oJNNSu2Q_____wNi617Z3aQe" required>
+    <br>
+
+    <label>HEROKU_APP_NAME: 👥 Heroku App Name</label>
+    <input type="text" id="heroku-app-name" required>
+    <br>
+
+    <label>SESSION_ID: 📃 Session ID</label>
+    <input type="text" id="session-id" required>
+    <br>
+
+    <label>OWNER_NAME: 👤 Your Name</label>
+    <input type="text" id="owner-name" value="Njabulo Jb">
+    <br>
+
+    <label>NUMERO_OWNER: 🍥 Your number (e.g. 26777821911)</label>
+    <input type="text" id="numero-owner" value="26777821911">
+    <br>
+
+    <label>WARN_COUNT: 🚫 Warn limit</label>
+    <input type="number" id="warn-count" value="3">
+    <br>
+
+    <label>STARTING_BOT_MESSAGE: 💬 Show start message</label>
+    <select id="starting-bot-message">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+    <br>
+
+    <label>PRESENCE: ⬇️ Presence (1=online, 2=typing, 3=recording)</label>
+    <input type="text" id="presence" value="1">
+    <br>
+
+    <label>ANTI_DELETE_MESSAGE: 🚮 Anti-delete message</label>
+    <select id="anti-delete-message">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+    <br>
+
+    <button type="submit">Save Config</button>
+  </form>
+
+  <script>
+    document.getElementById('config-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const config = {
+        PREFIX: document.getElementById('prefix').value,
+        AUTO_READ_STATUS: document.getElementById('auto-read-status').value,
+        AUTO_DOWNLOAD_STATUS: document.getElementById('auto-download-status').value,
+        AUTOREACT_STATUS: document.getElementById('autoreact-status').value,
+        PM_PERMIT: document.getElementById('pm-permit').value,
+        BOT_NAME: document.getElementById('bot-name').value,
+        BOT_MENU_LINKS: document.getElementById('bot-menu-links').value,
+        PUBLIC_MODE: document.getElementById('public-mode').value,
+        HEROKU_APY_KEY: document.getElementById('heroku-api-key').value,
+        HEROKU_APP_NAME: document.getElementById('heroku-app-name').value,
+        SESSION_ID: document.getElementById('session-id').value,
+        OWNER_NAME: document.getElementById('owner-name').value,
+        NUMERO_OWNER: document.getElementById('numero-owner').value,
+        WARN_COUNT: document.getElementById('warn-count').value,
+        STARTING_BOT_MESSAGE: document.getElementById('starting-bot-message').value,
+        PRESENCE: document.getElementById('presence').value,
+        ANTI_DELETE_MESSAGE: document.getElementById('anti-delete-message').value,
+      };
+      console.log(config);
+      // Send config to backend or process it here
+    });
+  </script>
 </body>
 </html>
-
