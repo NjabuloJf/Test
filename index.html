@@ -1,143 +1,101 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🔐 MOMY-KIDY BOT 🔐</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <title>MOMY-KIDY BOT</title>
   <style>
-    :root{
-      --cyan:#00f6ff;
-      --green:#00ff88;
-      --purple:#b400ff;
-      --bgDark:rgba(0,0,0,.85);
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background:white;
-      font-family:'Rajdhani',sans-serif;
-      color:black;
-      overflow:hidden;
+    .box {
+      width: 300px;
+      height: 330px;
+      padding: 20px;
+      position: relative;
+      text-align: center;
+      background: url("");
+      border-radius: 10px;
+      transform: perspective(1000px) rotateY(0deg);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      position: relative;
     }
-    /* DARK OVERLAY */
-    #overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.6);
-      transition:.4s;
-      z-index:0;
+    #text {
+      color: #fff;
     }
-    /* FLOAT ANIMATION */
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    .input-container {
+      display: flex;
+      background: linear-gradient(45deg, #007bff 0%, #32CD32 100%);
+      border-radius: 1rem;
+      padding: 0.3rem;
+      gap: 0.3rem;
+      max-width: 300px;
+      width: 100%;
     }
-    /* CARD */
-    .container{
-      z-index:2;
-      width:90%;
-      max-width:480px;
-      background:white;
-      color:black;
-      padding:2.5rem;
-      text-align:center;
-      border-radius:12px;
-      border:2px solid var(--cyan);
-      animation: float 6s ease-in-out infinite;
-      box-shadow: 0 0 30px rgba(0,246,255,.5), 0 0 60px rgba(180,0,255,.3);
+    .input-container input {
+      border-radius: 0.8rem 0 0 0.8rem;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-left: 2px solid #007bff;
+      width: 89%;
+      flex-basis: 75%;
+      padding: 1rem;
+      transition: all 0.2s ease-in-out;
     }
-    /* TITLE ANIMATION */
-    h1{
-      font-family:'Orbitron',sans-serif;
-      font-size:2.4rem;
-      margin-bottom:8px;
-      background:linear-gradient(90deg,var(--cyan),var(--purple),var(--green));
-      background-size:200% auto;
-      -webkit-background-clip:text;
-      color:transparent;
-      animation: gradientMove 4s linear infinite;
+    .input-container input:focus {
+      border-left: 2px solid #32CD32;
+      outline: none;
     }
-    @keyframes gradientMove{
-      to{background-position:200% center;}
+    .input-container button {
+      flex-basis: 25%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #32CD32 0%, #007bff 100%);
+      font-weight: 900;
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+      color: #fff;
+      border: none;
+      width: 100%;
+      border-radius: 0 1rem 1rem 0;
+      transition: all 0.2s ease-in-out;
     }
-    .status{
-      font-size:.85rem;
-      letter-spacing:2px;
-      opacity:.7;
-      margin-bottom:25px;
+    .input-container button:hover {
+      background: linear-gradient(135deg, #007bff 0%, #32CD32 100%);
     }
-    /* INPUT */
-    input{
-      width:100%;
-      padding:15px;
-      background:#000;
-      border:2px solid var(--green);
-      color:var(--green);
-      text-align:center;
-      font-size:1.1rem;
-      outline:none;
-      transition:.3s;
-    }
-    input:focus{
-      box-shadow:0 0 20px var(--green);
-    }
-    /* BUTTON */
-    button{
-      width:100%;
-      margin-top:15px;
-      padding:15px;
-      font-family:'Orbitron',sans-serif;
-      background:linear-gradient(135deg,var(--cyan),var(--purple));
-      border:none;
-      color:#000;
-      cursor:pointer;
-      transition:.3s;
-    }
-    button:hover{
-      transform:scale(1.05);
-      box-shadow:0 0 25px var(--cyan);
-    }
-    /* RESULT */
-    #result{
-      margin-top:25px;
-      min-height:50px;
-      font-size:2rem;
-      letter-spacing:4px;
-      color:var(--purple);
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse{
-      0%{opacity:.6} 50%{opacity:1} 100%{opacity:.6}
-    }
-    /* FOOTER */
-    footer{
-      margin-top:20px;
-      font-size:.75rem;
-      opacity:.6;
+    .centered-text {
+      color: #fff;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div id="overlay"></div>
   <div class="container">
-    <h1>MOMY-KIDY BOT</h1>
-    <div class="status" id="statusText">SYSTEM STATUS : ONLINE</div>
-    <input id="number" value="255789661031">
-    <button onclick="getCode()">⚡ GENERATE CODE</button>
-    <div id="result"></div>
-    <footer>© Powered By Sila Tech</footer>
+    <div class="box">
+      <div id="text">
+        <h3 class="centered-text">𝑺𝑬𝑺𝑺𝑰𝑶𝑵 𝑺𝑪𝑨𝑵𝑵𝑬𝑹</h3>
+        <br>
+        <h6 class="centered-text">𝑬𝒏𝒕𝒆𝒓 𝒀𝒐𝒖𝒓 𝑾𝒉𝒂𝒕𝒔𝒂𝒑𝒑 𝑵𝒖𝒎𝒃𝒆𝒓 𝑾𝒊𝒕𝒉 𝑪𝒐𝒖𝒏𝒕𝒓𝒚 𝑪𝒐𝒅𝒆 𝑾𝒊𝒕𝒉𝒐𝒖𝒕 (+).</h6>
+        <h6 class="centered-text">𝑴𝑨𝑫𝑬 𝑩𝒘 𝑰𝑩𝑹𝑨𝑯𝑰𝑴 𝑨𝑫𝑨𝑴𝑺</h6>
+        <div class="input-container">
+          <input placeholder="Eg 254xxxxxxxx" type="number" id="number" name="">
+          <button id="submit" onclick="getCode()">Enter</button>
+        </div>
+        <div id="result"></div>
+      </div>
+    </div>
   </div>
+
   <script>
     async function getCode(){
       const n=document.getElementById("number").value.replace(/\D/g,'');
       const r=document.getElementById("result");
-      if(!n){ r.innerHTML="INVALID"; return; }
+      if(!n){
+        r.innerHTML="INVALID";
+        return;
+      }
       r.innerHTML="CONNECTING...";
       try{
         const res=await fetch(`/code?number=${n}`);
@@ -153,3 +111,4 @@
   </script>
 </body>
 </html>
+
