@@ -1,215 +1,73 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MOMY-KIDY BOT</title>
+  <title>URL Shortener</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
     .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-.instructions {
-            margin-top: 30px;
-            padding: 20px;
-            background: var(--light-bg);
-            border-radius: 14px;
-            text-align: left;
-            border-left: 4px solid var(--success-color);
-        }
-
-        .instructions h3 {
-            font-size: 16px;
-            color: var(--dark-text);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .instructions h3 i {
-            color: var(--success-color);
-        }
-
-        .instructions ol {
-            padding-left: 20px;
-            font-size: 14px;
-            color: var(--medium-text);
-        }
-
-        .instructions li {
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .feature {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            background: var(--light-bg);
-            border-radius: 10px;
-            font-size: 13px;
-            color: var(--medium-text);
-        }
-
-        .feature i {
-            color: var(--success-color);
-            font-size: 16px;
-        }
-    .box {
-      width: 300px;
-      height: 330px;
+      max-width: 400px;
+      margin: 40px auto;
       padding: 20px;
-      position: relative;
-      text-align: center;
-      background: #fff;
+      background-color: #fff;
+      border: 1px solid #ddd;
       border-radius: 10px;
-      transform: perspective(1000px) rotateY(0deg);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-      position: relative;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    #text {
-      color: #000;
+    #shorten-form {
+      margin-bottom: 20px;
     }
-    .input-container {
-      display: flex;
-      background: linear-gradient(45deg, #007bff 0%, #32CD32 100%);
-      border-radius: 1rem;
-      padding: 0.3rem;
-      gap: 0.3rem;
-      max-width: 300px;
+    #link {
       width: 100%;
+      height: 40px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
     }
-    .input-container input {
-      border-radius: 0.8rem 0 0 0.8rem;
-      background: #fff;
-      color: #000;
-      border: none;
-      border-left: 2px solid #007bff;
-      width: 89%;
-      flex-basis: 75%;
-      padding: 1rem;
-      transition: all 0.2s ease-in-out;
-    }
-    .input-container input:focus {
-      border-left: 2px solid #32CD32;
-      outline: none;
-    }
-    .input-container button {
-      flex-basis: 25%;
-      padding: 1rem;
-      background: linear-gradient(135deg, #32CD32 0%, #007bff 100%);
-      font-weight: 900;
-      letter-spacing: 0.3rem;
-      text-transform: uppercase;
+    #shorten-button {
+      width: 100%;
+      height: 40px;
+      background-color: #4CAF50;
       color: #fff;
       border: none;
-      width: 100%;
-      border-radius: 0 1rem 1rem 0;
-      transition: all 0.2s ease-in-out;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
     }
-    .input-container button:hover {
-      background: linear-gradient(135deg, #007bff 0%, #32CD32 100%);
+    #shorten-button:hover {
+      background-color: #3e8e41;
     }
-    .centered-text {
-      color: #000;
-      text-align: center;
+    #result {
+      margin-top: 20px;
+    }
+    #copy-button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #copy-button:hover {
+      background-color: #3e8e41;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="box">
-      <div id="text">
-        <h3 class="centered-text">𝑺𝑬𝑺𝑺𝑰𝑶𝑵 𝑺𝑪𝑨𝑵𝑵𝑬𝑹</h3>
-        <br>
-        <h6 class="centered-text">𝑬𝒏𝒕𝒆𝒓 𝒀𝒐𝒖𝒓 𝑾𝒉𝒂𝒕𝒔𝒂𝒑𝒑 𝑵𝒖𝒎𝒃𝒆𝒓 𝑾𝒊𝒕𝒉 𝑪𝒐𝒖𝒏𝒕𝒓𝒚 𝑪𝒐𝒅𝒆 𝑾𝒊𝒕𝒉𝒐𝒖𝒕 (+).</h6>
-        <h6 class="centered-text">𝑴𝑨𝑫𝑬 𝑩𝒘 𝑰𝑩𝑹𝑨𝑯𝑰𝑴 𝑨𝑫𝑨𝑴𝑺</h6>
-        <div class="input-container">
-          <input placeholder="Eg 254xxxxxxxx" type="number" id="number" name="">
-          <button id="submit" onclick="getCode()">Enter</button>
-        </div>
-        <div id="result"></div>
-      </div>
-    </div>
+    <h1>URL Shortener</h1>
+    <form id="shorten-form">
+      <input type="text" id="link" placeholder="Enter link">
+      <button id="shorten-button" type="submit">Shorten</button>
+    </form>
+    <p id="result"></p>
   </div>
 
-  <div class="features">
-                <div class="feature">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Secure & Encrypted</span>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-bolt"></i>
-                    <span>Instant Processing</span>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-mobile-alt"></i>
-                    <span>Mobile Optimized</span>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-history"></i>
-                    <span>Auto Refresh</span>
-                </div>
-            </div>
-            
-            <div class="instructions">
-                <h3><i class="fas fa-info-circle"></i> How to use Dml-Xmd Pro:</h3>
-                <ol>
-                    <li>Open your phone's camera or QR scanner app</li>
-                    <li>Point your camera at the QR code above</li>
-                    <li>Wait for the app to recognize and process the code</li>
-                    <li>Follow the instructions on your device</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-
-    <div class="notification" id="notification">
-        <i class="fas fa-check-circle"></i>
-        <div class="notification-content">
-            <h4>QR Code Generated</h4>
-            <p>New code is ready for scanning</p>
-        </div>
-    </div>
-
-  <script>
-    async function getCode(){
-      const n = document.getElementById("number").value.replace(/\D/g,'');
-      const r = document.getElementById("result");
-      console.log('Number:', n);
-      if(!n){
-        r.innerHTML = "INVALID";
-        return;
-      }
-      r.innerHTML = "CONNECTING...";
-      try {
-        const res = await fetch(`/code?number=${n}`);
-        console.log('Response:', res);
-        const d = await res.json();
-        console.log('Data:', d);
-        if (d.code) {
-          r.innerHTML = d.code;
-          navigator.clipboard.writeText(d.code);
-        } else {
-          r.innerHTML = "FAILED";
-        }
-      } catch (error) {
-        console.error(error);
-        r.innerHTML = "SERVER ERROR";
-      }
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+
 
