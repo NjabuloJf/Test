@@ -1,335 +1,279 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sw">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NJABULO JB AI | Dashboard</title>
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Socket.io Library (This connects to your server.js) -->
-    <script src="/socket.io/socket.io.js"></script>
+    <title>TIMNASA TECH | Official Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #00ff41; 
-            --error-color: #ff3e3e;
-            --heroku-color: #6762a6; 
-            --secondary-color: #0d0d0d;
-            --text-color: #e0e0e0;
-            --card-bg: #161616;
-            --terminal-bg: #050505;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            overflow-x: hidden;
-        }
-
-        /* HEADER AREA */
-        header {
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1000');
+            font-family: 'Poppins', sans-serif;
+            background: #000 url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
             background-size: cover;
-            background-position: center;
-            padding: 3rem 1rem;
-            text-align: center;
-            border-bottom: 3px solid var(--primary-color);
-            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.2);
-        }
-
-        .header-title {
-            font-size: 2.5rem;
-            margin: 0;
-            color: var(--primary-color);
-            text-shadow: 0 0 10px var(--primary-color);
-        }
-
-        /* LAYOUT CONTAINER */
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; }
-        }
-
-        section {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        h2 {
-            color: var(--primary-color);
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 0;
+            color: white;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
-        }
-
-        /* INPUT FIELDS */
-        .input-group { margin-bottom: 20px; }
-        label { display: block; font-size: 0.75rem; color: #888; margin-bottom: 8px; text-transform: uppercase; }
-        input {
-            width: 100%;
-            background: #000;
-            border: 1px solid #444;
-            padding: 12px;
-            color: var(--primary-color);
-            border-radius: 6px;
-            font-family: inherit;
-            box-sizing: border-box;
-            outline: none;
-            transition: 0.3s;
-        }
-        input:focus { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 255, 65, 0.1); }
-
-        /* BUTTONS */
-        .btn-flex { display: flex; gap: 10px; flex-direction: column; }
-        .btn {
-            padding: 15px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 10px;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-        .btn-deploy { background: var(--primary-color); color: #000; font-size: 1rem; }
-        .btn-git { background: #24292e; color: #fff; border: 1px solid #444; }
-        .btn:hover { transform: translateY(-3px); opacity: 0.9; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-
-        /* BOT MANAGEMENT LIST */
-        .bot-list { margin-top: 20px; max-height: 300px; overflow-y: auto; }
-        .bot-card {
-            background: #0a0a0a;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--primary-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: fadeIn 0.5s ease;
-        }
-        .bot-info h4 { margin: 0; color: #fff; font-size: 0.9rem; }
-        .bot-info p { margin: 2px 0 0; font-size: 0.7rem; color: #666; }
-        .status-dot { height: 8px; width: 8px; background: var(--primary-color); border-radius: 50%; display: inline-block; margin-right: 5px; }
-        .btn-del { background: none; border: none; color: var(--error-color); cursor: pointer; font-size: 1.1rem; padding: 5px; }
-
-        /* TERMINAL */
-        .terminal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #222;
-            padding: 8px 15px;
-            border-radius: 8px 8px 0 0;
-        }
-        .terminal-window {
-            background: var(--terminal-bg);
-            height: 450px;
-            padding: 15px;
-            border-radius: 0 0 8px 8px;
-            overflow-y: auto;
-            font-size: 0.8rem;
-            line-height: 1.6;
-            border: 1px solid #333;
-            border-top: none;
-        }
-        .log-purple { color: #c678dd; } 
-        .log-blue { color: #51a1ff; }
-        .log-green { color: var(--primary-color); }
-        .log-red { color: var(--error-color); }
-        .log-white { color: #fff; }
-
-        .status-badge {
-            font-size: 0.7rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: #333;
-            border: 1px solid #555;
+            min-height: 100vh;
         }
 
-        .floating-invite {
+        /* Dark Overlay */
+        body::before {
+            content: "";
             position: fixed;
-            bottom: 25px;
-            left: 25px;
-            background: #25d366;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 999;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: -1;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* --- PROFILE --- */
+        .profile-img {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            border: 4px solid #00f2fe;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 24px; letter-spacing: 3px; color: #00f2fe; }
+        .bio-text { font-size: 14px; margin-bottom: 20px; opacity: 0.8; }
+
+        /* --- SKILLS SECTION --- */
+        .skills-container {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;
+        }
+        .skill-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 5px 12px; border-radius: 15px; border: 1px solid #00f2fe;
+            font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 5px;
+        }
+
+        /* --- MUSIC PLAYER --- */
+        .player-card {
+            background: linear-gradient(135deg, rgba(0,242,254,0.1), rgba(0,0,0,0.5));
+            border-radius: 25px; padding: 20px; margin-bottom: 30px;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .song-title { font-size: 13px; margin-bottom: 15px; font-weight: bold; color: #00f2fe; }
+        .controls { display: flex; justify-content: center; align-items: center; gap: 25px; }
+        .ctrl-btn { background: none; border: none; color: white; cursor: pointer; font-size: 22px; transition: 0.3s; }
+        .ctrl-btn:hover { color: #00f2fe; transform: scale(1.2); }
+        .play-main { 
+            width: 55px; height: 55px; background: #00f2fe; border-radius: 50%; 
+            color: black; display: flex; align-items: center; justify-content: center;
+        }
+
+        /* --- SOCIAL STATS CARDS --- */
+        .social-card {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 20px; padding: 15px; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 15px; text-align: left;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s; text-decoration: none; color: white;
+        }
+        .social-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); border-color: #00f2fe; }
+        .social-card img { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; }
+        .social-info h4 { font-size: 16px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        .stats-row { display: flex; gap: 15px; font-size: 12px; opacity: 0.8; }
+        .stats-row span b { color: #00f2fe; }
+
+        /* --- LINKS LIST --- */
+        .links-wrapper { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+        .link-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 15px 25px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 50px;
+            text-decoration: none; color: white; font-weight: 500; transition: 0.3s;
+        }
+        .link-item:hover { background: #00f2fe; color: black; transform: scale(1.02); }
+
+        /* --- FOOTER CARD --- */
+        .github-card {
+            margin-top: 30px; padding: 20px; border-radius: 20px;
+            background: rgba(0,0,0,0.5); border: 1px dashed #00f2fe;
+        }
+        .deploy-btn {
+            display: block; background: #6762a6; color: white; text-align: center;
+            padding: 12px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 15px;
+        }
+
+        /* Icons Colors */
+        .youtube-color { color: #FF0000; }
+        .tiktok-color { color: #fff; }
+        .insta-color { color: #E4405F; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1 class="header-title">✅💖 NJABULO JB 💚</h1>
-        <p style="color: #888; font-size: 0.8rem; margin-top: 10px; letter-spacing: 2px;">REAL-TIME BOT DEPLOYMENT ENGINE</p>
-    </header>
+<div class="container">
+    <img src="https://files.catbox.moe/qf6u89.jpg" alt="TIMNASA" class="profile-img">
+    <h1>TIMNASA TECH</h1>
+    <p class="bio-text">Innovative Tech Solutions & Bot Developer 🌐</p>
 
-    <div class="container">
-        <!-- CONFIGURATION -->
-        <div class="left-col">
-            <section>
-                <h2><i class="fas fa-sliders-h"></i> Deployment Config</h2>
-                
-                <div class="input-group">
-                    <label>Bot Name</label>
-                    <input type="text" id="botName" placeholder="e.g. JB-Official-Bot">
-                </div>
-
-                <div class="input-group">
-                    <label>GitHub Repository (HTTPS)</label>
-                    <input type="text" id="repoUrl" placeholder="https://github.com/njabulo/jb-bot.git">
-                </div>
-
-                <div class="input-group">
-                    <label>Session ID</label>
-                    <input type="text" id="sessionId" placeholder="Paste your Session ID here...">
-                </div>
-
-                <div class="input-group">
-                    <label>Owner Number (With Country Code)</label>
-                    <input type="tel" id="phoneNumber" placeholder="27xxxxxxxxx">
-                </div>
-
-                <div class="btn-flex">
-                    <button class="btn btn-deploy" onclick="startDeployment()">
-                        <i class="fas fa-cloud-upload-alt"></i> Trigger Deployment
-                    </button>
-                    <button class="btn btn-git" onclick="window.open('https://github.com', '_blank')">
-                        <i class="fab fa-github"></i> Open GitHub
-                    </button>
-                </div>
-            </section>
-
-            <section style="margin-top: 30px;">
-                <h2><i class="fas fa-list"></i> Managed Bots</h2>
-                <div class="bot-list" id="botContainer">
-                    <!-- Bots will be added here after successful deployment -->
-                </div>
-            </section>
-        </div>
-
-        <!-- REAL TERMINAL -->
-        <div class="right-col">
-            <div class="terminal-header">
-                <span style="font-size: 0.75rem; color: #aaa;"><i class="fas fa-terminal"></i> Live Build Logs</span>
-                <span class="status-badge" id="serverStatus" style="color: #aaa;">READY</span>
-            </div>
-            <div class="terminal-window" id="terminal">
-                <div class="log-blue">[SYSTEM] System standing by...</div>
-                <div class="log-white">[INFO] Input configuration and press Trigger Deployment to begin.</div>
-            </div>
-        </div>
+    <!-- SKILLS SECTION -->
+    <div class="skills-container">
+        <div class="skill-badge"><i class="fab fa-python"></i> Python</div>
+        <div class="skill-badge"><i class="fab fa-js"></i> JavaScript</div>
+        <div class="skill-badge"><i class="fas fa-server"></i> Node.js</div>
+        <div class="skill-badge"><i class="fas fa-database"></i> SQL</div>
     </div>
 
-    <a href="https://wa.me/" class="floating-invite" target="_blank">
-        <i class="fab fa-whatsapp"></i> SUPPORT GROUP
+    <!-- MUSIC PLAYER -->
+    <div class="player-card">
+        <div class="song-title" id="songTitle">Sasa Inacheza: Timnasa Theme</div>
+        <div class="controls">
+            <button class="ctrl-btn" onclick="stopMusic()"><i class="fas fa-stop"></i></button>
+            <button class="ctrl-btn play-main" id="playBtn"><i class="fas fa-play" id="ctrlIcon"></i></button>
+            <button class="ctrl-btn" onclick="nextMusic()"><i class="fas fa-step-forward"></i></button>
+        </div>
+        <audio id="song">
+            <source id="audioSource" src="https://files.catbox.moe/lc98ly.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- SOCIAL MEDIA CARDS -->
+    <!-- YouTube -->
+    <a href="https://youtube.com/@timnasa-tech" class="social-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YT">
+        <div class="social-info">
+            <h4><i class="fab fa-youtube youtube-color"></i> YouTube Channel</h4>
+            <div class="stats-row">
+                <span>Subscribers: <b class="count" data-target="5500">0</b></span>
+                <span>Views: <b class="count" data-target="120000">0</b></span>
+            </div>
+        </div>
     </a>
 
-    <script>
-        // Connect to the Node.js Server
-        const socket = io(); 
-        
-        const terminal = document.getElementById('terminal');
-        const serverStatus = document.getElementById('serverStatus');
-        const botContainer = document.getElementById('botContainer');
+    <!-- TikTok -->
+    <a href="https://www.tiktok.com/@timnasa.tech.com" class="social-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TK">
+        <div class="social-info">
+            <h4><i class="fab fa-tiktok tiktok-color"></i> TikTok Page</h4>
+            <div class="stats-row">
+                <span>Followers: <b class="count" data-target="8200">0</b></span>
+                <span>Likes: <b class="count" data-target="45000">0</b></span>
+            </div>
+        </div>
+    </a>
 
-        // Listen for real-time logs from server.js
-        socket.on('terminal-log', (data) => {
-            writeLog(data.msg, data.type);
-            
-            // Auto-update status based on logs
-            if (data.msg.includes("cloning")) {
-                serverStatus.innerText = "CLONING";
-                serverStatus.style.color = "var(--heroku-color)";
-            } else if (data.msg.includes("installing")) {
-                serverStatus.innerText = "INSTALLING";
-                serverStatus.style.color = "orange";
-            } else if (data.msg.includes("ONLINE")) {
-                serverStatus.innerText = "ONLINE";
-                serverStatus.style.color = "var(--primary-color)";
-            } else if (data.msg.includes("ERROR")) {
-                serverStatus.innerText = "FAILED";
-                serverStatus.style.color = "var(--error-color)";
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/tanzania_mipakani" class="social-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="IG">
+        <div class="social-info">
+            <h4><i class="fab fa-instagram insta-color"></i> Instagram</h4>
+            <div class="stats-row">
+                <span>Followers: <b class="count" data-target="3400">0</b></span>
+                <span>Likes: <b class="count" data-target="12000">0</b></span>
+            </div>
+        </div>
+    </a>
+
+    <!-- QUICK LINKS -->
+    <div class="links-wrapper">
+        <a href="https://wa.me/260767063077" class="link-item">
+            <span><i class="fab fa-whatsapp"></i> WhatsApp Owner</span>
+            <i class="fas fa-chevron-right"></i>
+        </a>
+        <a href="https://timnasa-happ-new-year-2026.onrender.com" class="link-item">
+            <span><i class="fas fa-key"></i> Get Pairing Code</span>
+            <i class="fas fa-chevron-right"></i>
+        </a>
+        <a href="https://chat.whatsapp.com/JazGLNBxW5XDVEst3PN4kj" class="link-item">
+            <span><i class="fas fa-users"></i> Join Support Group</span>
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+
+    <!-- GITHUB CARD -->
+    <div class="github-card">
+        <h3 style="font-size: 14px;"><i class="fab fa-github"></i> REPO: TIMNASA_TMD1</h3>
+        <p id="repoDesc" style="font-size: 12px; margin-top: 5px; color: #ccc;">Fetching repository data...</p>
+        <a href="https://www.heroku.com/deploy/?template=https://github.com/Next5x/TIMNASA_TMD1" class="deploy-btn">
+            <i class="fab fa-heroku"></i> DEPLOY TO HEROKU
+        </a>
+    </div>
+</div>
+
+<script>
+    // --- MUSIC PLAYER ---
+    const song = document.getElementById("song");
+    const ctrlIcon = document.getElementById("ctrlIcon");
+    const playBtn = document.getElementById("playBtn");
+    const songTitle = document.getElementById("songTitle");
+    const audioSource = document.getElementById("audioSource");
+
+    const playlist = [
+        {title: "Timnasa Theme", url: "https://files.catbox.moe/lc98ly.mp3"},
+        {title: "Tech Innovation Mix", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"}
+    ];
+    let songIndex = 0;
+
+    playBtn.onclick = () => {
+        if (song.paused) {
+            song.play();
+            ctrlIcon.className = "fas fa-pause";
+        } else {
+            song.pause();
+            ctrlIcon.className = "fas fa-play";
+        }
+    };
+
+    function stopMusic() {
+        song.pause();
+        song.currentTime = 0;
+        ctrlIcon.className = "fas fa-play";
+        songTitle.innerText = "Music Stopped";
+    }
+
+    function nextMusic() {
+        songIndex = (songIndex + 1) % playlist.length;
+        audioSource.src = playlist[songIndex].url;
+        song.load();
+        song.play();
+        songTitle.innerText = "Sasa Inacheza: " + playlist[songIndex].title;
+        ctrlIcon.className = "fas fa-pause";
+    }
+
+    // --- LIVE COUNTER ANIMATION ---
+    const counters = document.querySelectorAll('.count');
+    counters.forEach(counter => {
+        const updateCount = () => {
+            const target = +counter.getAttribute('data-target');
+            const count = +counter.innerText.replace(/,/g, '');
+            const speed = target / 100;
+
+            if (count < target) {
+                counter.innerText = Math.ceil(count + speed).toLocaleString();
+                setTimeout(updateCount, 20);
+            } else {
+                counter.innerText = target.toLocaleString();
             }
-        });
+        };
+        updateCount();
+    });
 
-        function writeLog(text, className = 'log-white') {
-            const div = document.createElement('div');
-            div.className = className;
-            div.innerText = text;
-            terminal.appendChild(div);
-            terminal.scrollTop = terminal.scrollHeight;
-        }
+    // --- GITHUB API ---
+    async function fetchGithub() {
+        try {
+            const res = await fetch('https://api.github.com/repos/Next5x/TIMNASA_TMD1');
+            const data = await res.json();
+            document.getElementById('repoDesc').innerText = data.description || "The Official TMD1 WhatsApp Bot";
+        } catch (e) { document.getElementById('repoDesc').innerText = "Developer Repository Online"; }
+    }
+    fetchGithub();
+</script>
 
-        function startDeployment() {
-            const botData = {
-                botName: document.getElementById('botName').value || "JB-Bot",
-                repoUrl: document.getElementById('repoUrl').value,
-                sessionId: document.getElementById('sessionId').value,
-                phoneNumber: document.getElementById('phoneNumber').value
-            };
-
-            // Basic Validation
-            if(!botData.repoUrl || !botData.sessionId) {
-                alert("Please provide the GitHub Repo URL and Session ID!");
-                writeLog("[ERROR] Deployment blocked: Missing required fields.", "log-red");
-                return;
-            }
-
-            // Clear terminal for new build
-            terminal.innerHTML = '<div class="log-blue">[SYSTEM] Handshaking with build server...</div>';
-            serverStatus.innerText = "STARTING";
-
-            // Emit data to server.js
-            socket.emit('start-deploy', botData);
-
-            // Add to UI list (Visual only)
-            addNewBotUI(botData.botName, botData.phoneNumber);
-        }
-
-        function addNewBotUI(name, phone) {
-            const card = document.createElement('div');
-            card.className = 'bot-card';
-            card.innerHTML = `
-                <div class="bot-info">
-                    <h4>✅💖 ${name.toUpperCase()} 💚</h4>
-                    <p><span class="status-dot"></span> Active | ${phone}</p>
-                </div>
-                <button class="btn-del" onclick="this.parentElement.remove()"><i class="fas fa-trash-alt"></i></button>
-            `;
-            botContainer.prepend(card);
-        }
-    </script>
 </body>
 </html>
