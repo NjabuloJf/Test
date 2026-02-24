@@ -6,7 +6,7 @@
     <title>NJABULO JB AI | Dashboard</title>
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Socket.io Client -->
+    <!-- Socket.io Library (This connects to your server.js) -->
     <script src="/socket.io/socket.io.js"></script>
     <style>
         :root {
@@ -27,6 +27,7 @@
             overflow-x: hidden;
         }
 
+        /* HEADER AREA */
         header {
             background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1000');
             background-size: cover;
@@ -34,7 +35,7 @@
             padding: 3rem 1rem;
             text-align: center;
             border-bottom: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.2);
         }
 
         .header-title {
@@ -44,66 +45,96 @@
             text-shadow: 0 0 10px var(--primary-color);
         }
 
+        /* LAYOUT CONTAINER */
         .container {
-            max-width: 1300px;
+            max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
             display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 25px;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
         }
 
-        @media (max-width: 1000px) {
+        @media (max-width: 900px) {
             .container { grid-template-columns: 1fr; }
         }
 
         section {
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
+            padding: 25px;
+            border-radius: 15px;
             border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         h2 {
             color: var(--primary-color);
-            font-size: 1rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
+            letter-spacing: 2px;
             margin-top: 0;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
         }
 
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.7rem; color: #888; margin-bottom: 5px; }
+        /* INPUT FIELDS */
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.75rem; color: #888; margin-bottom: 8px; text-transform: uppercase; }
         input {
             width: 100%;
             background: #000;
             border: 1px solid #444;
-            padding: 10px;
+            padding: 12px;
             color: var(--primary-color);
-            border-radius: 5px;
+            border-radius: 6px;
             font-family: inherit;
             box-sizing: border-box;
             outline: none;
+            transition: 0.3s;
         }
+        input:focus { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 255, 65, 0.1); }
 
+        /* BUTTONS */
+        .btn-flex { display: flex; gap: 10px; flex-direction: column; }
         .btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 5px;
+            padding: 15px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             text-transform: uppercase;
-            margin-bottom: 10px;
             transition: 0.3s;
         }
-        .btn-deploy { background: var(--primary-color); color: #000; }
-        .btn-git { background: #24292e; color: #fff; }
+        .btn-deploy { background: var(--primary-color); color: #000; font-size: 1rem; }
+        .btn-git { background: #24292e; color: #fff; border: 1px solid #444; }
+        .btn:hover { transform: translateY(-3px); opacity: 0.9; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
+        /* BOT MANAGEMENT LIST */
+        .bot-list { margin-top: 20px; max-height: 300px; overflow-y: auto; }
+        .bot-card {
+            background: #0a0a0a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+        .bot-info h4 { margin: 0; color: #fff; font-size: 0.9rem; }
+        .bot-info p { margin: 2px 0 0; font-size: 0.7rem; color: #666; }
+        .status-dot { height: 8px; width: 8px; background: var(--primary-color); border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .btn-del { background: none; border: none; color: var(--error-color); cursor: pointer; font-size: 1.1rem; padding: 5px; }
+
+        /* TERMINAL */
         .terminal-header {
             display: flex;
             justify-content: space-between;
@@ -112,134 +143,146 @@
             padding: 8px 15px;
             border-radius: 8px 8px 0 0;
         }
-
         .terminal-window {
             background: var(--terminal-bg);
-            height: 550px;
+            height: 450px;
             padding: 15px;
             border-radius: 0 0 8px 8px;
             overflow-y: auto;
-            overflow-x: auto;
-            font-size: 0.55rem; /* Smaller font for ASCII art */
-            line-height: 1.2;
+            font-size: 0.8rem;
+            line-height: 1.6;
             border: 1px solid #333;
             border-top: none;
-            white-space: pre; /* Keeps ASCII art structure */
-            color: #fff;
         }
-
-        .log-green { color: var(--primary-color); }
+        .log-purple { color: #c678dd; } 
         .log-blue { color: #51a1ff; }
+        .log-green { color: var(--primary-color); }
         .log-red { color: var(--error-color); }
-        .log-purple { color: #c678dd; }
+        .log-white { color: #fff; }
 
-        .bot-card {
-            background: #0a0a0a;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 10px;
-            border-left: 3px solid var(--primary-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: #333;
+            border: 1px solid #555;
         }
-        .status-dot { height: 8px; width: 8px; background: var(--primary-color); border-radius: 50%; display: inline-block; margin-right: 5px; }
 
+        .floating-invite {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: #25d366;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
 
     <header>
-        <h1 class="header-title">✅💖 NJABULO JB AI 💚</h1>
-        <p style="color: #888; font-size: 0.8rem; margin-top: 10px;">ULTIMATE WHATSAPP BOT DEPLOYER</p>
+        <h1 class="header-title">✅💖 NJABULO JB 💚</h1>
+        <p style="color: #888; font-size: 0.8rem; margin-top: 10px; letter-spacing: 2px;">REAL-TIME BOT DEPLOYMENT ENGINE</p>
     </header>
 
     <div class="container">
-        
-        <!-- SIDEBAR -->
+        <!-- CONFIGURATION -->
         <div class="left-col">
             <section>
-                <h2><i class="fas fa-cog"></i> Configuration</h2>
+                <h2><i class="fas fa-sliders-h"></i> Deployment Config</h2>
+                
                 <div class="input-group">
                     <label>Bot Name</label>
-                    <input type="text" id="botName" value="NJABULO JB MD">
+                    <input type="text" id="botName" placeholder="e.g. JB-Official-Bot">
                 </div>
+
                 <div class="input-group">
-                    <label>GitHub Repository</label>
-                    <input type="text" id="repoUrl" placeholder="https://github.com/user/repo">
+                    <label>GitHub Repository (HTTPS)</label>
+                    <input type="text" id="repoUrl" placeholder="https://github.com/njabulo/jb-bot.git">
                 </div>
+
                 <div class="input-group">
                     <label>Session ID</label>
-                    <input type="text" id="sessionId" placeholder="Paste Base64 ID">
+                    <input type="text" id="sessionId" placeholder="Paste your Session ID here...">
                 </div>
+
                 <div class="input-group">
-                    <label>Owner Number</label>
-                    <input type="text" id="phoneNumber" placeholder="27xxxxxxxx">
+                    <label>Owner Number (With Country Code)</label>
+                    <input type="tel" id="phoneNumber" placeholder="27xxxxxxxxx">
                 </div>
-                <button class="btn btn-deploy" onclick="startDeployment()">DEPLOY BOT NOW</button>
-                <button class="btn btn-git" onclick="window.open('https://github.com')">GITHUB</button>
+
+                <div class="btn-flex">
+                    <button class="btn btn-deploy" onclick="startDeployment()">
+                        <i class="fas fa-cloud-upload-alt"></i> Trigger Deployment
+                    </button>
+                    <button class="btn btn-git" onclick="window.open('https://github.com', '_blank')">
+                        <i class="fab fa-github"></i> Open GitHub
+                    </button>
+                </div>
             </section>
 
-            <section style="margin-top: 20px;">
-                <h2><i class="fas fa-server"></i> Active Instances</h2>
-                <div id="botList">
-                    <div class="bot-card">
-                        <div>
-                            <div style="font-size: 0.8rem;">SYSTEM_READY</div>
-                            <div style="font-size: 0.6rem; color: #666;"><span class="status-dot"></span> Waiting for deployment...</div>
-                        </div>
-                    </div>
+            <section style="margin-top: 30px;">
+                <h2><i class="fas fa-list"></i> Managed Bots</h2>
+                <div class="bot-list" id="botContainer">
+                    <!-- Bots will be added here after successful deployment -->
                 </div>
             </section>
         </div>
 
-        <!-- MAIN TERMINAL -->
+        <!-- REAL TERMINAL -->
         <div class="right-col">
             <div class="terminal-header">
-                <span style="font-size: 0.75rem; color: #aaa;"><i class="fas fa-terminal"></i> Build Console</span>
-                <span id="serverStatus" style="font-size: 0.7rem; color: var(--primary-color);">STANDBY</span>
+                <span style="font-size: 0.75rem; color: #aaa;"><i class="fas fa-terminal"></i> Live Build Logs</span>
+                <span class="status-badge" id="serverStatus" style="color: #aaa;">READY</span>
             </div>
             <div class="terminal-window" id="terminal">
-[SYSTEM] Njabulo JB Deployment Engine Ready...
-[SYSTEM] Awaiting user configuration input.
+                <div class="log-blue">[SYSTEM] System standing by...</div>
+                <div class="log-white">[INFO] Input configuration and press Trigger Deployment to begin.</div>
             </div>
         </div>
     </div>
 
+    <a href="https://wa.me/" class="floating-invite" target="_blank">
+        <i class="fab fa-whatsapp"></i> SUPPORT GROUP
+    </a>
+
     <script>
-        const socket = io();
+        // Connect to the Node.js Server
+        const socket = io(); 
+        
         const terminal = document.getElementById('terminal');
         const serverStatus = document.getElementById('serverStatus');
+        const botContainer = document.getElementById('botContainer');
 
-        // ASCII ART BANNER (Properly Escaped)
-        const JB_BANNER = `
-__| |______________________________________________________________________________________________________________________________| |__
-__   ______________________________________________________________________________________________________________________________   __
-  | |                                                                                                                              | |
-  | |      ___       __       _______       ___           ________      ________      _____ ______       _______                   | |
-  | |     |\\  \\     |\\  \\    |\\  ___ \\     |\\  \\         |\\   ____\\    |\\   __  \\    |\\   _ \\  _   \\    |\\  ___ \\                  | |
-  | |     \\ \\  \\    \\ \\  \\   \\ \\   __/|    \\ \\  \\        \\ \\  \\___|    \\ \\  \\|\\  \\   \\ \\  \\\\\\__\\ \\  \\   \\ \\   __/|                 | |
-  | |      \\ \\  \\  __\\ \\  \\   \\ \\  \\_|/__   \\ \\  \\        \\ \\  \\        \\ \\  \\\\\\  \\   \\ \\  \\\\|__| \\  \\   \\ \\  \\_|/__               | |
-  | |       \\ \\  \\|\\__\\_\\  \\   \\ \\  \\_|\\ \\   \\ \\  \\____    \\ \\  \\____    \\ \\  \\\\\\  \\   \\ \\  \\    \\ \\  \\   \\ \\  \\_|\\ \\              | |
-  | |        \\ \\____________\\   \\ \\_______\\   \\ \\_______\\   \\ \\_______\\   \\ \\_______\\   \\ \\__\\    \\ \\__\\   \\ \\_______\\             | |
-  | |         \\|____________|    \\|_______|    \\|_______|    \\|_______|    \\|_______|    \\|__|     \\|__|    \\|_______|             | |
-  | |                                                                                                                              | |
-  | |                                                                                                                              | |
-  | |                                                                                                                              | |
-  | |      _________    ________          ________      _______       ________       ________      _______       ________          | |
-  | |     |\\___   ___\\ |\\   __  \\        |\\   __  \\    |\\  ___ \\     |\\   ___  \\    |\\   ___ \\    |\\  ___ \\     |\\   __  \\         | |
-  | |     \\|___ \\  \\_| \\ \\  \\|\\  \\       \\ \\  \\|\\  \\   \\ \\   __/|    \\ \\  \\\\ \\  \\   \\ \\  \\_|\\ \\   \\ \\   __/|    \\ \\  \\|\\  \\        | |
-  | |          \\ \\  \\   \\ \\  \\\\\\  \\       \\ \\   _  _\\   \\ \\  \\_|/__   \\ \\  \\\\ \\  \\   \\ \\  \\ \\\\ \\   \\ \\  \\_|/__   \\ \\   _  _\\       | |
-  | |           \\ \\  \\   \\ \\  \\\\\\  \\       \\ \\  \\\\  \\|   \\ \\  \\_|\\ \\   \\ \\  \\\\ \\  \\   \\ \\  \\_|\\\\ \\   \\ \\  \\_|\\ \\   \\ \\  \\\\  \\|      | |
-  | |            \\ \\__\\   \\ \\_______\\       \\ \\__\\\\ _\\    \\ \\_______\\   \\ \\__\\\\ \\__\\   \\ \\_______\\   \\ \\_______\\   \\ \\__\\\\ _\\      | |
-  | |             \\|__|    \\|_______|        \\|__|\\|__|    \\|_______|    \\|__| \\|__|    \\|_______|    \\|_______|    \\|__|\\|__|     | |
-  | |                                                                                                                              | |
-  | |                                                                                                                              | |
-__| |______________________________________________________________________________________________________________________________| |__
-__   ______________________________________________________________________________________________________________________________   __
-  | |                                                                                                                              | |
-  | |                     NJABULO JB AI SYSTEM IS NOW ONLINE...                                                                    | |
-  |_|______________________________________________________________________________________________________________________________| |`;
+        // Listen for real-time logs from server.js
+        socket.on('terminal-log', (data) => {
+            writeLog(data.msg, data.type);
+            
+            // Auto-update status based on logs
+            if (data.msg.includes("cloning")) {
+                serverStatus.innerText = "CLONING";
+                serverStatus.style.color = "var(--heroku-color)";
+            } else if (data.msg.includes("installing")) {
+                serverStatus.innerText = "INSTALLING";
+                serverStatus.style.color = "orange";
+            } else if (data.msg.includes("ONLINE")) {
+                serverStatus.innerText = "ONLINE";
+                serverStatus.style.color = "var(--primary-color)";
+            } else if (data.msg.includes("ERROR")) {
+                serverStatus.innerText = "FAILED";
+                serverStatus.style.color = "var(--error-color)";
+            }
+        });
 
         function writeLog(text, className = 'log-white') {
             const div = document.createElement('div');
@@ -249,33 +292,44 @@ __   ___________________________________________________________________________
             terminal.scrollTop = terminal.scrollHeight;
         }
 
-        socket.on('terminal-log', (data) => {
-            writeLog(data.msg, data.type);
-        });
-
         function startDeployment() {
-            const data = {
-                botName: document.getElementById('botName').value,
+            const botData = {
+                botName: document.getElementById('botName').value || "JB-Bot",
                 repoUrl: document.getElementById('repoUrl').value,
                 sessionId: document.getElementById('sessionId').value,
                 phoneNumber: document.getElementById('phoneNumber').value
             };
 
-            if(!data.repoUrl || !data.sessionId) return alert("Missing Repo URL or Session ID!");
+            // Basic Validation
+            if(!botData.repoUrl || !botData.sessionId) {
+                alert("Please provide the GitHub Repo URL and Session ID!");
+                writeLog("[ERROR] Deployment blocked: Missing required fields.", "log-red");
+                return;
+            }
 
-            // 1. Clear Terminal
-            terminal.innerHTML = "";
-            
-            // 2. Show Artistic Banner
-            writeLog(JB_BANNER, "log-green");
-            
-            // 3. Start real build process
-            serverStatus.innerText = "BUILDING";
-            writeLog("\n[SYSTEM] Deployment Signal Sent to Backend...", "log-blue");
-            
-            socket.emit('start-deploy', data);
+            // Clear terminal for new build
+            terminal.innerHTML = '<div class="log-blue">[SYSTEM] Handshaking with build server...</div>';
+            serverStatus.innerText = "STARTING";
+
+            // Emit data to server.js
+            socket.emit('start-deploy', botData);
+
+            // Add to UI list (Visual only)
+            addNewBotUI(botData.botName, botData.phoneNumber);
+        }
+
+        function addNewBotUI(name, phone) {
+            const card = document.createElement('div');
+            card.className = 'bot-card';
+            card.innerHTML = `
+                <div class="bot-info">
+                    <h4>✅💖 ${name.toUpperCase()} 💚</h4>
+                    <p><span class="status-dot"></span> Active | ${phone}</p>
+                </div>
+                <button class="btn-del" onclick="this.parentElement.remove()"><i class="fas fa-trash-alt"></i></button>
+            `;
+            botContainer.prepend(card);
         }
     </script>
 </body>
 </html>
-
