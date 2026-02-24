@@ -1,73 +1,171 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>URL Shortener</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-    }
-    .container {
-      max-width: 400px;
-      margin: 40px auto;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    #shorten-form {
-      margin-bottom: 20px;
-    }
-    #link {
-      width: 100%;
-      height: 40px;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-    }
-    #shorten-button {
-      width: 100%;
-      height: 40px;
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      padding: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #shorten-button:hover {
-      background-color: #3e8e41;
-    }
-    #result {
-      margin-top: 20px;
-    }
-    #copy-button {
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      padding: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #copy-button:hover {
-      background-color: #3e8e41;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | [Your Name]</title>
+    <style>
+        /* CSS STYLING */
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e293b;
+            --text-color: #334155;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background: var(--secondary-color);
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: -50px auto 50px;
+            padding: 0 20px;
+        }
+
+        section {
+            background: var(--card-bg);
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+        }
+
+        /* Skills Tags */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .skill-tag {
+            background: #dbeafe;
+            color: var(--primary-color);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Social Links */
+        .social-links {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .social-links a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            header h1 { font-size: 2rem; }
+            section { padding: 25px; }
+            .container { margin-top: -30px; }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>URL Shortener</h1>
-    <form id="shorten-form">
-      <input type="text" id="link" placeholder="Enter link">
-      <button id="shorten-button" type="submit">Shorten</button>
-    </form>
-    <p id="result"></p>
-  </div>
 
-  <script src="script.js"></script>
+    <!-- HERO SECTION -->
+    <header>
+        <h1>[Your Name]</h1>
+        <p>Developer | Designer | Problem Solver</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- ABOUT SECTION -->
+        <section id="about">
+            <h2>About Me</h2>
+            <p>
+                Hello! I am a passionate creator based in [Your City]. I love building things that are not only functional but also beautiful to look at. My journey into the world of technology started when [Add a short story about your start]. 
+            </p>
+            <p>
+                Currently, I am focusing on improving my skills in web development and looking for exciting projects to collaborate on.
+            </p>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section id="skills">
+            <h2>My Skills</h2>
+            <div class="skills-container">
+                <span class="skill-tag">HTML5 / CSS3</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">React.js</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">UI/UX Design</span>
+                <span class="skill-tag">Git / GitHub</span>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact">
+            <h2>Let's Connect</h2>
+            <p>I am always open to chatting about new projects, creative ideas, or opportunities to be part of your visions.</p>
+            
+            <div class="social-links">
+                <a href="mailto:your-email@example.com">Email</a>
+                <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+                <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+                <a href="#">Twitter</a>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2023 [Your Name]. Designed with &hearts; by Me.</p>
+    </footer>
+
 </body>
 </html>
-
-
