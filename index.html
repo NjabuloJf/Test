@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Help Center | Njabulo Jb AI</title>
-    <!-- Font Awesome for fab fa icons -->
+    <title>NJABULO JB AI | Dashboard</title>
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
             --primary-color: #00ff41; 
-            --heroku-color: #430098; 
-            --render-color: #000000;
+            --error-color: #ff3e3e;
+            --heroku-color: #6762a6; 
             --secondary-color: #0d0d0d;
             --text-color: #e0e0e0;
-            --card-bg: #1a1a1a;
-            --help-accent: #1e293b;
+            --card-bg: #161616;
+            --terminal-bg: #050505;
         }
 
         body {
@@ -22,218 +22,347 @@
             margin: 0;
             background-color: var(--secondary-color);
             color: var(--text-color);
-            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
+        /* HEADER AREA */
         header {
-            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1000');
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1000');
+            background-size: cover;
+            background-position: center;
             padding: 3rem 1rem;
             text-align: center;
-            border-bottom: 2px solid var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.2);
         }
 
-        .profile-img {
-            width: 110px; height: 130px;
-            border-radius: 20px;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 15px var(--primary-color);
-            margin-bottom: 15px;
-            object-fit: cover;
+        .header-title {
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
         }
 
-        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+        /* LAYOUT CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+        }
 
         section {
             background: var(--card-bg);
-            padding: 30px;
-            margin-bottom: 40px;
+            padding: 25px;
             border-radius: 15px;
             border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        h2 { color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 15px; }
-
-        /* HELP CENTER GRID */
-        .help-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
         }
 
-        .help-card {
+        /* INPUT FIELDS */
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.75rem; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+        input {
+            width: 100%;
             background: #000;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #222;
+            border: 1px solid #444;
+            padding: 12px;
+            color: var(--primary-color);
+            border-radius: 6px;
+            font-family: inherit;
+            box-sizing: border-box;
+            outline: none;
             transition: 0.3s;
         }
+        input:focus { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 255, 65, 0.1); }
 
-        .help-card:hover { border-color: var(--primary-color); transform: translateY(-5px); }
-
-        .help-card i { font-size: 2rem; color: var(--primary-color); margin-bottom: 15px; }
-
-        .help-card h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #fff; }
-
-        .help-card p { font-size: 0.85rem; color: #aaa; line-height: 1.4; }
-
-        /* DEPLOY BUTTONS */
-        .deploy-flex { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
-        .deploy-btn {
-            flex: 1; min-width: 200px; height: 100px;
-            border-radius: 8px; overflow: hidden; position: relative;
-            display: flex; align-items: center; justify-content: center;
-            text-decoration: none; border: 1px solid #444; transition: 0.3s;
-        }
-        .deploy-btn:hover { border-color: var(--primary-color); }
-        .deploy-btn img { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
-        .deploy-btn span { z-index: 2; color: #fff; font-weight: bold; display: flex; align-items: center; gap: 10px; }
-
-        /* QR CODE */
-        .qr-box {
-            width: 180px; height: 180px; margin: 0 auto;
-            border: 2px solid var(--primary-color);
-            cursor: crosshair; position: relative;
-        }
-        .qr-box img { width: 100%; height: 100%; }
-        .qr-hover {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center;
+        /* BUTTONS */
+        .btn-flex { display: flex; gap: 10px; flex-direction: column; }
+        .btn {
+            padding: 15px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
             transition: 0.3s;
         }
-        .qr-box:hover .qr-hover { opacity: 0; }
+        .btn-deploy { background: var(--primary-color); color: #000; font-size: 1rem; }
+        .btn-git { background: #24292e; color: #fff; border: 1px solid #444; }
+        .btn:hover { transform: translateY(-3px); opacity: 0.9; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
-        /* FOOTER */
-        footer { text-align: center; padding: 40px; background: #050505; border-top: 1px solid #222; }
-        .ai-text { color: var(--primary-color); font-weight: bold; }
+        /* BOT MANAGEMENT LIST */
+        .bot-list { margin-top: 20px; max-height: 300px; overflow-y: auto; }
+        .bot-card {
+            background: #0a0a0a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+        .bot-card.offline { border-left-color: var(--error-color); }
+        .bot-info h4 { margin: 0; color: #fff; font-size: 0.9rem; }
+        .bot-info p { margin: 2px 0 0; font-size: 0.7rem; color: #666; }
+        .status-dot { height: 8px; width: 8px; background: var(--primary-color); border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .btn-del { background: none; border: none; color: var(--error-color); cursor: pointer; font-size: 1.1rem; padding: 5px; }
 
-        /* BOT CHAT */
-        #terminal-fixed { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
-        #terminal-win {
-            width: 300px; height: 350px; background: #000; border: 2px solid var(--primary-color);
-            display: none; border-radius: 10px; flex-direction: column; overflow: hidden; margin-bottom: 10px;
+        /* HEROKU TERMINAL */
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #222;
+            padding: 8px 15px;
+            border-radius: 8px 8px 0 0;
         }
-        .term-head { background: var(--primary-color); color: #000; padding: 10px; font-weight: bold; }
-        .term-body { flex: 1; padding: 10px; font-size: 0.75rem; color: var(--primary-color); overflow-y: auto; }
-        .term-trigger {
-            width: 60px; height: 60px; background: var(--primary-color); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            box-shadow: 0 0 20px var(--primary-color);
+        .terminal-window {
+            background: var(--terminal-bg);
+            height: 450px;
+            padding: 15px;
+            border-radius: 0 0 8px 8px;
+            overflow-y: auto;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            border: 1px solid #333;
+            border-top: none;
         }
+        .log-purple { color: #c678dd; } /* Heroku style */
+        .log-blue { color: #51a1ff; }
+        .log-green { color: var(--primary-color); }
+        .log-red { color: var(--error-color); }
+        .log-white { color: #fff; }
+
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: #333;
+            border: 1px solid #555;
+        }
+
+        /* UTILS */
+        .floating-invite {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: #25d366;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
     </style>
 </head>
 <body>
 
     <header>
-        <img src="https://i.pravatar.cc/150?u=njabulo" alt="Njabulo Jb" class="profile-img">
-        <h1>NJABULO JB AI CENTER</h1>
-        <p class="ai-text">SUPPORT & DEPLOYMENT HUB</p>
+        <h1 class="header-title">✅💖 ENJOYS 💚</h1>
+        <p style="color: #888; font-size: 0.8rem; margin-top: 10px; letter-spacing: 2px;">JB AI BOT DEPLOYMENT HUB</p>
     </header>
 
     <div class="container">
-
-        <!-- HELP CENTER SECTION -->
-        <section id="help">
-            <h2><i class="fas fa-life-ring"></i> Help Center</h2>
-            <div class="help-grid">
-                <!-- Card 1 -->
-                <div class="help-card">
-                    <i class="fas fa-book"></i>
-                    <h3>Getting Started</h3>
-                    <p>Learn the basics of Njabulo Jb AI. Connect your account and start managing your bots efficiently.</p>
+        
+        <!-- LEFT COLUMN: CONFIG & LIST -->
+        <div class="left-col">
+            <section>
+                <h2><i class="fas fa-sliders-h"></i> Configuration</h2>
+                
+                <div class="input-group">
+                    <label>Bot Display Name</label>
+                    <input type="text" id="botName" placeholder="e.g. JB-ENJOYS-MD">
                 </div>
-                <!-- Card 2 -->
-                <div class="help-card">
-                    <i class="fas fa-terminal"></i>
-                    <h3>Bot Commands</h3>
-                    <p>Explore the full list of fab fa commands available for your deployment. Click "Terminal" below for logs.</p>
+
+                <div class="input-group">
+                    <label>GitHub Repository URL</label>
+                    <input type="text" id="repoUrl" placeholder="https://github.com/njabulo/jb-bot">
                 </div>
-                <!-- Card 3 -->
-                <div class="help-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>Security Info</h3>
-                    <p>Your authentication QR code is encrypted. Use the scan box below to verify your session.</p>
+
+                <div class="input-group">
+                    <label>Session ID (Base64)</label>
+                    <input type="text" id="sessionId" placeholder="Paste Base64 Key Here...">
                 </div>
-            </div>
-        </section>
 
-        <!-- QR SCAN SECTION -->
-        <section style="text-align: center;">
-            <h2><i class="fas fa-qrcode"></i> Account Auth</h2>
-            <div class="qr-box">
-                <div class="qr-hover"><i class="fab fa-qrcode" style="font-size: 3rem; color: var(--primary-color);"></i></div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=JB_AI_SUPPORT" alt="QR">
-            </div>
-            <p style="font-size: 0.8rem; margin-top: 15px;">Hover/Click to bypass firewall and reveal scan code.</p>
-        </section>
+                <div class="input-group">
+                    <label>Owner Phone Number</label>
+                    <input type="tel" id="phoneNumber" placeholder="27xxxxxxxxx">
+                </div>
 
-        <!-- DEPLOYMENT SECTION -->
-        <section id="deploy">
-            <h2><i class="fas fa-cloud-upload-alt"></i> One-Click Deploy</h2>
-            <div class="deploy-flex">
-                <a href="#" class="deploy-btn" style="background: var(--heroku-color);">
-                    <img src="https://images.unsplash.com/photo-1618401471353-b98aedbc24c1?w=400" alt="H">
-                    <span><i class="fas fa-server"></i> DEPLOY HEROKU</span>
-                </a>
-                <a href="#" class="deploy-btn" style="background: var(--render-color);">
-                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400" alt="R">
-                    <span><i class="fas fa-cloud"></i> DEPLOY RENDER</span>
-                </a>
-            </div>
-        </section>
+                <div class="btn-flex">
+                    <button class="btn btn-deploy" onclick="startDeployment()">
+                        <i class="fas fa-cloud-upload-alt"></i> Deploy to Server
+                    </button>
+                    <button class="btn btn-git">
+                        <i class="fab fa-github"></i> Connect GitHub
+                    </button>
+                </div>
+            </section>
 
-        <!-- ABOUT ME / CONTACT -->
-        <section id="me">
-            <h2><i class="fas fa-user-shield"></i> About The Creator</h2>
-            <p>I am <strong>Njabulo Jb</strong>, the architect behind the <strong>JB AI Engine</strong>. I specialize in bot automation and secure cloud deployments.</p>
-            <div style="margin-top: 20px;">
-                <a href="#" style="color:var(--primary-color); text-decoration:none; margin-right: 20px;"><i class="fab fa-github"></i> GitHub</a>
-                <a href="#" style="color:var(--primary-color); text-decoration:none;"><i class="fab fa-telegram"></i> Telegram</a>
+            <section style="margin-top: 30px;">
+                <h2><i class="fas fa-list"></i> Active Bot Instances</h2>
+                <div class="bot-list" id="botContainer">
+                    <!-- Default Bot -->
+                    <div class="bot-card">
+                        <div class="bot-info">
+                            <h4>✅💖 JB_OFFICIAL 💚</h4>
+                            <p><span class="status-dot"></span> Online | Port: 8080</p>
+                        </div>
+                        <button class="btn-del" onclick="deleteBot(this)"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- RIGHT COLUMN: TERMINAL -->
+        <div class="right-col">
+            <div class="terminal-header">
+                <span style="font-size: 0.75rem; color: #aaa;"><i class="fas fa-terminal"></i> Build Console</span>
+                <span class="status-badge" id="serverStatus" style="color: #aaa;">IDLE</span>
             </div>
-        </section>
+            <div class="terminal-window" id="terminal">
+                <div class="log-white">[SYSTEM] Initializing JB AI Deployment Engine...</div>
+                <div class="log-blue">[INFO] Awaiting user configuration...</div>
+            </div>
+        </div>
 
     </div>
 
-    <!-- TERMINAL BOT VIEW -->
-    <div id="terminal-fixed">
-        <div id="terminal-win">
-            <div class="term-head">NJABULO_JB_TERMINAL</div>
-            <div class="term-body" id="logs">
-                [SYS] Welcome to Help Desk...<br>
-                [SYS] Initializing support module...<br>
-                [OK] Powered by Njabulo Jb AI
-            </div>
-        </div>
-        <div class="term-trigger" onclick="toggleTerm()">
-            <i class="fas fa-headset" style="color:#000; font-size: 1.5rem;"></i>
-        </div>
-    </div>
-
-    <footer>
-        <p>System Integrity: <span class="ai-text">OPTIMAL</span></p>
-        <p>Designed with <i class="fas fa-code"></i> Powered by <span class="ai-text">Njabulo Jb AI</span></p>
-    </footer>
+    <!-- FLOAT INVITE -->
+    <a href="https://wa.me/" class="floating-invite" target="_blank">
+        <i class="fab fa-whatsapp"></i> INVITE BOT
+    </a>
 
     <script>
-        function toggleTerm() {
-            const win = document.getElementById('terminal-win');
-            win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+        const terminal = document.getElementById('terminal');
+        const serverStatus = document.getElementById('serverStatus');
+        const botContainer = document.getElementById('botContainer');
+
+        function writeLog(text, className = 'log-white') {
+            const div = document.createElement('div');
+            div.className = className;
+            div.innerHTML = text;
+            terminal.appendChild(div);
+            terminal.scrollTop = terminal.scrollHeight;
         }
 
-        // Auto log generator
-        setInterval(() => {
-            const logBox = document.getElementById('logs');
-            const lines = [
-                "[HELP] User accessed deploy center",
-                "[INFO] JB AI checking server status",
-                "[OK] Heroku connection verified",
-                "[INFO] QR Code refreshed"
-            ];
-            const randomLine = lines[Math.floor(Math.random() * lines.length)];
-            logBox.innerHTML += `<br>> ${randomLine}`;
-            logBox.scrollTop = logBox.scrollHeight;
-        }, 5000);
-    </script>
+        function startDeployment() {
+            const name = document.getElementById('botName').value || "JB-BOT";
+            const session = document.getElementById('sessionId').value;
+            const repo = document.getElementById('repoUrl').value;
+            const phone = document.getElementById('phoneNumber').value;
 
+            // Simple Validation
+            if(!session || !phone) {
+                writeLog("[ERROR] Deployment failed: Missing SessionID or Phone Number.", "log-red");
+                alert("Please fill in Session ID and Phone Number!");
+                return;
+            }
+
+            // Start Process
+            terminal.innerHTML = ""; // Clear terminal
+            serverStatus.innerText = "BUILDING";
+            serverStatus.style.color = "#ffa500";
+            serverStatus.style.borderColor = "#ffa500";
+
+            // Deployment Steps
+            writeLog("-----> Building on Heroku stack cedar-22", "log-purple");
+            
+            setTimeout(() => writeLog("-----> Using buildpack: heroku/nodejs", "log-purple"), 800);
+            setTimeout(() => writeLog("-----> Node.js app detected", "log-green"), 1500);
+            
+            setTimeout(() => {
+                writeLog("-----> Installing dependencies", "log-purple");
+                writeLog("       found jb-ai-engine v2.0.4");
+                writeLog("       added 342 packages in 4s");
+            }, 2500);
+
+            setTimeout(() => {
+                writeLog("-----> Validating Base64 Session ID...", "log-white");
+                if(session.length < 20) {
+                    writeLog("       [!] Invalid Base64 structure detected", "log-red");
+                    writeLog("-----> Build failed: CRITICAL_ERR_NAME_BOT", "log-red");
+                    serverStatus.innerText = "FAILED";
+                    serverStatus.style.color = "var(--error-color)";
+                } else {
+                    completeDeployment(name, phone);
+                }
+            }, 4500);
+        }
+
+        function completeDeployment(name, phone) {
+            writeLog("-----> Discovering process types", "log-purple");
+            writeLog("       Procfile declares types -> worker", "log-white");
+            writeLog("-----> Compiling asset pipeline", "log-green");
+            
+            setTimeout(() => {
+                writeLog("-----> ✅💖 " + name + " 💚 is now active!", "log-green");
+                writeLog("[SYS] Log stream started. Bot is listening for commands.", "log-blue");
+                serverStatus.innerText = "ONLINE";
+                serverStatus.style.color = "var(--primary-color)";
+                serverStatus.style.borderColor = "var(--primary-color)";
+                
+                addNewBot(name, phone);
+            }, 2000);
+        }
+
+        function addNewBot(name, phone) {
+            const id = Math.floor(Math.random() * 9000) + 1000;
+            const card = document.createElement('div');
+            card.className = 'bot-card';
+            card.innerHTML = `
+                <div class="bot-info">
+                    <h4>✅💖 ${name.toUpperCase()} 💚</h4>
+                    <p><span class="status-dot"></span> Online | Owner: ${phone} | ID: ${id}</p>
+                </div>
+                <button class="btn-del" onclick="deleteBot(this)"><i class="fas fa-trash-alt"></i></button>
+            `;
+            botContainer.prepend(card);
+        }
+
+        function deleteBot(btn) {
+            if(confirm("Are you sure you want to stop and delete this bot instance?")) {
+                const card = btn.parentElement;
+                card.style.opacity = '0.5';
+                card.querySelector('.status-dot').style.background = 'grey';
+                writeLog(`[SYS] Instance ${card.querySelector('h4').innerText} deleted.`, "log-red");
+                setTimeout(() => card.remove(), 500);
+            }
+        }
+    </script>
 </body>
 </html>
