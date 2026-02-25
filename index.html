@@ -20,9 +20,8 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: #000 url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
+            background: #ffffff; /* Background Nyeupe */
+            color: #222222; /* Maandishi meusi */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -30,19 +29,11 @@
             overflow-x: hidden;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: -1;
-        }
-
-        /* --- LOADING SCREEN (WHATSAPP STYLE) --- */
+        /* --- LOADING SCREEN (WHATSAPP LIGHT STYLE) --- */
         #loader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #0b141a; /* WhatsApp Dark Background */
+            background: #ffffff;
             z-index: 10000;
             display: flex;
             flex-direction: column;
@@ -50,10 +41,10 @@
             align-items: center;
         }
         .loader-content { text-align: center; width: 80%; max-width: 300px; }
-        .loader-content i.fa-whatsapp { font-size: 60px; color: #00a884; margin-bottom: 20px; animation: pulse 1.5s infinite; }
-        .loader-content h2 { font-family: 'Orbitron'; color: white; font-size: 18px; margin-bottom: 30px; letter-spacing: 2px; }
-        .progress-container { width: 100%; height: 3px; background: #233138; border-radius: 10px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: #00a884; box-shadow: 0 0 10px #00a884; }
+        .loader-content i.fa-whatsapp { font-size: 60px; color: #25D366; margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        .loader-content h2 { font-family: 'Orbitron'; color: #333; font-size: 18px; margin-bottom: 30px; letter-spacing: 2px; }
+        .progress-container { width: 100%; height: 4px; background: #eeeeee; border-radius: 10px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #25D366; box-shadow: 0 0 5px rgba(37, 211, 102, 0.5); }
 
         @keyframes pulse {
             0% { transform: scale(1); opacity: 1; }
@@ -69,26 +60,26 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1.5rem 10%;
-            background: rgba(0, 0, 0, 0.9);
+            padding: 1rem 10%;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 242, 254, 0.3);
+            border-bottom: 1px solid #eeeeee;
         }
 
         header .logo {
             font-family: 'Orbitron', sans-serif;
             font-size: 22px;
             font-weight: 700;
-            color: #00f2fe;
+            color: #0078ff; /* Blue theme kwa logo */
             display: flex;
             align-items: center; gap: 10px;
         }
 
         header .navbar ul { display: flex; align-items: center; gap: 25px; }
-        header .navbar ul li a { color: white; font-size: 15px; font-weight: 400; }
-        header .navbar ul li a:hover, header .navbar ul li a.active { color: #00f2fe; }
+        header .navbar ul li a { color: #333333; font-size: 15px; font-weight: 500; }
+        header .navbar ul li a:hover, header .navbar ul li a.active { color: #0078ff; }
 
-        #menu { font-size: 25px; cursor: pointer; color: #00f2fe; display: none; }
+        #menu { font-size: 25px; cursor: pointer; color: #333; display: none; }
 
         /* --- MAIN CONTAINER --- */
         .container {
@@ -96,66 +87,68 @@
             max-width: 480px;
             padding: 120px 20px 40px;
             text-align: center;
-            display: none; /* Inafichwa mpaka loader iishe */
+            display: none;
         }
 
         .profile-img {
             width: 120px; height: 120px;
             border-radius: 50%;
-            border: 4px solid #00f2fe;
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
+            border: 4px solid #0078ff;
+            box-shadow: 0 5px 20px rgba(0, 120, 255, 0.2);
             margin-bottom: 15px;
             object-fit: cover;
         }
 
-        h1 { font-family: 'Orbitron', sans-serif; font-size: 24px; color: #00f2fe; letter-spacing: 2px; }
-        .bio-text { font-size: 14px; margin-bottom: 20px; opacity: 0.8; }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 24px; color: #333; letter-spacing: 1px; }
+        .bio-text { font-size: 14px; margin-bottom: 20px; color: #666; }
 
         /* --- MUSIC PLAYER --- */
         .player-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            background: #f8f9fa;
             border-radius: 25px; padding: 20px; margin-bottom: 30px;
-            border: 1px solid rgba(0, 242, 254, 0.3);
+            border: 1px solid #eeeeee;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        .song-title { font-size: 13px; margin-bottom: 15px; color: #00f2fe; font-weight: bold; }
+        .song-title { font-size: 13px; margin-bottom: 15px; color: #0078ff; font-weight: bold; }
         .controls { display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .ctrl-btn { background: none; border: none; color: white; cursor: pointer; font-size: 20px; }
-        .play-main { width: 55px; height: 55px; background: #00f2fe; border-radius: 50%; color: black; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .ctrl-btn { background: none; border: none; color: #333; cursor: pointer; font-size: 20px; }
+        .play-main { width: 55px; height: 55px; background: #0078ff; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 10px rgba(0, 120, 255, 0.3); }
 
         /* --- QUICK LINKS --- */
         .links-wrapper { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
         .link-item {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(0, 242, 254, 0.2);
+            background: #ffffff;
+            border: 1px solid #eeeeee;
             padding: 15px 20px; border-radius: 15px;
             display: flex; align-items: center; justify-content: space-between;
-            color: white; font-size: 14px;
+            color: #333; font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
-        .link-item:hover { border-color: #00f2fe; transform: translateX(5px); background: rgba(0, 242, 254, 0.1); }
+        .link-item:hover { border-color: #0078ff; transform: translateX(5px); background: #f0f7ff; }
 
         /* --- SOCIAL CARDS --- */
         .social-card {
-            background: rgba(255, 255, 255, 0.07);
+            background: #ffffff;
             border-radius: 20px; padding: 15px; margin-bottom: 15px;
             display: flex; align-items: center; gap: 15px; text-align: left;
-            border: 1px solid rgba(255,255,255,0.1); color: white;
+            border: 1px solid #eeeeee; color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
-        .social-card:hover { transform: translateY(-5px); border-color: #00f2fe; }
+        .social-card:hover { transform: translateY(-5px); border-color: #0078ff; }
         .social-card img { width: 55px; height: 55px; border-radius: 12px; }
-        .social-info h4 { font-size: 16px; margin-bottom: 6px; color: #00f2fe; }
+        .social-info h4 { font-size: 16px; margin-bottom: 6px; color: #333; }
         
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
-        .stats-item { font-size: 10px; opacity: 0.8; }
-        .stats-item b { display: block; font-size: 13px; color: white; }
+        .stats-item { font-size: 10px; color: #777; }
+        .stats-item b { display: block; font-size: 13px; color: #0078ff; }
 
         /* --- GITHUB & DEPLOY --- */
         .github-card {
             margin-top: 30px; padding: 20px; border-radius: 20px;
-            background: rgba(0,0,0,0.5); border: 1px dashed #00f2fe;
+            background: #f8f9fa; border: 1px dashed #0078ff;
         }
         .deploy-btn {
-            display: block; background: #6762a6; color: white; text-align: center;
+            display: block; background: #6c63ff; color: white; text-align: center;
             padding: 12px; border-radius: 12px; font-weight: bold; margin-top: 15px;
         }
 
@@ -164,8 +157,8 @@
             #menu { display: block; }
             header .navbar {
                 position: absolute; top: 100%; right: -120%;
-                width: 260px; height: 100vh; background: rgba(0, 0, 0, 0.98);
-                border-left: 1px solid #00f2fe;
+                width: 260px; height: 100vh; background: #ffffff;
+                border-left: 1px solid #eeeeee;
             }
             header .navbar.active { right: 0; }
             header .navbar ul { flex-direction: column; padding: 2rem; align-items: flex-start; gap: 20px; }
