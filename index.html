@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betway Original API Booking Codes</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --betway-green: #00ff5f;
+            --betway-dark: #222222;
+            --white: #ffffff;
+            --gray: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--white);
+        }
+
+        /* User Header */
+        #mainHeader {
+            background-color: var(--betway-dark);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        #mainHeader .logo {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            display: flex;
+            align-items: center; gap: 10px;
+        }
+
+        .status-box {
+            display: flex;
+            align-items: center; gap: 8px; font-size: 0.85rem;
+        }
+
+        .pulse-dot {
+            width: 10px; height: 10px;
+            background-color: var(--betway-green);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 95, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 255, 95, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 95, 0); }
+        }
+
+        /* Main Slip Card */
+        .container {
+            max-width: 450px;
+            margin: 15px auto;
+            padding: 10px;
+        }
+
+        .api-card {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        #sportIcon { font-size: 3rem; color: #222; margin-bottom: 10px; }
+        #liveTime { font-size: 0.8rem; color: #777; margin-bottom: 15px; }
+
+        .code-container {
+            background: var(--gray);
+            border: 2px dashed #bbb;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .label { font-size: 0.7rem; color: #666; font-weight: bold; text-transform: uppercase; }
+        
+        .code-display {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #000;
+            display: block;
+            margin: 5px 0;
+            letter-spacing: 1px;
+        }
+
+        .action-btns {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .btn-copy { background: #222; color: white; }
+        .btn-check { background: var(--betway-green); color: #000; }
+
+        /* Match List */
+        .list-title {
+            font-weight: bold;
+            border-left: 5px solid var(--betway-green);
+            padding-left: 10px;
+            margin-bottom: 10px;
+        }
+
+        .match-row {
+            background: #fff;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .team-info { font-weight: bold; font-size: 0.9rem; }
+        .win-prediction { font-size: 0.75rem; color: #555; display: block; }
+        .score-box {
+            background: #000;
+            color: var(--betway-green);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 900;
+            font-size: 0.9rem;
+        }
+
+        .goal-info {
+            background: #e8f5e9;
+            padding: 10px;
+            font-size: 0.75rem;
+            color: #2e7d32;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header id="mainHeader">
+    <a href="#" class="logo"><i class="fab fa-github"></i> betway code and id free enjoy </a>
+    <div class="status-box">
+        <div class="pulse-dot"></div>
+        <span>Online</span>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Live Slip Card -->
+    <div class="api-card">
+        <div id="sportIcon"><i class="fas fa-futbol"></i></div>
+        <div id="liveTime">Loading Live Data...</div>
+
+        <!-- Booking Code Area -->
+        <div class="code-container">
+            <span class="label">Original Booking Code:</span>
+            <span id="bookingCode" class="code-display">BW3FD613D0</span>
+            <div class="action-btns">
+                <button class="btn btn-copy" onclick="copyText('bookingCode')"><i class="fas fa-copy"></i> Copy</button>
+                <a id="checkLink" href="#" target="_blank" class="btn btn-check"><i class="fas fa-external-link-alt"></i> Check Result</a>
+            </div>
+        </div>
+
+        <!-- Betslip ID Area -->
+        <div class="code-container" style="background: #fff; border-style: solid; border-color: var(--betway-green);">
+            <span class="label">Betslip ID:</span>
+            <span id="betslipId" class="code-display" style="font-size: 1.4rem;">449201882</span>
+            <button class="btn btn-copy" style="margin: 0 auto;" onclick="copyText('betslipId')"><i class="fas fa-copy"></i> Copy ID</button>
+        </div>
+
+        <div class="goal-info">
+            <strong>SYSTEM LOG:</strong> Analyzing 0-0 trends and high goal pressure. Predictions change based on live API market odds.
+        </div>
+    </div>
+
+    <!-- Match Feed -->
+    <div class="list-title">LIVE SPORTS NEXT TO PLAY</div>
+    <div id="matchFeed">
+        <!-- Matches injected here -->
+    </div>
+</div>
+
+<script>
+    const teamDatabase = [
+        "Man City vs Arsenal", "Gaborone Utd vs Rollers", "Real Madrid vs Barca", 
+        "Liverpool vs Chelsea", "Bayern vs PSG", "Al Nassr vs Al Hilal", 
+        "Juventus vs Inter", "Township vs Orapa", "Man Utd vs Milan"
+    ];
+
+    const sports = ["fa-futbol", "fa-basketball-ball", "fa-volleyball-ball"];
+
+    function generateCode() {
+        const chars = '0123456789ABCDEF';
+        let code = 'BW';
+        for(let i=0; i<8; i++) code += chars[Math.floor(Math.random() * 16)];
+        return code;
+    }
+
+    function updateSystem() {
+        // 1. Update Time
+        const now = new Date();
+        document.getElementById('liveTime').innerText = "API UPDATED: " + now.toLocaleString();
+
+        // 2. Update Icons
+        const icon = sports[Math.floor(Math.random() * sports.length)];
+        document.getElementById('sportIcon').innerHTML = `<i class="fas ${icon}"></i>`;
+
+        // 3. Update Codes & Links
+        const newCode = generateCode();
+        const bCodeElem = document.getElementById('bookingCode');
+        const bIdElem = document.getElementById('betslipId');
+        const checkLink = document.getElementById('checkLink');
+
+        bCodeElem.innerText = newCode;
+        bIdElem.innerText = Math.floor(100000000 + Math.random() * 900000000);
+        
+        // This makes the code work with your link
+        checkLink.href = "https://www.betway.co.bw/book-a-bet-results?bookingCode=" + newCode;
+
+        // 4. Update Match Feed
+        const feed = document.getElementById('matchFeed');
+        feed.innerHTML = '';
+        const selectedTeams = teamDatabase.sort(() => 0.5 - Math.random()).slice(0, 4);
+
+        selectedTeams.forEach(match => {
+            const teamNames = match.split(' vs ');
+            const predictedWinner = teamNames[Math.floor(Math.random() * 2)];
+            const score = Math.floor(Math.random() * 3) + "-" + Math.floor(Math.random() * 2);
+
+            feed.innerHTML += `
+                <div class="match-row">
+                    <div>
+                        <span class="team-info">${match}</span>
+                        <span class="win-prediction">${predictedWinner} Will Win</span>
+                    </div>
+                    <div class="score-box">${score}</div>
+                </div>
+            `;
+        });
+    }
+
+    function copyText(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Copied to Clipboard: " + text);
+        });
+    }
+
+    // Refresh every 20 seconds to simulate real API fetch
+    setInterval(updateSystem, 20000);
+    updateSystem();
+</script>
+
+</body>
+</html>
+
