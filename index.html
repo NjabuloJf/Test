@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Me</title>
+  <style>
+    :root{
+      --bg: #f7f7fb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --accent: #4f46e5;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Cantarell, Arial; background: var(--bg); color: var(--ink); }
+    header { padding: 2rem 1rem 1rem; text-align: center; }
+    .avatar { width: 120px; height: 120px; border-radius: 50%; overflow: hidden; display: inline-block; background: #e2e8f0; vertical-align: middle; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    h1 { margin: 0.5rem 0 0.25rem; font-size: 2rem; }
+    p.lead { margin: 0; color: var(--muted); font-size: 1.05rem; }
+    nav { max-width: 1000px; margin: 0 auto; padding: 0 1rem; }
+    nav a { margin: 0 0.5rem; color: var(--accent); text-decoration: none; }
+    main { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    section { background: var(--card); padding: 1.5rem; border-radius: var(--radius); box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 1.25rem; }
+    h2 { margin-top: 0; font-size: 1.5rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    ul { margin: 0; padding-left: 1.25rem; }
+    footer { text-align: center; color: var(--muted); padding: 2rem 1rem; font-size: 0.9rem; }
+    @media (max-width: 800px){
+      .grid { grid-template-columns: 1fr; }
+    }
+    /* Optional: quick hover feedback for links */
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="avatar" aria-label="Profile picture">
+      <!-- Replace the src with your own image if you have one -->
+      <img src="data:image/svg+xml;utf8,
+        <svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 200 200'>
+          <defs>
+            <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+              <stop stop-color='%23999' offset='0'/>
+              <stop stop-color='%23666' offset='1'/>
+            </linearGradient>
+          </defs>
+          <rect width='200' height='200' rx='20' ry='20' fill='url(%23g)'/>
+          <circle cx='100' cy='90' r='38' fill='white'/>
+          <rect x='60' y='130' width='80' height='40' rx='8' fill='white'/>
+          <circle cx='100' cy='85' r='10' fill='%231f2937'/>
+        </svg>" alt="Your avatar">
+    </div>
+    <h1>Your Name</h1>
+    <p class="lead">Short, friendly tagline or role. Example: “Frontend Developer • UI/UX Enthusiast • Coffee + Code”</p>
+  </header>
+
+  <nav aria-label="Section quick links" style="text-align:center;">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main>
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About Me</h2>
+      <p>
+        Hello! I’m [Your Name], a [your role, e.g., Frontend Developer] with a passion for turning ideas into
+        delightful user experiences. I enjoy building clean, accessible interfaces and writing maintainable
+        code. When I’m not coding, you’ll likely find me exploring new technologies, sketching UI ideas, or
+        brewing a nice cup of coffee.
+      </p>
+      <p>
+        Based in [Your Location], I work on projects ranging from small personal websites to mid-sized apps.
+        I love collaborating with cross-functional teams and learning from others.
+      </p>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title">Skills</h2>
+      <div class="grid" aria-label="Skills list">
+        <div>
+          <strong>Languages & Tools</strong>
+          <ul>
+            <li>HTML5 & CSS3 (flexbox, grid, responsive design)</li>
+            <li>JavaScript / TypeScript</li>
+            <li>React + Hooks</li>
+            <li>Version control: Git</li>
+          </ul>
+        </div>
+        <div>
+          <strong>Other</strong>
+          <ul>
+            <li>UI/UX best practices</li>
+            <li>Accessibility (a11y)</li>
+            <li>Testing: Jest, React Testing Library</li>
+            <li>Performance optimization</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <ul>
+        <li><strong>Project One</strong> — A brief description of what it does and the technologies used.</li>
+        <li><strong>Project Two</strong> — Another project with highlights or outcomes.</li>
+        <li><strong>Project Three</strong> — Optional: link to live demo or GitHub repo.</li>
+      </ul>
+      <p style="font-size: .9rem; color: var(--muted); margin-top: .5rem;">
+        Want to see more? I maintain a portfolio or GitHub page with additional work.
+      </p>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <p>If you'd like to get in touch, reach me at:</p>
+      <ul>
+        <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
+        <li>LinkedIn: <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener">linkedin.com/in/yourprofile</a></li>
+        <li>GitHub: <a href="https://github.com/yourusername" target="_blank" rel="noopener">github.com/yourusername</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    © Your Name - Last updated: 2026
+  </footer>
+</body>
+</html>
+
