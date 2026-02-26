@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Njabulo Jb - Bot Hub</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --tg-blue: #0088cc;
+            --gh-black: #24292e;
+            --wa-green: #25D366;
+            --bg-gray: #f0f2f5;
+            --card-white: #ffffff;
+            --status-green: #22c55e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-gray);
+            margin: 0;
+            padding: 0;
+            color: #1c1e21;
+        }
+
+        /* HEADER */
+        #mainHeader {
+            background: var(--card-white);
+            padding: 12px 5%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--tg-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            background: #e7fce3;
+            padding: 5px 12px;
+            border-radius: 20px;
+            color: #1a631a;
+            font-weight: bold;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--status-green);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 0 15px;
+            text-align: center;
+        }
+
+        .profile-section {
+            background: white;
+            padding: 25px;
+            border-radius: 24px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--tg-blue);
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        h1 { margin: 10px 0; font-size: 1.2rem; color: #111; }
+
+        /* STATS BAR */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #222;
+            color: #fff;
+            padding: 12px 5px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            border: 1px solid #333;
+        }
+
+        .stat-card i { color: var(--tg-blue); margin-bottom: 5px; display: block; font-size: 1.1rem; }
+        .stat-value { color: var(--status-green); font-family: monospace; font-weight: bold; display: block; font-size: 0.85rem; }
+
+        /* BUTTONS GRID */
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 18px 10px;
+            border-radius: 18px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn i { font-size: 1.6rem; }
+        .btn:hover { transform: translateY(-3px); opacity: 0.9; }
+
+        /* BUTTON THEMES */
+        .btn-use { background: linear-gradient(135deg, #0088cc, #00aaff); }
+        .btn-gh { background: #24292e; }
+        .btn-group { background: #34495e; }
+        .btn-chan { background: #2980b9; }
+        .btn-father { background: #f39c12; }
+        .btn-id { background: #8e44ad; }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+        }
+
+        .footer-power { font-weight: bold; color: #444; font-size: 0.9rem; margin-bottom: 4px; }
+        .footer-tech { color: var(--tg-blue); font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+<header id="mainHeader">
+    <a href="#" class="logo"><i class="fab fa-telegram"></i> Njabulo Jb Bot</a>
+    <div class="status-box">
+        <span class="pulse-dot"></span>
+        <span>Online</span>
+    </div>
+</header>
+
+<div class="container">
+    <!-- PROFILE -->
+    <div class="profile-section">
+        <img src="/me.png" alt="Bot Logo" class="profile-img">
+        <h1>Welcome to Telegram bot Njabulo Jb</h1>
+    </div>
+
+    <!-- LIVE STATS -->
+    <div class="stats-bar">
+        <div class="stat-card">
+            <i class="fas fa-microchip"></i>
+            Uptime
+            <span id="uptime-timer" class="stat-value">00:00:00</span>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-users"></i>
+            Bot Users
+            <span class="stat-value">12,843 Active</span>
+        </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="button-grid">
+        <a href="https://t.me/YOUR_BOT_USERNAME" class="btn btn-use">
+            <i class="fab fa-telegram"></i>
+            Use Bot
+        </a>
+
+        <a href="https://github.com/YOUR_GITHUB" class="btn btn-gh">
+            <i class="fab fa-github"></i>
+            View GitHub
+        </a>
+
+        <a href="https://t.me/YOUR_GROUP" class="btn btn-group">
+            <i class="fab fa-telegram-plane"></i>
+            Join Group
+        </a>
+
+        <a href="https://t.me/YOUR_CHANNEL" class="btn btn-chan">
+            <i class="fab fa-telegram-plane"></i>
+            Join Channel
+        </a>
+
+        <a href="https://t.me/botfather" class="btn btn-father">
+            <i class="fab fa-telegram"></i>
+            BotFather
+        </a>
+
+        <a href="#" class="btn btn-id">
+            <i class="fab fa-slack-hash"></i>
+            Get My ID
+        </a>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-power">Power by Njabulo Jb</div>
+    <div class="footer-tech">NJABULO JB TECH 2026</div>
+</footer>
+
+<script>
+    // BOT TIME ONLINE CALCULATION
+    // Change this date to when your bot actually started
+    const startDate = new Date("2024-01-01T00:00:00");
+
+    function updateTimer() {
+        const now = new Date();
+        const diff = now - startDate;
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / (1000 * 60)) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+
+        // Format: 00d 00h 00m
+        document.getElementById("uptime-timer").textContent = 
+            `${days}d ${hours}h ${mins}m ${secs}s`;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+</script>
+
+</body>
+</html>
