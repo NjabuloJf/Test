@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Njabulo Jb Tech - Pro Downloader</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --terminal-bg: #0d0d0d;
+            --success: #2ecc71;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Animated Background */
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #000000);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* HEADER */
+        #mainHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .logo { color: var(--primary); text-decoration: none; font-weight: bold; font-size: 1.2rem; }
+        
+        .status-box { display: flex; align-items: center; gap: 8px; }
+        .pulse-dot {
+            width: 10px; height: 10px; background: var(--success);
+            border-radius: 50%; animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
+
+        .title_bg {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* INPUTS */
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            margin: 15px 0;
+            box-sizing: border-box;
+            background: #eee;
+            font-size: 1rem;
+        }
+
+        /* BUTTONS */
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .btn-dl { background: #e74c3c; color: white; }
+        .btn-view { background: #3498db; color: white; }
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* TERMINAL STYLE */
+        .terminal-window {
+            background: var(--terminal-bg);
+            border-radius: 8px;
+            margin-top: 25px;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            border: 1px solid #333;
+            display: none; /* Hidden until download starts */
+        }
+
+        .terminal-header {
+            color: #666;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #333;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .term-line { margin: 5px 0; font-size: 0.9rem; }
+        .text-green { color: var(--success); }
+        .text-blue { color: var(--primary); }
+
+        .progress-bar-wrap {
+            width: 100%;
+            background: #222;
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        #progress-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--success);
+            transition: 0.2s;
+        }
+    </style>
+</head>
+<body>
+
+<header id="mainHeader">
+    <a href="#" class="logo"><i class="fab fa-github"></i> Njabulo Jb Tech</a>
+    <div class="status-box">
+        <div class="pulse-dot"></div>
+        <span>Online</span>
+    </div>
+</header>
+
+<div class="container" id="container_id">
+    <div class="title_bg">
+        <div class="alert text-center" id="alert_id">
+            <p id="invalid_url_txt"><i class="fas fa-link"></i> Paste your URL below (YT, FB, TikTok, IG)</p>
+        </div>
+
+        <input type="text" id="url_input" placeholder="https://www.youtube.com/watch?v=...">
+
+        <div class="btn-group">
+            <button class="btn btn-view" onclick="startProcess('view')">
+                <i class="fas fa-eye"></i> View Link
+            </button>
+            <button class="btn btn-dl" onclick="startProcess('download')">
+                <i class="fas fa-download"></i> Download
+            </button>
+        </div>
+
+        <!-- TERMINAL DISPLAY -->
+        <div class="terminal-window" id="terminal">
+            <div class="terminal-header">NJABULO-TECH-TERMINAL v1.0</div>
+            <div class="term-line">System: <span class="text-blue">Initializing...</span></div>
+            <div class="term-line">Title: <span id="term_title" class="text-green">Searching...</span></div>
+            <div class="term-line">Taken: <span id="term_taken">0s</span></div>
+            <div class="term-line">Remaining: <span id="term_remain">--</span></div>
+            <div class="progress-bar-wrap">
+                <div id="progress-fill"></div>
+            </div>
+            <div class="term-line" id="term_status" style="margin-top:10px; font-size: 0.7rem;">Connecting to server...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function startProcess(type) {
+        const url = document.getElementById('url_input').value;
+        if (!url) {
+            alert("Please enter a link!");
+            return;
+        }
+
+        // Show Terminal
+        const terminal = document.getElementById('terminal');
+        terminal.style.display = "block";
+        
+        // Reset Terminal
+        let progress = 0;
+        let timeTaken = 0;
+        const progressFill = document.getElementById('progress-fill');
+        const termStatus = document.getElementById('term_status');
+        const termTitle = document.getElementById('term_title');
+        const termTaken = document.getElementById('term_taken');
+        const termRemain = document.getElementById('term_remain');
+
+        // Set Title based on Link
+        termTitle.innerText = "Extracting Video Data...";
+
+        // Simulate Download Logic
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 10) + 2;
+            timeTaken += 1;
+
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                termStatus.innerText = "FINISH: File saved to storage.";
+                termRemain.innerText = "0 min";
+                
+                // --- REAL DOWNLOAD ACTION ---
+                triggerRealDownload(url, type);
+            }
+
+            progressFill.style.width = progress + "%";
+            termTaken.innerText = timeTaken + "s";
+            termRemain.innerText = Math.round((100 - progress) / 5) + " min";
+            termStatus.innerText = "Downloading chunks: " + progress + "% complete";
+        }, 800);
+    }
+
+    function triggerRealDownload(url, type) {
+        // NOTE: To download from YouTube/FB, you need an API.
+        // I am using a sample file download so you can see Chrome's download notification.
+        
+        const fileName = "NjabuloTech_Media.mp4";
+        
+        // Replace 'sample_link' with your real API download link
+        // Example: const downloadUrl = "https://your-api.com/dl?url=" + url;
+        const dummyDownloadUrl = "https://www.w3schools.com/tags/movie.mp4"; 
+
+        const link = document.createElement('a');
+        link.href = dummyDownloadUrl;
+        link.setAttribute('download', fileName); // Forces Chrome to show download bar
+        link.setAttribute('target', '_blank');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        alert("Download Started! Check your Chrome notifications.");
+    }
+</script>
+
+</body>
+</html>
+
