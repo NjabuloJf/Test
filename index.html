@@ -7,222 +7,272 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --neon-green: #25D366;
-            --dark-bg: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --render-blue: #00d1b2;
-            --heroku-purple: #6762a6;
+            --primary-green: #25D366;
+            --dark-slate: #1e293b;
+            --light-border: #e2e8f0;
+            --render-color: #000000;
+            --heroku-color: #430098;
+            --bg-white: #ffffff;
         }
+
+        /* WELCOME OVERLAY */
+        #welcome-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .enter-btn {
+            padding: 15px 40px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+            transition: 0.3s;
+        }
+
+        .enter-btn:hover { transform: scale(1.05); }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-white);
+            color: var(--dark-slate);
             margin: 0;
             padding: 0;
+            display: none; /* Hidden until button click */
         }
 
-        /* HEADER & API CLOCK */
+        /* HEADER */
         header {
-            background: var(--card-bg);
+            background: white;
             padding: 15px 5%;
-            border-bottom: 2px solid var(--neon-green);
+            border-bottom: 1px solid var(--light-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
 
-        .logo { font-size: 1.2rem; font-weight: bold; color: var(--neon-green); text-decoration: none; }
-        
+        .logo { 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            color: var(--primary-green); 
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         #api-time {
-            font-family: 'Courier New', monospace;
+            font-weight: 600;
             font-size: 0.85rem;
-            color: #94a3b8;
+            color: #64748b;
+            background: #f8fafc;
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--light-border);
         }
 
+        /* STATUS PULSE */
         .pulse-dot {
             width: 8px;
             height: 8px;
-            background: var(--neon-green);
+            background: var(--primary-green);
             border-radius: 50%;
             display: inline-block;
-            margin-right: 5px;
             animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.9); opacity: 1; }
-            70% { transform: scale(1.5); opacity: 0; }
-            100% { transform: scale(0.9); opacity: 1; }
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(37, 211, 102, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
 
         .container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 10px;
+            max-width: 550px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
 
-        /* BOT CARDS */
         .bot-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #334155;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--light-border);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
         }
 
-        .bot-header {
+        .bot-name { font-size: 1.4rem; font-weight: 800; margin: 0; color: #0f172a; }
+        .status-badge {
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #166534;
+            background: #dcfce7;
+            padding: 4px 10px;
+            border-radius: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
-        }
-
-        .bot-title { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; }
-        .status-tag { font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; background: #064e3b; color: #4ade80; }
-        .offline-tag { background: #7f1d1d; color: #fca5a5; }
-
-        .usage-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-            font-size: 0.8rem;
-            color: #94a3b8;
+            gap: 6px;
         }
 
         /* BUTTON GRIDS */
         .btn-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
+            margin-top: 20px;
         }
 
         .btn {
             text-decoration: none;
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.8rem;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: 0.3s;
+            transition: 0.2s;
             border: none;
-            cursor: pointer;
         }
 
-        .btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        .btn-start { background: var(--primary-green); color: white; }
+        .btn-visit { background: #f1f5f9; color: #475569; }
+        .btn-qr { background: #3b82f6; color: white; }
+        .btn-code { background: #8b5cf6; color: white; }
+        .btn-render { background: var(--render-color); color: white; }
+        .btn-heroku { background: var(--heroku-color); color: white; }
+        .btn-panel { background: #f59e0b; color: white; width: 100%; margin-top: 12px; grid-column: span 2; }
 
-        .btn-visit { background: #475569; }
-        .btn-start { background: var(--neon-green); color: #000; }
-        .btn-qr { background: #3b82f6; }
-        .btn-code { background: #8b5cf6; }
-        .btn-render { background: var(--render-blue); }
-        .btn-heroku { background: var(--heroku-purple); }
-        .btn-panel { background: #f59e0b; width: 100%; margin-top: 10px; }
-
-        /* FOOTER */
         footer {
             text-align: center;
-            padding: 40px 20px;
-            color: #64748b;
+            padding: 50px 20px;
+            background: #f8fafc;
+            border-top: 1px solid var(--light-border);
         }
 
-        .power-by {
-            color: var(--neon-green);
-            font-weight: bold;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-        }
+        .power-text { font-weight: 800; letter-spacing: 1px; color: #1e293b; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
+<!-- OVERLAY SECTION -->
+<div id="welcome-overlay">
+    <i class="fab fa-node-js" style="font-size: 4rem; color: #25D366; margin-bottom: 20px;"></i>
+    <h1 style="color: #1e293b;">TIMNASA TECH</h1>
+    <p style="color: #64748b; margin-bottom: 30px;">Deploy Your WhatsApp Bots Efficiently</p>
+    <button class="enter-btn" onclick="startExperience()">DEPLOY NOW</button>
+</div>
+
 <header>
-    <a href="#" class="logo"><i class="fab fa-node-js"></i> TIMNASA TECH</a>
-    <div id="api-time">Loading Server Time...</div>
+    <a href="#" class="logo"><i class="fas fa-robot"></i> NJABULO JB HUB</a>
+    <div id="api-time">00:00:00</div>
 </header>
 
 <div class="container">
-    
     <!-- NJABULO JB BOT -->
     <div class="bot-card">
-        <div class="bot-header">
-            <div class="bot-title"><i class="fas fa-robot"></i> Njabulo Jb Bot</div>
-            <span class="status-tag"><span class="pulse-dot"></span> Online</span>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h2 class="bot-name">Njabulo Jb Bot</h2>
+                <span style="font-size:0.75rem; color:#64748b;"><i class="fas fa-users"></i> 12.8k Users • Premium MD</span>
+            </div>
+            <div class="status-badge"><span class="pulse-dot"></span> Online</div>
         </div>
-        <div class="usage-stats">
-            <div><i class="fas fa-users"></i> Users: 12.4k+</div>
-            <div><i class="fas fa-book"></i> Get Use: Simple</div>
-        </div>
-        
         <div class="btn-grid">
             <a href="#" class="btn btn-start"><i class="fas fa-play"></i> Get Start</a>
-            <a href="#" class="btn btn-visit"><i class="fas fa-eye"></i> Visit Bot</a>
+            <a href="#" class="btn btn-visit"><i class="fas fa-globe"></i> Visit Bot</a>
             <a href="#" class="btn btn-qr"><i class="fas fa-qrcode"></i> QR Code</a>
-            <a href="#" class="btn btn-code"><i class="fas fa-terminal"></i> Pair Code</a>
+            <a href="#" class="btn btn-code"><i class="fas fa-key"></i> Pair Code</a>
             <a href="#" class="btn btn-render"><i class="fas fa-cloud"></i> Render</a>
             <a href="#" class="btn btn-heroku"><i class="fas fa-server"></i> Heroku</a>
+            <a href="#" class="btn btn-panel"><i class="fas fa-file-download"></i> Download Panel File (JSON/JS)</a>
         </div>
-        <a href="#" class="btn btn-panel"><i class="fas fa-file-download"></i> Download Panel File</a>
     </div>
 
     <!-- GWM MD BOT -->
     <div class="bot-card">
-        <div class="bot-header">
-            <div class="bot-title"><i class="fas fa-microchip"></i> GWM MD Bot</div>
-            <span class="status-tag offline-tag">● Offline Link</span>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h2 class="bot-name">GWM MD Bot</h2>
+                <span style="font-size:0.75rem; color:#64748b;"><i class="fas fa-users"></i> 9.2k Users • Stable</span>
+            </div>
+            <div class="status-badge"><span class="pulse-dot"></span> Online</div>
         </div>
-        <div class="usage-stats">
-            <div><i class="fas fa-users"></i> Users: 8.1k+</div>
-            <div><i class="fas fa-code-branch"></i> Version: 4.0.0</div>
-        </div>
-        
         <div class="btn-grid">
             <a href="#" class="btn btn-start"><i class="fas fa-play"></i> Get Start</a>
-            <a href="#" class="btn btn-visit"><i class="fas fa-eye"></i> Visit Bot</a>
+            <a href="#" class="btn btn-visit"><i class="fas fa-globe"></i> Visit Bot</a>
             <a href="#" class="btn btn-qr"><i class="fas fa-qrcode"></i> QR Code</a>
-            <a href="#" class="btn btn-code"><i class="fas fa-terminal"></i> Pair Code</a>
+            <a href="#" class="btn btn-code"><i class="fas fa-key"></i> Pair Code</a>
             <a href="#" class="btn btn-render"><i class="fas fa-cloud"></i> Render</a>
             <a href="#" class="btn btn-heroku"><i class="fas fa-server"></i> Heroku</a>
+            <a href="#" class="btn btn-panel"><i class="fas fa-file-download"></i> Download Panel File (JSON/JS)</a>
         </div>
-        <a href="#" class="btn btn-panel"><i class="fas fa-file-download"></i> Download Panel File</a>
     </div>
-
 </div>
 
 <footer>
-    <div style="height: 1px; background: #334155; width: 50%; margin: 0 auto 20px;"></div>
-    <div class="power-by">POWERED BY NJABULO JB 2026</div>
-    <div style="font-size: 0.7rem; margin-top: 10px;">System Active: Stable</div>
+    <div class="power-text">Powered by Njabulo Jb 2026</div>
+    <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 10px;">&copy; TIMNASA TECH SYSTEMS</div>
 </footer>
 
 <script>
-    // Real-time API Time Simulation
-    function updateTime() {
-        const now = new Date();
-        const options = { 
-            timeZone: 'UTC', 
-            hour12: false, 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit' 
-        };
-        const timeString = now.toLocaleTimeString('en-GB', options);
-        document.getElementById('api-time').innerHTML = `<i class="fas fa-clock"></i> SERVER TIME: ${timeString} UTC`;
+    // AUDIO VOICE FUNCTION
+    function startExperience() {
+        // Hide Overlay
+        document.getElementById('welcome-overlay').style.display = 'none';
+        // Show Body
+        document.body.style.display = 'block';
+
+        // AI Voice Logic
+        const welcomeMessage = "Welcome to Njabulo Jb service, whatsapp deploy and enjoy";
+        const speech = new SpeechSynthesisUtterance(welcomeMessage);
+        
+        // Find a Male AI voice
+        const voices = window.speechSynthesis.getVoices();
+        const maleVoice = voices.find(voice => 
+            voice.name.includes('Male') || 
+            voice.name.includes('David') || 
+            voice.name.includes('Google UK English Male')
+        );
+
+        if (maleVoice) speech.voice = maleVoice;
+        speech.rate = 0.9; // Professional pace
+        speech.pitch = 1;  // Man voice pitch
+        
+        window.speechSynthesis.speak(speech);
+        startTime(); // Start the clock
     }
-    
-    setInterval(updateTime, 1000);
-    updateTime();
+
+    // CLOCK FUNCTION
+    function startTime() {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        m = m < 10 ? "0" + m : m;
+        s = s < 10 ? "0" + s : s;
+        document.getElementById('api-time').innerHTML = h + ":" + m + ":" + s + " UTC";
+        setTimeout(startTime, 1000);
+    }
+
+    // Needed to load voices properly in some browsers
+    window.speechSynthesis.getVoices();
 </script>
 
 </body>
