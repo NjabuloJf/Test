@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Njabulo Jb Tech - Multi Downloader</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #00d2ff;
+            --secondary-color: #3a7bd5;
+            --bg-dark: #0f0c29;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* HEADER STYLES */
+        #mainHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .title_bg {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        /* PLATFORM SELECTOR */
+        .platform-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .platform-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .platform-btn:hover, .platform-btn.active {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* ALERT BOX */
+        .alert {
+            background: rgba(0, 210, 255, 0.2);
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+
+        /* INPUT FIELD */
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 15px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            font-size: 1rem;
+        }
+
+        /* DOWNLOAD BUTTONS */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-view { background: #6c757d; color: white; }
+        .btn-download { background: #e74c3c; color: white; }
+        
+        .action-btn:hover { opacity: 0.9; transform: scale(1.05); }
+
+        /* SONG INFO BOX */
+        #song_info {
+            margin-top: 20px;
+            display: none;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header id="mainHeader">
+    <a href="#" class="logo"><i class="fab fa-github"></i> Njabulo Jb Tech</a>
+    <div class="status-box">
+        <div class="pulse-dot"></div>
+        <span>Online</span>
+    </div>
+</header>
+
+<div class="container" id="container_id">
+    <div class="title_bg" id="bdy">
+        
+        <!-- PLATFORM BUTTONS -->
+        <div class="platform-selector">
+            <button class="platform-btn active" onclick="switchMode('YouTube', 'fab fa-youtube')">
+                <i class="fab fa-youtube"></i> YouTube
+            </button>
+            <button class="platform-btn" onclick="switchMode('Facebook', 'fab fa-facebook')">
+                <i class="fab fa-facebook"></i> Facebook
+            </button>
+            <button class="platform-btn" onclick="switchMode('TikTok', 'fab fa-tiktok')">
+                <i class="fab fa-tiktok"></i> TikTok
+            </button>
+            <button class="platform-btn" onclick="switchMode('Instagram', 'fab fa-instagram')">
+                <i class="fab fa-instagram"></i> Instagram
+            </button>
+        </div>
+
+        <!-- ALERT BOX -->
+        <div class="alert show_alert text-center" id="alert_id" role="alert">
+            <p class="m-0 p-0" id="invalid_url_txt">Please enter URL <span id="platform_name">YouTube</span> bellow</p>
+        </div>
+
+        <!-- URL INPUT -->
+        <div class="input-group">
+            <input type="text" id="url_input" placeholder="Paste link here...">
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="btn-container">
+            <button class="action-btn btn-view" onclick="processLink('view')">
+                <i class="fas fa-eye"></i> View Link
+            </button>
+            <button class="action-btn btn-download" onclick="processLink('download')">
+                <i class="fas fa-download"></i> Download
+            </button>
+        </div>
+
+        <!-- SONG TITLE AND TIME DISPLAY -->
+        <div id="song_info">
+            <h3 id="song_title" style="color: var(--primary-color);"><i class="fas fa-music"></i> Title: <span>-</span></h3>
+            <p id="song_time"><i class="fas fa-clock"></i> Duration: <span>-</span></p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Function to switch between platforms
+    function switchMode(platform, iconClass) {
+        // Update Alert Text
+        document.getElementById('platform_name').innerText = platform;
+        
+        // Update Active Button UI
+        const buttons = document.querySelectorAll('.platform-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        // Update Download Button Color based on platform
+        const downloadBtn = document.querySelector('.btn-download');
+        if(platform === 'YouTube') downloadBtn.style.background = "#e74c3c";
+        if(platform === 'Facebook') downloadBtn.style.background = "#3b5998";
+        if(platform === 'TikTok') downloadBtn.style.background = "#000000";
+        if(platform === 'Instagram') downloadBtn.style.background = "#e1306c";
+    }
+
+    // Function to handle Download/View Logic
+    async function processLink(actionType) {
+        const url = document.getElementById('url_input').value;
+        const platform = document.getElementById('platform_name').innerText;
+
+        if (!url) {
+            alert("Please paste a valid URL first!");
+            return;
+        }
+
+        // SHOW LOADING STATE
+        document.getElementById('invalid_url_txt').innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing ${platform} Link...`;
+
+        // SIMULATING AN API CALL (Since no API is provided, we simulate a response)
+        setTimeout(() => {
+            // This is where you would normally fetch data from your API
+            document.getElementById('song_info').style.display = "block";
+            document.getElementById('song_title').querySelector('span').innerText = "Sample Media from " + platform;
+            document.getElementById('song_time').querySelector('span').innerText = "03:45";
+
+            if (actionType === 'download') {
+                alert("Searching for high quality " + platform + " files... Download starting soon.");
+                // To make it actually download, you would redirect to an API link:
+                // window.location.href = "YOUR_API_ENDPOINT?url=" + url;
+            } else {
+                alert("Previewing " + platform + " content...");
+            }
+
+            document.getElementById('invalid_url_txt').innerText = "Ready to download!";
+        }, 2000);
+    }
+</script>
+
+</body>
+</html>
+
