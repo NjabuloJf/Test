@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Njabulo Jb Tech - Fix Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #007bff;
+            --terminal-bg: #000000;
+            --text-green: #00ff00;
+            --text-red: #ff3131;
+            --text-blue: #00e5ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: white; 
+            margin: 0; padding: 0; color: #333;
+        }
+
+        /* HEADER */
+        #mainHeader {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; background: #f8f9fa; border-bottom: 2px solid #eee;
+        }
+
+        .logo { font-size: 1.3rem; font-weight: bold; color: #111; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .status-box { display: flex; align-items: center; gap: 8px; background: #fff; padding: 5px 15px; border-radius: 20px; border: 1px solid #ddd; font-size: 13px; }
+        .pulse-dot { width: 10px; height: 10px; background-color: #2ecc71; border-radius: 50%; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        /* CONTAINER */
+        .container { max-width: 900px; margin: 30px auto; padding: 20px; }
+        .title_bg { background: #ffffff; border: 1px solid #eee; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); text-align: center; }
+
+        /* GRID */
+        .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin-bottom: 25px; }
+        .p-btn { background: #f9f9f9; border: 1px solid #ddd; padding: 12px 5px; border-radius: 10px; cursor: pointer; font-size: 11px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: 0.3s; }
+        .p-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* ALERT BOX */
+        .alert { background: #f1f8ff; color: #0052cc; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #cce4ff; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 500; }
+
+        /* INPUTS */
+        input[type="text"] { width: 100%; padding: 16px; border: 2px solid #ddd; border-radius: 12px; font-size: 1rem; margin-bottom: 15px; box-sizing: border-box; }
+        
+        /* ACTIONS */
+        .action-btns { display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; }
+        .btn-main { padding: 14px 28px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .btn-view { background: #4b5563; }
+        .btn-download { background: #dc2626; }
+
+        /* TERMINAL */
+        .terminal { background: var(--terminal-bg); color: white; padding: 20px; border-radius: 12px; font-family: 'Courier New', monospace; text-align: left; font-size: 13px; display: none; border-top: 4px solid var(--primary); }
+        .term-header { color: #555; border-bottom: 1px solid #222; padding-bottom: 8px; margin-bottom: 12px; }
+        .label { color: var(--text-blue); }
+        #log_output { margin-top: 15px; max-height: 150px; overflow-y: auto; }
+        .log-noti { color: var(--text-green); }
+        .log-err { color: var(--text-red); }
+        .log-link { color: var(--text-blue); text-decoration: underline; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<header id="mainHeader">
+    <a href="#" class="logo"><i class="fab fa-github"></i> Njabulo Jb Tech</a>
+    <div class="status-box">
+        <div class="pulse-dot"></div>
+        <span>Online</span>
+    </div>
+</header>
+
+<div class="container">
+    <div class="title_bg">
+        <!-- PLATFORM GRID -->
+        <div class="platform-grid">
+            <button class="p-btn active" onclick="changePlat('youtube', 'YouTube')"><i class="fab fa-youtube"></i> YouTube</button>
+            <button class="p-btn" onclick="changePlat('facebook', 'Facebook')"><i class="fab fa-facebook"></i> Facebook</button>
+            <button class="p-btn" onclick="changePlat('tiktok', 'TikTok')"><i class="fab fa-tiktok"></i> TikTok</button>
+            <button class="p-btn" onclick="changePlat('instagram', 'Instagram')"><i class="fab fa-instagram"></i> Instagram</button>
+            <button class="p-btn" onclick="changePlat('twitter', 'Twitter')"><i class="fab fa-twitter"></i> Twitter</button>
+            <button class="p-btn" onclick="changePlat('spotify', 'Spotify')"><i class="fab fa-spotify"></i> Spotify</button>
+            <button class="p-btn" onclick="changePlat('pinterest', 'Pinterest')"><i class="fab fa-pinterest"></i> Pinterest</button>
+            <button class="p-btn" onclick="changePlat('capcut', 'CapCut')"><i class="fas fa-video"></i> CapCut</button>
+        </div>
+
+        <div class="alert" id="alert_box">
+            <i class="fas fa-info-circle"></i> Please enter URL YouTube bellow
+        </div>
+
+        <input type="text" id="url_input" placeholder="Paste link here...">
+
+        <div class="action-btns">
+            <button class="btn-main btn-view" onclick="process('view')">
+                <i class="fab fa-searchengin"></i> View Link
+            </button>
+            <button class="btn-main btn-download" onclick="process('download')">
+                <i class="fab fa-download"></i> Download
+            </button>
+        </div>
+
+        <div class="terminal" id="terminal">
+            <div class="term-header">NJABULO-TECH DOWNLOAD MANAGER v5.0</div>
+            <div id="log_output"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const apis = {
+        tiktok: 'https://prenivapi.vercel.app/api/tiktok?url=',
+        facebook: 'https://prenivapi.vercel.app/api/facebookv1?url=',
+        instagram: 'https://prenivapi.vercel.app/api/igdl?url=',
+        youtube: 'https://prenivapi.vercel.app/api/youtube?url=',
+        spotify: 'https://prenivapi.vercel.app/api/spotify?url=',
+        capcut: 'https://prenivapi.vercel.app/api/capcut?url=',
+        pinterest: 'https://prenivapi.vercel.app/api/pinterest?url=',
+        twitter: 'https://prenivapi.vercel.app/api/twitter?url='
+    };
+
+    let selectedPlat = 'youtube';
+
+    function changePlat(key, name) {
+        selectedPlat = key;
+        document.getElementById('alert_box').innerHTML = `<i class="fas fa-info-circle"></i> Please enter URL ${name} bellow`;
+        document.querySelectorAll('.p-btn').forEach(b => b.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
+
+    function addLog(msg, type, isLink = false, url = "") {
+        const out = document.getElementById('log_output');
+        const div = document.createElement('div');
+        div.className = `log-${type}`;
+        if(isLink) {
+            div.innerHTML = `> ${msg} <span class="log-link" onclick="window.open('${url}', '_blank')">CLICK HERE TO DOWNLOAD</span>`;
+        } else {
+            div.innerHTML = `> ${msg}`;
+        }
+        out.prepend(div);
+    }
+
+    async function process(mode) {
+        const url = document.getElementById('url_input').value;
+        const term = document.getElementById('terminal');
+
+        if (!url) {
+            term.style.display = 'block';
+            addLog("ERROR: Input is empty!", "err");
+            return;
+        }
+
+        term.style.display = 'block';
+        addLog(`Connecting to ${selectedPlat} Servers...`, "info");
+        const apiFinal = apis[selectedPlat] + encodeURIComponent(url);
+
+        try {
+            // Attempting background fetch
+            const res = await fetch(apiFinal);
+            const data = await res.json();
+            
+            const result = data.result || data;
+            const dl = result.url || result.video || result.hd || result.audio;
+
+            if (dl) {
+                addLog("NOTIFICATION: Media Found!", "noti");
+                window.location.href = dl; // Triggers browser download
+            } else {
+                throw new Error("No link found in API.");
+            }
+
+        } catch (e) {
+            // IF FETCH FAILS DUE TO CORS, SHOW THE DIRECT LINK IN TERMINAL
+            addLog(`ERROR: Browser blocked background fetch (CORS).`, "err");
+            addLog(`NOTIFICATION: Bypass triggered.`, "noti", true, apiFinal);
+            addLog(`Step 1: Click the blue link above.`, "info");
+            addLog(`Step 2: Copy the 'url' from the new page.`, "info");
+        }
+    }
+</script>
+</body>
+</html>
+
