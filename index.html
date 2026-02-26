@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Call Me - Beautiful Line</title>
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --whatsapppink: #25D366;
+      --bg: #ffffff;
+      --text: #0a0a0a;
+      --green: #28a745;
+      --gray: #6c757d;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      font-family: Arial, sans-serif;
+      color: var(--text);
+    }
+
+    .container {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .status .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #28a745;
+      box-shadow: 0 0 0 4px rgba(40,167,69,.15);
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 8px 0 16px;
+      letter-spacing: .5px;
+    }
+
+    .line {
+      width: 100%;
+      height: 2px;
+      background: #eee;
+      margin: 14px 0 20px;
+    }
+
+    .btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button, a.btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 2px solid #e6e6e6;
+      background: #fff;
+      color: #333;
+      padding: 12px 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform .08s ease, background .2s ease, border-color .2s;
+    }
+
+    button:active, a.btn:active {
+      transform: scale(0.98);
+    }
+
+    .fab-whatsapp {
+      background: #fff;
+      border: 0;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,.08);
+      border: 2px solid #e6e6e6;
+    }
+
+    .fab-whatsapp i {
+      color: #25D366;
+      font-size: 28px;
+    }
+
+    .icon-btn {
+      font-size: 16px;
+      padding: 12px 18px;
+    }
+
+    .answer {
+      max-width: 720px;
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      background: #fafafa;
+      display: none;
+    }
+
+    .answer.active {
+      display: block;
+    }
+
+    .line-fore {
+      width: 90%;
+      height: 1px;
+      background: #ddd;
+      margin: 8px auto;
+    }
+
+    @media (max-width: 520px) {
+      .btns { gap: 10px; }
+      button, a.btn { padding: 12px; font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="status" aria-label="Online status">
+      <span class="dot" id="onlineDot" title="Online"></span>
+      <span>Online</span>
+    </div>
+
+    <h1>Call Me • WhatsApp</h1>
+
+    <div class="line" aria-hidden="true"></div>
+
+    <div class="btns" role="group" aria-label="Actions">
+      <!-- WhatsApp FAB in center look -->
+      <a href="https://wa.me/26772592531" target="_blank" class="fab-whatsapp" title="Message on WhatsApp" aria-label="WhatsApp message">
+        <i class="fab fa-whatsapp" style="font-size:28px;"></i>
+      </a>
+
+      <!-- Dial button -->
+      <button class="icon-btn" id="callBtn" title="Call Njabulo JB Oll" aria-label="Call Njabulo JB Oll">
+        <i class="fas fa-phone"></i> Call Njabulo JB Oll
+      </button>
+
+      <!-- WhatsApp chat (alternate) -->
+      <a href="https://wa.me/26772592531" target="_blank" class="icon-btn" aria-label="Open WhatsApp chat">
+        <i class="fab fa-whatsapp"></i> WhatsApp Chat
+      </a>
+
+      <!-- Show Answer button -->
+      <button class="icon-btn" id="showAns" title="Show Answer" aria-label="Show Answer">
+        <i class="fas fa-info-circle"></i> Show Answer
+      </button>
+
+      <!-- Nokia ringtone trigger (optional quick play) -->
+      <button class="icon-btn" id="playRingtone" title="Play Nokia ringtone" aria-label="Play Nokia ringtone">
+        <i class="fas fa-music"></i> Nokia Ringtone
+      </button>
+    </div>
+
+    <div class="line-fore" aria-hidden="true"></div>
+
+    <div id="answer" class="answer" role="region" aria-live="polite">
+      Here is the answer: You can reach me at WhatsApp or call directly at +26772592531. Stay connected!
+    </div>
+
+  </div>
+
+  <script>
+    // Elements
+    const showAnsBtn = document.getElementById('showAns');
+    const answerEl = document.getElementById('answer');
+    const callBtn = document.getElementById('callBtn');
+    const playRingtoneBtn = document.getElementById('playRingtone');
+    const onlineDot = document.getElementById('onlineDot');
+
+    // Toggle answer display
+    showAnsBtn.addEventListener('click', () => {
+      const isActive = answerEl.classList.toggle('active');
+      showAnsBtn.innerHTML = isActive
+        ? '<i class="fas fa-info-circle"></i> Hide Answer'
+        : '<i class="fas fa-info-circle"></i> Show Answer';
+    });
+
+    // Call action
+    // Dial number in tel: format
+    callBtn.addEventListener('click', () => {
+      const tel = 'tel:+26772592531';
+      window.location.href = tel;
+    });
+
+    // Nokia ringtone using Web Audio API
+    function playNokiaRingtone() {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = ctx.currentTime;
+
+      function schedule(freq, duration, start) {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        osc.connect(g);
+        g.connect(ctx.destination);
+        const t0 = start;
+        const t1 = start + duration;
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.exponentialRampToValueAtTime(0.4, t0 + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t1);
+        osc.start(t0);
+        osc.stop(t1);
+      }
+
+      const tStart = now + 0.05;
+      const notes = [
+        [392, 0.15], [392, 0.15], [392, 0.15], [311, 0.3],
+        [466, 0.15], [392, 0.15], [311, 0.3],
+        [466, 0.15], [392, 0.15], [311, 0.3],
+        [392, 0.6]
+      ];
+
+      let t = tStart;
+      notes.forEach(n => {
+        schedule(n[0], n[1], t);
+        t += n[1] + 0.02;
+      });
+
+      setTimeout(() => { ctx.close(); }, (t - now) * 1000 + 200);
+    }
+
+    playRingtoneBtn.addEventListener('click', () => {
+      playNokiaRingtone();
+    });
+
+    window.addEventListener('load', () => {
+      onlineDot.style.transform = 'scale(1.1)';
+      setTimeout(() => onlineDot.style.transform = 'scale(1)', 200);
+    });
+  </script>
+</body>
+</html>
