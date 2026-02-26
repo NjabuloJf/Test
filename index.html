@@ -15,10 +15,22 @@
             --bg-white: #ffffff;
         }
 
-        /* WELCOME OVERLAY */
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-white);
+            color: var(--dark-slate);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* 1. WELCOME OVERLAY (This shows first) */
         #welcome-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: white;
             z-index: 9999;
             display: flex;
@@ -29,30 +41,29 @@
         }
 
         .enter-btn {
-            padding: 15px 40px;
+            padding: 18px 45px;
             background: var(--primary-green);
             color: white;
             border: none;
             border-radius: 50px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
             transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .enter-btn:hover { transform: scale(1.05); }
+        .enter-btn:hover { transform: scale(1.05); background: #1eb954; }
 
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-white);
-            color: var(--dark-slate);
-            margin: 0;
-            padding: 0;
-            display: none; /* Hidden until button click */
+        /* 2. MAIN CONTENT (Hidden until button is clicked) */
+        #main-app-content {
+            display: none;
         }
 
-        /* HEADER */
+        /* DESIGN STYLES */
         header {
             background: white;
             padding: 15px 5%;
@@ -66,89 +77,47 @@
         }
 
         .logo { 
-            font-size: 1.3rem; 
-            font-weight: 800; 
-            color: var(--primary-green); 
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 1.3rem; font-weight: 800; color: var(--primary-green); 
+            text-decoration: none; display: flex; align-items: center; gap: 10px;
         }
 
         #api-time {
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: #64748b;
-            background: #f8fafc;
-            padding: 5px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--light-border);
+            font-weight: 600; font-size: 0.85rem; color: #64748b;
+            background: #f8fafc; padding: 5px 12px; border-radius: 8px; border: 1px solid var(--light-border);
         }
 
-        /* STATUS PULSE */
         .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--primary-green);
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulse 1.5s infinite;
+            width: 8px; height: 8px; background: var(--primary-green);
+            border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(37, 211, 102, 0); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(37, 211, 102, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
 
-        .container {
-            max-width: 550px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 550px; margin: 30px auto; padding: 0 20px; }
 
         .bot-card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid var(--light-border);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            background: white; border-radius: 20px; padding: 25px; margin-bottom: 30px;
+            border: 1px solid var(--light-border); box-shadow: 0 10px 30px rgba(0,0,0,0.04);
         }
 
         .bot-name { font-size: 1.4rem; font-weight: 800; margin: 0; color: #0f172a; }
+
         .status-badge {
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: #166534;
-            background: #dcfce7;
-            padding: 4px 10px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-size: 0.7rem; font-weight: bold; color: #166534;
+            background: #dcfce7; padding: 4px 10px; border-radius: 20px;
+            display: flex; align-items: center; gap: 6px;
         }
 
-        /* BUTTON GRIDS */
-        .btn-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
 
         .btn {
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: 0.2s;
-            border: none;
+            text-decoration: none; padding: 12px; border-radius: 12px; font-size: 0.85rem;
+            font-weight: bold; display: flex; align-items: center; justify-content: center;
+            gap: 8px; transition: 0.2s; border: none; cursor: pointer;
         }
 
         .btn-start { background: var(--primary-green); color: white; }
@@ -159,91 +128,90 @@
         .btn-heroku { background: var(--heroku-color); color: white; }
         .btn-panel { background: #f59e0b; color: white; width: 100%; margin-top: 12px; grid-column: span 2; }
 
-        footer {
-            text-align: center;
-            padding: 50px 20px;
-            background: #f8fafc;
-            border-top: 1px solid var(--light-border);
-        }
-
+        footer { text-align: center; padding: 40px 20px; background: #fafafa; border-top: 1px solid #eee; }
         .power-text { font-weight: 800; letter-spacing: 1px; color: #1e293b; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-<!-- OVERLAY SECTION -->
+<!-- THIS IS THE WELCOME SCREEN -->
 <div id="welcome-overlay">
-    <i class="fab fa-node-js" style="font-size: 4rem; color: #25D366; margin-bottom: 20px;"></i>
-    <h1 style="color: #1e293b;">TIMNASA TECH</h1>
-    <p style="color: #64748b; margin-bottom: 30px;">Deploy Your WhatsApp Bots Efficiently</p>
-    <button class="enter-btn" onclick="startExperience()">DEPLOY NOW</button>
+    <i class="fab fa-whatsapp" style="font-size: 5rem; color: #25D366; margin-bottom: 20px;"></i>
+    <h1 style="margin: 0; color: #1e293b;">NJABULO JB SERVICE</h1>
+    <p style="color: #64748b; margin-bottom: 30px;">Premium WhatsApp Bot Deployment Hub</p>
+    <button class="enter-btn" onclick="startExperience()">
+        <i class="fas fa-power-off"></i> OPEN HUB
+    </button>
 </div>
 
-<header>
-    <a href="#" class="logo"><i class="fas fa-robot"></i> NJABULO JB HUB</a>
-    <div id="api-time">00:00:00</div>
-</header>
+<!-- THIS IS YOUR MAIN APP (Shown after click) -->
+<div id="main-app-content">
+    <header>
+        <a href="#" class="logo"><i class="fas fa-robot"></i> TIMNASA TECH</a>
+        <div id="api-time">00:00:00</div>
+    </header>
 
-<div class="container">
-    <!-- NJABULO JB BOT -->
-    <div class="bot-card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-                <h2 class="bot-name">Njabulo Jb Bot</h2>
-                <span style="font-size:0.75rem; color:#64748b;"><i class="fas fa-users"></i> 12.8k Users • Premium MD</span>
+    <div class="container">
+        <!-- NJABULO JB BOT -->
+        <div class="bot-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h2 class="bot-name">Njabulo Jb Bot</h2>
+                    <span style="font-size:0.75rem; color:#64748b;"><i class="fas fa-users"></i> 12.8k Users • Active Now</span>
+                </div>
+                <div class="status-badge"><span class="pulse-dot"></span> Online</div>
             </div>
-            <div class="status-badge"><span class="pulse-dot"></span> Online</div>
+            <div class="btn-grid">
+                <a href="#" class="btn btn-start"><i class="fas fa-play"></i> Get Start</a>
+                <a href="#" class="btn btn-visit"><i class="fas fa-globe"></i> Visit Bot</a>
+                <a href="#" class="btn btn-qr"><i class="fas fa-qrcode"></i> QR Code</a>
+                <a href="#" class="btn btn-code"><i class="fas fa-terminal"></i> Pair Code</a>
+                <a href="#" class="btn btn-render"><i class="fas fa-cloud"></i> Render</a>
+                <a href="#" class="btn btn-heroku"><i class="fas fa-server"></i> Heroku</a>
+                <a href="#" class="btn btn-panel"><i class="fas fa-file-download"></i> Download Panel File (JSON/JS)</a>
+            </div>
         </div>
-        <div class="btn-grid">
-            <a href="#" class="btn btn-start"><i class="fas fa-play"></i> Get Start</a>
-            <a href="#" class="btn btn-visit"><i class="fas fa-globe"></i> Visit Bot</a>
-            <a href="#" class="btn btn-qr"><i class="fas fa-qrcode"></i> QR Code</a>
-            <a href="#" class="btn btn-code"><i class="fas fa-key"></i> Pair Code</a>
-            <a href="#" class="btn btn-render"><i class="fas fa-cloud"></i> Render</a>
-            <a href="#" class="btn btn-heroku"><i class="fas fa-server"></i> Heroku</a>
-            <a href="#" class="btn btn-panel"><i class="fas fa-file-download"></i> Download Panel File (JSON/JS)</a>
+
+        <!-- GWM MD BOT -->
+        <div class="bot-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h2 class="bot-name">GWM MD Bot</h2>
+                    <span style="font-size:0.75rem; color:#64748b;"><i class="fas fa-users"></i> 9.2k Users • Stable</span>
+                </div>
+                <div class="status-badge"><span class="pulse-dot"></span> Online</div>
+            </div>
+            <div class="btn-grid">
+                <a href="#" class="btn btn-start"><i class="fas fa-play"></i> Get Start</a>
+                <a href="#" class="btn btn-visit"><i class="fas fa-globe"></i> Visit Bot</a>
+                <a href="#" class="btn btn-qr"><i class="fas fa-qrcode"></i> QR Code</a>
+                <a href="#" class="btn btn-code"><i class="fas fa-terminal"></i> Pair Code</a>
+                <a href="#" class="btn btn-render"><i class="fas fa-cloud"></i> Render</a>
+                <a href="#" class="btn btn-heroku"><i class="fas fa-server"></i> Heroku</a>
+                <a href="#" class="btn btn-panel"><i class="fas fa-file-download"></i> Download Panel File (JSON/JS)</a>
+            </div>
         </div>
     </div>
 
-    <!-- GWM MD BOT -->
-    <div class="bot-card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-                <h2 class="bot-name">GWM MD Bot</h2>
-                <span style="font-size:0.75rem; color:#64748b;"><i class="fas fa-users"></i> 9.2k Users • Stable</span>
-            </div>
-            <div class="status-badge"><span class="pulse-dot"></span> Online</div>
-        </div>
-        <div class="btn-grid">
-            <a href="#" class="btn btn-start"><i class="fas fa-play"></i> Get Start</a>
-            <a href="#" class="btn btn-visit"><i class="fas fa-globe"></i> Visit Bot</a>
-            <a href="#" class="btn btn-qr"><i class="fas fa-qrcode"></i> QR Code</a>
-            <a href="#" class="btn btn-code"><i class="fas fa-key"></i> Pair Code</a>
-            <a href="#" class="btn btn-render"><i class="fas fa-cloud"></i> Render</a>
-            <a href="#" class="btn btn-heroku"><i class="fas fa-server"></i> Heroku</a>
-            <a href="#" class="btn btn-panel"><i class="fas fa-file-download"></i> Download Panel File (JSON/JS)</a>
-        </div>
-    </div>
+    <footer>
+        <div class="power-text">Powered by Njabulo Jb 2026</div>
+        <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 10px;">&copy; TIMNASA TECH SYSTEMS</div>
+    </footer>
 </div>
-
-<footer>
-    <div class="power-text">Powered by Njabulo Jb 2026</div>
-    <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 10px;">&copy; TIMNASA TECH SYSTEMS</div>
-</footer>
 
 <script>
-    // AUDIO VOICE FUNCTION
     function startExperience() {
-        // Hide Overlay
+        // 1. Hide Welcome Screen
         document.getElementById('welcome-overlay').style.display = 'none';
-        // Show Body
-        document.body.style.display = 'block';
+        
+        // 2. Show Main App
+        document.getElementById('main-app-content').style.display = 'block';
 
-        // AI Voice Logic
+        // 3. AI Man Voice Logic
         const welcomeMessage = "Welcome to Njabulo Jb service, whatsapp deploy and enjoy";
         const speech = new SpeechSynthesisUtterance(welcomeMessage);
         
-        // Find a Male AI voice
+        // Find a Male Voice
         const voices = window.speechSynthesis.getVoices();
         const maleVoice = voices.find(voice => 
             voice.name.includes('Male') || 
@@ -252,14 +220,15 @@
         );
 
         if (maleVoice) speech.voice = maleVoice;
-        speech.rate = 0.9; // Professional pace
-        speech.pitch = 1;  // Man voice pitch
+        speech.rate = 0.85; // Natural speed
+        speech.pitch = 1;   // Man pitch
         
         window.speechSynthesis.speak(speech);
-        startTime(); // Start the clock
+        
+        // 4. Start Clock
+        startTime();
     }
 
-    // CLOCK FUNCTION
     function startTime() {
         const today = new Date();
         let h = today.getHours();
@@ -271,7 +240,7 @@
         setTimeout(startTime, 1000);
     }
 
-    // Needed to load voices properly in some browsers
+    // Pre-load voices for browsers
     window.speechSynthesis.getVoices();
 </script>
 
