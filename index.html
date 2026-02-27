@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Njabulo Jb Tech - WhatsApp Music</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --wa-green: #25d366;
+            --yt-red: #ff0000;
+            --text-main: #333;
+            --bg-white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-white);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- Header Section (As Requested) --- */
+        #mainHeader {
+            width: 100%;
+            padding: 15px 5%;
+            background: #fff;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .pulse-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--wa-green);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pulse-dot::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--wa-green);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        /* --- Main UI --- */
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin-top: 40px;
+            padding-bottom: 50px;
+        }
+
+        .input-card {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        h2 { font-size: 1.8rem; margin-bottom: 20px; }
+
+        .big-input {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .big-input:focus { border-color: var(--wa-green); }
+
+        /* --- Action Buttons --- */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-search { background-color: #000; }
+        .btn-search:hover { background-color: #333; }
+
+        .btn-download { background-color: var(--wa-green); }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); }
+
+        .btn-yt { background-color: var(--yt-red); }
+
+        /* --- Result View (Bot Style) --- */
+        #resultArea {
+            margin-top: 30px;
+            display: none; /* Hidden until search */
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .caption-box {
+            background: #f0f2f5;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .loader {
+            display: none;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--wa-green);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<header id="mainHeader">
+    <a href="#" class="logo"><i class="fab fa-github"></i> Njabulo Jb Tech</a>
+    <div class="status-box">
+        <div class="pulse-dot"></div>
+        <span>Online</span>
+    </div>
+</header>
+
+<div class="container">
+    <div class="input-card">
+        <h2>Enter Details</h2>
+        <input type="text" id="userName" class="big-input" placeholder="Your Name">
+        <input type="text" id="songQuery" class="big-input" placeholder="Enter song name or keywords">
+        
+        <div class="button-group">
+            <button class="btn btn-search" onclick="simulateSearch()">
+                <i class="fas fa-search"></i> Search Song
+            </button>
+        </div>
+        <div id="loading" class="loader"></div>
+    </div>
+
+    <!-- Result Area triggered by JS -->
+    <div id="resultArea">
+        <img id="thumb" src="" class="thumbnail">
+        <div class="caption-box" id="caption"></div>
+        
+        <div class="button-group">
+            <!-- MP3 Download -->
+            <a id="dlMp3" href="#" target="_blank" class="btn btn-download">
+                <i class="fas fa-file-audio"></i> Download MP3
+            </a>
+            <!-- YouTube Button -->
+            <a id="dlYt" href="#" target="_blank" class="btn btn-yt">
+                <i class="fab fa-youtube"></i> Watch on YouTube
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function simulateSearch() {
+        const name = document.getElementById('userName').value;
+        const query = document.getElementById('songQuery').value;
+
+        if(!name || !query) return alert("Please fill all fields");
+
+        // Show Loader
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('resultArea').style.display = 'none';
+
+        try {
+            // Note: In a real frontend, 'yt-search' needs a backend. 
+            // Here we use a public proxy to get video details for the query.
+            const searchRes = await fetch(`https://api.shizuhub.xyz/api/search/youtube?q=${encodeURIComponent(query)}`);
+            const data = await searchRes.json();
+            const video = data.result[0]; // Get first video
+
+            // Safe Title Logic from your code
+            const safeTitle = video.title.replace(/[\\/:*?"<>|]/g, '');
+            const fileName = `${safeTitle}.mp3`;
+            
+            // Your exact API URL Logic
+            const apiURL = `https://noobs-api.top/dipto/ytDl3?link=${encodeURIComponent(video.url)}&format=mp3`;
+
+            // Update UI with your exact caption format
+            document.getElementById('thumb').src = video.thumbnail;
+            document.getElementById('caption').innerHTML = `
+🎧title: *${video.title}*
+🎼views: *${video.views.toLocaleString()}*
+*⇆ㅤ ||◁ㅤ❚❚ㅤ▷||ㅤ ↻*
+0:00 ──〇─────── : *${video.timestamp}*
+
+__________________
+*⿻│①◦ (Audio Song)*
+*⿻│②◦ (Document song)*
+*⿻│③◦ (Video Ytmp4)*
+___________________
+
+*FileName:* ${fileName}
+*User:* ${name}`;
+
+            // Set Download Links
+            document.getElementById('dlMp3').href = apiURL;
+            document.getElementById('dlYt').href = video.url;
+
+            // Show Result
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('resultArea').style.display = 'block';
+
+        } catch (error) {
+            alert("Error fetching song details. API might be down.");
+            document.getElementById('loading').style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
+ 
