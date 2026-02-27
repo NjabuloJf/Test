@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>call - Njabulo JB</title>
+    <title>Njabulo JB - Verified Profile</title>
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -12,17 +12,18 @@
             --wa-white: #ffffff;
             --wa-bg: #f0f2f5;
             --wa-dark-green: #075E54;
+            --verified-blue: #2096f3;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--wa-bg);
+            background-color: var(--wa-bg); /* Light grey background */
             margin: 0;
             padding: 0;
             color: #333;
         }
 
-        /* HEADER STYLES */
+        /* HEADER */
         #mainHeader {
             background: var(--wa-white);
             padding: 15px 5%;
@@ -66,7 +67,6 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
 
-        /* BEAUTIFUL LINE */
         .beautiful-line {
             height: 3px;
             background: linear-gradient(90deg, transparent, var(--wa-green), transparent);
@@ -74,81 +74,103 @@
             width: 100%;
         }
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-            padding: 0;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #555;
-            font-weight: 500;
-        }
-
-        /* CONTAINER & PROFILE */
+        /* CONTAINER */
         .container {
             max-width: 600px;
             margin: 20px auto;
-            padding: 20px;
+            padding: 30px 20px;
             text-align: center;
-            background: var(--wa-white);
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: var(--wa-white); /* White background for all sections */
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
 
         .profile-img {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             border: 4px solid var(--wa-green);
             object-fit: cover;
+            margin-bottom: 10px;
         }
 
-        /* QUICK LINKS / WHATSAPP BOX */
-        .links-wrapper {
-            margin-top: 25px;
+        .profile-name {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #111;
+            margin: 0;
         }
 
+        .verified-badge {
+            color: var(--verified-blue);
+            font-size: 1.1rem;
+        }
+
+        .bio-text {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        /* QUICK LINKS SECTION */
         .link-item-box {
             background: #f9f9f9;
             border: 1px solid #eee;
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
         }
 
-        .link-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--wa-dark-green);
             font-weight: bold;
-        }
-
-        /* CENTERED WHATSAPP ICON STYLE */
-        .whatsapp-center {
-            display: block;
-            font-size: 3rem;
-            color: var(--wa-green);
-            margin: 10px auto;
-        }
-
-        /* BUTTONS */
-        .action-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
 
+        /* FEEDBACK FORM */
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .input-group textarea {
+            padding-left: 12px;
+            height: 80px;
+            resize: none;
+        }
+
+        /* BUTTONS */
         .btn-action {
-            padding: 12px;
+            width: 100%;
+            padding: 14px;
             border-radius: 8px;
             text-decoration: none;
             color: white;
@@ -156,124 +178,129 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 10px;
         }
 
-        .msg-btn { background-color: var(--wa-green); }
+        .whatsapp-btn { background-color: var(--wa-green); }
         .call-btn { background-color: #34b7f1; }
-        .ans-btn { background-color: #666; width: 100%; margin-top: 10px; cursor: pointer; border: none; }
+        .send-btn { background-color: var(--wa-dark-green); }
 
-        .btn-action:hover { opacity: 0.8; transform: translateY(-2px); }
-
-        /* ANSWER SECTION */
-        #answerContent {
-            display: none;
-            padding: 15px;
-            background: #fff3cd;
-            border-left: 5px solid #ffc107;
-            margin-top: 10px;
-            border-radius: 5px;
-            text-align: left;
+        .btn-action:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
 
-        .njabulo-title {
-            color: var(--wa-dark-green);
-            margin-bottom: 5px;
+        .whatsapp-center {
+            display: block;
+            font-size: 3rem;
+            color: var(--wa-green);
+            margin: 10px auto;
+            text-align: center;
         }
+
     </style>
 </head>
 <body>
 
-<!-- NO AUDIO SOURCE? HERE IS THE ELEMENT -->
-<audio id="nokiaTune">
-    <source src="https://www.zedge.net/ringtone/5f212850-990a-3a52-9441-2e2392683e6a" type="audio/mpeg">
-    <!-- Note: Many browsers block auto-play. It plays when clicking 'Call' -->
-</audio>
-
-<!-- HEADER -->
 <header id="mainHeader">
     <div class="header-container">
         <div class="header-top">
-            <a href="/" class="logo"><i class="fab fa-node-js"></i> Njabulo Jb</a>
+            <a href="#" class="logo"><i class="fab fa-node-js"></i> Njabulo JB</a>
             <div class="status-box">
                 <span class="pulse-dot"></span>
                 <span class="status-text">Online</span>
             </div>
         </div>
         <div class="beautiful-line"></div>
-        <nav class="navbar">
-            <ul class="nav-links">
-                <li><a class="active" href="#home">Home</a></li>                
-            </ul>
-            <div class="nav-profile-info">
-                <a href="https://github.com" class="nav-repo-btn" style="text-decoration:none; color:#333;">
-                    <i class="fab fa-github"></i> Repository
-                </a>
-            </div>
-        </nav>
     </div>
 </header>
 
-<div class="container" id="home">
+<div class="container">
     <!-- PROFILE IMAGE -->
-    <img src="/me.png" alt="Njabulo-Jb" class="profile-img">
-    <h1>Njabulo Jb</h1>
+    <img src="https://ui-avatars.com/api/?name=Njabulo+JB&background=25D366&color=fff&size=200" alt="Njabulo-Jb" class="profile-img">
+    
+    <!-- NAME WITH VERIFIED BADGE -->
+    <h1 class="profile-name">
+        Njabulo JB
+        <i class="fas fa-certificate verified-badge" title="Verified Professional">
+            <i class="fas fa-check" style="color: white; font-size: 0.5em; position: absolute; top: 3.5px; left: 3px;"></i>
+        </i>
+    </h1>
     <p class="bio-text">Innovative Tech Solutions & Bot Developer 🌐</p>
 
-    <!-- QUICK LINKS SECTION -->
-    <div class="links-wrapper">
-        
-        <!-- Njabulo JB Section -->
-        <div class="link-item-box">
-            <div class="link-header">
-                <span><i class="fab fa-whatsapp" style="color:#25d366"></i> Contact Njabulo JB</span>
-                <span style="color:#22c55e; font-size:10px">● Online</span>
-            </div>
-            
-            <!-- Centered WhatsApp Icon -->
-            <i class="fab fa-whatsapp whatsapp-center"></i>
-            
-            <h3 class="njabulo-title">Njabulo JB</h3>
-            
-            <div class="action-btns">
-                <a href="https://wa.me/26777821911" class="btn-action msg-btn">
-                    <i class="fas fa-comment-dots"></i> Message Me
-                </a>
-                <a href="tel:+26777821911" class="btn-action call-btn" onclick="playNokia()">
-                    <i class="fas fa-phone-alt"></i> Call Njabulo JB
-                </a>
-            </div>
+    <!-- DIRECT CONTACTS -->
+    <div class="link-item-box">
+        <div class="section-title"><i class="fab fa-whatsapp"></i> Quick Contact</div>
+        <i class="fab fa-whatsapp whatsapp-center"></i>
+        <a href="https://wa.me/26777821911" class="btn-action whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+        <a href="tel:+26777821911" class="btn-action call-btn">
+            <i class="fas fa-phone-alt"></i> Call Njabulo JB
+        </a>
+    </div>
 
-            <!-- Show Answer Button -->
-            <button class="btn-action ans-btn" onclick="toggleAnswer()">
-                <i class="fas fa-lightbulb"></i> Show Answer
-            </button>
-            <div id="answerContent">
-                <strong>Solution:</strong> To connect with Njabulo JB, use the WhatsApp button above or dial the number directly! 🚀
-            </div>
+    <!-- FEEDBACK FORM (IMALI WORK) -->
+    <div class="link-item-box">
+        <div class="section-title"><i class="fas fa-envelope"></i> Send Me Feedback</div>
+        
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="userName" placeholder="Enter Your Name">
         </div>
+
+        <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="userEmail" placeholder="Enter Your Email">
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-phone"></i>
+            <input type="number" id="userPhone" placeholder="Enter Your Phone Number">
+        </div>
+
+        <div class="input-group">
+            <textarea id="userMessage" placeholder="Write your message or feedback here..."></textarea>
+        </div>
+
+        <button class="btn-action send-btn" onclick="sendEmailFeedback()">
+            <i class="fas fa-paper-plane"></i> Send Message
+        </button>
     </div>
 </div>
 
 <script>
-    // Function to play Nokia Ringtone
-    function playNokia() {
-        const audio = document.getElementById('nokiaTune');
-        // Simple fallback alert since direct mp3 links sometimes expire
-        audio.play().catch(function(error) {
-            console.log("Audio play failed: Dialing number now...");
-        });
-    }
+    function sendEmailFeedback() {
+        // REPLACE THIS WITH YOUR REAL EMAIL
+        const myEmail = "njabulojb@yourdomain.com"; 
 
-    // Function to toggle Answer box
-    function toggleAnswer() {
-        const box = document.getElementById('answerContent');
-        if (box.style.display === "block") {
-            box.style.display = "none";
-        } else {
-            box.style.display = "block";
+        const name = document.getElementById('userName').value;
+        const email = document.getElementById('userEmail').value;
+        const phone = document.getElementById('userPhone').value;
+        const message = document.getElementById('userMessage').value;
+
+        // Form Validation
+        if(name === "" || message === "") {
+            alert("Please provide your name and message.");
+            return;
         }
+
+        // Subject & Body formatting
+        const subject = encodeURIComponent("Feedback from " + name);
+        const body = encodeURIComponent(
+            "Name: " + name + "\n" +
+            "Email: " + email + "\n" +
+            "Phone: " + phone + "\n\n" +
+            "Message:\n" + message
+        );
+
+        // Open user's email client
+        window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
     }
 </script>
 
