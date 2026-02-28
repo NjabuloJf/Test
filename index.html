@@ -3,47 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Njabulo JB - Verified Profile</title>
-    <!-- Font Awesome for Icons -->
+    <title>Njabulo Jb Host Work</title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --wa-green: #25D366;
-            --wa-white: #ffffff;
-            --wa-bg: #f0f2f5;
-            --wa-dark-green: #075E54;
-            --verified-blue: #2096f3;
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent-color: #58a6ff;
+            --text-color: #c9d1d9;
+            --terminal-bg: #010409;
+            --success: #238636;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--wa-bg); /* Light grey background */
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
-            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* HEADER */
+        /* Provided Header Styling */
         #mainHeader {
-            background: var(--wa-white);
+            width: 100%;
+            background: var(--card-bg);
             padding: 15px 5%;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            border-bottom: 1px solid #30363d;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--wa-dark-green);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-color);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .status-box {
@@ -56,251 +64,237 @@
         .pulse-dot {
             width: 10px;
             height: 10px;
-            background-color: #22c55e;
+            background-color: #2ea043;
             border-radius: 50%;
-            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 0 rgba(46, 160, 67, 0.4);
+            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 160, 67, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(46, 160, 67, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 160, 67, 0); }
         }
 
-        .beautiful-line {
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--wa-green), transparent);
-            margin: 10px 0;
-            width: 100%;
-        }
-
-        /* CONTAINER */
         .container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 30px 20px;
-            text-align: center;
-            background: var(--wa-white); /* White background for all sections */
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            width: 90%;
+            max-width: 800px;
+            margin: 30px 0;
         }
 
-        .profile-img {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 4px solid var(--wa-green);
-            object-fit: cover;
-            margin-bottom: 10px;
+        h1 { text-align: center; color: white; margin-bottom: 30px; }
+
+        /* Button Grid */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
-        .profile-name {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #111;
-            margin: 0;
-        }
-
-        .verified-badge {
-            color: var(--verified-blue);
-            font-size: 1.1rem;
-        }
-
-        .bio-text {
-            color: #666;
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-        }
-
-        /* QUICK LINKS SECTION */
-        .link-item-box {
-            background: #f9f9f9;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            text-align: left;
-        }
-
-        .section-title {
-            font-size: 1.1rem;
-            color: var(--wa-dark-green);
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* FEEDBACK FORM */
-        .input-group {
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        .input-group i {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #888;
-        }
-
-        .input-group input, .input-group textarea {
-            width: 100%;
-            padding: 12px 12px 12px 40px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        .input-group textarea {
-            padding-left: 12px;
-            height: 80px;
-            resize: none;
-        }
-
-        /* BUTTONS */
-        .btn-action {
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            text-decoration: none;
+        .small-btn {
+            background-color: #21262d;
+            border: 1px solid #30363d;
             color: white;
-            font-weight: bold;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            font-size: 0.85rem;
             transition: 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        .small-btn:hover {
+            background-color: #30363d;
+            border-color: #8b949e;
+        }
+
+        .btn-render { border-left: 4px solid #ff4b2b; }
+        .btn-qr { border-left: 4px solid #00d2ff; }
+        .btn-heroku { border-left: 4px solid #673ab7; }
+        .btn-github { border-left: 4px solid #ffffff; }
+
+        /* Terminal Styling */
+        .terminal {
+            background: var(--terminal-bg);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .terminal-header {
+            color: #8b949e;
             margin-bottom: 10px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 5px;
         }
 
-        .whatsapp-btn { background-color: var(--wa-green); }
-        .call-btn { background-color: #34b7f1; }
-        .send-btn { background-color: var(--wa-dark-green); }
+        .log-success { color: #7ee787; }
+        .log-info { color: #79c0ff; }
 
-        .btn-action:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+        /* Copy Sections */
+        .copy-box {
+            background: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
         }
 
-        .whatsapp-center {
+        .copy-label {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
             display: block;
-            font-size: 3rem;
-            color: var(--wa-green);
-            margin: 10px auto;
-            text-align: center;
+            color: #8b949e;
         }
 
+        .copy-action {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"], textarea {
+            flex-grow: 1;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Info Section */
+        .info-section {
+            background: rgba(88, 166, 255, 0.05);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) {
+            .btn-grid { grid-template-columns: 1fr 1fr; }
+        }
     </style>
 </head>
 <body>
 
 <header id="mainHeader">
-    <div class="header-container">
-        <div class="header-top">
-            <a href="#" class="logo"><i class="fab fa-node-js"></i> Njabulo JB</a>
-            <div class="status-box">
-                <span class="pulse-dot"></span>
-                <span class="status-text">Online</span>
-            </div>
-        </div>
-        <div class="beautiful-line"></div>
+    <a href="#" class="logo"><i class="fab fa-github"></i> Njabulo Jb Hub</a>
+    <div class="status-box">
+        <span class="pulse-dot"></span>
+        <span>Online</span>
     </div>
 </header>
 
 <div class="container">
-    <!-- PROFILE IMAGE -->
-    <img src="https://ui-avatars.com/api/?name=Njabulo+JB&background=25D366&color=fff&size=200" alt="Njabulo-Jb" class="profile-img">
-    
-    <!-- NAME WITH VERIFIED BADGE -->
-    <h1 class="profile-name">
-        Njabulo JB
-        <i class="fas fa-certificate verified-badge" title="Verified Professional">
-            <i class="fas fa-check" style="color: white; font-size: 0.5em; position: absolute; top: 3.5px; left: 3px;"></i>
-        </i>
-    </h1>
-    <p class="bio-text">Innovative Tech Solutions & Bot Developer 🌐</p>
+    <h1><i class="fab fa-battle-net"></i> Njabulo Jb Host Work</h1>
 
-    <!-- DIRECT CONTACTS -->
-    <div class="link-item-box">
-        <div class="section-title"><i class="fab fa-whatsapp"></i> Quick Contact</div>
-        <i class="fab fa-whatsapp whatsapp-center"></i>
-        <a href="https://wa.me/26777821911" class="btn-action whatsapp-btn">
-            <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+    <!-- Action Buttons -->
+    <div class="btn-grid">
+        <a href="https://render.com" class="small-btn btn-render">
+            <i class="fab fa-cloud-upload-alt"></i> Render
         </a>
-        <a href="tel:+26777821911" class="btn-action call-btn">
-            <i class="fas fa-phone-alt"></i> Call Njabulo JB
+        <a href="#" class="small-btn btn-qr">
+            <i class="fab fa-stack-overflow"></i> QR Code
+        </a>
+        <a href="https://dashboard.heroku.com" class="small-btn btn-heroku">
+            <i class="fab fa-elementor"></i> Heroku
+        </a>
+        <a href="https://github.com/Njabulo-Jb" class="small-btn btn-github">
+            <i class="fab fa-github"></i> GitHub
         </a>
     </div>
 
-    <!-- FEEDBACK FORM (IMALI WORK) -->
-    <div class="link-item-box">
-        <div class="section-title"><i class="fas fa-envelope"></i> Send Me Feedback</div>
-        
-        <div class="input-group">
-            <i class="fas fa-user"></i>
-            <input type="text" id="userName" placeholder="Enter Your Name">
-        </div>
+    <!-- Terminal Logs -->
+    <div class="terminal">
+        <div class="terminal-header"><i class="fab fa-terminal"></i> system_logs --njabulo-jb</div>
+        <div><span class="log-success">[✓]</span> WELCOME TO GWM-XMD HOSTING ON RENDER AND HEROKU</div>
+        <div><span class="log-info">[i]</span> Stay updated with the latest bot features and patches.</div>
+        <div><span class="log-info">[i]</span> Setting up on uptimerobot.com will keep your bot online 24/7.</div>
+        <div><span class="log-success">[!]</span> SYSTEM OWNER: Njabulo Jb</div>
+        <div><span class="log-info">[i]</span> Initializing BWM-XMD environment... Ready!</div>
+    </div>
 
-        <div class="input-group">
-            <i class="fas fa-envelope"></i>
-            <input type="email" id="userEmail" placeholder="Enter Your Email">
+    <!-- Copy GitHub Repo Section -->
+    <div class="copy-box">
+        <label class="copy-label"><i class="fab fa-git-alt"></i> REPOSITORY URL FOR RENDER</label>
+        <div class="copy-action">
+            <input type="text" id="repoUrl" value="https://github.com/Njabulo-Jb/BWM-XMD" readonly>
+            <button class="copy-btn" onclick="copyText('repoUrl')"><i class="fab fa-copy"></i></button>
         </div>
+    </div>
 
-        <div class="input-group">
-            <i class="fas fa-phone"></i>
-            <input type="number" id="userPhone" placeholder="Enter Your Phone Number">
+    <!-- Copy .env Section -->
+    <div class="copy-box">
+        <label class="copy-label"><i class="fab fa-envira"></i> .ENV CONFIGURATION</label>
+        <textarea id="envContent" rows="8" readonly>
+SESSION_ID="Session"
+AUTO_READ_STATUS=true
+STATUS_READ_MSG="Status Seen By me 𝐁𝐖𝐌-𝐗𝐌𝐃"
+AUTO_STATUS_REPLY=false
+AUTO_REJECT_CALLS=false
+MODE="public"
+WELCOME=false
+AUTO_READ_MESSAGES=false
+AUTO_TYPING=false
+OWNER_NAME="Njabulo-Jb"
+OWNER_NUMBER="26777821911"
+AUTO_RECORDING=false
+ALWAYS_ONLINE=false
+AUTO_BLOCK=true
+AUTO_REACT=false
+PREFIX="."
+STARTING_BOT_MESSAGE=yes</textarea>
+        <div style="margin-top:10px; text-align: right;">
+            <button class="copy-btn" onclick="copyText('envContent')"><i class="fab fa-copy"></i> Copy .env</button>
         </div>
+    </div>
 
-        <div class="input-group">
-            <textarea id="userMessage" placeholder="Write your message or feedback here..."></textarea>
-        </div>
-
-        <button class="btn-action send-btn" onclick="sendEmailFeedback()">
-            <i class="fas fa-paper-plane"></i> Send Message
-        </button>
+    <!-- Info Section (Approx 100 words) -->
+    <div class="info-section">
+        <h3><i class="fab fa-readme"></i> About BWM-XMD Host</h3>
+        <p>
+            Welcome to the official <strong>GWM-XMD</strong> hosting portal managed by <i class="fab fa-black-tie"></i> <strong>Njabulo Jb</strong>. 
+            This project is specifically designed to provide a seamless deployment experience on modern cloud platforms like 
+            <i class="fab fa-buffer"></i> Render and Heroku. By utilizing this interface, you can quickly generate your 
+            <i class="fab fa-quinscape"></i> QR session, clone the official repository, and configure your environment variables 
+            with a single click. Our bot ensures high performance with features like <i class="fab fa-android"></i> auto-status reading, 
+            call rejection, and public mode functionality. To guarantee 99.9% uptime, we highly recommend integrating your 
+            deployed URL with <i class="fab fa-ups"></i> UptimeRobot. This tool is built for the community to ensure that 
+            managing your WhatsApp bot is efficient, fast, and secure for all users worldwide.
+        </p>
     </div>
 </div>
 
 <script>
-    function sendEmailFeedback() {
-        // REPLACE THIS WITH YOUR REAL EMAIL
-        const myEmail = "njabulojb@yourdomain.com"; 
-
-        const name = document.getElementById('userName').value;
-        const email = document.getElementById('userEmail').value;
-        const phone = document.getElementById('userPhone').value;
-        const message = document.getElementById('userMessage').value;
-
-        // Form Validation
-        if(name === "" || message === "") {
-            alert("Please provide your name and message.");
-            return;
-        }
-
-        // Subject & Body formatting
-        const subject = encodeURIComponent("Feedback from " + name);
-        const body = encodeURIComponent(
-            "Name: " + name + "\n" +
-            "Email: " + email + "\n" +
-            "Phone: " + phone + "\n\n" +
-            "Message:\n" + message
-        );
-
-        // Open user's email client
-        window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
+    function copyText(elementId) {
+        var copyText = document.getElementById(elementId);
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+        navigator.clipboard.writeText(copyText.value);
+        
+        alert("Copied to clipboard!");
     }
 </script>
 
