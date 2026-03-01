@@ -3,52 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Njabulo Jb Host Work</title>
-    <!-- Font Awesome -->
+    <title>Njabulo Jb Hub</title>
+    <!-- FontAwesome 6.4.0 (Latest) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --accent-color: #58a6ff;
-            --text-color: #c9d1d9;
-            --terminal-bg: #010409;
-            --success: #238636;
+            --primary-blue: #007bff;
+            --bg-color: #ffffff; /* White Background */
+            --text-main: #2d3436;
+            --card-bg: #f8f9fa;
+            --border-color: #dfe6e9;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-main);
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        /* Provided Header Styling */
+        /* Header provided by user */
         #mainHeader {
-            width: 100%;
-            background: var(--card-bg);
+            background: #ffffff;
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-sizing: border-box;
-            border-bottom: 1px solid #30363d;
+            border-bottom: 2px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
         .logo {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent-color);
+            font-size: 1.4rem;
+            font-weight: bold;
             text-decoration: none;
+            color: var(--primary-blue);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -58,143 +50,122 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2ecc71;
         }
 
         .pulse-dot {
             width: 10px;
             height: 10px;
-            background-color: #2ea043;
+            background-color: #2ecc71;
             border-radius: 50%;
-            box-shadow: 0 0 0 rgba(46, 160, 67, 0.4);
-            animation: pulse 2s infinite;
+            animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 160, 67, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(46, 160, 67, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 160, 67, 0); }
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
         }
 
         .container {
-            width: 90%;
             max-width: 800px;
-            margin: 30px 0;
+            margin: 30px auto;
+            padding: 0 20px;
         }
 
-        h1 { text-align: center; color: white; margin-bottom: 30px; }
-
         /* Button Grid */
-        .btn-grid {
+        .button-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
             margin-bottom: 30px;
         }
 
-        .small-btn {
-            background-color: #21262d;
-            border: 1px solid #30363d;
-            color: white;
-            padding: 12px;
-            border-radius: 6px;
-            cursor: pointer;
+        .btn-small {
+            padding: 10px;
+            background: #f1f2f6;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.85rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            font-size: 0.85rem;
             transition: 0.3s;
-            text-decoration: none;
         }
 
-        .small-btn:hover {
-            background-color: #30363d;
-            border-color: #8b949e;
+        .btn-small:hover {
+            background: var(--primary-blue);
+            color: white;
         }
 
-        .btn-render { border-left: 4px solid #ff4b2b; }
-        .btn-qr { border-left: 4px solid #00d2ff; }
-        .btn-heroku { border-left: 4px solid #673ab7; }
-        .btn-github { border-left: 4px solid #ffffff; }
-
-        /* Terminal Styling */
+        /* Terminal Styles */
         .terminal {
-            background: var(--terminal-bg);
-            border: 1px solid #30363d;
-            border-radius: 6px;
+            background: #1e1e1e;
+            color: #dcdcdc;
             padding: 20px;
-            font-family: 'JetBrains Mono', monospace;
+            border-radius: 10px;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 0.9rem;
-            line-height: 1.6;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        .terminal-header {
-            color: #8b949e;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 5px;
-        }
+        .term-green { color: #2ecc71; }
+        .term-blue { color: #3498db; }
 
-        .log-success { color: #7ee787; }
-        .log-info { color: #79c0ff; }
-
-        /* Copy Sections */
+        /* Copy Boxes */
         .copy-box {
             background: var(--card-bg);
-            border: 1px solid #30363d;
-            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
             padding: 15px;
             margin-bottom: 20px;
         }
 
-        .copy-label {
-            font-size: 0.8rem;
+        .copy-title {
             font-weight: bold;
             margin-bottom: 10px;
-            display: block;
-            color: #8b949e;
-        }
-
-        .copy-action {
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        input[type="text"], textarea {
-            flex-grow: 1;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            color: #c9d1d9;
-            padding: 8px;
-            border-radius: 4px;
-            font-family: monospace;
+        pre {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.8rem;
+            margin: 0;
         }
 
         .copy-btn {
-            background: var(--success);
+            background: var(--primary-blue);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
+            padding: 5px 12px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 0.8rem;
         }
 
-        /* Info Section */
-        .info-section {
-            background: rgba(88, 166, 255, 0.05);
-            border: 1px solid rgba(88, 166, 255, 0.2);
+        .copy-btn:active { transform: scale(0.95); }
+
+        /* About Section */
+        .about-section {
+            background: #f9f9f9;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 10px;
             line-height: 1.6;
-            font-size: 0.95rem;
+            border-left: 5px solid var(--primary-blue);
         }
 
-        @media (max-width: 600px) {
-            .btn-grid { grid-template-columns: 1fr 1fr; }
-        }
+        .about-section h3 { margin-top: 0; }
     </style>
 </head>
 <body>
@@ -208,48 +179,40 @@
 </header>
 
 <div class="container">
-    <h1><i class="fab fa-battle-net"></i> Njabulo Jb Host Work</h1>
 
     <!-- Action Buttons -->
-    <div class="btn-grid">
-        <a href="https://render.com" class="small-btn btn-render">
-            <i class="fab fa-cloud-upload-alt"></i> Render
-        </a>
-        <a href="#" class="small-btn btn-qr">
-            <i class="fab fa-stack-overflow"></i> QR Code
-        </a>
-        <a href="https://dashboard.heroku.com" class="small-btn btn-heroku">
-            <i class="fab fa-elementor"></i> Heroku
-        </a>
-        <a href="https://github.com/Njabulo-Jb" class="small-btn btn-github">
-            <i class="fab fa-github"></i> GitHub
-        </a>
+    <div class="button-grid">
+        <a href="https://render.com" class="btn-small"><i class="fas fa-server"></i> Render</a>
+        <a href="#" class="btn-small"><i class="fas fa-qrcode"></i> Qr</a>
+        <a href="https://heroku.com" class="btn-small"><i class="fab fa-buffer"></i> Code Heroku</a>
+        <a href="#" class="btn-small"><i class="fab fa-github"></i> Download</a>
     </div>
 
     <!-- Terminal Logs -->
     <div class="terminal">
-        <div class="terminal-header"><i class="fab fa-terminal"></i> system_logs --njabulo-jb</div>
-        <div><span class="log-success">[✓]</span> WELCOME TO GWM-XMD HOSTING ON RENDER AND HEROKU</div>
-        <div><span class="log-info">[i]</span> Stay updated with the latest bot features and patches.</div>
-        <div><span class="log-info">[i]</span> Setting up on uptimerobot.com will keep your bot online 24/7.</div>
-        <div><span class="log-success">[!]</span> SYSTEM OWNER: Njabulo Jb</div>
-        <div><span class="log-info">[i]</span> Initializing BWM-XMD environment... Ready!</div>
+        <div><span class="term-green">></span> welcome to GWM-XMD HOSTING ON REND AND HEROKU</div>
+        <div><span class="term-blue">></span> 2 stay updated bot</div>
+        <div><span class="term-blue">></span> 3 make bot on uptimerobot.com will online</div>
+        <div><span class="term-green">></span> 4 owner for GWM-XMD is Njabulo Jb</div>
+        <div><span class="term-blue">></span> System initialized...</div>
     </div>
 
-    <!-- Copy GitHub Repo Section -->
+    <!-- Copy GitHub Repo URL -->
     <div class="copy-box">
-        <label class="copy-label"><i class="fab fa-git-alt"></i> REPOSITORY URL FOR RENDER</label>
-        <div class="copy-action">
-            <input type="text" id="repoUrl" value="https://github.com/Njabulo-Jb/BWM-XMD" readonly>
-            <button class="copy-btn" onclick="copyText('repoUrl')"><i class="fab fa-copy"></i></button>
+        <div class="copy-title">
+            <span><i class="fab fa-github"></i> Repository URL</span>
+            <button class="copy-btn" onclick="copyText('repoText')"><i class="fas fa-copy"></i> Copy Link</button>
         </div>
+        <pre id="repoText">https://github.com/Njabulo-Jb/BWM-XMD</pre>
     </div>
 
-    <!-- Copy .env Section -->
+    <!-- Copy .env Config -->
     <div class="copy-box">
-        <label class="copy-label"><i class="fab fa-envira"></i> .ENV CONFIGURATION</label>
-        <textarea id="envContent" rows="8" readonly>
-SESSION_ID="Session"
+        <div class="copy-title">
+            <span><i class="fas fa-code"></i> .env Config</span>
+            <button class="copy-btn" onclick="copyText('envText')"><i class="fas fa-copy"></i> Copy .env</button>
+        </div>
+        <pre id="envText">SESSION_ID="Session"
 AUTO_READ_STATUS=true
 STATUS_READ_MSG="Status Seen By me 𝐁𝐖𝐌-𝐗𝐌𝐃"
 AUTO_STATUS_REPLY=false
@@ -265,36 +228,38 @@ ALWAYS_ONLINE=false
 AUTO_BLOCK=true
 AUTO_REACT=false
 PREFIX="."
-STARTING_BOT_MESSAGE=yes</textarea>
-        <div style="margin-top:10px; text-align: right;">
-            <button class="copy-btn" onclick="copyText('envContent')"><i class="fab fa-copy"></i> Copy .env</button>
-        </div>
+STARTING_BOT_MESSAGE=yes</pre>
     </div>
 
-    <!-- Info Section (Approx 100 words) -->
-    <div class="info-section">
-        <h3><i class="fab fa-readme"></i> About BWM-XMD Host</h3>
+    <!-- About Section (100+ Words) -->
+    <div class="about-section">
+        <h3><i class="fab fa-info-circle"></i> Information Hub</h3>
         <p>
-            Welcome to the official <strong>GWM-XMD</strong> hosting portal managed by <i class="fab fa-black-tie"></i> <strong>Njabulo Jb</strong>. 
-            This project is specifically designed to provide a seamless deployment experience on modern cloud platforms like 
-            <i class="fab fa-buffer"></i> Render and Heroku. By utilizing this interface, you can quickly generate your 
-            <i class="fab fa-quinscape"></i> QR session, clone the official repository, and configure your environment variables 
-            with a single click. Our bot ensures high performance with features like <i class="fab fa-android"></i> auto-status reading, 
-            call rejection, and public mode functionality. To guarantee 99.9% uptime, we highly recommend integrating your 
-            deployed URL with <i class="fab fa-ups"></i> UptimeRobot. This tool is built for the community to ensure that 
-            managing your WhatsApp bot is efficient, fast, and secure for all users worldwide.
+            Welcome to the official <b>Njabulo Jb Host Hub</b>. This platform is specifically designed to provide you with the most efficient tools for deploying your <b>GWM-XMD</b> bot seamlessly. We provide dedicated support for deployment on <i class="fab fa-stripe-s"></i> <b>Render</b> and <b>Heroku</b> cloud services. By using our pre-configured .env files, you ensure that your bot has all the necessary features like auto-read status, anti-call, and auto-reply enabled right from the start. <i class="fas fa-bolt"></i> Speed and stability are our top priorities. To ensure your bot never goes offline, we recommend using <b>UptimeRobot</b> to ping your deployment URL 24/7. This hub acts as a bridge between your GitHub repository and your hosting provider, making the process simple even for beginners. Join our community today and keep your bot updated with the latest patches and features provided by Njabulo Jb.
         </p>
     </div>
+
 </div>
 
 <script>
     function copyText(elementId) {
-        var copyText = document.getElementById(elementId);
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); // For mobile devices
-        navigator.clipboard.writeText(copyText.value);
+        const text = document.getElementById(elementId).innerText;
         
-        alert("Copied to clipboard!");
+        // Modern approach
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Copied to clipboard!");
+            });
+        } else {
+            // Fallback for non-HTTPS
+            let textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            alert("Copied to clipboard!");
+        }
     }
 </script>
 
