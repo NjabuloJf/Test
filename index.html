@@ -4,43 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Njabulo Jb Hub</title>
-    <!-- FontAwesome 6.4.0 (Latest) -->
+    <!-- FontAwesome 6.4.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-blue: #007bff;
-            --bg-color: #ffffff; /* White Background */
-            --text-main: #2d3436;
-            --card-bg: #f8f9fa;
-            --border-color: #dfe6e9;
+            --primary-color: #2563eb;
+            --yt-red: #ff0000;
+            --uptime-green: #32d955;
+            --bg-color: #ffffff;
+            --text-dark: #1e293b;
+            --border-color: #e2e8f0;
+            --terminal-bg: #0f172a;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-main);
+            color: var(--text-dark);
             margin: 0;
             padding: 0;
         }
 
-        /* Header provided by user */
+        /* Header Styling */
         #mainHeader {
             background: #ffffff;
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .logo {
-            font-size: 1.4rem;
-            font-weight: bold;
+            font-size: 1.2rem;
+            font-weight: 800;
             text-decoration: none;
-            color: var(--primary-blue);
+            color: var(--text-dark);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -50,122 +53,137 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 600;
-            color: #2ecc71;
+            font-size: 0.9rem;
+            color: #10b981;
+            font-weight: bold;
         }
 
         .pulse-dot {
             width: 10px;
             height: 10px;
-            background-color: #2ecc71;
+            background-color: #10b981;
             border-radius: 50%;
             animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
         .container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
         }
+
+        /* Terminal Styles */
+        .terminal {
+            background: var(--terminal-bg);
+            color: #94a3b8;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .term-user { color: #38bdf8; }
+        .term-cmd { color: #facc15; }
 
         /* Button Grid */
         .button-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 30px;
         }
 
         .btn-small {
             padding: 10px;
-            background: #f1f2f6;
+            background: #f8fafc;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             text-decoration: none;
-            color: #333;
-            font-size: 0.85rem;
+            color: var(--text-dark);
+            font-size: 0.8rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: 0.3s;
+            transition: all 0.2s ease;
         }
 
         .btn-small:hover {
-            background: var(--primary-blue);
-            color: white;
+            background: #f1f5f9;
+            transform: translateY(-2px);
         }
 
-        /* Terminal Styles */
-        .terminal {
-            background: #1e1e1e;
-            color: #dcdcdc;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+        .btn-yt:hover { color: var(--yt-red); border-color: var(--yt-red); }
+        .btn-uptime:hover { color: var(--uptime-green); border-color: var(--uptime-green); }
 
-        .term-green { color: #2ecc71; }
-        .term-blue { color: #3498db; }
-
-        /* Copy Boxes */
-        .copy-box {
-            background: var(--card-bg);
+        /* Copy Sections */
+        .copy-card {
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 20px;
+            background: #fff;
         }
 
-        .copy-title {
-            font-weight: bold;
-            margin-bottom: 10px;
+        .copy-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .copy-header span {
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         pre {
-            background: #ffffff;
-            border: 1px solid #ddd;
+            background: #f1f5f9;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             overflow-x: auto;
             font-size: 0.8rem;
             margin: 0;
+            border: 1px solid #e2e8f0;
         }
 
-        .copy-btn {
-            background: var(--primary-blue);
+        .btn-copy-action {
+            background: var(--primary-color);
             color: white;
             border: none;
-            padding: 5px 12px;
-            border-radius: 5px;
+            padding: 6px 15px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-
-        .copy-btn:active { transform: scale(0.95); }
 
         /* About Section */
-        .about-section {
-            background: #f9f9f9;
+        .info-box {
+            line-height: 1.7;
+            font-size: 0.95rem;
+            color: #475569;
             padding: 20px;
-            border-radius: 10px;
-            line-height: 1.6;
-            border-left: 5px solid var(--primary-blue);
+            background: #fdfdfd;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
         }
 
-        .about-section h3 { margin-top: 0; }
+        .info-box i { color: var(--primary-color); }
     </style>
 </head>
 <body>
@@ -180,39 +198,44 @@
 
 <div class="container">
 
-    <!-- Action Buttons -->
-    <div class="button-grid">
-        <a href="https://render.com" class="btn-small"><i class="fas fa-server"></i> Render</a>
-        <a href="#" class="btn-small"><i class="fas fa-qrcode"></i> Qr</a>
-        <a href="https://heroku.com" class="btn-small"><i class="fab fa-buffer"></i> Code Heroku</a>
-        <a href="#" class="btn-small"><i class="fab fa-github"></i> Download</a>
-    </div>
-
     <!-- Terminal Logs -->
     <div class="terminal">
-        <div><span class="term-green">></span> welcome to GWM-XMD HOSTING ON REND AND HEROKU</div>
-        <div><span class="term-blue">></span> 2 stay updated bot</div>
-        <div><span class="term-blue">></span> 3 make bot on uptimerobot.com will online</div>
-        <div><span class="term-green">></span> 4 owner for GWM-XMD is Njabulo Jb</div>
-        <div><span class="term-blue">></span> System initialized...</div>
+        <div><span class="term-user">system@GWM-XMD:</span><span class="term-cmd"> ~ welcome to GWM-XMD HOSTING ON REND AND HEROKU</span></div>
+        <div><span class="term-user">system@GWM-XMD:</span><span class="term-cmd"> ~ 2 stay updated bot</span></div>
+        <div><span class="term-user">system@GWM-XMD:</span><span class="term-cmd"> ~ 3 make bot on uptimerobot.com will online</span></div>
+        <div><span class="term-user">system@GWM-XMD:</span><span class="term-cmd"> ~ 4 owner for GWM-XMD is Njabulo Jb</span></div>
     </div>
 
-    <!-- Copy GitHub Repo URL -->
-    <div class="copy-box">
-        <div class="copy-title">
-            <span><i class="fab fa-github"></i> Repository URL</span>
-            <button class="copy-btn" onclick="copyText('repoText')"><i class="fas fa-copy"></i> Copy Link</button>
-        </div>
-        <pre id="repoText">https://github.com/Njabulo-Jb/BWM-XMD</pre>
+    <!-- Small Buttons Group -->
+    <div class="button-grid">
+        <a href="https://render.com" class="btn-small"><i class="fas fa-cloud"></i> Render</a>
+        <a href="#" class="btn-small"><i class="fas fa-qrcode"></i> Qr</a>
+        <a href="https://heroku.com" class="btn-small"><i class="fab fa-buffer"></i> Code Heroku</a>
+        <a href="#" class="btn-small"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://youtube.com" class="btn-small btn-yt"><i class="fab fa-youtube"></i> YouTube</a>
+        <a href="https://uptimerobot.com" class="btn-small btn-uptime"><i class="fas fa-robot"></i> UptimeRobot</a>
     </div>
 
-    <!-- Copy .env Config -->
-    <div class="copy-box">
-        <div class="copy-title">
-            <span><i class="fas fa-code"></i> .env Config</span>
-            <button class="copy-btn" onclick="copyText('envText')"><i class="fas fa-copy"></i> Copy .env</button>
+    <!-- Copy Repo -->
+    <div class="copy-card">
+        <div class="copy-header">
+            <span><i class="fab fa-github"></i> Github Repo URL</span>
+            <button class="btn-copy-action" onclick="silentCopy('repo-url', this)">
+                <i class="fas fa-copy"></i> <span>Copy</span>
+            </button>
         </div>
-        <pre id="envText">SESSION_ID="Session"
+        <pre id="repo-url">https://github.com/Njabulo-Jb/BWM-XMD</pre>
+    </div>
+
+    <!-- Copy Env -->
+    <div class="copy-card">
+        <div class="copy-header">
+            <span><i class="fas fa-file-code"></i> .env Configuration</span>
+            <button class="btn-copy-action" onclick="silentCopy('env-data', this)">
+                <i class="fas fa-copy"></i> <span>Copy Config</span>
+            </button>
+        </div>
+        <pre id="env-data">SESSION_ID="Session"
 AUTO_READ_STATUS=true
 STATUS_READ_MSG="Status Seen By me 𝐁𝐖𝐌-𝐗𝐌𝐃"
 AUTO_STATUS_REPLY=false
@@ -231,35 +254,34 @@ PREFIX="."
 STARTING_BOT_MESSAGE=yes</pre>
     </div>
 
-    <!-- About Section (100+ Words) -->
-    <div class="about-section">
-        <h3><i class="fab fa-info-circle"></i> Information Hub</h3>
+    <!-- About Info Section (100+ Words) -->
+    <div class="info-box">
+        <h3><i class="fas fa-info-circle"></i> Deployment Info</h3>
         <p>
-            Welcome to the official <b>Njabulo Jb Host Hub</b>. This platform is specifically designed to provide you with the most efficient tools for deploying your <b>GWM-XMD</b> bot seamlessly. We provide dedicated support for deployment on <i class="fab fa-stripe-s"></i> <b>Render</b> and <b>Heroku</b> cloud services. By using our pre-configured .env files, you ensure that your bot has all the necessary features like auto-read status, anti-call, and auto-reply enabled right from the start. <i class="fas fa-bolt"></i> Speed and stability are our top priorities. To ensure your bot never goes offline, we recommend using <b>UptimeRobot</b> to ping your deployment URL 24/7. This hub acts as a bridge between your GitHub repository and your hosting provider, making the process simple even for beginners. Join our community today and keep your bot updated with the latest patches and features provided by Njabulo Jb.
+            Welcome to the <b>GWM-XMD</b> management dashboard by Njabulo Jb. This hosting environment is optimized for high-performance WhatsApp automation bots. <i class="fas fa-bolt"></i> When deploying on <b>Render</b> or <b>Heroku</b>, ensure you use the correct environment variables provided in the copy section above. <i class="fab fa-youtube"></i> Our YouTube channel provides step-by-step tutorials on session generation and troubleshooting common deployment errors. To ensure 24/7 connectivity, we highly recommend integrating your final app URL with <b>UptimeRobot</b>. This prevents your server from entering "sleep mode" during periods of inactivity. <i class="fas fa-shield-alt"></i> Security is a priority; please never share your <b>SESSION_ID</b> with third parties. By following these steps, you guarantee a stable, fast, and responsive user experience for your bot users. Keep your repository updated to receive the latest features, including auto-status views and advanced call rejection protocols.
         </p>
     </div>
 
 </div>
 
 <script>
-    function copyText(elementId) {
+    function silentCopy(elementId, btnElement) {
         const text = document.getElementById(elementId).innerText;
-        
-        // Modern approach
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Copied to clipboard!");
-            });
-        } else {
-            // Fallback for non-HTTPS
-            let textArea = document.createElement("textarea");
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textArea);
-            alert("Copied to clipboard!");
-        }
+        const btnText = btnElement.querySelector('span');
+        const originalText = btnText.innerText;
+
+        navigator.clipboard.writeText(text).then(() => {
+            // Success Feedback without notification pop-up
+            btnText.innerText = "Copied!";
+            btnElement.style.background = "#10b981"; // Change to green
+            
+            setTimeout(() => {
+                btnText.innerText = originalText;
+                btnElement.style.background = ""; // Reset color
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
     }
 </script>
 
