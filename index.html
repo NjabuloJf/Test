@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DML TECH - Video Portal</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --primary-red: #ff0000;
+            --bg-white: #ffffff;
+            --text-dark: #0f0f0f;
+            --gray: #606060;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary-red); /* Red Line */
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary-red);
+            text-decoration: none;
+        }
+
+        .search-bar {
+            display: flex;
+            flex: 0.5;
+            background: #f8f8f8;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 5px 15px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 5px;
+        }
+
+        .profile-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #2ecc71;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #2ecc71;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #2ecc71;
+        }
+
+        /* --- GRID --- */
+        .container {
+            padding: 20px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .video-card {
+            background: white;
+            transition: 0.3s;
+        }
+
+        /* --- THUMBNAIL PLAY WORK --- */
+        .thumbnail-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .thumbnail-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-icon-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 3rem;
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+
+        .thumbnail-container:hover .play-icon-overlay {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.2);
+            color: var(--primary-red);
+        }
+
+        .info {
+            padding: 10px 0;
+        }
+
+        .video-title {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .video-artist {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* --- DOWNLOAD BUTTON --- */
+        .btn-download {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* --- MODAL PLAYER --- */
+        #videoModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 900px;
+            position: relative;
+        }
+
+        video { width: 100%; border-radius: 10px; box-shadow: 0 0 30px rgba(255,0,0,0.2); }
+
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* --- FLOATING BUTTONS --- */
+        .fab-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fab {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .wa-group { background: #25d366; }
+        .wa-channel { background: #0088cc; }
+
+        @media (max-width: 600px) {
+            .search-bar { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">DML TECH</a>
+        
+        <div class="search-bar">
+            <i class="fas fa-search" style="color:#888; margin-right: 10px;"></i>
+            <input type="text" id="searchInput" placeholder="Search Videos...">
+        </div>
+
+        <div class="profile-area">
+            <div class="status">
+                <div class="status-dot"></div> ONLINE
+            </div>
+            <a href="https://youtube.com/@dmltech" target="_blank" style="color:red; font-size: 1.5rem;">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="video-grid" id="videoGrid">
+            <!-- Videos load here -->
+        </div>
+    </div>
+
+    <!-- Floating Actions -->
+    <div class="fab-container">
+        <a href="#" class="fab wa-channel"><i class="fas fa-bullhorn"></i></a>
+        <a href="#" class="fab wa-group"><i class="fab fa-whatsapp"></i></a>
+    </div>
+
+    <!-- Video Player Popup -->
+    <div id="videoModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeVideo()">&times;</span>
+            <video id="popupPlayer" controls autoplay></video>
+            <h3 id="popupTitle" style="color:white; margin-top:15px;"></h3>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://ncs.bwmxmd.online/random';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadVideos(12); // Initial Load
+        });
+
+        async function loadVideos(count) {
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = ""; 
+
+            for (let i = 0; i < count; i++) {
+                try {
+                    const res = await fetch(API_URL);
+                    const json = await res.json();
+                    if (json.status === 'success') {
+                        renderCard(json.data[0]);
+                    }
+                } catch (e) { console.log("Fetch error"); }
+            }
+        }
+
+        function renderCard(item) {
+            const grid = document.getElementById('videoGrid');
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            
+            card.innerHTML = `
+                <div class="thumbnail-container" onclick="playVideo('${item.links.Bwm_stream_link}', '${item.title}')">
+                    <img src="${item.links.thumbnail}" alt="thumbnail">
+                    <div class="play-icon-overlay">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                </div>
+                <div class="info">
+                    <span class="video-title">${item.title}</span>
+                    <span class="video-artist">${item.artist}</span>
+                    <button class="btn-download" onclick="downloadVideo('${item.links.Bwm_download_link}')">
+                        <i class="fas fa-video"></i> Download Video
+                    </button>
+                </div>
+            `;
+            grid.appendChild(card);
+        }
+
+        function playVideo(url, title) {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('popupPlayer');
+            const titleTag = document.getElementById('popupTitle');
+
+            video.src = url;
+            titleTag.innerText = title;
+            modal.style.display = 'flex';
+            video.play();
+        }
+
+        function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('popupPlayer');
+            video.pause();
+            video.src = "";
+            modal.style.display = 'none';
+        }
+
+        function downloadVideo(url) {
+            // Forces the browser to open the download link for the video file
+            window.location.href = url;
+        }
+
+        // Search Work
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const query = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.video-card');
+            cards.forEach(card => {
+                const title = card.querySelector('.video-title').innerText.toLowerCase();
+                card.style.display = title.includes(query) ? "block" : "none";
+            });
+        });
+    </script>
+</body>
+</html>
+
