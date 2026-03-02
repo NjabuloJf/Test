@@ -3,283 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Njabulo Jb Hub</title>
-    <!-- FontAwesome 6.4.0 -->
+    <title>DML TECH - Media Portal</title>
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        
         :root {
-            --primary-blue: #4f46e5;
             --yt-red: #ff0000;
-            --heroku-purple: #6762a6;
-            --bg-white: #ffffff;
-            --text-dark: #0f172a;
-            --border: #e2e8f0;
+            --dark-grey: #606060;
+            --light-grey: #f9f9f9;
+            --border-color: #e5e5e5;
+            --online-green: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-white);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Header provided by user */
-        #mainHeader {
-            background: #ffffff;
-            padding: 15px 5%;
+            background-color: #ffffff;
+            color: #030303;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            min-height: 100vh;
         }
 
-        .logo {
-            font-size: 1.2rem;
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid var(--border-color);
+            padding: 20px 10px;
+            background: white;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
             font-weight: bold;
-            text-decoration: none;
-            color: var(--text-dark);
+            font-size: 1.5rem;
+            color: var(--yt-red);
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             gap: 10px;
+            padding-left: 10px;
         }
 
-        .status-box {
+        .nav-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            color: #10b981;
-        }
-
-        .pulse-dot {
-            width: 10px;
-            height: 10px;
-            background-color: #10b981;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        .container {
-            max-width: 850px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-
-        /* Terminal Styles */
-        .terminal {
-            background: #000000;
-            color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            margin-bottom: 30px;
-            border: 1px solid #333;
-        }
-
-        .term-green { color: #2ecc71; }
-
-        /* Button Grid */
-        .button-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .btn-small {
-            padding: 12px;
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            padding: 12px 15px;
             text-decoration: none;
-            color: var(--text-dark);
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            color: #030303;
+            border-radius: 10px;
+            margin-bottom: 5px;
             transition: 0.2s;
         }
 
-        .btn-small:hover { background: #f1f5f9; transform: translateY(-2px); }
-        .btn-heroku:hover { color: var(--heroku-purple); border-color: var(--heroku-purple); }
-        .btn-yt:hover { color: var(--yt-red); border-color: var(--yt-red); }
-
-        /* Copy Card */
-        .copy-card {
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 25px;
+        .nav-item:hover {
+            background-color: var(--light-grey);
         }
 
-        .copy-header {
+        .nav-item i {
+            margin-right: 20px;
+            width: 20px;
+            font-size: 1.2rem;
+        }
+
+        .nav-item.whatsapp { color: #25D366; }
+        .nav-item.youtube { color: #FF0000; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            margin-left: 240px;
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* --- HEADER & SEARCH --- */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--yt-red); /* Red Line Theme */
+            margin-bottom: 30px;
         }
 
-        pre {
-            background: #f1f5f9;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            overflow-x: auto;
-            margin: 0;
+        .search-container {
+            display: flex;
+            flex: 0.6;
+            position: relative;
         }
 
-        .copy-btn {
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 5px;
+        .search-container input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px 0 0 20px;
+            outline: none;
+        }
+
+        .search-btn {
+            padding: 0 20px;
+            background: var(--light-grey);
+            border: 1px solid var(--border-color);
+            border-left: none;
+            border-radius: 0 20px 20px 0;
             cursor: pointer;
-            font-size: 0.75rem;
         }
 
-        /* Deploy Section */
-        .deploy-guide {
-            background: #fafafa;
-            border: 1px solid var(--border);
-            padding: 25px;
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            color: var(--dark-grey);
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            background-color: var(--online-green);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 5px var(--online-green);
+        }
+
+        /* --- VIDEO GRID --- */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .video-card {
+            background: white;
+            transition: 0.3s;
+        }
+
+        .thumbnail-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
             border-radius: 12px;
         }
 
-        .var-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .thumbnail-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-info {
+            padding: 12px 0;
+        }
+
+        .video-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .video-artist {
+            color: var(--dark-grey);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        /* --- CONTROLS --- */
+        .media-controls {
+            display: flex;
             gap: 10px;
-            margin-top: 15px;
+            flex-wrap: wrap;
         }
 
-        .var-item {
-            background: white;
-            padding: 8px;
-            border: 1px solid var(--border);
+        .btn-action {
+            padding: 8px 12px;
+            border: none;
             border-radius: 5px;
-            font-family: monospace;
-            font-size: 0.8rem;
-        }
-
-        .note {
-            background: #fff3cd;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 15px;
+            cursor: pointer;
             font-size: 0.85rem;
-            border-left: 4px solid #ffc107;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
         }
 
-        /* Info Text */
-        .info-text {
-            line-height: 1.6;
-            margin-top: 30px;
-            font-size: 0.95rem;
-            color: #475569;
+        .btn-play { background: #030303; color: white; }
+        .btn-reverse { background: var(--light-grey); color: #030303; border: 1px solid var(--border-color); }
+        .btn-video { background: var(--yt-red); color: white; }
+        .btn-download { background: #2ecc71; color: white; }
+
+        .btn-action:hover { opacity: 0.8; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; }
+            .sidebar span { display: none; }
+            .main-content { margin-left: 70px; }
+            .search-container { flex: 0.9; }
         }
     </style>
 </head>
 <body>
 
-<header id="mainHeader">
-    <a href="#" class="logo"><i class="fab fa-github"></i> Njabulo Jb Hub</a>
-    <div class="status-box">
-        <span class="pulse-dot"></span>
-        <span>Online</span>
-    </div>
-</header>
-
-<div class="container">
-
-    <!-- Terminal -->
-    <div class="terminal">
-        <div><span class="term-green">root@njabulo-jb:</span> welcome to Njabulo Jb bot terminal</div>
-        <div><span class="term-green">root@njabulo-jb:</span> status: online and ready for deployment</div>
-        <div><span class="term-green">root@njabulo-jb:</span> owner: Njabulo Jb</div>
-        <div><span class="term-green">root@njabulo-jb:</span> version: 2.0 (Latest)</div>
-    </div>
-
-    <!-- Buttons -->
-    <div class="button-grid">
-        <a href="https://heroku.com" class="btn-small btn-heroku"><i class="fab fa-buffer"></i> Code Heroku</a>
-        <a href="https://youtube.com" class="btn-small btn-yt"><i class="fab fa-youtube"></i> YouTube</a>
-        <a href="#" class="btn-small"><i class="fab fa-github"></i> Github</a>
-        <a href="#" class="btn-small"><i class="fas fa-qrcode"></i> Qr Code</a>
-    </div>
-
-    <!-- Copy Repo -->
-    <div class="copy-card">
-        <div class="copy-header">
-            <span><b><i class="fab fa-github"></i> GitHub Repository</b></span>
-            <button class="copy-btn" onclick="silentCopy('repo-link', this)">Copy URL</button>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-bolt"></i><span>DML TECH</span>
         </div>
-        <pre id="repo-link">https://github.com/Njabulo-Jb/BWM-XMD</pre>
+        <a href="#" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="https://youtube.com/@dmltech" target="_blank" class="nav-item youtube"><i class="fab fa-youtube"></i><span>YouTube Profile</span></a>
+        <a href="https://whatsapp.com/channel/..." target="_blank" class="nav-item whatsapp"><i class="fab fa-whatsapp"></i><span>WhatsApp Channel</span></a>
+        <a href="#" class="nav-item whatsapp"><i class="fab fa-whatsapp"></i><span>WhatsApp Group</span></a>
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
+        <a href="#" class="nav-item"><i class="fas fa-history"></i><span>History</span></a>
     </div>
 
-    <!-- Deploy Guide -->
-    <div class="deploy-guide">
-        <h3><i class="fas fa-rocket"></i> How to deploy bot on HEROKU</h3>
-        <p>Make sure you edit all of these yourself in your <b>app.json</b> or Heroku Settings:</p>
-        
-        <div class="var-list">
-            <div class="var-item">REJECT_CALL</div>
-            <div class="var-item">AUTO_BLOCK</div>
-            <div class="var-item">STATUS_READ_MSG</div>
-            <div class="var-item">AUTO_STATUS_REPLY</div>
-            <div class="var-item">AUTO_STATUS_SEEN</div>
-            <div class="var-item">ANTI_DELETE</div>
-            <div class="var-item">AUTO_REACT</div>
-            <div class="var-item">ALWAYS_ONLINE</div>
-            <div class="var-item">AUTO_RECORDING</div>
-            <div class="var-item">AUTO_TYPING</div>
-            <div class="var-item">AUTO_READ</div>
-            <div class="var-item">OWNER_NUMBER</div>
-            <div class="var-item">PREFIX</div>
-            <div class="var-item">SESSION_ID</div>
-        </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search songs or videos...">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="user-status">
+                <div class="status-badge">
+                    <span class="dot"></span> Online Status
+                </div>
+                <button onclick="location.reload()" class="btn-action btn-reverse">
+                    <i class="fas fa-sync"></i> Refresh
+                </button>
+            </div>
+        </header>
 
-        <div class="note">
-            <i class="fas fa-exclamation-triangle"></i> <b>Important:</b> On all of these, use <b>true</b> for ON and <b>false</b> for OFF.
+        <div class="video-grid" id="videoGrid">
+            <!-- Videos will load here -->
         </div>
     </div>
 
-    <!-- About Section (100+ Words) -->
-    <div class="info-text">
-        <p>
-            <i class="fas fa-info-circle"></i> <b>Njabulo Jb Bot</b> is a high-speed WhatsApp automation tool designed for efficiency and ease of use. This platform allows you to generate session QR codes, access video tutorials on YouTube, and host your bot on Heroku effortlessly. By using the GitHub source code provided, you can customize your experience with various features like auto-reaction, anti-delete, and call rejection. Whether you are a beginner or an advanced developer, Njabulo Jb ensures that the deployment process is straightforward and secure. Make sure to follow the instructions carefully to keep your account safe while using automated services. Stay connected via our YouTube channel for future updates, bug fixes, and more advanced bot features provided by the Njabulo Jb development hub.
-        </p>
-    </div>
-
-</div>
-
-<script>
-    function silentCopy(elementId, btn) {
-        const text = document.getElementById(elementId).innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            const originalText = btn.innerText;
-            btn.innerText = "Copied!";
-            btn.style.background = "#10b981";
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.style.background = "";
-            }, 2000);
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchContent(8); // Fetch 8 items initially
         });
-    }
-</script>
 
+        async function fetchContent(count) {
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = '<p>Loading latest media...</p>';
+
+            try {
+                const promises = [];
+                for(let i=0; i<count; i++) {
+                    promises.push(fetch('https://ncs.bwmxmd.online/random').then(r => r.json()));
+                }
+
+                const results = await Promise.all(promises);
+                grid.innerHTML = ''; // Clear loading text
+
+                results.forEach(res => {
+                    if(res.status === 'success') {
+                        const item = res.data[0];
+                        createVideoCard(item);
+                    }
+                });
+            } catch (error) {
+                grid.innerHTML = '<p>Error loading content. Check internet connection.</p>';
+            }
+        }
+
+        function createVideoCard(item) {
+            const grid = document.getElementById('videoGrid');
+            const card = document.createElement('div');
+            card.className = 'video-card';
+
+            card.innerHTML = `
+                <div class="thumbnail-container">
+                    <img src="${item.links.thumbnail}" alt="thumbnail">
+                </div>
+                <div class="video-info">
+                    <div class="video-title">${item.title}</div>
+                    <div class="video-artist">Artist: ${item.artist}</div>
+                    
+                    <!-- Temporary Audio Player Hidden -->
+                    <audio id="audio-${item.id}" src="${item.links.Bwm_stream_link}"></audio>
+
+                    <div class="media-controls">
+                        <button class="btn-action btn-reverse" onclick="restartMedia('${item.id}')">
+                            <i class="fas fa-backward"></i>
+                        </button>
+                        <button class="btn-action btn-play" id="play-btn-${item.id}" onclick="togglePlay('${item.id}')">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <button class="btn-action btn-video" onclick="window.open('https://www.youtube.com/results?search_query=${encodeURIComponent(item.title)}', '_blank')">
+                            <i class="fas fa-video"></i> Video
+                        </button>
+                        <button class="btn-action btn-download" onclick="window.open('${item.links.Bwm_download_link}', '_blank')">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        }
+
+        function togglePlay(id) {
+            const audio = document.getElementById('audio-' + id);
+            const btn = document.getElementById('play-btn-' + id);
+            
+            if (audio.paused) {
+                audio.play();
+                btn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                btn.style.background = "#ff0000";
+            } else {
+                audio.pause();
+                btn.innerHTML = '<i class="fas fa-play"></i> Play';
+                btn.style.background = "#030303";
+            }
+        }
+
+        function restartMedia(id) {
+            const audio = document.getElementById('audio-' + id);
+            audio.currentTime = 0;
+            audio.play();
+        }
+
+        // Simple Search Filter
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toUpperCase();
+            let cards = document.getElementsByClassName('video-card');
+            
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].querySelector(".video-title").innerText;
+                if (title.toUpperCase().indexOf(filter) > -1) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        });
+    </script>
 </body>
 </html>
