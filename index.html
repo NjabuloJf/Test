@@ -3,365 +3,840 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Njabulo Jb- Media Portal</title>
-    <!-- Font Awesome for Icons -->
+    <title>Trucks Simulation BW - Enhanced Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-        
-        :root {
-            --yt-red: #ff0000;
-            --dark-grey: #606060;
-            --light-grey: #f9f9f9;
-            --border-color: #e5e5e5;
-            --online-green: #2ecc71;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
         }
 
         body {
-            background-color: #ffffff;
-            color: #030303;
-            display: flex;
-            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            overflow-x: hidden;
         }
 
-        /* --- SIDEBAR --- */
-        .sidebar {
-            width: 240px;
-            height: 100vh;
-            position: fixed;
-            border-right: 1px solid var(--border-color);
-            padding: 20px 10px;
-            background: white;
-            z-index: 100;
-        }
-
-        .sidebar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-            color: var(--yt-red);
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-left: 10px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            text-decoration: none;
-            color: #030303;
-            border-radius: 10px;
-            margin-bottom: 5px;
-            transition: 0.2s;
-        }
-
-        .nav-item:hover {
-            background-color: var(--light-grey);
-        }
-
-        .nav-item i {
-            margin-right: 20px;
-            width: 20px;
-            font-size: 1.2rem;
-        }
-
-        .nav-item.whatsapp { color: #25D366; }
-        .nav-item.youtube { color: #FF0000; }
-
-        /* --- MAIN CONTENT --- */
-        .main-content {
-            margin-left: 240px;
-            flex: 1;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
 
-        /* --- HEADER & SEARCH --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--yt-red); /* Red Line Theme */
-            margin-bottom: 30px;
-        }
-
-        .search-container {
-            display: flex;
-            flex: 0.6;
-            position: relative;
-        }
-
-        .search-container input {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 20px 0 0 20px;
-            outline: none;
-        }
-
-        .search-btn {
-            padding: 0 20px;
-            background: var(--light-grey);
-            border: 1px solid var(--border-color);
-            border-left: none;
-            border-radius: 0 20px 20px 0;
-            cursor: pointer;
-        }
-
-        .user-status {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .status-badge {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.85rem;
-            color: var(--dark-grey);
-        }
-
-        .dot {
-            height: 10px;
-            width: 10px;
-            background-color: var(--online-green);
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 5px var(--online-green);
-        }
-
-        /* --- VIDEO GRID --- */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .video-card {
-            background: white;
-            transition: 0.3s;
-        }
-
-        .thumbnail-container {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            overflow: hidden;
-            border-radius: 12px;
-        }
-
-        .thumbnail-container img {
-            position: absolute;
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            background: linear-gradient(45deg, #000428, #004e92);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
 
-        .video-info {
-            padding: 12px 0;
+        .loading-logo {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
         }
 
-        .video-title {
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 5px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+        .loading-bar {
+            width: 300px;
+            height: 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 5px;
             overflow: hidden;
+            margin-bottom: 20px;
         }
 
-        .video-artist {
-            color: var(--dark-grey);
-            font-size: 0.9rem;
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            width: 0%;
+            animation: loading 3s ease-in-out forwards;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Main Game Interface */
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .game-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .game-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-tab {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: rgba(255,255,255,0.2);
+            border-color: #4ecdc4;
+            transform: translateY(-2px);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Garage Section */
+        .garage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .truck-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .truck-card:hover {
+            transform: translateY(-5px);
+            border-color: #4ecdc4;
+        }
+
+        .truck-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #4ecdc4;
+        }
+
+        .truck-name {
+            font-size: 1.5rem;
             margin-bottom: 10px;
         }
 
-        /* --- CONTROLS --- */
-        .media-controls {
+        .truck-price {
+            font-size: 1.2rem;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+
+        .truck-specs {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Controls Section */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .control-panel {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .control-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #4ecdc4;
+        }
+
+        /* Maps Section */
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .map-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-preview {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 10px;
+            margin-bottom: 15px;
             display: flex;
-            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        /* Jobs Section */
+        .jobs-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .job-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
         }
 
-        .btn-action {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: 0.2s;
+        .job-info {
+            flex: 1;
+            min-width: 200px;
         }
 
-        .btn-play { background: #030303; color: white; }
-        .btn-reverse { background: var(--light-grey); color: #030303; border: 1px solid var(--border-color); }
-        .btn-video { background: var(--yt-red); color: white; }
-        .btn-download { background: #2ecc71; color: white; }
+        .job-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
 
-        .btn-action:hover { opacity: 0.8; }
+        .job-details {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
 
-        /* Mobile Adjustments */
+        .job-reward {
+            font-size: 1.3rem;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .sidebar { width: 70px; }
-            .sidebar span { display: none; }
-            .main-content { margin-left: 70px; }
-            .search-container { flex: 0.9; }
+            .game-title {
+                font-size: 2rem;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .garage-grid,
+            .controls-grid,
+            .maps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <i class="fas fa-bolt"></i><span>Njabulo Jb</span>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">
+            <i class="fas fa-truck"></i> Trucks Simulation BW
         </div>
-        <a href="#" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="https://youtube.com/" target="_blank" class="nav-item youtube"><i class="fab fa-youtube"></i><span>YouTube Profile</span></a>
-        <a href="https://whatsapp.com/channel/..." target="_blank" class="nav-item whatsapp"><i class="fab fa-whatsapp"></i><span>WhatsApp Channel</span></a>
-        <a href="#" class="nav-item whatsapp"><i class="fab fa-whatsapp"></i><span>WhatsApp Group</span></a>
-        <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
-        <a href="#" class="nav-item"><i class="fas fa-history"></i><span>History</span></a>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <p>Loading your trucking adventure...</p>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <header>
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search songs or videos...">
-                <button class="search-btn"><i class="fas fa-search"></i></button>
-            </div>
-            
-            <div class="user-status">
-                <div class="status-badge">
-                    <span class="dot"></span> Online Status
-                </div>
-                <button onclick="location.reload()" class="btn-action btn-reverse">
-                    <i class="fas fa-sync"></i> Refresh
-                </button>
-            </div>
+    <!-- Main Game Interface -->
+    <div class="container" id="gameInterface" style="display: none;">
+        <header class="game-header">
+            <h1 class="game-title">
+                <i class="fas fa-truck"></i> Trucks Simulation BW
+            </h1>
+            <p class="game-subtitle">Enhanced Edition - Drive, Deliver, Dominate! 🚚</p>
         </header>
 
-        <div class="video-grid" id="videoGrid">
-            <!-- Videos will load here -->
-        </div>
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('garage')">
+                <i class="fas fa-warehouse"></i> Garage
+            </button>
+            <button class="nav-tab" onclick="showSection('controls')">
+                <i class="fas fa-gamepad"></i> Controls
+            </button>
+            <button class="nav-tab" onclick="showSection('maps')">
+                <i class="fas fa-map"></i> Maps
+            </button>
+            <button class="nav-tab" onclick="showSection('jobs')">
+                <i class="fas fa-briefcase"></i> Jobs
+            </button>
+            <button class="nav-tab" onclick="showSection('trolley')">
+                <i class="fas fa-dolly"></i> Trolley
+            </button>
+        </nav>
+
+        <!-- Garage Section -->
+        <section class="content-section active" id="garage">
+            <h2 style="text-align: center; margin-bottom: 30px;">
+                <i class="fas fa-warehouse"></i> Your Garage
+            </h2>
+            
+            <div class="garage-grid">
+                <!-- Scania Trucks -->
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3 class="truck-name">Scania R500</h3>
+                    <p class="truck-price">$85,000</p>
+                    <p class="truck-specs">500 HP • Euro 6 • Automatic</p>
+                    <button class="btn">
+                        <i class="fas fa-key"></i> Drive
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-wrench"></i> Customize
+                    </button>
+                </div>
+
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3 class="truck-name">Scania S730</h3>
+                    <p class="truck-price">$120,000</p>
+                    <p class="truck-specs">730 HP • Euro 6 • Manual/Auto</p>
+                    <button class="btn">
+                        <i class="fas fa-key"></i> Drive
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-wrench"></i> Customize
+                    </button>
+                </div>
+
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3 class="truck-name">Scania R650</h3>
+                    <p class="truck-price">$95,000</p>
+                    <p class="truck-specs">650 HP • Euro 6 • V8 Engine</p>
+                    <button class="btn">
+                        <i class="fas fa-key"></i> Drive
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-wrench"></i> Customize
+                    </button>
+                </div>
+
+                <!-- Volvo Trucks -->
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3 class="truck-name">Volvo FH16</h3>
+                    <p class="truck-price">$110,000</p>
+                    <p class="truck-specs">750 HP • Euro 6 • I-Shift</p>
+                    <button class="btn">
+                        <i class="fas fa-key"></i> Drive
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-wrench"></i> Customize
+                    </button>
+                </div>
+
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3 class="truck-name">Volvo FH</h3>
+                    <p class="truck-price">$88,000</p>
+                    <p class="truck-specs">540 HP • Euro 6 • D13 Engine</p>
+                    <button class="btn">
+                        <i class="fas fa-key"></i> Drive
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-wrench"></i> Customize
+                    </button>
+                </div>
+
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3 class="truck-name">Volvo FM</h3>
+                    <p class="truck-price">$75,000</p>
+                    <p class="truck-specs">460 HP • Euro 6 • Construction Ready</p>
+                    <button class="btn">
+                        <i class="fas fa-key"></i> Drive
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-wrench"></i> Customize
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Controls Section -->
+        <section class="content-section" id="controls">
+            <h2 style="text-align: center; margin-bottom: 30px;">
+                <i class="fas fa-gamepad"></i> Enhanced Controls
+            </h2>
+            
+            <div class="controls-grid">
+                <div class="control-panel">
+                    <div class="control-icon">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <h3>Steering Wheel</h3>
+                    <p>Precision steering with force feedback</p>
+                    <button class="btn">
+                        <i class="fas fa-cog"></i> Configure
+                    </button>
+                </div>
+
+                <div class="control-panel">
+                    <div class="control-icon">
+                        <i class="fas fa-shoe-prints"></i>
+                    </div>
+                    <h3>Pedal System</h3>
+                    <p>Gas, Brake, and Clutch pedals</p>
+                    <button class="btn">
+                        <i class="fas fa-cog"></i> Configure
+                    </button>
+                </div>
+
+                <div class="control-panel">
+                    <div class="control-icon">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3>Keyboard Controls</h3>
+                    <p>WASD movement and custom bindings</p>
+                    <button class="btn">
+                        <i class="fas fa-cog"></i> Configure
+                    </button>
+                </div>
+
+                <div class="control-panel">
+                    <div class="control-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Controller Support</h3>
+                    <p>Xbox and PlayStation controllers</p>
+                    <button class="btn">
+                        <i class="fas fa-cog"></i> Configure
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Maps Section -->
+        <section class="content-section" id="maps">
+            <h2 style="text-align: center; margin-bottom: 30px;">
+                <i class="fas fa-map"></i> Big Maps Collection
+            </h2>
+            
+            <div class="maps-grid">
+                <div class="map-card">
+                    <div class="map-preview">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <h3>European Highway</h3>
+                    <p>Massive European road network with realistic cities</p>
+                    <button class="btn">
+                        <i class="fas fa-play"></i> Load Map
+                    </button>
+                </div>
+
+                <div class="map-card">
+                    <div class="map-preview">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3>Mountain Pass</h3>
+                    <p>Challenging mountain roads with scenic views</p>
+                    <button class="btn">
+                        <i class="fas fa-play"></i> Load Map
+                    </button>
+                </div>
+
+                <div class="map-card">
+                    <div class="map-preview">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <h3>Industrial Zone</h3>
+                    <p>Heavy industry areas with complex delivery routes</p>
+                    <button class="btn">
+                        <i class="fas fa-play"></i> Load Map
+                    </button>
+                </div>
+
+                <div class="map-card">
+                    <div class="map-preview">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <h3>Cross Country</h3>
+                    <p>Long-distance routes across multiple countries</p>
+                    <button class="btn">
+                        <i class="fas fa-play"></i> Load Map
+                    </button>
+                </div>
+
+                <div class="map-card">
+                    <div class="map-preview">
+                        <i class="fas fa-ship"></i>
+                    </div>
+                    <h3>Port Authority</h3>
+                    <p>Harbor and port areas with cargo operations</p>
+                    <button class="btn">
+                        <i class="fas fa-play"></i> Load Map
+                    </button>
+                </div>
+
+                <div class="map-card">
+                    <div class="map-preview">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <h3>Forest Routes</h3>
+                    <p>Logging roads through dense forests</p>
+                    <button class="btn">
+                        <i class="fas fa-play"></i> Load Map
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Jobs Section -->
+        <section class="content-section" id="jobs">
+            <h2 style="text-align: center; margin-bottom: 30px;">
+                <i class="fas fa-briefcase"></i> Available Jobs
+            </h2>
+            
+            <div class="jobs-list">
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3 class="job-title">
+                            <i class="fas fa-box"></i> Cargo Delivery
+                        </h3>
+                        <p class="job-details">Berlin to Munich • 584 km • Fragile goods</p>
+                    </div>
+                    <div class="job-reward">$2,450</div>
+                    <button class="btn">
+                        <i class="fas fa-check"></i> Accept
+                    </button>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3 class="job-title">
+                            <i class="fas fa-gas-pump"></i> Fuel Transport
+                        </h3>
+                        <p class="job-details">Hamburg to Frankfurt • 492 km • Hazardous</p>
+                    </div>
+                    <div class="job-reward">$3,200</div>
+                    <button class="btn">
+                        <i class="fas fa-check"></i> Accept
+                    </button>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3 class="job-title">
+                            <i class="fas fa-car"></i> Vehicle Transport
+                        </h3>
+                        <p class="job-details">Stuttgart to Cologne • 358 km • Car carrier</p>
+                    </div>
+                    <div class="job-reward">$1,890</div>
+                    <button class="btn">
+                        <i class="fas fa-check"></i> Accept
+                    </button>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3 class="job-title">
+                            <i class="fas fa-industry"></i> Heavy Machinery
+                        </h3>
+                        <p class="job-details">Dortmund to Dresden • 612 km • Oversized load</p>
+                    </div>
+                    <div class="job-reward">$4,150</div>
+                    <button class="btn">
+                        <i class="fas fa-check"></i> Accept
+                    </button>
+                </div>
+
+                <div class="job-item">
+                    <div class="job-info">
+                        <h3 class="job-title">
+                            <i class="fas fa-apple-alt"></i> Food Delivery
+                        </h3>
+                        <p class="job-details">Nuremberg to Leipzig • 287 km • Refrigerated</p>
+                    </div>
+                    <div class="job-reward">$1,650</div>
+                    <button class="btn">
+                        <i class="fas fa-check"></i> Accept
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trolley Section -->
+        <section class="content-section" id="trolley">
+            <h2 style="text-align: center; margin-bottom: 30px;">
+                <i class="fas fa-dolly"></i> Trolley & Equipment
+            </h2>
+            
+            <div class="garage-grid">
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-dolly"></i>
+                    </div>
+                    <h3 class="truck-name">Standard Trolley</h3>
+                    <p class="truck-price">$1,200</p>
+                    <p class="truck-specs">500kg capacity • Manual operation</p>
+                    <button class="btn">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                </div>
+
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-dolly-flatbed"></i>
+                    </div>
+                    <h3 class="truck-name">Heavy Duty Trolley</h3>
+                    <p class="truck-price">$2,800</p>
+                    <p class="truck-specs">1000kg capacity • Electric assist</p>
+                    <button class="btn">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                </div>
+
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-hand-truck"></i>
+                    </div>
+                    <h3 class="truck-name">Warehouse Trolley</h3>
+                    <p class="truck-price">$1,850</p>
+                    <p class="truck-specs">750kg capacity • Multi-tier</p>
+                    <button class="btn">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                </div>
+
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="truck-name">Tool Kit</h3>
+                    <p class="truck-price">$450</p>
+                    <p class="truck-specs">Complete repair set • Portable</p>
+                    <button class="btn">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                </div>
+
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-hard-hat"></i>
+                    </div>
+                    <h3 class="truck-name">Safety Equipment</h3>
+                    <p class="truck-price">$320</p>
+                    <p class="truck-specs">Helmet, vest, gloves • High visibility</p>
+                    <button class="btn">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                </div>
+
+                <div class="truck-card">
+                    <div class="truck-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3 class="truck-name">Logistics Tablet</h3>
+                    <p class="truck-price">$890</p>
+                    <p class="truck-specs">GPS, job tracker • Weather resistant</p>
+                    <button class="btn">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchContent(8); // Fetch 8 items initially
+        // Loading screen functionality
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('gameInterface').style.display = 'block';
+            }, 3000);
         });
 
-        async function fetchContent(count) {
-            const grid = document.getElementById('videoGrid');
-            grid.innerHTML = '<p>Loading latest media...</p>';
+        // Navigation functionality
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
 
-            try {
-                const promises = [];
-                for(let i=0; i<count; i++) {
-                    promises.push(fetch('https://ncs.bwmxmd.online/random').then(r => r.json()));
-                }
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
 
-                const results = await Promise.all(promises);
-                grid.innerHTML = ''; // Clear loading text
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
 
-                results.forEach(res => {
-                    if(res.status === 'success') {
-                        const item = res.data[0];
-                        createVideoCard(item);
-                    }
+        // Truck selection functionality
+        function selectTruck(truckName) {
+            alert(`You selected the ${truckName}! Ready to hit the road? 🚚`);
+        }
+
+        // Job acceptance functionality
+        function acceptJob(jobTitle, reward) {
+            if(confirm(`Accept job: ${jobTitle} for ${reward}?`)) {
+                alert(`Job accepted! Check your GPS for the route. Good luck, driver! 🛣️`);
+            }
+        }
+
+        // Equipment purchase functionality
+        function buyEquipment(itemName, price) {
+            if(confirm(`Purchase ${itemName} for ${price}?`)) {
+                alert(`${itemName} purchased successfully! It's now in your inventory. 📦`);
+            }
+        }
+
+        // Add click events to buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add truck selection events
+            const driveButtons = document.querySelectorAll('.truck-card .btn:first-of-type');
+            driveButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const truckName = this.closest('.truck-card').querySelector('.truck-name').textContent;
+                    selectTruck(truckName);
                 });
-            } catch (error) {
-                grid.innerHTML = '<p>Error loading content. Check internet connection.</p>';
-            }
-        }
+            });
 
-        function createVideoCard(item) {
-            const grid = document.getElementById('videoGrid');
-            const card = document.createElement('div');
-            card.className = 'video-card';
+            // Add job acceptance events
+            const jobButtons = document.querySelectorAll('.job-item .btn');
+            jobButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const jobTitle = this.closest('.job-item').querySelector('.job-title').textContent.trim();
+                    const reward = this.closest('.job-item').querySelector('.job-reward').textContent;
+                    acceptJob(jobTitle, reward);
+                });
+            });
 
-            card.innerHTML = `
-                <div class="thumbnail-container">
-                    <img src="${item.links.thumbnail}" alt="thumbnail">
-                </div>
-                <div class="video-info">
-                    <div class="video-title">${item.title}</div>
-                    <div class="video-artist">Artist: ${item.artist}</div>
-                    
-                    <!-- Temporary Audio Player Hidden -->
-                    <audio id="audio-${item.id}" src="${item.links.Bwm_stream_link}"></audio>
-
-                    <div class="media-controls">
-                        <button class="btn-action btn-reverse" onclick="restartMedia('${item.id}')">
-                            <i class="fas fa-backward"></i>
-                        </button>
-                        <button class="btn-action btn-play" id="play-btn-${item.id}" onclick="togglePlay('${item.id}')">
-                            <i class="fas fa-play"></i> Play
-                        </button>
-                        <button class="btn-action btn-video" onclick="window.open('https://www.youtube.com/results?search_query=${encodeURIComponent(item.title)}', '_blank')">
-                            <i class="fas fa-video"></i> Video
-                        </button>
-                        <button class="btn-action btn-download" onclick="window.open('${item.links.Bwm_download_link}', '_blank')">
-                            <i class="fas fa-download"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            grid.appendChild(card);
-        }
-
-        function togglePlay(id) {
-            const audio = document.getElementById('audio-' + id);
-            const btn = document.getElementById('play-btn-' + id);
-            
-            if (audio.paused) {
-                audio.play();
-                btn.innerHTML = '<i class="fas fa-pause"></i> Pause';
-                btn.style.background = "#ff0000";
-            } else {
-                audio.pause();
-                btn.innerHTML = '<i class="fas fa-play"></i> Play';
-                btn.style.background = "#030303";
-            }
-        }
-
-        function restartMedia(id) {
-            const audio = document.getElementById('audio-' + id);
-            audio.currentTime = 0;
-            audio.play();
-        }
-
-        // Simple Search Filter
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            let filter = this.value.toUpperCase();
-            let cards = document.getElementsByClassName('video-card');
-            
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].querySelector(".video-title").innerText;
-                if (title.toUpperCase().indexOf(filter) > -1) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
+            // Add equipment purchase events
+            const buyButtons = document.querySelectorAll('#trolley .btn:first-of-type');
+            buyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemName = this.closest('.truck-card').querySelector('.truck-name').textContent;
+                    const price = this.closest('.truck-card').querySelector('.truck-price').textContent;
+                    buyEquipment(itemName, price);
+                });
+            });
         });
+
+        // Welcome message
+        setTimeout(function() {
+            if(document.getElementById('gameInterface').style.display !== 'none') {
+                console.log('🚚 Welcome to Trucks Simulation BW Enhanced Edition!');
+                console.log('🎮 Features: Multiple Scania & Volvo trucks, Big maps, Enhanced controls, Jobs & Trolley system');
+                console.log('🛣️ Ready to start your trucking adventure?');
+            }
+        }, 3500);
     </script>
 </body>
 </html>
