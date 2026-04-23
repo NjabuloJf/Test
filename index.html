@@ -3,840 +3,1395 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trucks Simulation BW - Enhanced Edition</title>
+    <title>YouTube Downloader Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #ff0000;
+            --secondary-color: #282828;
+            --background-color: #121212;
+            --card-color: #1e1e1e;
+            --text-color: #ffffff;
+            --text-secondary: #aaaaaa;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            overflow-x: hidden;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background-color: var(--secondary-color);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
 
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 30px;
+            border: none;
+            background-color: var(--card-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #cc0000;
+        }
+
+        .url-input-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: none;
+            background-color: var(--card-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .url-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .url-button:hover {
+            background-color: #cc0000;
+        }
+
+        .or-divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: var(--text-secondary);
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--text-secondary);
+            margin: 0 10px;
+        }
+
+        .main-content {
+            margin-top: 30px;
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            transition: background-color 0.3s;
+        }
+
+        .tab.active {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .tab:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .video-card {
+            background-color: var(--card-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .thumbnail-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+            overflow: hidden;
+        }
+
+        .thumbnail {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #000428, #004e92);
+            object-fit: cover;
+        }
+
+        .duration-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .video-info {
+            padding: 15px;
+        }
+
+        .video-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .video-meta {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .preview-btn, .download-btn {
+            flex: 1;
+            padding: 8px 0;
+            border-radius: 5px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .preview-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .preview-btn:hover {
+            opacity: 0.8;
+        }
+
+        .download-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .download-btn:hover {
+            opacity: 0.8;
+        }
+
+        .download-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .download-option {
+            flex: 1;
+            min-width: 120px;
+            padding: 8px 10px;
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 5px;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s;
+        }
+
+        .download-option:hover {
+            background-color: var(--primary-color);
+        }
+
+        .audio-player-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--secondary-color);
+            padding: 15px 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            display: none;
             z-index: 1000;
         }
 
-        .loading-logo {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .loading-bar {
-            width: 300px;
-            height: 10px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .loading-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-            width: 0%;
-            animation: loading 3s ease-in-out forwards;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        @keyframes loading {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        /* Main Game Interface */
-        .game-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .game-title {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .game-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.8;
-        }
-
-        /* Navigation Tabs */
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .nav-tab {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .nav-tab:hover, .nav-tab.active {
-            background: rgba(255,255,255,0.2);
-            border-color: #4ecdc4;
-            transform: translateY(-2px);
-        }
-
-        /* Content Sections */
-        .content-section {
-            display: none;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Garage Section */
-        .garage-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .truck-card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .truck-card:hover {
-            transform: translateY(-5px);
-            border-color: #4ecdc4;
-        }
-
-        .truck-icon {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            color: #4ecdc4;
-        }
-
-        .truck-name {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .truck-price {
-            font-size: 1.2rem;
-            color: #ff6b6b;
-            margin-bottom: 15px;
-        }
-
-        .truck-specs {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-bottom: 15px;
-        }
-
-        /* Buttons */
-        .btn {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            border: none;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            margin: 5px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* Controls Section */
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .control-panel {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .control-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #4ecdc4;
-        }
-
-        /* Maps Section */
-        .maps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .map-card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .map-preview {
-            width: 100%;
-            height: 150px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 10px;
-            margin-bottom: 15px;
+        .audio-player {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-
-        /* Jobs Section */
-        .jobs-list {
-            display: grid;
             gap: 15px;
         }
 
-        .job-item {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .job-info {
+        .audio-info {
             flex: 1;
-            min-width: 200px;
+            overflow: hidden;
         }
 
-        .job-title {
+        .audio-title {
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .play-pause-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 5px;
+            background-color: var(--card-color);
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            width: 0%;
+        }
+
+        .time-display {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .close-player {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
             font-size: 1.2rem;
-            margin-bottom: 5px;
+            cursor: pointer;
+            margin-left: 10px;
         }
 
-        .job-details {
-            opacity: 0.8;
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 0;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 0;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .empty-state p {
+            font-size: 1.2rem;
+        }
+
+        .error-message {
+            color: #ff4444;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .trending-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .trending-card {
+            background-color: var(--card-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .trending-card:hover {
+            transform: scale(1.03);
+        }
+
+        .trending-rank {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
             font-size: 0.9rem;
         }
 
-        .job-reward {
-            font-size: 1.3rem;
-            color: #4ecdc4;
-            font-weight: bold;
+        .history-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
         }
 
-        /* Responsive Design */
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background-color: var(--card-color);
+            border-radius: 10px;
+        }
+
+        .history-thumbnail {
+            width: 120px;
+            height: 68px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .history-info {
+            flex: 1;
+        }
+
+        .history-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .history-date {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .history-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .history-action-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--card-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
         @media (max-width: 768px) {
-            .game-title {
-                font-size: 2rem;
-            }
-            
-            .nav-tabs {
+            .header-content {
                 flex-direction: column;
-                align-items: center;
+                gap: 15px;
             }
-            
-            .garage-grid,
-            .controls-grid,
-            .maps-grid {
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .results-container, .trending-container {
                 grid-template-columns: 1fr;
             }
-        }
 
-        .hidden {
-            display: none;
+            .audio-player {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .audio-controls {
+                width: 100%;
+            }
+
+            .history-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .history-thumbnail {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-logo">
-            <i class="fas fa-truck"></i> Trucks Simulation BW
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-youtube"></i>
+                    <h1>YouTube Downloader</h1>
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="nav-link active" data-tab="search">Search</a>
+                    <a href="#" class="nav-link" data-tab="trending">Trending</a>
+                    <a href="#" class="nav-link" data-tab="history">History</a>
+                    <a href="#" class="nav-link" data-tab="stats">Stats</a>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search YouTube..." id="searchQuery">
+                    <button class="search-button" id="searchButton">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+            <div class="url-input-container">
+                <input type="text" class="url-input" placeholder="Or paste YouTube URL here..." id="youtubeUrl">
+                <button class="url-button" id="urlButton">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
         </div>
-        <div class="loading-bar">
-            <div class="loading-progress"></div>
+    </header>
+
+    <div class="container main-content">
+        <div class="dashboard-tabs">
+            <div class="tab active" data-tab="search">Search Results</div>
+            <div class="tab" data-tab="trending">Trending Media</div>
+            <div class="tab" data-tab="history">Download History</div>
+            <div class="tab" data-tab="stats">Statistics</div>
         </div>
-        <p>Loading your trucking adventure...</p>
+
+        <!-- Search Results Tab -->
+        <div id="searchTab" class="tab-content active">
+            <h2 class="section-title">Search Results</h2>
+            <div id="resultsContainer">
+                <div class="empty-state">
+                    <i class="fas fa-music"></i>
+                    <p>Search for YouTube videos or paste a URL to download</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trending Tab -->
+        <div id="trendingTab" class="tab-content">
+            <h2 class="section-title">Trending Media</h2>
+            <div id="trendingContainer">
+                <div class="empty-state">
+                    <i class="fas fa-fire"></i>
+                    <p>Loading trending content...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="historyTab" class="tab-content">
+            <h2 class="section-title">Download History</h2>
+            <div id="historyContainer">
+                <div class="empty-state">
+                    <i class="fas fa-history"></i>
+                    <p>Your download history will appear here</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="statsTab" class="tab-content">
+            <h2 class="section-title">Download Statistics</h2>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="stat-value" id="totalDownloads">0</div>
+                    <div class="stat-label">Total Downloads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="stat-value" id="audioDownloads">0</div>
+                    <div class="stat-label">Audio Downloads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="stat-value" id="videoDownloads">0</div>
+                    <div class="stat-label">Video Downloads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value" id="lastDownload">-</div>
+                    <div class="stat-label">Last Download</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
     </div>
 
-    <!-- Main Game Interface -->
-    <div class="container" id="gameInterface" style="display: none;">
-        <header class="game-header">
-            <h1 class="game-title">
-                <i class="fas fa-truck"></i> Trucks Simulation BW
-            </h1>
-            <p class="game-subtitle">Enhanced Edition - Drive, Deliver, Dominate! 🚚</p>
-        </header>
-
-        <!-- Navigation Tabs -->
-        <nav class="nav-tabs">
-            <button class="nav-tab active" onclick="showSection('garage')">
-                <i class="fas fa-warehouse"></i> Garage
-            </button>
-            <button class="nav-tab" onclick="showSection('controls')">
-                <i class="fas fa-gamepad"></i> Controls
-            </button>
-            <button class="nav-tab" onclick="showSection('maps')">
-                <i class="fas fa-map"></i> Maps
-            </button>
-            <button class="nav-tab" onclick="showSection('jobs')">
-                <i class="fas fa-briefcase"></i> Jobs
-            </button>
-            <button class="nav-tab" onclick="showSection('trolley')">
-                <i class="fas fa-dolly"></i> Trolley
-            </button>
-        </nav>
-
-        <!-- Garage Section -->
-        <section class="content-section active" id="garage">
-            <h2 style="text-align: center; margin-bottom: 30px;">
-                <i class="fas fa-warehouse"></i> Your Garage
-            </h2>
-            
-            <div class="garage-grid">
-                <!-- Scania Trucks -->
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    <h3 class="truck-name">Scania R500</h3>
-                    <p class="truck-price">$85,000</p>
-                    <p class="truck-specs">500 HP • Euro 6 • Automatic</p>
-                    <button class="btn">
-                        <i class="fas fa-key"></i> Drive
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-wrench"></i> Customize
-                    </button>
-                </div>
-
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    <h3 class="truck-name">Scania S730</h3>
-                    <p class="truck-price">$120,000</p>
-                    <p class="truck-specs">730 HP • Euro 6 • Manual/Auto</p>
-                    <button class="btn">
-                        <i class="fas fa-key"></i> Drive
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-wrench"></i> Customize
-                    </button>
-                </div>
-
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    <h3 class="truck-name">Scania R650</h3>
-                    <p class="truck-price">$95,000</p>
-                    <p class="truck-specs">650 HP • Euro 6 • V8 Engine</p>
-                    <button class="btn">
-                        <i class="fas fa-key"></i> Drive
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-wrench"></i> Customize
-                    </button>
-                </div>
-
-                <!-- Volvo Trucks -->
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    <h3 class="truck-name">Volvo FH16</h3>
-                    <p class="truck-price">$110,000</p>
-                    <p class="truck-specs">750 HP • Euro 6 • I-Shift</p>
-                    <button class="btn">
-                        <i class="fas fa-key"></i> Drive
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-wrench"></i> Customize
-                    </button>
-                </div>
-
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    <h3 class="truck-name">Volvo FH</h3>
-                    <p class="truck-price">$88,000</p>
-                    <p class="truck-specs">540 HP • Euro 6 • D13 Engine</p>
-                    <button class="btn">
-                        <i class="fas fa-key"></i> Drive
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-wrench"></i> Customize
-                    </button>
-                </div>
-
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    <h3 class="truck-name">Volvo FM</h3>
-                    <p class="truck-price">$75,000</p>
-                    <p class="truck-specs">460 HP • Euro 6 • Construction Ready</p>
-                    <button class="btn">
-                        <i class="fas fa-key"></i> Drive
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-wrench"></i> Customize
-                    </button>
-                </div>
+    <div class="audio-player-container" id="audioPlayerContainer">
+        <div class="audio-player">
+            <div class="audio-info">
+                <div class="audio-title" id="audioTitle">Now Playing: Song Title</div>
             </div>
-        </section>
-
-        <!-- Controls Section -->
-        <section class="content-section" id="controls">
-            <h2 style="text-align: center; margin-bottom: 30px;">
-                <i class="fas fa-gamepad"></i> Enhanced Controls
-            </h2>
-            
-            <div class="controls-grid">
-                <div class="control-panel">
-                    <div class="control-icon">
-                        <i class="fas fa-circle"></i>
-                    </div>
-                    <h3>Steering Wheel</h3>
-                    <p>Precision steering with force feedback</p>
-                    <button class="btn">
-                        <i class="fas fa-cog"></i> Configure
-                    </button>
+            <div class="audio-controls">
+                <button class="play-pause-btn" id="playPauseBtn">
+                    <i class="fas fa-pause" id="playPauseIcon"></i>
+                </button>
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
                 </div>
-
-                <div class="control-panel">
-                    <div class="control-icon">
-                        <i class="fas fa-shoe-prints"></i>
-                    </div>
-                    <h3>Pedal System</h3>
-                    <p>Gas, Brake, and Clutch pedals</p>
-                    <button class="btn">
-                        <i class="fas fa-cog"></i> Configure
-                    </button>
-                </div>
-
-                <div class="control-panel">
-                    <div class="control-icon">
-                        <i class="fas fa-keyboard"></i>
-                    </div>
-                    <h3>Keyboard Controls</h3>
-                    <p>WASD movement and custom bindings</p>
-                    <button class="btn">
-                        <i class="fas fa-cog"></i> Configure
-                    </button>
-                </div>
-
-                <div class="control-panel">
-                    <div class="control-icon">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <h3>Controller Support</h3>
-                    <p>Xbox and PlayStation controllers</p>
-                    <button class="btn">
-                        <i class="fas fa-cog"></i> Configure
-                    </button>
-                </div>
+                <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
             </div>
-        </section>
-
-        <!-- Maps Section -->
-        <section class="content-section" id="maps">
-            <h2 style="text-align: center; margin-bottom: 30px;">
-                <i class="fas fa-map"></i> Big Maps Collection
-            </h2>
-            
-            <div class="maps-grid">
-                <div class="map-card">
-                    <div class="map-preview">
-                        <i class="fas fa-city"></i>
-                    </div>
-                    <h3>European Highway</h3>
-                    <p>Massive European road network with realistic cities</p>
-                    <button class="btn">
-                        <i class="fas fa-play"></i> Load Map
-                    </button>
-                </div>
-
-                <div class="map-card">
-                    <div class="map-preview">
-                        <i class="fas fa-mountain"></i>
-                    </div>
-                    <h3>Mountain Pass</h3>
-                    <p>Challenging mountain roads with scenic views</p>
-                    <button class="btn">
-                        <i class="fas fa-play"></i> Load Map
-                    </button>
-                </div>
-
-                <div class="map-card">
-                    <div class="map-preview">
-                        <i class="fas fa-industry"></i>
-                    </div>
-                    <h3>Industrial Zone</h3>
-                    <p>Heavy industry areas with complex delivery routes</p>
-                    <button class="btn">
-                        <i class="fas fa-play"></i> Load Map
-                    </button>
-                </div>
-
-                <div class="map-card">
-                    <div class="map-preview">
-                        <i class="fas fa-road"></i>
-                    </div>
-                    <h3>Cross Country</h3>
-                    <p>Long-distance routes across multiple countries</p>
-                    <button class="btn">
-                        <i class="fas fa-play"></i> Load Map
-                    </button>
-                </div>
-
-                <div class="map-card">
-                    <div class="map-preview">
-                        <i class="fas fa-ship"></i>
-                    </div>
-                    <h3>Port Authority</h3>
-                    <p>Harbor and port areas with cargo operations</p>
-                    <button class="btn">
-                        <i class="fas fa-play"></i> Load Map
-                    </button>
-                </div>
-
-                <div class="map-card">
-                    <div class="map-preview">
-                        <i class="fas fa-tree"></i>
-                    </div>
-                    <h3>Forest Routes</h3>
-                    <p>Logging roads through dense forests</p>
-                    <button class="btn">
-                        <i class="fas fa-play"></i> Load Map
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Jobs Section -->
-        <section class="content-section" id="jobs">
-            <h2 style="text-align: center; margin-bottom: 30px;">
-                <i class="fas fa-briefcase"></i> Available Jobs
-            </h2>
-            
-            <div class="jobs-list">
-                <div class="job-item">
-                    <div class="job-info">
-                        <h3 class="job-title">
-                            <i class="fas fa-box"></i> Cargo Delivery
-                        </h3>
-                        <p class="job-details">Berlin to Munich • 584 km • Fragile goods</p>
-                    </div>
-                    <div class="job-reward">$2,450</div>
-                    <button class="btn">
-                        <i class="fas fa-check"></i> Accept
-                    </button>
-                </div>
-
-                <div class="job-item">
-                    <div class="job-info">
-                        <h3 class="job-title">
-                            <i class="fas fa-gas-pump"></i> Fuel Transport
-                        </h3>
-                        <p class="job-details">Hamburg to Frankfurt • 492 km • Hazardous</p>
-                    </div>
-                    <div class="job-reward">$3,200</div>
-                    <button class="btn">
-                        <i class="fas fa-check"></i> Accept
-                    </button>
-                </div>
-
-                <div class="job-item">
-                    <div class="job-info">
-                        <h3 class="job-title">
-                            <i class="fas fa-car"></i> Vehicle Transport
-                        </h3>
-                        <p class="job-details">Stuttgart to Cologne • 358 km • Car carrier</p>
-                    </div>
-                    <div class="job-reward">$1,890</div>
-                    <button class="btn">
-                        <i class="fas fa-check"></i> Accept
-                    </button>
-                </div>
-
-                <div class="job-item">
-                    <div class="job-info">
-                        <h3 class="job-title">
-                            <i class="fas fa-industry"></i> Heavy Machinery
-                        </h3>
-                        <p class="job-details">Dortmund to Dresden • 612 km • Oversized load</p>
-                    </div>
-                    <div class="job-reward">$4,150</div>
-                    <button class="btn">
-                        <i class="fas fa-check"></i> Accept
-                    </button>
-                </div>
-
-                <div class="job-item">
-                    <div class="job-info">
-                        <h3 class="job-title">
-                            <i class="fas fa-apple-alt"></i> Food Delivery
-                        </h3>
-                        <p class="job-details">Nuremberg to Leipzig • 287 km • Refrigerated</p>
-                    </div>
-                    <div class="job-reward">$1,650</div>
-                    <button class="btn">
-                        <i class="fas fa-check"></i> Accept
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Trolley Section -->
-        <section class="content-section" id="trolley">
-            <h2 style="text-align: center; margin-bottom: 30px;">
-                <i class="fas fa-dolly"></i> Trolley & Equipment
-            </h2>
-            
-            <div class="garage-grid">
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-dolly"></i>
-                    </div>
-                    <h3 class="truck-name">Standard Trolley</h3>
-                    <p class="truck-price">$1,200</p>
-                    <p class="truck-specs">500kg capacity • Manual operation</p>
-                    <button class="btn">
-                        <i class="fas fa-shopping-cart"></i> Buy
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-eye"></i> Details
-                    </button>
-                </div>
-
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-dolly-flatbed"></i>
-                    </div>
-                    <h3 class="truck-name">Heavy Duty Trolley</h3>
-                    <p class="truck-price">$2,800</p>
-                    <p class="truck-specs">1000kg capacity • Electric assist</p>
-                    <button class="btn">
-                        <i class="fas fa-shopping-cart"></i> Buy
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-eye"></i> Details
-                    </button>
-                </div>
-
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-hand-truck"></i>
-                    </div>
-                    <h3 class="truck-name">Warehouse Trolley</h3>
-                    <p class="truck-price">$1,850</p>
-                    <p class="truck-specs">750kg capacity • Multi-tier</p>
-                    <button class="btn">
-                        <i class="fas fa-shopping-cart"></i> Buy
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-eye"></i> Details
-                    </button>
-                </div>
-
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <h3 class="truck-name">Tool Kit</h3>
-                    <p class="truck-price">$450</p>
-                    <p class="truck-specs">Complete repair set • Portable</p>
-                    <button class="btn">
-                        <i class="fas fa-shopping-cart"></i> Buy
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-eye"></i> Details
-                    </button>
-                </div>
-
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-hard-hat"></i>
-                    </div>
-                    <h3 class="truck-name">Safety Equipment</h3>
-                    <p class="truck-price">$320</p>
-                    <p class="truck-specs">Helmet, vest, gloves • High visibility</p>
-                    <button class="btn">
-                        <i class="fas fa-shopping-cart"></i> Buy
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-eye"></i> Details
-                    </button>
-                </div>
-
-                <div class="truck-card">
-                    <div class="truck-icon">
-                        <i class="fas fa-clipboard-list"></i>
-                    </div>
-                    <h3 class="truck-name">Logistics Tablet</h3>
-                    <p class="truck-price">$890</p>
-                    <p class="truck-specs">GPS, job tracker • Weather resistant</p>
-                    <button class="btn">
-                        <i class="fas fa-shopping-cart"></i> Buy
-                    </button>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-eye"></i> Details
-                    </button>
-                </div>
-            </div>
-        </section>
+            <button class="close-player" id="closePlayer">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <audio id="audioPlayer"></audio>
     </div>
 
     <script>
-        // Loading screen functionality
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('loadingScreen').style.display = 'none';
-                document.getElementById('gameInterface').style.display = 'block';
-            }, 3000);
-        });
-
-        // Navigation functionality
-        function showSection(sectionName) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
-
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.nav-tab');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            // Show selected section
-            document.getElementById(sectionName).classList.add('active');
-            
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
-
-        // Truck selection functionality
-        function selectTruck(truckName) {
-            alert(`You selected the ${truckName}! Ready to hit the road? 🚚`);
-        }
-
-        // Job acceptance functionality
-        function acceptJob(jobTitle, reward) {
-            if(confirm(`Accept job: ${jobTitle} for ${reward}?`)) {
-                alert(`Job accepted! Check your GPS for the route. Good luck, driver! 🛣️`);
-            }
-        }
-
-        // Equipment purchase functionality
-        function buyEquipment(itemName, price) {
-            if(confirm(`Purchase ${itemName} for ${price}?`)) {
-                alert(`${itemName} purchased successfully! It's now in your inventory. 📦`);
-            }
-        }
-
-        // Add click events to buttons
         document.addEventListener('DOMContentLoaded', function() {
-            // Add truck selection events
-            const driveButtons = document.querySelectorAll('.truck-card .btn:first-of-type');
-            driveButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const truckName = this.closest('.truck-card').querySelector('.truck-name').textContent;
-                    selectTruck(truckName);
+            // DOM Elements
+            const searchQueryInput = document.getElementById('searchQuery');
+            const searchButton = document.getElementById('searchButton');
+            const youtubeUrlInput = document.getElementById('youtubeUrl');
+            const urlButton = document.getElementById('urlButton');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const trendingContainer = document.getElementById('trendingContainer');
+            const historyContainer = document.getElementById('historyContainer');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            const audioPlayerContainer = document.getElementById('audioPlayerContainer');
+            const audioPlayer = document.getElementById('audioPlayer');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const playPauseIcon = document.getElementById('playPauseIcon');
+            const progressBar = document.getElementById('progressBar');
+            const progressContainer = document.getElementById('progressContainer');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const audioTitle = document.getElementById('audioTitle');
+            const closePlayer = document.getElementById('closePlayer');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const totalDownloadsEl = document.getElementById('totalDownloads');
+            const audioDownloadsEl = document.getElementById('audioDownloads');
+            const videoDownloadsEl = document.getElementById('videoDownloads');
+            const lastDownloadEl = document.getElementById('lastDownload');
+
+            // API Endpoints
+            const API_BASE = 'https://apiskeith.vercel.app/download';
+            const API_KEY = 'keithkeizzah';
+            
+            // Updated API endpoints
+            const API_ENDPOINTS = {
+                video: `${API_BASE}/ytdlv3?apikey=${API_KEY}&url=`,
+                audio128: `${API_BASE}/ytaudio?apikey=${API_KEY}&format=128kbps&url=`,
+                audio: `${API_BASE}/yta?apikey=${API_KEY}&url=`,
+                mp3: `${API_BASE}/dlmp3?apikey=${API_KEY}&url=`,
+                music: `${API_BASE}/ytmusic?apikey=${API_KEY}&quality=128kbps&url=`,
+                mp3Alt: `${API_BASE}/ytmp3?apikey=${API_KEY}&url=`
+            };
+
+            // Global variables
+            let currentAudioUrl = '';
+            let isPlaying = false;
+            let currentSearchResults = [];
+            let downloadHistory = JSON.parse(localStorage.getItem('downloadHistory')) || [];
+            let stats = JSON.parse(localStorage.getItem('downloadStats')) || {
+                totalDownloads: 0,
+                audioDownloads: 0,
+                videoDownloads: 0,
+                lastDownload: null
+            };
+
+            // Initialize
+            updateStatsDisplay();
+            loadTrendingContent();
+            loadHistory();
+
+            // Event Listeners
+            searchButton.addEventListener('click', handleSearch);
+            searchQueryInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleSearch();
+            });
+
+            urlButton.addEventListener('click', handleUrlDownload);
+            youtubeUrlInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleUrlDownload();
+            });
+
+            playPauseBtn.addEventListener('click', togglePlayPause);
+            progressContainer.addEventListener('click', seekAudio);
+            audioPlayer.addEventListener('timeupdate', updateProgress);
+            audioPlayer.addEventListener('ended', audioEnded);
+            audioPlayer.addEventListener('loadedmetadata', updateDuration);
+            closePlayer.addEventListener('click', closeAudioPlayer);
+
+            // Tab navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                    
+                    // Update active states
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
                 });
             });
 
-            // Add job acceptance events
-            const jobButtons = document.querySelectorAll('.job-item .btn');
-            jobButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const jobTitle = this.closest('.job-item').querySelector('.job-title').textContent.trim();
-                    const reward = this.closest('.job-item').querySelector('.job-reward').textContent;
-                    acceptJob(jobTitle, reward);
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                    
+                    // Update active states
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
                 });
             });
 
-            // Add equipment purchase events
-            const buyButtons = document.querySelectorAll('#trolley .btn:first-of-type');
-            buyButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const itemName = this.closest('.truck-card').querySelector('.truck-name').textContent;
-                    const price = this.closest('.truck-card').querySelector('.truck-price').textContent;
-                    buyEquipment(itemName, price);
+            // Functions
+            function switchTab(tabName) {
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
                 });
-            });
-        });
-
-        // Welcome message
-        setTimeout(function() {
-            if(document.getElementById('gameInterface').style.display !== 'none') {
-                console.log('🚚 Welcome to Trucks Simulation BW Enhanced Edition!');
-                console.log('🎮 Features: Multiple Scania & Volvo trucks, Big maps, Enhanced controls, Jobs & Trolley system');
-                console.log('🛣️ Ready to start your trucking adventure?');
+                document.getElementById(`${tabName}Tab`).classList.add('active');
             }
-        }, 3500);
+
+            function handleSearch() {
+                const query = searchQueryInput.value.trim();
+                if (!query) {
+                    showError('Please enter a search term');
+                    return;
+                }
+
+                showLoading();
+                errorMessage.textContent = '';
+                successMessage.textContent = '';
+
+                // For demo purposes, we'll simulate search results
+                // In a real implementation, you would use a YouTube search API
+                setTimeout(() => {
+                    const mockResults = generateMockResults(query);
+                    currentSearchResults = mockResults;
+                    displayResults(mockResults);
+                }, 1000);
+            }
+
+            function generateMockResults(query) {
+                // Generate mock search results for demonstration
+                const mockTitles = [
+                    `${query} - Official Music Video`,
+                    `${query} - Live Performance`,
+                    `${query} - Acoustic Version`,
+                    `${query} - Lyrics Video`,
+                    `${query} - Remix`,
+                    `${query} - Cover Version`,
+                    `${query} - Tutorial`,
+                    `${query} - Documentary`
+                ];
+
+                return mockTitles.map((title, index) => {
+                    const id = `mock_${Date.now()}_${index}`;
+                    return {
+                        id: id,
+                        title: title,
+                        url: `https://youtube.com/watch?v=${id}`,
+                        thumbnail: `https://picsum.photos/320/180?random=${index}`,
+                        duration: `${Math.floor(Math.random() * 5) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                        views: `${(Math.random() * 1000).toFixed(1)}M views`,
+                        published: `${Math.floor(Math.random() * 12) + 1} months ago`
+                    };
+                });
+            }
+
+            function handleUrlDownload() {
+                const url = youtubeUrlInput.value.trim();
+                if (!url) {
+                    showError('Please enter a YouTube URL');
+                    return;
+                }
+
+                // Validate URL
+                if (!isValidYouTubeUrl(url)) {
+                    showError('Please enter a valid YouTube URL');
+                    return;
+                }
+
+                // Extract video ID from URL
+                const videoId = extractVideoId(url);
+                if (!videoId) {
+                    showError('Could not extract video ID from URL');
+                    return;
+                }
+
+                // Create a mock video object
+                const video = {
+                    id: videoId,
+                    title: 'Direct URL Video',
+                    url: url,
+                    thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+                    duration: 'Unknown duration'
+                };
+                
+                showDownloadOptions(video);
+            }
+
+            function isValidYouTubeUrl(url) {
+                return url.includes('youtube.com/watch') || url.includes('youtu.be/');
+            }
+
+            function extractVideoId(url) {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[2].length === 11) ? match[2] : null;
+            }
+
+            function showLoading() {
+                resultsContainer.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                `;
+            }
+
+            function showEmptyState(message) {
+                resultsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-music"></i>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                successMessage.textContent = '';
+            }
+
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                errorMessage.textContent = '';
+            }
+
+            function displayResults(videos) {
+                if (!videos || videos.length === 0) {
+                    showEmptyState('No results found for your search');
+                    return;
+                }
+
+                let html = '<div class="results-container">';
+                
+                videos.forEach(video => {
+                    html += `
+                        <div class="video-card" data-id="${video.id}">
+                            <div class="thumbnail-container">
+                                <img src="${video.thumbnail}" alt="${video.title}" class="thumbnail" loading="lazy">
+                                <span class="duration-badge">${video.duration}</span>
+                            </div>
+                            <div class="video-info">
+                                <div class="video-title" title="${video.title}">${video.title}</div>
+                                <div class="video-meta">
+                                    <span>${video.views}</span>
+                                    <span>${video.published}</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="preview-btn" data-id="${video.id}" data-title="${video.title}">
+                                        <i class="fas fa-play"></i> Preview
+                                    </button>
+                                    <button class="download-btn" data-id="${video.id}" data-title="${video.title}">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                resultsContainer.innerHTML = html;
+
+                // Add event listeners to the new buttons
+                document.querySelectorAll('.preview-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const videoId = this.getAttribute('data-id');
+                        const videoTitle = this.getAttribute('data-title');
+                        previewAudio(videoId, videoTitle);
+                    });
+                });
+
+                document.querySelectorAll('.download-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const videoId = this.getAttribute('data-id');
+                        const videoTitle = this.getAttribute('data-title');
+                        const video = currentSearchResults.find(v => v.id === videoId);
+                        if (video) {
+                            showDownloadOptions(video);
+                        } else {
+                            // Create a mock video object if not found in search results
+                            const video = {
+                                id: videoId,
+                                title: videoTitle,
+                                url: `https://youtube.com/watch?v=${videoId}`,
+                                thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+                                duration: 'Unknown duration'
+                            };
+                            showDownloadOptions(video);
+                        }
+                    });
+                });
+            }
+
+            function showDownloadOptions(video) {
+                // Create a modal or show download options
+                const videoCard = document.querySelector(`.video-card[data-id="${video.id}"]`);
+                if (videoCard) {
+                    const actionButtons = videoCard.querySelector('.action-buttons');
+                    const existingOptions = videoCard.querySelector('.download-options');
+                    
+                    if (existingOptions) {
+                        existingOptions.remove();
+                        return;
+                    }
+                    
+                    const downloadOptions = document.createElement('div');
+                    downloadOptions.className = 'download-options';
+                    downloadOptions.innerHTML = `
+                        <button class="download-option" data-type="video" data-url="${encodeURIComponent(video.url)}">
+                            <i class="fas fa-video"></i> Video
+                        </button>
+                        <button class="download-option" data-type="audio128" data-url="${encodeURIComponent(video.url)}">
+                            <i class="fas fa-music"></i> Audio (128kbps)
+                        </button>
+                        <button class="download-option" data-type="audio" data-url="${encodeURIComponent(video.url)}">
+                            <i class="fas fa-music"></i> Audio
+                        </button>
+                        <button class="download-option" data-type="mp3" data-url="${encodeURIComponent(video.url)}">
+                            <i class="fas fa-file-audio"></i> MP3
+                        </button>
+                    `;
+                    
+                    actionButtons.after(downloadOptions);
+                    
+                    // Add event listeners to download options
+                    downloadOptions.querySelectorAll('.download-option').forEach(option => {
+                        option.addEventListener('click', function() {
+                            const type = this.getAttribute('data-type');
+                            const url = decodeURIComponent(this.getAttribute('data-url'));
+                            downloadVideo(video, type, url);
+                        });
+                    });
+                }
+            }
+
+            function previewAudio(videoId, videoTitle) {
+                showLoadingAudio(videoTitle);
+                
+                // For demo purposes, we'll use a placeholder audio
+                // In a real implementation, you would use the API to get the audio URL
+                setTimeout(() => {
+                    currentAudioUrl = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; // Placeholder audio
+                    audioPlayer.src = currentAudioUrl;
+                    audioTitle.textContent = `Now Playing: ${videoTitle}`;
+                    audioPlayerContainer.style.display = 'block';
+                    audioPlayer.play()
+                        .then(() => {
+                            isPlaying = true;
+                            playPauseIcon.className = 'fas fa-pause';
+                        })
+                        .catch(error => {
+                            console.error('Playback failed:', error);
+                            showError('Could not play audio preview');
+                        });
+                }, 1000);
+            }
+
+            function showLoadingAudio(title) {
+                audioTitle.textContent = `Loading: ${title}`;
+                timeDisplay.textContent = '0:00 / 0:00';
+                progressBar.style.width = '0%';
+                audioPlayerContainer.style.display = 'block';
+            }
+
+            function togglePlayPause() {
+                if (isPlaying) {
+                    audioPlayer.pause();
+                    playPauseIcon.className = 'fas fa-play';
+                } else {
+                    audioPlayer.play()
+                        .then(() => {
+                            playPauseIcon.className = 'fas fa-pause';
+                        })
+                        .catch(error => {
+                            console.error('Playback failed:', error);
+                            showError('Could not play audio');
+                        });
+                }
+                isPlaying = !isPlaying;
+            }
+
+            function updateProgress() {
+                const { currentTime, duration } = audioPlayer;
+                const progressPercent = (currentTime / duration) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                
+                const currentTimeFormatted = formatSeconds(Math.floor(currentTime));
+                const durationFormatted = formatSeconds(Math.floor(duration));
+                timeDisplay.textContent = `${currentTimeFormatted} / ${durationFormatted}`;
+            }
+
+            function seekAudio(e) {
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audioPlayer.duration;
+                audioPlayer.currentTime = (clickX / width) * duration;
+            }
+
+            function updateDuration() {
+                const duration = audioPlayer.duration;
+                const durationFormatted = formatSeconds(Math.floor(duration));
+                timeDisplay.textContent = `0:00 / ${durationFormatted}`;
+            }
+
+            function audioEnded() {
+                isPlaying = false;
+                playPauseIcon.className = 'fas fa-play';
+                audioPlayer.currentTime = 0;
+                progressBar.style.width = '0%';
+                timeDisplay.textContent = `0:00 / ${formatSeconds(Math.floor(audioPlayer.duration))}`;
+            }
+
+            function closeAudioPlayer() {
+                audioPlayer.pause();
+                isPlaying = false;
+                audioPlayerContainer.style.display = 'none';
+                audioPlayer.currentTime = 0;
+                progressBar.style.width = '0%';
+            }
+
+            function downloadVideo(video, type, url) {
+                // Show loading state for the specific video
+                const videoCard = document.querySelector(`.video-card[data-id="${video.id}"]`);
+                if (videoCard) {
+                    const downloadOptions = videoCard.querySelector('.download-options');
+                    if (downloadOptions) {
+                        downloadOptions.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                    }
+                }
+
+                // Construct the API URL
+                const apiUrl = `${API_ENDPOINTS[type]}${encodeURIComponent(url)}`;
+                
+                // For demo purposes, we'll simulate the download
+                // In a real implementation, you would fetch from the API
+                setTimeout(() => {
+                    // Simulate successful download
+                    const downloadUrl = apiUrl; // In real implementation, this would be the actual download URL from the API response
+                    
+                    // Create a temporary link to trigger the download
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = `${video.title}.${type === 'video' ? 'mp4' : 'mp3'}`.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Update history and stats
+                    addToHistory(video, type);
+                    updateStats(type);
+                    
+                    showSuccess(`Download started for ${video.title}`);
+                    
+                    // Reset the download options
+                    if (videoCard) {
+                        const downloadOptions = videoCard.querySelector('.download-options');
+                        if (downloadOptions) {
+                            downloadOptions.remove();
+                        }
+                    }
+                }, 1500);
+            }
+
+            function addToHistory(video, type) {
+                const historyItem = {
+                    id: video.id,
+                    title: video.title,
+                    thumbnail: video.thumbnail,
+                    type: type,
+                    date: new Date().toISOString()
+                };
+                
+                downloadHistory.unshift(historyItem);
+                // Keep only the last 20 items
+                if (downloadHistory.length > 20) {
+                    downloadHistory = downloadHistory.slice(0, 20);
+                }
+                
+                localStorage.setItem('downloadHistory', JSON.stringify(downloadHistory));
+                loadHistory();
+            }
+
+            function loadHistory() {
+                if (downloadHistory.length === 0) {
+                    historyContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-history"></i>
+                            <p>Your download history is empty</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '<div class="history-container">';
+                
+                downloadHistory.forEach(item => {
+                    const date = new Date(item.date);
+                    const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    
+                    html += `
+                        <div class="history-item">
+                            <img src="${item.thumbnail}" alt="${item.title}" class="history-thumbnail">
+                            <div class="history-info">
+                                <div class="history-title">${item.title}</div>
+                                <div class="history-date">${formattedDate} • ${item.type}</div>
+                            </div>
+                            <div class="history-actions">
+                                <button class="history-action-btn" title="Download again" data-id="${item.id}" data-type="${item.type}">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                                <button class="history-action-btn" title="Remove from history" data-id="${item.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                historyContainer.innerHTML = html;
+                
+                // Add event listeners to history action buttons
+                document.querySelectorAll('.history-action-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        const type = this.getAttribute('data-type');
+                        
+                        if (this.querySelector('.fa-redo')) {
+                            // Redownload
+                            const item = downloadHistory.find(i => i.id === id);
+                            if (item) {
+                                const video = {
+                                    id: item.id,
+                                    title: item.title,
+                                    url: `https://youtube.com/watch?v=${item.id}`,
+                                    thumbnail: item.thumbnail
+                                };
+                                downloadVideo(video, type, video.url);
+                            }
+                        } else if (this.querySelector('.fa-trash')) {
+                            // Remove from history
+                            downloadHistory = downloadHistory.filter(i => i.id !== id);
+                            localStorage.setItem('downloadHistory', JSON.stringify(downloadHistory));
+                            loadHistory();
+                        }
+                    });
+                });
+            }
+
+            function updateStats(type) {
+                stats.totalDownloads++;
+                
+                if (type === 'video') {
+                    stats.videoDownloads++;
+                } else {
+                    stats.audioDownloads++;
+                }
+                
+                stats.lastDownload = new Date().toISOString();
+                
+                localStorage.setItem('downloadStats', JSON.stringify(stats));
+                updateStatsDisplay();
+            }
+
+            function updateStatsDisplay() {
+                totalDownloadsEl.textContent = stats.totalDownloads;
+                audioDownloadsEl.textContent = stats.audioDownloads;
+                videoDownloadsEl.textContent = stats.videoDownloads;
+                
+                if (stats.lastDownload) {
+                    const date = new Date(stats.lastDownload);
+                    lastDownloadEl.textContent = date.toLocaleDateString();
+                } else {
+                    lastDownloadEl.textContent = '-';
+                }
+            }
+
+            function loadTrendingContent() {
+                // For demo purposes, we'll generate mock trending content
+                // In a real implementation, you would fetch from an API
+                setTimeout(() => {
+                    const trendingVideos = [
+                        { id: 'trend1', title: 'Top Hits 2023', thumbnail: 'https://picsum.photos/320/180?random=101', views: '15.2M' },
+                        { id: 'trend2', title: 'Popular Music Mix', thumbnail: 'https://picsum.photos/320/180?random=102', views: '12.8M' },
+                        { id: 'trend3', title: 'Viral TikTok Songs', thumbnail: 'https://picsum.photos/320/180?random=103', views: '10.5M' },
+                        { id: 'trend4', title: 'Chart Toppers', thumbnail: 'https://picsum.photos/320/180?random=104', views: '9.7M' },
+                        { id: 'trend5', title: 'Latest Releases', thumbnail: 'https://picsum.photos/320/180?random=105', views: '8.3M' },
+                        { id: 'trend6', title: 'Trending Now', thumbnail: 'https://picsum.photos/320/180?random=106', views: '7.9M' }
+                    ];
+                    
+                    let html = '<div class="trending-container">';
+                    
+                    trendingVideos.forEach((video, index) => {
+                        html += `
+                            <div class="trending-card" data-id="${video.id}">
+                                <div class="thumbnail-container">
+                                    <img src="${video.thumbnail}" alt="${video.title}" class="thumbnail">
+                                    <div class="trending-rank">${index + 1}</div>
+                                    <span class="duration-badge">${video.views}</span>
+                                </div>
+                                <div class="video-info">
+                                    <div class="video-title" title="${video.title}">${video.title}</div>
+                                    <div class="action-buttons">
+                                        <button class="download-btn" data-id="${video.id}" data-title="${video.title}">
+                                            <i class="fas fa-download"></i> Download
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    trendingContainer.innerHTML = html;
+                    
+                    // Add event listeners to download buttons in trending
+                    document.querySelectorAll('#trendingContainer .download-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const videoId = this.getAttribute('data-id');
+                            const videoTitle = this.getAttribute('data-title');
+                            const video = {
+                                id: videoId,
+                                title: videoTitle,
+                                url: `https://youtube.com/watch?v=${videoId}`,
+                                thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+                            };
+                            showDownloadOptions(video);
+                        });
+                    });
+                }, 1000);
+            }
+
+            function formatSeconds(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+        });
     </script>
 </body>
 </html>
