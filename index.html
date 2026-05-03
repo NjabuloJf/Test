@@ -5,696 +5,383 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Naledi Aphiwe & Spikili — Forever ❤️</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
   :root {
     --red: #e8002d;
     --deep-red: #8b0000;
     --blush: #ffb3c1;
-    --soft-pink: #ffe0e6;
     --white: #fff8fa;
     --gold: #f7c873;
-    --dark: #1a0006;
-    --glass: rgba(255,255,255,0.12);
+    --fb: #1877f2;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { min-height: 100vh; background: #0d0005; font-family: 'Cormorant Garamond', serif; color: var(--white); overflow-x: hidden; }
 
-  body {
-    min-height: 100vh;
-    background: #0d0005;
-    font-family: 'Cormorant Garamond', serif;
-    color: var(--white);
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  /* === ANIMATED HEARTS BACKGROUND === */
-  .hearts-bg {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-  .heart-particle {
-    position: absolute;
-    bottom: -60px;
-    font-size: 1.4rem;
-    animation: floatUp linear infinite;
-    opacity: 0;
-  }
+  /* HEARTS BG */
+  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .heart-particle { position: absolute; bottom: -60px; animation: floatUp linear infinite; opacity: 0; }
   @keyframes floatUp {
     0%   { transform: translateY(0) rotate(-15deg) scale(0.7); opacity: 0; }
     10%  { opacity: 0.7; }
     90%  { opacity: 0.4; }
-    100% { transform: translateY(-110vh) rotate(20deg) scale(1.1); opacity: 0; }
+    100% { transform: translateY(-110vh) rotate(20deg) scale(1.2); opacity: 0; }
   }
 
-  /* === PAGE LAYOUT === */
-  .page {
-    position: relative;
-    z-index: 1;
-    display: none;
-    min-height: 100vh;
-    padding: 20px;
-  }
-  .page.active { display: flex; flex-direction: column; align-items: center; }
+  /* LAYOUT */
+  .page { position: relative; z-index: 1; min-height: 100vh; padding: 16px; display: flex; flex-direction: column; align-items: center; }
 
-  /* === HEADER === */
-  .brand-header {
-    text-align: center;
-    margin-bottom: 8px;
-    padding-top: 10px;
-  }
-  .brand-header .studio {
-    font-size: 0.7rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold);
-    opacity: 0.9;
-  }
+  /* HEADER */
+  .brand-header { text-align: center; margin-bottom: 10px; padding-top: 8px; }
+  .brand-header .studio { font-size: 0.68rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); }
   .brand-header h1 {
     font-family: 'Dancing Script', cursive;
-    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-size: clamp(1.9rem, 6vw, 3rem);
     background: linear-gradient(135deg, #ff6b8a, var(--gold), #ff6b8a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200%;
-    animation: shimmer 3s ease-in-out infinite;
-    line-height: 1.1;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-size: 200%; animation: shimmer 3s ease-in-out infinite; line-height: 1.1;
   }
-  .brand-header .tagline {
-    font-size: 0.85rem;
-    letter-spacing: 3px;
-    color: var(--blush);
-    opacity: 0.8;
-    margin-top: 2px;
-  }
-  @keyframes shimmer {
-    0%,100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
+  .brand-header .tagline { font-size: 0.82rem; letter-spacing: 3px; color: var(--blush); opacity: 0.8; margin-top: 2px; }
+  @keyframes shimmer { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 
-  /* === PROFILE CARD === */
+  /* PROFILE CARD */
   .profile-card {
     background: linear-gradient(135deg, rgba(139,0,0,0.35), rgba(232,0,45,0.15));
-    border: 1px solid rgba(255,180,193,0.25);
-    border-radius: 24px;
-    padding: 22px 20px;
-    width: 100%;
-    max-width: 420px;
-    backdrop-filter: blur(12px);
-    margin-bottom: 16px;
-    box-shadow: 0 8px 40px rgba(232,0,45,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,180,193,0.25); border-radius: 24px;
+    padding: 20px 18px; width: 100%; max-width: 430px;
+    backdrop-filter: blur(12px); margin-bottom: 14px;
+    box-shadow: 0 8px 40px rgba(232,0,45,0.15);
   }
+  .profile-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .avatar-wrap { position: relative; flex-shrink: 0; }
+  .avatar-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--red); box-shadow: 0 0 20px rgba(232,0,45,0.5); display: block; }
+  .avatar-fallback { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg,var(--deep-red),var(--red)); border: 3px solid var(--red); display: none; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 0 20px rgba(232,0,45,0.5); }
+  .online-dot { position: absolute; bottom: 3px; right: 3px; width: 15px; height: 15px; background: #00e676; border-radius: 50%; border: 2px solid #0d0005; animation: pulse-green 2s ease-in-out infinite; }
+  @keyframes pulse-green { 0%,100%{box-shadow:0 0 8px #00e676} 50%{box-shadow:0 0 20px #00e676,0 0 32px #00e67655} }
+  .profile-info .pname { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; line-height: 1.2; }
+  .profile-info .handle { font-size: 0.75rem; color: var(--blush); opacity: 0.75; letter-spacing: 1px; margin-top: 2px; }
+  .status-row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .status-badge { font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+  .badge-online { background: rgba(0,230,118,0.15); color: #00e676; border: 1px solid rgba(0,230,118,0.3); }
+  .badge-love { background: rgba(232,0,45,0.2); color: #ff6b8a; border: 1px solid rgba(232,0,45,0.35); }
+  .forever-text { text-align: center; font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: var(--blush); animation: heartbeat 1.6s ease-in-out infinite; }
+  @keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
 
-  .profile-top {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .avatar-wrap {
-    position: relative;
-    flex-shrink: 0;
-  }
-  .avatar-wrap img {
-    width: 82px;
-    height: 82px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--red);
-    box-shadow: 0 0 20px rgba(232,0,45,0.5);
-  }
-  .avatar-placeholder {
-    width: 82px;
-    height: 82px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--deep-red), var(--red));
-    border: 3px solid var(--red);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    box-shadow: 0 0 20px rgba(232,0,45,0.5);
-  }
-  .online-dot {
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-    width: 16px;
-    height: 16px;
-    background: #00e676;
-    border-radius: 50%;
-    border: 2px solid #0d0005;
-    box-shadow: 0 0 8px #00e676;
-    animation: pulse-green 2s ease-in-out infinite;
-  }
-  @keyframes pulse-green {
-    0%,100% { box-shadow: 0 0 8px #00e676; }
-    50% { box-shadow: 0 0 18px #00e676, 0 0 28px #00e67644; }
-  }
-
-  .profile-info { flex: 1; }
-  .profile-info .name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1.2;
-  }
-  .profile-info .handle {
-    font-size: 0.78rem;
-    color: var(--blush);
-    opacity: 0.75;
-    letter-spacing: 1px;
-    margin-top: 2px;
-  }
-  .status-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 6px;
-  }
-  .status-badge {
-    font-size: 0.7rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-  }
-  .badge-online {
-    background: rgba(0,230,118,0.15);
-    color: #00e676;
-    border: 1px solid rgba(0,230,118,0.3);
-  }
-  .badge-love {
-    background: rgba(232,0,45,0.2);
-    color: #ff6b8a;
-    border: 1px solid rgba(232,0,45,0.35);
-  }
-
-  .forever-text {
-    text-align: center;
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.5rem;
-    color: var(--blush);
-    margin-top: 2px;
-    animation: heartbeat 1.5s ease-in-out infinite;
-  }
-  @keyframes heartbeat {
-    0%,100% { transform: scale(1); }
-    50% { transform: scale(1.06); }
-  }
-
-  /* === SONG CARDS === */
-  .songs-section {
-    width: 100%;
-    max-width: 420px;
-    margin-bottom: 16px;
-  }
-  .section-label {
-    font-size: 0.68rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
+  /* SONGS */
+  .songs-section { width: 100%; max-width: 430px; margin-bottom: 14px; }
+  .section-label { font-size: 0.66rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; text-align: center; }
   .song-card {
-    background: linear-gradient(135deg, rgba(139,0,0,0.3), rgba(26,0,6,0.7));
-    border: 1px solid rgba(255,107,138,0.2);
-    border-radius: 18px;
-    padding: 16px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    background: linear-gradient(135deg, rgba(139,0,0,0.3), rgba(26,0,6,0.75));
+    border: 1px solid rgba(255,107,138,0.18); border-radius: 18px;
+    padding: 15px; margin-bottom: 10px; position: relative; overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
-  .song-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(232,0,45,0.1), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .song-card:hover::before, .song-card.playing::before { opacity: 1; }
-  .song-card.playing {
-    border-color: rgba(232,0,45,0.5);
-    box-shadow: 0 4px 24px rgba(232,0,45,0.2);
-  }
-
-  .song-top {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
+  .song-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(232,0,45,0.08),transparent); opacity:0; transition:opacity 0.3s; pointer-events:none; }
+  .song-card:hover::before, .song-card.playing::before { opacity:1; }
+  .song-card.playing { border-color: rgba(232,0,45,0.55); box-shadow: 0 4px 28px rgba(232,0,45,0.22); }
+  .song-top { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
   .song-cover {
-    width: 54px;
-    height: 54px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--deep-red), var(--red));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
-    box-shadow: 0 4px 16px rgba(232,0,45,0.3);
-    position: relative;
-    overflow: hidden;
+    width: 52px; height: 52px; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(135deg,var(--deep-red),var(--red));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; box-shadow: 0 4px 14px rgba(232,0,45,0.3); overflow: hidden; position: relative;
   }
-  .song-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  .song-cover .disc-spin {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.2);
-    animation: spin 3s linear infinite;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .song-card.playing .song-cover .disc-spin { opacity: 1; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .song-cover img { width:100%; height:100%; object-fit:cover; border-radius:10px; }
+  .disc-ring { position:absolute; inset:3px; border-radius:50%; border:2px dashed rgba(255,255,255,0.25); animation:spin 3s linear infinite; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+  .song-card.playing .disc-ring { opacity:1; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .song-meta { flex:1; min-width:0; }
+  .song-title { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .song-artist { font-size:0.73rem; color:var(--blush); opacity:0.8; margin-top:2px; }
 
-  .song-meta { flex: 1; }
-  .song-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1.2;
-  }
-  .song-artist {
-    font-size: 0.75rem;
-    color: var(--blush);
-    opacity: 0.8;
-    margin-top: 2px;
-  }
-
-  /* === AUDIO CONTROLS === */
-  .audio-controls {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-  }
+  /* BUTTONS */
+  .audio-controls { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:10px; }
   .btn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 7px 14px;
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-    font-size: 0.75rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: all 0.25s ease;
+    display:inline-flex; align-items:center; gap:5px;
+    padding:7px 13px; border-radius:30px; border:none; cursor:pointer;
+    font-size:0.74rem; font-family:'Cormorant Garamond',serif; font-weight:600;
+    letter-spacing:0.3px; transition:all 0.22s ease; text-decoration:none; white-space:nowrap;
   }
-  .btn-play {
-    background: linear-gradient(135deg, var(--red), #c0002a);
-    color: white;
-    box-shadow: 0 3px 14px rgba(232,0,45,0.4);
-  }
-  .btn-play:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(232,0,45,0.6); }
-  .btn-download {
-    background: rgba(255,255,255,0.08);
-    color: var(--blush);
-    border: 1px solid rgba(255,180,193,0.25);
-  }
-  .btn-download:hover { background: rgba(255,255,255,0.14); transform: scale(1.03); }
-  .btn-lyrics {
-    background: rgba(247,200,115,0.12);
-    color: var(--gold);
-    border: 1px solid rgba(247,200,115,0.3);
-  }
-  .btn-lyrics:hover { background: rgba(247,200,115,0.22); }
-  .btn-about {
-    background: rgba(255,107,138,0.12);
-    color: #ff6b8a;
-    border: 1px solid rgba(255,107,138,0.3);
-  }
-  .btn-about:hover { background: rgba(255,107,138,0.22); }
+  .btn i { font-size:0.75rem; }
+  .btn-play { background:linear-gradient(135deg,var(--red),#b80026); color:#fff; box-shadow:0 3px 14px rgba(232,0,45,0.4); }
+  .btn-play:hover { transform:scale(1.05); box-shadow:0 5px 22px rgba(232,0,45,0.6); }
+  .btn-play.is-playing { background:linear-gradient(135deg,#555,#333); box-shadow:none; }
+  .btn-download { background:rgba(255,255,255,0.07); color:var(--blush); border:1px solid rgba(255,180,193,0.25); }
+  .btn-download:hover { background:rgba(255,255,255,0.14); transform:scale(1.03); }
+  .btn-lyrics { background:rgba(247,200,115,0.1); color:var(--gold); border:1px solid rgba(247,200,115,0.3); }
+  .btn-lyrics:hover, .btn-lyrics.lyr-open { background:rgba(247,200,115,0.22); }
+  .btn-about { background:rgba(255,107,138,0.1); color:#ff6b8a; border:1px solid rgba(255,107,138,0.3); }
+  .btn-about:hover { background:rgba(255,107,138,0.22); }
 
-  /* === PROGRESS BAR === */
-  .progress-wrap {
-    width: 100%;
-    height: 4px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 2px;
-    cursor: pointer;
-    position: relative;
-    margin-bottom: 6px;
-  }
-  .progress-fill {
-    height: 100%;
-    border-radius: 2px;
-    background: linear-gradient(90deg, var(--red), var(--blush));
-    width: 0%;
-    transition: width 0.3s;
-  }
-  .time-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.65rem;
-    color: var(--blush);
-    opacity: 0.6;
-  }
+  /* PROGRESS */
+  .progress-wrap { width:100%; height:5px; background:rgba(255,255,255,0.1); border-radius:3px; cursor:pointer; margin-bottom:5px; position:relative; }
+  .progress-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--red),var(--blush)); width:0%; transition:width 0.2s; pointer-events:none; }
+  .time-row { display:flex; justify-content:space-between; font-size:0.63rem; color:var(--blush); opacity:0.6; }
 
-  /* === NAVIGATION ARROWS === */
-  .nav-row {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 6px;
-  }
-  .nav-btn {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: var(--blush);
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-  .nav-btn:hover { background: rgba(232,0,45,0.2); border-color: var(--red); color: white; transform: scale(1.1); }
-
-  /* === LYRICS PANEL === */
+  /* LYRICS */
   .lyrics-panel {
-    display: none;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,107,138,0.15);
-    border-radius: 12px;
-    padding: 14px;
-    margin-top: 10px;
-    font-size: 0.85rem;
-    line-height: 1.8;
-    color: var(--blush);
-    font-style: italic;
-    max-height: 160px;
-    overflow-y: auto;
-    text-align: center;
+    display:none; margin-top:10px;
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,107,138,0.18);
+    border-radius:12px; padding:14px 12px;
+    font-size:0.84rem; line-height:1.85; color:var(--blush);
+    font-style:italic; text-align:center;
+    max-height:170px; overflow-y:auto;
+    animation:fadeIn 0.28s ease;
   }
-  .lyrics-panel.open { display: block; }
-  .lyrics-panel::-webkit-scrollbar { width: 4px; }
-  .lyrics-panel::-webkit-scrollbar-thumb { background: rgba(232,0,45,0.3); border-radius: 2px; }
+  .lyrics-panel.open { display:block; }
+  .lyrics-panel::-webkit-scrollbar { width:3px; }
+  .lyrics-panel::-webkit-scrollbar-thumb { background:rgba(232,0,45,0.35); border-radius:2px; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
 
-  /* === ABOUT MODAL === */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(6px);
-  }
-  .modal-overlay.open { display: flex; }
+  /* NAV */
+  .nav-row { display:flex; justify-content:center; gap:12px; margin-top:8px; }
+  .nav-btn { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); color:var(--blush); width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+  .nav-btn:hover { background:rgba(232,0,45,0.22); border-color:var(--red); color:#fff; transform:scale(1.1); }
+
+  .hearts-row { text-align:center; font-size:1rem; letter-spacing:7px; animation:heartbeat 1.8s ease-in-out infinite; margin-bottom:4px; }
+  .powered-by { font-size:0.6rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); opacity:0.5; text-align:center; padding:12px 0 8px; }
+
+  /* ABOUT MODAL */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.82); z-index:200; align-items:center; justify-content:center; padding:18px; backdrop-filter:blur(8px); }
+  .modal-overlay.open { display:flex; }
   .modal {
-    background: linear-gradient(135deg, #1a0006, #2d000e);
-    border: 1px solid rgba(232,0,45,0.3);
-    border-radius: 22px;
-    padding: 28px 24px;
-    max-width: 380px;
-    width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    background:linear-gradient(160deg,#1c0008,#2e000f);
+    border:1px solid rgba(232,0,45,0.3); border-radius:22px;
+    padding:24px 20px; max-width:380px; width:100%;
+    max-height:90vh; overflow-y:auto;
+    box-shadow:0 24px 70px rgba(0,0,0,0.75);
+    animation:modalIn 0.28s ease;
   }
-  .modal h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: var(--gold);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .modal-images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .modal-img {
-    aspect-ratio: 1;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(139,0,0,0.5), rgba(232,0,45,0.2));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    border: 1px solid rgba(255,107,138,0.2);
-    overflow: hidden;
-  }
-  .modal-img img { width: 100%; height: 100%; object-fit: cover; }
-  .modal p {
-    font-size: 0.88rem;
-    line-height: 1.7;
-    color: var(--blush);
-    opacity: 0.85;
-    margin-bottom: 10px;
-  }
-  .modal .close-btn {
-    background: linear-gradient(135deg, var(--red), #c0002a);
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 9px 24px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
-    width: 100%;
-    margin-top: 8px;
-    transition: all 0.2s;
-  }
-  .modal .close-btn:hover { transform: scale(1.02); box-shadow: 0 4px 20px rgba(232,0,45,0.5); }
+  @keyframes modalIn { from{transform:scale(0.93);opacity:0} to{transform:scale(1);opacity:1} }
+  .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .modal-header h2 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--gold); display:flex; align-items:center; gap:7px; }
+  .modal-close-x { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:var(--blush); width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+  .modal-close-x:hover { background:rgba(232,0,45,0.25); border-color:var(--red); color:#fff; }
 
-  /* === POWERED BY === */
-  .powered-by {
-    font-size: 0.62rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    opacity: 0.55;
-    text-align: center;
-    padding: 16px 0 10px;
-  }
+  .modal-images { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+  .modal-img { aspect-ratio:1; border-radius:12px; overflow:hidden; background:linear-gradient(135deg,rgba(139,0,0,0.5),rgba(232,0,45,0.2)); display:flex; align-items:center; justify-content:center; font-size:1.8rem; border:1px solid rgba(255,107,138,0.2); }
+  .modal-img img { width:100%; height:100%; object-fit:cover; }
 
-  /* === FLOATING HEARTS ROW === */
-  .hearts-row {
-    text-align: center;
-    font-size: 1.1rem;
-    letter-spacing: 6px;
-    animation: heartbeat 1.8s ease-in-out infinite;
-    margin-bottom: 4px;
-  }
+  .modal-desc { font-size:0.87rem; line-height:1.7; color:var(--blush); opacity:0.88; margin-bottom:16px; text-align:center; }
 
-  /* scrollbar */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-thumb { background: rgba(232,0,45,0.3); }
+  /* FB FOLLOW */
+  .fb-section { margin-bottom:14px; }
+  .fb-section-title { font-size:0.63rem; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.38); text-align:center; margin-bottom:9px; }
+  .fb-link {
+    display:flex; align-items:center; gap:10px;
+    background:rgba(24,119,242,0.11); border:1px solid rgba(24,119,242,0.32);
+    border-radius:12px; padding:11px 13px; margin-bottom:8px;
+    text-decoration:none; color:var(--white); transition:all 0.22s ease;
+  }
+  .fb-link:hover { background:rgba(24,119,242,0.24); border-color:var(--fb); transform:translateX(4px); }
+  .fb-icon { width:36px; height:36px; background:var(--fb); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; color:#fff; flex-shrink:0; }
+  .fb-info { flex:1; }
+  .fb-name { font-family:'Playfair Display',serif; font-size:0.88rem; font-weight:700; }
+  .fb-sub { font-size:0.67rem; color:rgba(255,255,255,0.45); margin-top:1px; }
+  .fb-follow { font-size:0.67rem; font-weight:600; letter-spacing:1px; color:#6ab3ff; display:flex; align-items:center; gap:4px; white-space:nowrap; }
+
+  .modal-studio { text-align:center; font-size:0.67rem; letter-spacing:2px; text-transform:uppercase; color:var(--gold); opacity:0.6; margin-bottom:14px; }
+  .modal .close-btn { background:linear-gradient(135deg,var(--red),#b80026); color:#fff; border:none; border-radius:30px; padding:10px 24px; cursor:pointer; font-size:0.85rem; font-family:'Cormorant Garamond',serif; font-weight:600; width:100%; transition:all 0.2s; }
+  .modal .close-btn:hover { transform:scale(1.02); box-shadow:0 4px 22px rgba(232,0,45,0.5); }
+
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-thumb { background:rgba(232,0,45,0.3); border-radius:2px; }
 </style>
 </head>
 <body>
 
-<!-- Animated hearts background -->
 <div class="hearts-bg" id="heartsBg"></div>
 
-<!-- ============ MAIN PAGE ============ -->
-<div class="page active" id="mainPage">
-
-  <!-- Header -->
+<div class="page">
+  <!-- HEADER -->
   <div class="brand-header">
-    <div class="studio">✦ Njabulo-JB Music & Studio ✦</div>
-    <h1>Naledi Aphiwe & Spikili</h1>
+    <div class="studio">✦ Njabulo-JB Music &amp; Studio ✦</div>
+    <h1>Naledi Aphiwe &amp; Spikili</h1>
     <div class="tagline">Say Forever ❤️</div>
   </div>
 
-  <!-- Profile Card -->
+  <!-- PROFILE -->
   <div class="profile-card">
     <div class="profile-top">
       <div class="avatar-wrap">
-        <img src="image.png" alt="Profile"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="avatar-placeholder" style="display:none;">💖</div>
+        <img class="avatar-img" src="image.png" alt="Profile"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="avatar-fallback">💖</div>
         <div class="online-dot"></div>
       </div>
       <div class="profile-info">
-        <div class="name">Naledi Aphiwe<br>& Spikili</div>
+        <div class="pname">Naledi Aphiwe<br>&amp; Spikili</div>
         <div class="handle">@NalediAphiwe · @Spikili</div>
         <div class="status-row">
-          <span class="status-badge badge-online">● Online</span>
-          <span class="status-badge badge-love">❤️ In Love</span>
+          <span class="status-badge badge-online"><i class="fa fa-circle" style="font-size:0.45rem"></i> Online</span>
+          <span class="status-badge badge-love"><i class="fa-solid fa-heart" style="font-size:0.5rem"></i> In Love</span>
         </div>
       </div>
     </div>
-    <div class="forever-text">💕 Forever & Always 💕</div>
+    <div class="forever-text">💕 Forever &amp; Always 💕</div>
   </div>
 
-  <!-- Songs Section -->
+  <!-- SONGS -->
   <div class="songs-section">
-    <div class="section-label">♫ Songs</div>
+    <div class="section-label"><i class="fa-solid fa-music"></i> &nbsp;Songs</div>
 
-    <!-- Song 1: Naledi -->
+    <!-- SONG 0: Naledi -->
     <div class="song-card" id="card0">
       <div class="song-top">
         <div class="song-cover">
-          <img src="image.png" alt="cover"
-            onerror="this.style.display='none'; this.parentElement.innerHTML='🎵';">
-          <div class="disc-spin"></div>
+          <img src="image.png" alt="cover" onerror="this.style.display='none';">
+          <div class="disc-ring"></div>
         </div>
         <div class="song-meta">
           <div class="song-title">Naledi</div>
-          <div class="song-artist">Njabulo-JB Music & Studio</div>
+          <div class="song-artist"><i class="fa-solid fa-star" style="color:var(--gold);font-size:0.55rem"></i> Njabulo-JB Music &amp; Studio</div>
         </div>
       </div>
       <div class="audio-controls">
-        <button class="btn btn-play" onclick="playPause(0)">▶ Play</button>
-        <a class="btn btn-download" href="naledi.mp3" download="Naledi.mp3">⬇ Download</a>
-        <button class="btn btn-lyrics" onclick="toggleLyrics(0)">🎼 Lyrics</button>
-        <button class="btn btn-about" onclick="openAbout(0)">❤️ About</button>
+        <button class="btn btn-play" id="playBtn0" onclick="playPause(0)"><i class="fa-solid fa-play"></i> Play</button>
+        <a class="btn btn-download" href="naledi.mp3" download="Naledi - Njabulo-JB Music and Studio.mp3"><i class="fa-solid fa-download"></i> Download</a>
+        <button class="btn btn-lyrics" id="lyrBtn0" onclick="toggleLyrics(0)"><i class="fa-solid fa-scroll"></i> Lyrics</button>
+        <button class="btn btn-about" onclick="openAbout(0)"><i class="fa-solid fa-heart"></i> About</button>
       </div>
-      <div class="progress-wrap" onclick="seekAudio(event, 0)">
-        <div class="progress-fill" id="prog0"></div>
-      </div>
+      <div class="progress-wrap" onclick="seekAudio(event,0)"><div class="progress-fill" id="prog0"></div></div>
       <div class="time-row"><span id="cur0">0:00</span><span id="dur0">0:00</span></div>
-      <div class="lyrics-panel" id="lyrics0">
-        <!-- User will add lyrics here -->
-        🎵 Lyrics coming soon — add your words here 🎵
-      </div>
+      <div class="lyrics-panel" id="lyrics0">🎵 Lyrics coming soon...<br>Add your words here 🎵</div>
     </div>
 
-    <!-- Song 2: Spikili -->
+    <!-- SONG 1: Spikili -->
     <div class="song-card" id="card1">
       <div class="song-top">
         <div class="song-cover">
-          <img src="image.png" alt="cover"
-            onerror="this.style.display='none'; this.parentElement.innerHTML='🎵';">
-          <div class="disc-spin"></div>
+          <img src="image.png" alt="cover" onerror="this.style.display='none';">
+          <div class="disc-ring"></div>
         </div>
         <div class="song-meta">
           <div class="song-title">Spikili</div>
-          <div class="song-artist">Njabulo-JB Music & Studio</div>
+          <div class="song-artist"><i class="fa-solid fa-star" style="color:var(--gold);font-size:0.55rem"></i> Njabulo-JB Music &amp; Studio</div>
         </div>
       </div>
       <div class="audio-controls">
-        <button class="btn btn-play" onclick="playPause(1)">▶ Play</button>
-        <a class="btn btn-download" href="spikili.mp3" download="Spikili.mp3">⬇ Download</a>
-        <button class="btn btn-lyrics" onclick="toggleLyrics(1)">🎼 Lyrics</button>
-        <button class="btn btn-about" onclick="openAbout(1)">❤️ About</button>
+        <button class="btn btn-play" id="playBtn1" onclick="playPause(1)"><i class="fa-solid fa-play"></i> Play</button>
+        <a class="btn btn-download" href="spikili.mp3" download="Spikili - Njabulo-JB Music and Studio.mp3"><i class="fa-solid fa-download"></i> Download</a>
+        <button class="btn btn-lyrics" id="lyrBtn1" onclick="toggleLyrics(1)"><i class="fa-solid fa-scroll"></i> Lyrics</button>
+        <button class="btn btn-about" onclick="openAbout(1)"><i class="fa-solid fa-heart"></i> About</button>
       </div>
-      <div class="progress-wrap" onclick="seekAudio(event, 1)">
-        <div class="progress-fill" id="prog1"></div>
-      </div>
+      <div class="progress-wrap" onclick="seekAudio(event,1)"><div class="progress-fill" id="prog1"></div></div>
       <div class="time-row"><span id="cur1">0:00</span><span id="dur1">0:00</span></div>
-      <div class="lyrics-panel" id="lyrics1">
-        🎵 Lyrics coming soon — add your words here 🎵
-      </div>
+      <div class="lyrics-panel" id="lyrics1">🎵 Lyrics coming soon...<br>Add your words here 🎵</div>
     </div>
 
-    <!-- Song 3: Naledi-Spikili (Duet) -->
+    <!-- SONG 2: Naledi × Spikili -->
     <div class="song-card" id="card2">
       <div class="song-top">
         <div class="song-cover">
-          <img src="image.png" alt="cover"
-            onerror="this.style.display='none'; this.parentElement.innerHTML='🎵';">
-          <div class="disc-spin"></div>
+          <img src="image.png" alt="cover" onerror="this.style.display='none';">
+          <div class="disc-ring"></div>
         </div>
         <div class="song-meta">
           <div class="song-title">Naledi × Spikili</div>
-          <div class="song-artist">Njabulo-JB Music & Studio</div>
+          <div class="song-artist"><i class="fa-solid fa-star" style="color:var(--gold);font-size:0.55rem"></i> Njabulo-JB Music &amp; Studio</div>
         </div>
       </div>
       <div class="audio-controls">
-        <button class="btn btn-play" onclick="playPause(2)">▶ Play</button>
-        <a class="btn btn-download" href="naledi-spikili.mp3" download="Naledi-Spikili.mp3">⬇ Download</a>
-        <button class="btn btn-lyrics" onclick="toggleLyrics(2)">🎼 Lyrics</button>
-        <button class="btn btn-about" onclick="openAbout(2)">❤️ About</button>
+        <button class="btn btn-play" id="playBtn2" onclick="playPause(2)"><i class="fa-solid fa-play"></i> Play</button>
+        <a class="btn btn-download" href="naledi-spikili.mp3" download="Naledi x Spikili - Njabulo-JB Music and Studio.mp3"><i class="fa-solid fa-download"></i> Download</a>
+        <button class="btn btn-lyrics" id="lyrBtn2" onclick="toggleLyrics(2)"><i class="fa-solid fa-scroll"></i> Lyrics</button>
+        <button class="btn btn-about" onclick="openAbout(2)"><i class="fa-solid fa-heart"></i> About</button>
       </div>
-      <div class="progress-wrap" onclick="seekAudio(event, 2)">
-        <div class="progress-fill" id="prog2"></div>
-      </div>
+      <div class="progress-wrap" onclick="seekAudio(event,2)"><div class="progress-fill" id="prog2"></div></div>
       <div class="time-row"><span id="cur2">0:00</span><span id="dur2">0:00</span></div>
-      <div class="lyrics-panel" id="lyrics2">
-        🎵 Lyrics coming soon — add your words here 🎵
-      </div>
+      <div class="lyrics-panel" id="lyrics2">🎵 Lyrics coming soon...<br>Add your words here 🎵</div>
     </div>
 
-    <!-- Prev / Next navigation -->
+    <!-- Prev / Next -->
     <div class="nav-row">
-      <button class="nav-btn" onclick="navSong(-1)" title="Previous">◀</button>
-      <button class="nav-btn" onclick="navSong(1)" title="Next">▶</button>
+      <button class="nav-btn" onclick="navSong(-1)" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
+      <button class="nav-btn" onclick="navSong(1)" title="Next"><i class="fa-solid fa-forward-step"></i></button>
     </div>
   </div>
 
   <div class="hearts-row">💖 💕 ❤️ 💕 💖</div>
-  <div class="powered-by">Powered by Njabulo-JB Music & Studio</div>
+  <div class="powered-by"><i class="fa-solid fa-music"></i> &nbsp;Powered by Njabulo-JB Music &amp; Studio</div>
 </div>
 
-<!-- ============ ABOUT MODAL ============ -->
+<!-- ABOUT MODAL -->
 <div class="modal-overlay" id="aboutModal">
   <div class="modal">
-    <h2>❤️ <span id="modalTitle">About</span></h2>
-    <div class="modal-images" id="modalImages">
-      <div class="modal-img"><img src="image.png" alt="1"
-        onerror="this.parentElement.innerHTML='💖'"></div>
-      <div class="modal-img"><img src="image.png" alt="2"
-        onerror="this.parentElement.innerHTML='💕'"></div>
-      <div class="modal-img"><img src="image.png" alt="3"
-        onerror="this.parentElement.innerHTML='❤️'"></div>
-      <div class="modal-img"><img src="image.png" alt="4"
-        onerror="this.parentElement.innerHTML='🎵'"></div>
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-heart" style="color:var(--red)"></i> <span id="modalTitle">About</span></h2>
+      <button class="modal-close-x" onclick="closeAbout()"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <p id="modalDesc">A beautiful love song by Njabulo-JB Music & Studio.</p>
-    <p style="font-size:0.72rem; color: var(--gold); opacity:0.7; text-align:center;">
-      ✦ Njabulo-JB Music & Studio ✦
-    </p>
-    <button class="close-btn" onclick="closeAbout()">Close ✕</button>
+
+    <!-- 4 images -->
+    <div class="modal-images">
+      <div class="modal-img"><img src="image.png" alt="1" onerror="this.parentElement.innerHTML='💖'"></div>
+      <div class="modal-img"><img src="image.png" alt="2" onerror="this.parentElement.innerHTML='💕'"></div>
+      <div class="modal-img"><img src="image.png" alt="3" onerror="this.parentElement.innerHTML='❤️'"></div>
+      <div class="modal-img"><img src="image.png" alt="4" onerror="this.parentElement.innerHTML='🎵'"></div>
+    </div>
+
+    <p class="modal-desc" id="modalDesc">A beautiful love song by Njabulo-JB Music &amp; Studio.</p>
+
+    <!-- FACEBOOK FOLLOW -->
+    <div class="fb-section">
+      <div class="fb-section-title"><i class="fa-brands fa-facebook"></i> &nbsp;Follow on Facebook</div>
+
+      <a class="fb-link" href="https://www.facebook.com/spikili" target="_blank" rel="noopener">
+        <div class="fb-icon"><i class="fa-brands fa-facebook-f"></i></div>
+        <div class="fb-info">
+          <div class="fb-name">Spikili</div>
+          <div class="fb-sub">Official Facebook Page</div>
+        </div>
+        <div class="fb-follow"><i class="fa-solid fa-user-plus"></i> Follow</div>
+      </a>
+
+      <a class="fb-link" href="https://www.facebook.com/nalediaph" target="_blank" rel="noopener">
+        <div class="fb-icon"><i class="fa-brands fa-facebook-f"></i></div>
+        <div class="fb-info">
+          <div class="fb-name">Naledi Aphiwe</div>
+          <div class="fb-sub">Official Facebook Page</div>
+        </div>
+        <div class="fb-follow"><i class="fa-solid fa-user-plus"></i> Follow</div>
+      </a>
+
+      <a class="fb-link" href="https://www.facebook.com/NjabuLoJbMusic" target="_blank" rel="noopener">
+        <div class="fb-icon"><i class="fa-brands fa-facebook-f"></i></div>
+        <div class="fb-info">
+          <div class="fb-name">Njabulo-JB Music &amp; Studio</div>
+          <div class="fb-sub">Official Music Page</div>
+        </div>
+        <div class="fb-follow"><i class="fa-solid fa-user-plus"></i> Follow</div>
+      </a>
+    </div>
+
+    <div class="modal-studio"><i class="fa-solid fa-star"></i> &nbsp;Njabulo-JB Music &amp; Studio&nbsp; <i class="fa-solid fa-star"></i></div>
+    <button class="close-btn" onclick="closeAbout()"><i class="fa-solid fa-xmark"></i> &nbsp;Close</button>
   </div>
 </div>
 
-<!-- Hidden Audio Elements -->
+<!-- Audio -->
 <audio id="audio0" src="naledi.mp3" preload="metadata"></audio>
 <audio id="audio1" src="spikili.mp3" preload="metadata"></audio>
 <audio id="audio2" src="naledi-spikili.mp3" preload="metadata"></audio>
 
 <script>
-// ====== HEARTS BACKGROUND ======
-const heartsBg = document.getElementById('heartsBg');
-const heartChars = ['❤️','💕','💖','💗','💓','💞','🌹'];
-for (let i = 0; i < 28; i++) {
-  const h = document.createElement('div');
-  h.className = 'heart-particle';
-  h.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
-  h.style.left = Math.random() * 100 + 'vw';
-  h.style.fontSize = (0.9 + Math.random() * 1.4) + 'rem';
-  const dur = 6 + Math.random() * 10;
-  const delay = Math.random() * 12;
-  h.style.animation = `floatUp ${dur}s ${delay}s linear infinite`;
-  heartsBg.appendChild(h);
-}
+// Floating hearts
+const hb = document.getElementById('heartsBg');
+['❤️','💕','💖','💗','💓','💞','🌹'].forEach((c,_) => {
+  for (let j = 0; j < 4; j++) {
+    const h = document.createElement('div');
+    h.className = 'heart-particle';
+    h.textContent = c;
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.fontSize = (0.8 + Math.random() * 1.3) + 'rem';
+    const dur = 7 + Math.random() * 10;
+    h.style.animation = `floatUp ${dur}s ${Math.random() * 14}s linear infinite`;
+    hb.appendChild(h);
+  }
+});
 
-// ====== AUDIO PLAYER ======
+// Audio player
 const audios = [
   document.getElementById('audio0'),
   document.getElementById('audio1'),
@@ -702,25 +389,26 @@ const audios = [
 ];
 let currentPlaying = -1;
 
-const songAbout = [
-  {
-    title: 'Naledi',
-    desc: '"Naledi" — a soul-stirring love anthem by Njabulo-JB Music & Studio. Dedicated to the shining star in every heart. Forever love, forever music. 💖'
-  },
-  {
-    title: 'Spikili',
-    desc: '"Spikili" — a powerful, passionate declaration of love and loyalty. Njabulo-JB Music & Studio brings emotion and energy together in this unforgettable track. 💕'
-  },
-  {
-    title: 'Naledi × Spikili',
-    desc: '"Naledi × Spikili" — the duet that says it all. Two hearts, one song, forever intertwined. The ultimate love track from Njabulo-JB Music & Studio. ❤️'
-  }
+const songInfo = [
+  { title: 'Naledi', desc: '"Naledi" — a soul-stirring love anthem dedicated to the shining star in every heart. A timeless track proudly produced by Njabulo-JB Music & Studio. 💖' },
+  { title: 'Spikili', desc: '"Spikili" — a powerful, passionate declaration of love and loyalty. Njabulo-JB Music & Studio brings emotion and energy together in this unforgettable track. 💕' },
+  { title: 'Naledi × Spikili', desc: '"Naledi × Spikili" — the ultimate love duet. Two hearts, one song, forever intertwined. Proudly produced by Njabulo-JB Music & Studio. ❤️' }
 ];
 
 function fmt(s) {
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60);
-  return m + ':' + (sec < 10 ? '0' : '') + sec;
+  if (!s || isNaN(s) || !isFinite(s)) return '0:00';
+  return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
+}
+
+function setPlayBtn(idx, playing) {
+  const btn = document.getElementById('playBtn' + idx);
+  if (playing) {
+    btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+    btn.classList.add('is-playing');
+  } else {
+    btn.innerHTML = '<i class="fa-solid fa-play"></i> Play';
+    btn.classList.remove('is-playing');
+  }
 }
 
 audios.forEach((a, i) => {
@@ -735,36 +423,39 @@ audios.forEach((a, i) => {
   });
   a.addEventListener('ended', () => {
     document.getElementById('card' + i).classList.remove('playing');
-    document.querySelector('#card' + i + ' .btn-play').textContent = '▶ Play';
+    setPlayBtn(i, false);
     currentPlaying = -1;
-    // Auto-play next
-    const next = (i + 1) % audios.length;
-    playPause(next);
+    // Auto advance
+    setTimeout(() => playPause((i + 1) % 3), 500);
   });
 });
 
 function playPause(idx) {
   const audio = audios[idx];
   const card = document.getElementById('card' + idx);
-  const btn = card.querySelector('.btn-play');
-
   if (currentPlaying === idx) {
-    // Pause current
     audio.pause();
     card.classList.remove('playing');
-    btn.textContent = '▶ Play';
+    setPlayBtn(idx, false);
     currentPlaying = -1;
   } else {
-    // Stop any other playing
     if (currentPlaying >= 0) {
       audios[currentPlaying].pause();
       document.getElementById('card' + currentPlaying).classList.remove('playing');
-      document.querySelector('#card' + currentPlaying + ' .btn-play').textContent = '▶ Play';
+      setPlayBtn(currentPlaying, false);
     }
-    audio.play().catch(() => {});
-    card.classList.add('playing');
-    btn.textContent = '⏸ Pause';
-    currentPlaying = idx;
+    const p = audio.play();
+    if (p) {
+      p.then(() => {
+        card.classList.add('playing');
+        setPlayBtn(idx, true);
+        currentPlaying = idx;
+      }).catch(err => console.warn(err));
+    } else {
+      card.classList.add('playing');
+      setPlayBtn(idx, true);
+      currentPlaying = idx;
+    }
   }
 }
 
@@ -772,8 +463,7 @@ function seekAudio(e, idx) {
   const a = audios[idx];
   if (!a.duration) return;
   const rect = e.currentTarget.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  a.currentTime = (x / rect.width) * a.duration;
+  a.currentTime = ((e.clientX - rect.left) / rect.width) * a.duration;
 }
 
 function navSong(dir) {
@@ -781,34 +471,37 @@ function navSong(dir) {
   if (currentPlaying < 0) {
     next = dir === 1 ? 0 : 2;
   } else {
-    next = (currentPlaying + dir + 3) % 3;
     audios[currentPlaying].pause();
     document.getElementById('card' + currentPlaying).classList.remove('playing');
-    document.querySelector('#card' + currentPlaying + ' .btn-play').textContent = '▶ Play';
+    setPlayBtn(currentPlaying, false);
+    next = (currentPlaying + dir + 3) % 3;
     currentPlaying = -1;
   }
   playPause(next);
-  // Scroll to card
-  document.getElementById('card' + next).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.getElementById('card' + next).scrollIntoView({ behavior:'smooth', block:'center' });
 }
 
 function toggleLyrics(idx) {
   const lp = document.getElementById('lyrics' + idx);
-  lp.classList.toggle('open');
+  const btn = document.getElementById('lyrBtn' + idx);
+  const isOpen = lp.classList.toggle('open');
+  btn.classList.toggle('lyr-open', isOpen);
+  btn.innerHTML = isOpen
+    ? '<i class="fa-solid fa-chevron-up"></i> Hide'
+    : '<i class="fa-solid fa-scroll"></i> Lyrics';
 }
 
 function openAbout(idx) {
-  const info = songAbout[idx];
+  const info = songInfo[idx];
   document.getElementById('modalTitle').textContent = info.title;
   document.getElementById('modalDesc').textContent = info.desc;
   document.getElementById('aboutModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
-
 function closeAbout() {
   document.getElementById('aboutModal').classList.remove('open');
+  document.body.style.overflow = '';
 }
-
-// Close modal clicking outside
 document.getElementById('aboutModal').addEventListener('click', function(e) {
   if (e.target === this) closeAbout();
 });
