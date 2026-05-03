@@ -7,185 +7,196 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root {
-    --red: #e8002d;
-    --deep-red: #8b0000;
-    --blush: #ffb3c1;
-    --white: #fff8fa;
-    --gold: #f7c873;
-    --fb: #1877f2;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { min-height: 100vh; background: #0d0005; font-family: 'Cormorant Garamond', serif; color: var(--white); overflow-x: hidden; }
+:root {
+  --red:#e8002d; --deep-red:#8b0000; --blush:#ffb3c1; --white:#fff8fa;
+  --gold:#f7c873; --fb:#1877f2; --yt:#ff0000; --green:#00e676;
+  --card-bg:linear-gradient(135deg,rgba(139,0,0,0.32),rgba(26,0,6,0.78));
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{min-height:100vh;background:#0d0005;font-family:'Cormorant Garamond',serif;color:var(--white);overflow-x:hidden;}
 
-  /* HEARTS BG */
-  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  .heart-particle { position: absolute; bottom: -60px; animation: floatUp linear infinite; opacity: 0; }
-  @keyframes floatUp {
-    0%   { transform: translateY(0) rotate(-15deg) scale(0.7); opacity: 0; }
-    10%  { opacity: 0.7; }
-    90%  { opacity: 0.4; }
-    100% { transform: translateY(-110vh) rotate(20deg) scale(1.2); opacity: 0; }
-  }
+/* HEARTS BG */
+.hearts-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.heart-particle{position:absolute;bottom:-60px;animation:floatUp linear infinite;opacity:0;}
+@keyframes floatUp{0%{transform:translateY(0) rotate(-15deg) scale(.7);opacity:0}10%{opacity:.7}90%{opacity:.35}100%{transform:translateY(-115vh) rotate(22deg) scale(1.2);opacity:0}}
 
-  /* LAYOUT */
-  .page { position: relative; z-index: 1; min-height: 100vh; padding: 16px; display: flex; flex-direction: column; align-items: center; }
+/* PAGE */
+.page{position:relative;z-index:1;padding:14px 14px 30px;display:flex;flex-direction:column;align-items:center;}
 
-  /* HEADER */
-  .brand-header { text-align: center; margin-bottom: 10px; padding-top: 8px; }
-  .brand-header .studio { font-size: 0.68rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); }
-  .brand-header h1 {
-    font-family: 'Dancing Script', cursive;
-    font-size: clamp(1.9rem, 6vw, 3rem);
-    background: linear-gradient(135deg, #ff6b8a, var(--gold), #ff6b8a);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-size: 200%; animation: shimmer 3s ease-in-out infinite; line-height: 1.1;
-  }
-  .brand-header .tagline { font-size: 0.82rem; letter-spacing: 3px; color: var(--blush); opacity: 0.8; margin-top: 2px; }
-  @keyframes shimmer { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+/* HEADER */
+.brand-header{text-align:center;margin-bottom:10px;padding-top:6px;}
+.brand-header .studio{font-size:.67rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);}
+.brand-header h1{font-family:'Dancing Script',cursive;font-size:clamp(1.85rem,6vw,3rem);background:linear-gradient(135deg,#ff6b8a,var(--gold),#ff6b8a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:shimmer 3s ease-in-out infinite;line-height:1.1;}
+.brand-header .tagline{font-size:.8rem;letter-spacing:3px;color:var(--blush);opacity:.8;margin-top:2px;}
+@keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
-  /* PROFILE CARD */
-  .profile-card {
-    background: linear-gradient(135deg, rgba(139,0,0,0.35), rgba(232,0,45,0.15));
-    border: 1px solid rgba(255,180,193,0.25); border-radius: 24px;
-    padding: 20px 18px; width: 100%; max-width: 430px;
-    backdrop-filter: blur(12px); margin-bottom: 14px;
-    box-shadow: 0 8px 40px rgba(232,0,45,0.15);
-  }
-  .profile-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-  .avatar-wrap { position: relative; flex-shrink: 0; }
-  .avatar-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--red); box-shadow: 0 0 20px rgba(232,0,45,0.5); display: block; }
-  .avatar-fallback { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg,var(--deep-red),var(--red)); border: 3px solid var(--red); display: none; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 0 20px rgba(232,0,45,0.5); }
-  .online-dot { position: absolute; bottom: 3px; right: 3px; width: 15px; height: 15px; background: #00e676; border-radius: 50%; border: 2px solid #0d0005; animation: pulse-green 2s ease-in-out infinite; }
-  @keyframes pulse-green { 0%,100%{box-shadow:0 0 8px #00e676} 50%{box-shadow:0 0 20px #00e676,0 0 32px #00e67655} }
-  .profile-info .pname { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; line-height: 1.2; }
-  .profile-info .handle { font-size: 0.75rem; color: var(--blush); opacity: 0.75; letter-spacing: 1px; margin-top: 2px; }
-  .status-row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-  .status-badge { font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
-  .badge-online { background: rgba(0,230,118,0.15); color: #00e676; border: 1px solid rgba(0,230,118,0.3); }
-  .badge-love { background: rgba(232,0,45,0.2); color: #ff6b8a; border: 1px solid rgba(232,0,45,0.35); }
-  .forever-text { text-align: center; font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: var(--blush); animation: heartbeat 1.6s ease-in-out infinite; }
-  @keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+/* CARD BASE */
+.card{background:var(--card-bg);border:1px solid rgba(255,107,138,.2);border-radius:20px;padding:18px 16px;width:100%;max-width:440px;backdrop-filter:blur(14px);margin-bottom:13px;box-shadow:0 6px 30px rgba(232,0,45,.1);}
 
-  /* SONGS */
-  .songs-section { width: 100%; max-width: 430px; margin-bottom: 14px; }
-  .section-label { font-size: 0.66rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; text-align: center; }
-  .song-card {
-    background: linear-gradient(135deg, rgba(139,0,0,0.3), rgba(26,0,6,0.75));
-    border: 1px solid rgba(255,107,138,0.18); border-radius: 18px;
-    padding: 15px; margin-bottom: 10px; position: relative; overflow: hidden;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  .song-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(232,0,45,0.08),transparent); opacity:0; transition:opacity 0.3s; pointer-events:none; }
-  .song-card:hover::before, .song-card.playing::before { opacity:1; }
-  .song-card.playing { border-color: rgba(232,0,45,0.55); box-shadow: 0 4px 28px rgba(232,0,45,0.22); }
-  .song-top { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
-  .song-cover {
-    width: 52px; height: 52px; border-radius: 10px; flex-shrink: 0;
-    background: linear-gradient(135deg,var(--deep-red),var(--red));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem; box-shadow: 0 4px 14px rgba(232,0,45,0.3); overflow: hidden; position: relative;
-  }
-  .song-cover img { width:100%; height:100%; object-fit:cover; border-radius:10px; }
-  .disc-ring { position:absolute; inset:3px; border-radius:50%; border:2px dashed rgba(255,255,255,0.25); animation:spin 3s linear infinite; opacity:0; transition:opacity 0.3s; pointer-events:none; }
-  .song-card.playing .disc-ring { opacity:1; }
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .song-meta { flex:1; min-width:0; }
-  .song-title { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .song-artist { font-size:0.73rem; color:var(--blush); opacity:0.8; margin-top:2px; }
+/* PROFILE */
+.profile-top{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.avatar-wrap{position:relative;flex-shrink:0;}
+.avatar-img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--red);box-shadow:0 0 22px rgba(232,0,45,.5);display:block;}
+.avatar-fallback{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--deep-red),var(--red));border:3px solid var(--red);display:none;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 0 22px rgba(232,0,45,.5);}
+.online-dot{position:absolute;bottom:3px;right:3px;width:15px;height:15px;background:var(--green);border-radius:50%;border:2px solid #0d0005;animation:pglow 2s ease-in-out infinite;}
+@keyframes pglow{0%,100%{box-shadow:0 0 8px var(--green)}50%{box-shadow:0 0 20px var(--green),0 0 32px #00e67644}}
+.pname{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;line-height:1.2;}
+.handle{font-size:.74rem;color:var(--blush);opacity:.75;letter-spacing:1px;margin-top:2px;}
+.status-row{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap;}
+.sbadge{font-size:.67rem;letter-spacing:1px;text-transform:uppercase;padding:2px 9px;border-radius:20px;font-weight:600;}
+.badge-online{background:rgba(0,230,118,.14);color:var(--green);border:1px solid rgba(0,230,118,.3);}
+.badge-love{background:rgba(232,0,45,.18);color:#ff6b8a;border:1px solid rgba(232,0,45,.32);}
+.forever-text{text-align:center;font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--blush);animation:hbeat 1.6s ease-in-out infinite;}
+@keyframes hbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 
-  /* BUTTONS */
-  .audio-controls { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:10px; }
-  .btn {
-    display:inline-flex; align-items:center; gap:5px;
-    padding:7px 13px; border-radius:30px; border:none; cursor:pointer;
-    font-size:0.74rem; font-family:'Cormorant Garamond',serif; font-weight:600;
-    letter-spacing:0.3px; transition:all 0.22s ease; text-decoration:none; white-space:nowrap;
-  }
-  .btn i { font-size:0.75rem; }
-  .btn-play { background:linear-gradient(135deg,var(--red),#b80026); color:#fff; box-shadow:0 3px 14px rgba(232,0,45,0.4); }
-  .btn-play:hover { transform:scale(1.05); box-shadow:0 5px 22px rgba(232,0,45,0.6); }
-  .btn-play.is-playing { background:linear-gradient(135deg,#555,#333); box-shadow:none; }
-  .btn-download { background:rgba(255,255,255,0.07); color:var(--blush); border:1px solid rgba(255,180,193,0.25); }
-  .btn-download:hover { background:rgba(255,255,255,0.14); transform:scale(1.03); }
-  .btn-lyrics { background:rgba(247,200,115,0.1); color:var(--gold); border:1px solid rgba(247,200,115,0.3); }
-  .btn-lyrics:hover, .btn-lyrics.lyr-open { background:rgba(247,200,115,0.22); }
-  .btn-about { background:rgba(255,107,138,0.1); color:#ff6b8a; border:1px solid rgba(255,107,138,0.3); }
-  .btn-about:hover { background:rgba(255,107,138,0.22); }
+/* STATS ROW */
+.stats-row{display:flex;justify-content:space-around;padding:12px 0 0;border-top:1px solid rgba(255,107,138,.12);margin-top:12px;}
+.stat-item{text-align:center;}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--gold);}
+.stat-label{font-size:.63rem;letter-spacing:2px;text-transform:uppercase;color:var(--blush);opacity:.6;margin-top:1px;}
 
-  /* PROGRESS */
-  .progress-wrap { width:100%; height:5px; background:rgba(255,255,255,0.1); border-radius:3px; cursor:pointer; margin-bottom:5px; position:relative; }
-  .progress-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--red),var(--blush)); width:0%; transition:width 0.2s; pointer-events:none; }
-  .time-row { display:flex; justify-content:space-between; font-size:0.63rem; color:var(--blush); opacity:0.6; }
+/* YOUTUBE SUBSCRIBE */
+.yt-section{width:100%;max-width:440px;margin-bottom:13px;}
+.yt-card{background:linear-gradient(135deg,rgba(255,0,0,.15),rgba(26,0,6,.85));border:1px solid rgba(255,0,0,.3);border-radius:20px;padding:16px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 24px rgba(255,0,0,.15);}
+.yt-logo{width:48px;height:48px;background:#ff0000;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(255,0,0,.4);}
+.yt-info{flex:1;}
+.yt-name{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;}
+.yt-subs{font-size:.72rem;color:#ff9999;margin-top:2px;}
+.yt-sub-btn{background:#ff0000;color:#fff;border:none;border-radius:30px;padding:9px 18px;cursor:pointer;font-size:.78rem;font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.5px;transition:all .22s;display:flex;align-items:center;gap:5px;white-space:nowrap;text-decoration:none;}
+.yt-sub-btn:hover{background:#cc0000;transform:scale(1.05);box-shadow:0 4px 18px rgba(255,0,0,.5);}
+.yt-sub-btn.subscribed{background:#333;color:#aaa;}
+.yt-sub-btn.subscribed:hover{transform:none;box-shadow:none;}
 
-  /* LYRICS */
-  .lyrics-panel {
-    display:none; margin-top:10px;
-    background:rgba(255,255,255,0.04); border:1px solid rgba(255,107,138,0.18);
-    border-radius:12px; padding:14px 12px;
-    font-size:0.84rem; line-height:1.85; color:var(--blush);
-    font-style:italic; text-align:center;
-    max-height:170px; overflow-y:auto;
-    animation:fadeIn 0.28s ease;
-  }
-  .lyrics-panel.open { display:block; }
-  .lyrics-panel::-webkit-scrollbar { width:3px; }
-  .lyrics-panel::-webkit-scrollbar-thumb { background:rgba(232,0,45,0.35); border-radius:2px; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
+/* SONG CARDS */
+.songs-section{width:100%;max-width:440px;margin-bottom:13px;}
+.section-label{font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;text-align:center;}
+.song-card{background:var(--card-bg);border:1px solid rgba(255,107,138,.18);border-radius:18px;padding:15px;margin-bottom:10px;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s;}
+.song-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,0,45,.08),transparent);opacity:0;transition:opacity .3s;pointer-events:none;}
+.song-card:hover::before,.song-card.playing::before{opacity:1;}
+.song-card.playing{border-color:rgba(232,0,45,.55);box-shadow:0 4px 28px rgba(232,0,45,.22);}
+.song-top{display:flex;align-items:center;gap:12px;margin-bottom:11px;}
+.song-cover{width:54px;height:54px;border-radius:11px;flex-shrink:0;background:linear-gradient(135deg,var(--deep-red),var(--red));display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 4px 14px rgba(232,0,45,.3);overflow:hidden;position:relative;}
+.song-cover img{width:100%;height:100%;object-fit:cover;border-radius:11px;}
+.disc-ring{position:absolute;inset:3px;border-radius:50%;border:2px dashed rgba(255,255,255,.25);animation:spin 3s linear infinite;opacity:0;transition:opacity .3s;pointer-events:none;}
+.song-card.playing .disc-ring{opacity:1;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.song-meta{flex:1;min-width:0;}
+.song-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.song-artist{font-size:.72rem;color:var(--blush);opacity:.8;margin-top:2px;}
 
-  /* NAV */
-  .nav-row { display:flex; justify-content:center; gap:12px; margin-top:8px; }
-  .nav-btn { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); color:var(--blush); width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
-  .nav-btn:hover { background:rgba(232,0,45,0.22); border-color:var(--red); color:#fff; transform:scale(1.1); }
+/* ENGAGEMENT ROW — Views & Likes */
+.engage-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.engage-item{display:flex;align-items:center;gap:4px;font-size:.72rem;color:var(--blush);opacity:.8;}
+.engage-item i{font-size:.68rem;}
+.like-btn{display:inline-flex;align-items:center;gap:4px;background:rgba(232,0,45,.12);border:1px solid rgba(232,0,45,.28);color:#ff6b8a;border-radius:20px;padding:4px 11px;cursor:pointer;font-size:.72rem;font-family:'Cormorant Garamond',serif;font-weight:600;transition:all .2s;}
+.like-btn:hover,.like-btn.liked{background:rgba(232,0,45,.28);border-color:var(--red);color:#fff;}
+.like-btn.liked i{animation:likeAnim .3s ease;}
+@keyframes likeAnim{0%{transform:scale(1)}50%{transform:scale(1.5)}100%{transform:scale(1)}}
+.yt-link-btn{display:inline-flex;align-items:center;gap:5px;background:rgba(255,0,0,.14);border:1px solid rgba(255,0,0,.32);color:#ff9999;border-radius:20px;padding:4px 11px;cursor:pointer;font-size:.72rem;font-family:'Cormorant Garamond',serif;font-weight:600;text-decoration:none;transition:all .2s;}
+.yt-link-btn:hover{background:rgba(255,0,0,.28);border-color:#ff0000;color:#fff;}
 
-  .hearts-row { text-align:center; font-size:1rem; letter-spacing:7px; animation:heartbeat 1.8s ease-in-out infinite; margin-bottom:4px; }
-  .powered-by { font-size:0.6rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); opacity:0.5; text-align:center; padding:12px 0 8px; }
+/* CONTROLS */
+.audio-controls{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:30px;border:none;cursor:pointer;font-size:.74rem;font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.3px;transition:all .22s ease;text-decoration:none;white-space:nowrap;}
+.btn i{font-size:.75rem;}
+.btn-play{background:linear-gradient(135deg,var(--red),#b80026);color:#fff;box-shadow:0 3px 14px rgba(232,0,45,.4);}
+.btn-play:hover{transform:scale(1.05);box-shadow:0 5px 22px rgba(232,0,45,.6);}
+.btn-play.is-playing{background:linear-gradient(135deg,#555,#2a2a2a);box-shadow:none;}
+.btn-download{background:rgba(255,255,255,.07);color:var(--blush);border:1px solid rgba(255,180,193,.25);}
+.btn-download:hover{background:rgba(255,255,255,.14);transform:scale(1.03);}
+.btn-lyrics{background:rgba(247,200,115,.1);color:var(--gold);border:1px solid rgba(247,200,115,.3);}
+.btn-lyrics.lyr-open,.btn-lyrics:hover{background:rgba(247,200,115,.22);}
+.btn-about{background:rgba(255,107,138,.1);color:#ff6b8a;border:1px solid rgba(255,107,138,.3);}
+.btn-about:hover{background:rgba(255,107,138,.22);}
+.btn-share{background:rgba(100,180,255,.1);color:#7ecfff;border:1px solid rgba(100,180,255,.3);}
+.btn-share:hover{background:rgba(100,180,255,.22);}
 
-  /* ABOUT MODAL */
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.82); z-index:200; align-items:center; justify-content:center; padding:18px; backdrop-filter:blur(8px); }
-  .modal-overlay.open { display:flex; }
-  .modal {
-    background:linear-gradient(160deg,#1c0008,#2e000f);
-    border:1px solid rgba(232,0,45,0.3); border-radius:22px;
-    padding:24px 20px; max-width:380px; width:100%;
-    max-height:90vh; overflow-y:auto;
-    box-shadow:0 24px 70px rgba(0,0,0,0.75);
-    animation:modalIn 0.28s ease;
-  }
-  @keyframes modalIn { from{transform:scale(0.93);opacity:0} to{transform:scale(1);opacity:1} }
-  .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
-  .modal-header h2 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--gold); display:flex; align-items:center; gap:7px; }
-  .modal-close-x { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:var(--blush); width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
-  .modal-close-x:hover { background:rgba(232,0,45,0.25); border-color:var(--red); color:#fff; }
+/* PROGRESS */
+.progress-wrap{width:100%;height:5px;background:rgba(255,255,255,.1);border-radius:3px;cursor:pointer;margin-bottom:5px;position:relative;}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--blush));width:0%;transition:width .2s;pointer-events:none;}
+.time-row{display:flex;justify-content:space-between;font-size:.62rem;color:var(--blush);opacity:.6;}
 
-  .modal-images { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
-  .modal-img { aspect-ratio:1; border-radius:12px; overflow:hidden; background:linear-gradient(135deg,rgba(139,0,0,0.5),rgba(232,0,45,0.2)); display:flex; align-items:center; justify-content:center; font-size:1.8rem; border:1px solid rgba(255,107,138,0.2); }
-  .modal-img img { width:100%; height:100%; object-fit:cover; }
+/* LYRICS */
+.lyrics-panel{display:none;margin-top:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,107,138,.18);border-radius:12px;padding:14px 12px;font-size:.84rem;line-height:1.9;color:var(--blush);font-style:italic;text-align:center;max-height:180px;overflow-y:auto;animation:fadeIn .28s ease;}
+.lyrics-panel.open{display:block;}
+.lyrics-panel::-webkit-scrollbar{width:3px;}
+.lyrics-panel::-webkit-scrollbar-thumb{background:rgba(232,0,45,.35);border-radius:2px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
 
-  .modal-desc { font-size:0.87rem; line-height:1.7; color:var(--blush); opacity:0.88; margin-bottom:16px; text-align:center; }
+/* COMMENT BOX */
+.comment-section{margin-top:11px;display:none;animation:fadeIn .28s ease;}
+.comment-section.open{display:block;}
+.comment-input-row{display:flex;gap:8px;margin-bottom:8px;}
+.comment-input{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,107,138,.22);border-radius:10px;padding:8px 12px;color:var(--white);font-size:.8rem;font-family:'Cormorant Garamond',serif;outline:none;}
+.comment-input::placeholder{color:rgba(255,180,193,.45);}
+.comment-input:focus{border-color:var(--red);}
+.comment-post-btn{background:var(--red);color:#fff;border:none;border-radius:10px;padding:8px 14px;cursor:pointer;font-size:.75rem;transition:all .2s;}
+.comment-post-btn:hover{background:#b80026;transform:scale(1.04);}
+.comments-list{max-height:120px;overflow-y:auto;}
+.comments-list::-webkit-scrollbar{width:3px;}
+.comments-list::-webkit-scrollbar-thumb{background:rgba(232,0,45,.3);border-radius:2px;}
+.comment-item{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,107,138,.1);}
+.comment-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--deep-red),var(--red));display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;}
+.comment-body .comment-name{font-size:.68rem;color:var(--gold);font-weight:600;margin-bottom:1px;}
+.comment-body .comment-text{font-size:.78rem;color:var(--blush);opacity:.85;line-height:1.4;}
 
-  /* FB FOLLOW */
-  .fb-section { margin-bottom:14px; }
-  .fb-section-title { font-size:0.63rem; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.38); text-align:center; margin-bottom:9px; }
-  .fb-link {
-    display:flex; align-items:center; gap:10px;
-    background:rgba(24,119,242,0.11); border:1px solid rgba(24,119,242,0.32);
-    border-radius:12px; padding:11px 13px; margin-bottom:8px;
-    text-decoration:none; color:var(--white); transition:all 0.22s ease;
-  }
-  .fb-link:hover { background:rgba(24,119,242,0.24); border-color:var(--fb); transform:translateX(4px); }
-  .fb-icon { width:36px; height:36px; background:var(--fb); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; color:#fff; flex-shrink:0; }
-  .fb-info { flex:1; }
-  .fb-name { font-family:'Playfair Display',serif; font-size:0.88rem; font-weight:700; }
-  .fb-sub { font-size:0.67rem; color:rgba(255,255,255,0.45); margin-top:1px; }
-  .fb-follow { font-size:0.67rem; font-weight:600; letter-spacing:1px; color:#6ab3ff; display:flex; align-items:center; gap:4px; white-space:nowrap; }
+/* NAV */
+.nav-row{display:flex;justify-content:center;gap:10px;margin-top:8px;}
+.nav-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:var(--blush);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.nav-btn:hover{background:rgba(232,0,45,.22);border-color:var(--red);color:#fff;transform:scale(1.1);}
+.shuffle-btn{background:rgba(247,200,115,.1);border:1px solid rgba(247,200,115,.25);color:var(--gold);}
+.shuffle-btn.on{background:rgba(247,200,115,.25);border-color:var(--gold);}
 
-  .modal-studio { text-align:center; font-size:0.67rem; letter-spacing:2px; text-transform:uppercase; color:var(--gold); opacity:0.6; margin-bottom:14px; }
-  .modal .close-btn { background:linear-gradient(135deg,var(--red),#b80026); color:#fff; border:none; border-radius:30px; padding:10px 24px; cursor:pointer; font-size:0.85rem; font-family:'Cormorant Garamond',serif; font-weight:600; width:100%; transition:all 0.2s; }
-  .modal .close-btn:hover { transform:scale(1.02); box-shadow:0 4px 22px rgba(232,0,45,0.5); }
+/* SHARE MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(8px);}
+.modal-overlay.open{display:flex;}
+.modal{background:linear-gradient(160deg,#1c0008,#2e000f);border:1px solid rgba(232,0,45,.3);border-radius:22px;padding:24px 20px;max-width:380px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 70px rgba(0,0,0,.75);animation:modalIn .28s ease;}
+@keyframes modalIn{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.modal-header h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold);display:flex;align-items:center;gap:7px;}
+.modal-close-x{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--blush);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.modal-close-x:hover{background:rgba(232,0,45,.25);border-color:var(--red);color:#fff;}
 
-  ::-webkit-scrollbar { width:4px; }
-  ::-webkit-scrollbar-thumb { background:rgba(232,0,45,0.3); border-radius:2px; }
+/* ABOUT MODAL */
+.modal-images{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.modal-img{aspect-ratio:1;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,rgba(139,0,0,.5),rgba(232,0,45,.2));display:flex;align-items:center;justify-content:center;font-size:1.8rem;border:1px solid rgba(255,107,138,.2);}
+.modal-img img{width:100%;height:100%;object-fit:cover;}
+.modal-desc{font-size:.87rem;line-height:1.7;color:var(--blush);opacity:.88;margin-bottom:16px;text-align:center;}
+
+/* FACEBOOK FOLLOW */
+.fb-section{margin-bottom:14px;}
+.fb-section-title{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.36);text-align:center;margin-bottom:9px;}
+.fb-link{display:flex;align-items:center;gap:10px;background:rgba(24,119,242,.1);border:1px solid rgba(24,119,242,.3);border-radius:12px;padding:11px 13px;margin-bottom:8px;text-decoration:none;color:var(--white);transition:all .22s ease;}
+.fb-link:hover{background:rgba(24,119,242,.23);border-color:var(--fb);transform:translateX(4px);}
+.fb-icon{width:36px;height:36px;background:var(--fb);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;color:#fff;flex-shrink:0;}
+.fb-info{flex:1;}
+.fb-name{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;}
+.fb-sub{font-size:.66rem;color:rgba(255,255,255,.42);margin-top:1px;}
+.fb-follow{font-size:.67rem;font-weight:600;letter-spacing:1px;color:#6ab3ff;display:flex;align-items:center;gap:4px;white-space:nowrap;}
+
+/* SHARE PANEL */
+.share-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.share-opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:14px;cursor:pointer;text-decoration:none;transition:all .2s;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);}
+.share-opt:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.1);}
+.share-opt .si{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:2px;}
+.share-opt span{font-size:.68rem;letter-spacing:.5px;color:var(--blush);opacity:.8;}
+.copy-link-box{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 12px;}
+.copy-link-box span{flex:1;font-size:.75rem;color:var(--blush);opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.copy-btn{background:var(--red);color:#fff;border:none;border-radius:8px;padding:6px 13px;cursor:pointer;font-size:.72rem;transition:all .2s;white-space:nowrap;}
+.copy-btn:hover{background:#b80026;}
+
+.modal-studio{text-align:center;font-size:.66rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.6;margin-bottom:14px;}
+.modal .close-btn{background:linear-gradient(135deg,var(--red),#b80026);color:#fff;border:none;border-radius:30px;padding:10px 24px;cursor:pointer;font-size:.85rem;font-family:'Cormorant Garamond',serif;font-weight:600;width:100%;transition:all .2s;}
+.modal .close-btn:hover{transform:scale(1.02);box-shadow:0 4px 22px rgba(232,0,45,.5);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:rgba(30,30,30,.95);border:1px solid rgba(232,0,45,.3);color:var(--white);padding:10px 20px;border-radius:30px;font-size:.8rem;z-index:500;transition:all .35s ease;opacity:0;pointer-events:none;backdrop-filter:blur(10px);}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+.hearts-row{text-align:center;font-size:1rem;letter-spacing:7px;animation:hbeat 1.8s ease-in-out infinite;margin-bottom:4px;}
+.powered-by{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.48;text-align:center;padding:10px 0 6px;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:rgba(232,0,45,.3);border-radius:2px;}
 </style>
 </head>
 <body>
@@ -193,6 +204,7 @@
 <div class="hearts-bg" id="heartsBg"></div>
 
 <div class="page">
+
   <!-- HEADER -->
   <div class="brand-header">
     <div class="studio">✦ Njabulo-JB Music &amp; Studio ✦</div>
@@ -200,8 +212,8 @@
     <div class="tagline">Say Forever ❤️</div>
   </div>
 
-  <!-- PROFILE -->
-  <div class="profile-card">
+  <!-- PROFILE CARD -->
+  <div class="card">
     <div class="profile-top">
       <div class="avatar-wrap">
         <img class="avatar-img" src="image.png" alt="Profile"
@@ -209,94 +221,185 @@
         <div class="avatar-fallback">💖</div>
         <div class="online-dot"></div>
       </div>
-      <div class="profile-info">
+      <div>
         <div class="pname">Naledi Aphiwe<br>&amp; Spikili</div>
         <div class="handle">@NalediAphiwe · @Spikili</div>
         <div class="status-row">
-          <span class="status-badge badge-online"><i class="fa fa-circle" style="font-size:0.45rem"></i> Online</span>
-          <span class="status-badge badge-love"><i class="fa-solid fa-heart" style="font-size:0.5rem"></i> In Love</span>
+          <span class="sbadge badge-online"><i class="fa fa-circle" style="font-size:.45rem"></i> Online</span>
+          <span class="sbadge badge-love"><i class="fa-solid fa-heart" style="font-size:.5rem"></i> In Love</span>
         </div>
       </div>
     </div>
     <div class="forever-text">💕 Forever &amp; Always 💕</div>
+    <!-- Channel stats -->
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num" id="totalViews">—</div>
+        <div class="stat-label">Total Views</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="totalLikes">—</div>
+        <div class="stat-label">Total Likes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="totalPlays">0</div>
+        <div class="stat-label">Plays Today</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Songs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- YOUTUBE SUBSCRIBE -->
+  <div class="yt-section">
+    <div class="yt-card">
+      <div class="yt-logo"><i class="fa-brands fa-youtube"></i></div>
+      <div class="yt-info">
+        <div class="yt-name">Njabulo-JB Music &amp; Studio</div>
+        <div class="yt-subs" id="ytSubCount"><i class="fa-solid fa-spinner fa-spin" style="font-size:.7rem"></i> Loading subscribers...</div>
+      </div>
+      <a class="yt-sub-btn" id="ytSubBtn"
+         href="https://www.youtube.com/@NjabuLoJbMusic?sub_confirmation=1"
+         target="_blank" rel="noopener" onclick="markSubscribed()">
+        <i class="fa-brands fa-youtube"></i> Subscribe
+      </a>
+    </div>
   </div>
 
   <!-- SONGS -->
   <div class="songs-section">
     <div class="section-label"><i class="fa-solid fa-music"></i> &nbsp;Songs</div>
 
-    <!-- SONG 0: Naledi -->
+    <!-- SONG 0 -->
     <div class="song-card" id="card0">
       <div class="song-top">
         <div class="song-cover">
-          <img src="image.png" alt="cover" onerror="this.style.display='none';">
+          <img src="image.png" alt="Naledi" onerror="this.style.display='none';">
           <div class="disc-ring"></div>
         </div>
         <div class="song-meta">
           <div class="song-title">Naledi</div>
-          <div class="song-artist"><i class="fa-solid fa-star" style="color:var(--gold);font-size:0.55rem"></i> Njabulo-JB Music &amp; Studio</div>
+          <div class="song-artist"><i class="fa-solid fa-star" style="color:var(--gold);font-size:.55rem"></i> Njabulo-JB Music &amp; Studio</div>
         </div>
       </div>
+      <!-- Engagement -->
+      <div class="engage-row">
+        <span class="engage-item"><i class="fa-solid fa-eye"></i> <span id="views0">0</span> views</span>
+        <button class="like-btn" id="likeBtn0" onclick="toggleLike(0)">
+          <i class="fa-solid fa-heart"></i> <span id="likeCount0">0</span>
+        </button>
+        <a class="yt-link-btn" href="https://www.youtube.com/@NjabuLoJbMusic" target="_blank" rel="noopener">
+          <i class="fa-brands fa-youtube"></i> Watch on YT
+        </a>
+      </div>
+      <!-- Controls -->
       <div class="audio-controls">
         <button class="btn btn-play" id="playBtn0" onclick="playPause(0)"><i class="fa-solid fa-play"></i> Play</button>
         <a class="btn btn-download" href="naledi.mp3" download="Naledi - Njabulo-JB Music and Studio.mp3"><i class="fa-solid fa-download"></i> Download</a>
         <button class="btn btn-lyrics" id="lyrBtn0" onclick="toggleLyrics(0)"><i class="fa-solid fa-scroll"></i> Lyrics</button>
         <button class="btn btn-about" onclick="openAbout(0)"><i class="fa-solid fa-heart"></i> About</button>
+        <button class="btn btn-share" onclick="openShare(0)"><i class="fa-solid fa-share-nodes"></i> Share</button>
       </div>
       <div class="progress-wrap" onclick="seekAudio(event,0)"><div class="progress-fill" id="prog0"></div></div>
       <div class="time-row"><span id="cur0">0:00</span><span id="dur0">0:00</span></div>
+      <!-- Lyrics -->
       <div class="lyrics-panel" id="lyrics0">🎵 Lyrics coming soon...<br>Add your words here 🎵</div>
+      <!-- Comments -->
+      <div class="comment-section" id="comments0">
+        <div class="comment-input-row">
+          <input class="comment-input" id="cinput0" placeholder="Leave a comment ❤️" onkeydown="if(event.key==='Enter')postComment(0)">
+          <button class="comment-post-btn" onclick="postComment(0)"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <div class="comments-list" id="clist0"></div>
+      </div>
     </div>
 
-    <!-- SONG 1: Spikili -->
+    <!-- SONG 1 -->
     <div class="song-card" id="card1">
       <div class="song-top">
         <div class="song-cover">
-          <img src="image.png" alt="cover" onerror="this.style.display='none';">
+          <img src="image.png" alt="Spikili" onerror="this.style.display='none';">
           <div class="disc-ring"></div>
         </div>
         <div class="song-meta">
           <div class="song-title">Spikili</div>
-          <div class="song-artist"><i class="fa-solid fa-star" style="color:var(--gold);font-size:0.55rem"></i> Njabulo-JB Music &amp; Studio</div>
+          <div class="song-artist"><i class="fa-solid fa-star" style="color:var(--gold);font-size:.55rem"></i> Njabulo-JB Music &amp; Studio</div>
         </div>
+      </div>
+      <div class="engage-row">
+        <span class="engage-item"><i class="fa-solid fa-eye"></i> <span id="views1">0</span> views</span>
+        <button class="like-btn" id="likeBtn1" onclick="toggleLike(1)">
+          <i class="fa-solid fa-heart"></i> <span id="likeCount1">0</span>
+        </button>
+        <a class="yt-link-btn" href="https://www.youtube.com/@NjabuLoJbMusic" target="_blank" rel="noopener">
+          <i class="fa-brands fa-youtube"></i> Watch on YT
+        </a>
       </div>
       <div class="audio-controls">
         <button class="btn btn-play" id="playBtn1" onclick="playPause(1)"><i class="fa-solid fa-play"></i> Play</button>
         <a class="btn btn-download" href="spikili.mp3" download="Spikili - Njabulo-JB Music and Studio.mp3"><i class="fa-solid fa-download"></i> Download</a>
         <button class="btn btn-lyrics" id="lyrBtn1" onclick="toggleLyrics(1)"><i class="fa-solid fa-scroll"></i> Lyrics</button>
         <button class="btn btn-about" onclick="openAbout(1)"><i class="fa-solid fa-heart"></i> About</button>
+        <button class="btn btn-share" onclick="openShare(1)"><i class="fa-solid fa-share-nodes"></i> Share</button>
       </div>
       <div class="progress-wrap" onclick="seekAudio(event,1)"><div class="progress-fill" id="prog1"></div></div>
       <div class="time-row"><span id="cur1">0:00</span><span id="dur1">0:00</span></div>
       <div class="lyrics-panel" id="lyrics1">🎵 Lyrics coming soon...<br>Add your words here 🎵</div>
+      <div class="comment-section" id="comments1">
+        <div class="comment-input-row">
+          <input class="comment-input" id="cinput1" placeholder="Leave a comment ❤️" onkeydown="if(event.key==='Enter')postComment(1)">
+          <button class="comment-post-btn" onclick="postComment(1)"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <div class="comments-list" id="clist1"></div>
+      </div>
     </div>
 
-    <!-- SONG 2: Naledi × Spikili -->
+    <!-- SONG 2 -->
     <div class="song-card" id="card2">
       <div class="song-top">
         <div class="song-cover">
-          <img src="image.png" alt="cover" onerror="this.style.display='none';">
+          <img src="image.png" alt="Naledi x Spikili" onerror="this.style.display='none';">
           <div class="disc-ring"></div>
         </div>
         <div class="song-meta">
           <div class="song-title">Naledi × Spikili</div>
-          <div class="song-artist"><i class="fa-solid fa-star" style="color:var(--gold);font-size:0.55rem"></i> Njabulo-JB Music &amp; Studio</div>
+          <div class="song-artist"><i class="fa-solid fa-star" style="color:var(--gold);font-size:.55rem"></i> Njabulo-JB Music &amp; Studio</div>
         </div>
+      </div>
+      <div class="engage-row">
+        <span class="engage-item"><i class="fa-solid fa-eye"></i> <span id="views2">0</span> views</span>
+        <button class="like-btn" id="likeBtn2" onclick="toggleLike(2)">
+          <i class="fa-solid fa-heart"></i> <span id="likeCount2">0</span>
+        </button>
+        <a class="yt-link-btn" href="https://www.youtube.com/@NjabuLoJbMusic" target="_blank" rel="noopener">
+          <i class="fa-brands fa-youtube"></i> Watch on YT
+        </a>
       </div>
       <div class="audio-controls">
         <button class="btn btn-play" id="playBtn2" onclick="playPause(2)"><i class="fa-solid fa-play"></i> Play</button>
         <a class="btn btn-download" href="naledi-spikili.mp3" download="Naledi x Spikili - Njabulo-JB Music and Studio.mp3"><i class="fa-solid fa-download"></i> Download</a>
         <button class="btn btn-lyrics" id="lyrBtn2" onclick="toggleLyrics(2)"><i class="fa-solid fa-scroll"></i> Lyrics</button>
         <button class="btn btn-about" onclick="openAbout(2)"><i class="fa-solid fa-heart"></i> About</button>
+        <button class="btn btn-share" onclick="openShare(2)"><i class="fa-solid fa-share-nodes"></i> Share</button>
       </div>
       <div class="progress-wrap" onclick="seekAudio(event,2)"><div class="progress-fill" id="prog2"></div></div>
       <div class="time-row"><span id="cur2">0:00</span><span id="dur2">0:00</span></div>
       <div class="lyrics-panel" id="lyrics2">🎵 Lyrics coming soon...<br>Add your words here 🎵</div>
+      <div class="comment-section" id="comments2">
+        <div class="comment-input-row">
+          <input class="comment-input" id="cinput2" placeholder="Leave a comment ❤️" onkeydown="if(event.key==='Enter')postComment(2)">
+          <button class="comment-post-btn" onclick="postComment(2)"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <div class="comments-list" id="clist2"></div>
+      </div>
     </div>
 
-    <!-- Prev / Next -->
+    <!-- NAV + SHUFFLE -->
     <div class="nav-row">
       <button class="nav-btn" onclick="navSong(-1)" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
+      <button class="nav-btn shuffle-btn" id="shuffleBtn" onclick="toggleShuffle()" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button>
       <button class="nav-btn" onclick="navSong(1)" title="Next"><i class="fa-solid fa-forward-step"></i></button>
     </div>
   </div>
@@ -305,60 +408,94 @@
   <div class="powered-by"><i class="fa-solid fa-music"></i> &nbsp;Powered by Njabulo-JB Music &amp; Studio</div>
 </div>
 
-<!-- ABOUT MODAL -->
+<!-- ===== ABOUT MODAL ===== -->
 <div class="modal-overlay" id="aboutModal">
   <div class="modal">
     <div class="modal-header">
       <h2><i class="fa-solid fa-heart" style="color:var(--red)"></i> <span id="modalTitle">About</span></h2>
       <button class="modal-close-x" onclick="closeAbout()"><i class="fa-solid fa-xmark"></i></button>
     </div>
-
-    <!-- 4 images -->
     <div class="modal-images">
       <div class="modal-img"><img src="image.png" alt="1" onerror="this.parentElement.innerHTML='💖'"></div>
       <div class="modal-img"><img src="image.png" alt="2" onerror="this.parentElement.innerHTML='💕'"></div>
       <div class="modal-img"><img src="image.png" alt="3" onerror="this.parentElement.innerHTML='❤️'"></div>
       <div class="modal-img"><img src="image.png" alt="4" onerror="this.parentElement.innerHTML='🎵'"></div>
     </div>
-
     <p class="modal-desc" id="modalDesc">A beautiful love song by Njabulo-JB Music &amp; Studio.</p>
-
-    <!-- FACEBOOK FOLLOW -->
+    <!-- Facebook -->
     <div class="fb-section">
       <div class="fb-section-title"><i class="fa-brands fa-facebook"></i> &nbsp;Follow on Facebook</div>
-
       <a class="fb-link" href="https://www.facebook.com/spikili" target="_blank" rel="noopener">
         <div class="fb-icon"><i class="fa-brands fa-facebook-f"></i></div>
-        <div class="fb-info">
-          <div class="fb-name">Spikili</div>
-          <div class="fb-sub">Official Facebook Page</div>
-        </div>
+        <div class="fb-info"><div class="fb-name">Spikili</div><div class="fb-sub">Official Facebook Page</div></div>
         <div class="fb-follow"><i class="fa-solid fa-user-plus"></i> Follow</div>
       </a>
-
       <a class="fb-link" href="https://www.facebook.com/nalediaph" target="_blank" rel="noopener">
         <div class="fb-icon"><i class="fa-brands fa-facebook-f"></i></div>
-        <div class="fb-info">
-          <div class="fb-name">Naledi Aphiwe</div>
-          <div class="fb-sub">Official Facebook Page</div>
-        </div>
+        <div class="fb-info"><div class="fb-name">Naledi Aphiwe</div><div class="fb-sub">Official Facebook Page</div></div>
         <div class="fb-follow"><i class="fa-solid fa-user-plus"></i> Follow</div>
       </a>
-
       <a class="fb-link" href="https://www.facebook.com/NjabuLoJbMusic" target="_blank" rel="noopener">
         <div class="fb-icon"><i class="fa-brands fa-facebook-f"></i></div>
-        <div class="fb-info">
-          <div class="fb-name">Njabulo-JB Music &amp; Studio</div>
-          <div class="fb-sub">Official Music Page</div>
-        </div>
+        <div class="fb-info"><div class="fb-name">Njabulo-JB Music &amp; Studio</div><div class="fb-sub">Official Music Page</div></div>
         <div class="fb-follow"><i class="fa-solid fa-user-plus"></i> Follow</div>
       </a>
     </div>
-
+    <!-- YouTube in About -->
+    <a class="fb-link" href="https://www.youtube.com/@NjabuLoJbMusic?sub_confirmation=1" target="_blank" rel="noopener" style="background:rgba(255,0,0,.12);border-color:rgba(255,0,0,.32);margin-bottom:14px;">
+      <div class="fb-icon" style="background:#ff0000"><i class="fa-brands fa-youtube"></i></div>
+      <div class="fb-info"><div class="fb-name">Njabulo-JB Music &amp; Studio</div><div class="fb-sub">Subscribe on YouTube</div></div>
+      <div class="fb-follow" style="color:#ff9999"><i class="fa-brands fa-youtube"></i> Subscribe</div>
+    </a>
     <div class="modal-studio"><i class="fa-solid fa-star"></i> &nbsp;Njabulo-JB Music &amp; Studio&nbsp; <i class="fa-solid fa-star"></i></div>
     <button class="close-btn" onclick="closeAbout()"><i class="fa-solid fa-xmark"></i> &nbsp;Close</button>
   </div>
 </div>
+
+<!-- ===== SHARE MODAL ===== -->
+<div class="modal-overlay" id="shareModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-share-nodes" style="color:var(--blush)"></i> Share <span id="shareTitle"></span></h2>
+      <button class="modal-close-x" onclick="closeShare()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="share-grid">
+      <a class="share-opt" id="shareFb" href="#" target="_blank" rel="noopener">
+        <div class="si" style="background:#1877f2"><i class="fa-brands fa-facebook-f" style="color:#fff"></i></div>
+        <span>Facebook</span>
+      </a>
+      <a class="share-opt" id="shareWa" href="#" target="_blank" rel="noopener">
+        <div class="si" style="background:#25d366"><i class="fa-brands fa-whatsapp" style="color:#fff"></i></div>
+        <span>WhatsApp</span>
+      </a>
+      <a class="share-opt" id="shareX" href="#" target="_blank" rel="noopener">
+        <div class="si" style="background:#000"><i class="fa-brands fa-x-twitter" style="color:#fff"></i></div>
+        <span>X / Twitter</span>
+      </a>
+      <a class="share-opt" id="shareTg" href="#" target="_blank" rel="noopener">
+        <div class="si" style="background:#229ed9"><i class="fa-brands fa-telegram" style="color:#fff"></i></div>
+        <span>Telegram</span>
+      </a>
+      <a class="share-opt" id="shareYt" href="https://www.youtube.com/@NjabuLoJbMusic" target="_blank" rel="noopener">
+        <div class="si" style="background:#ff0000"><i class="fa-brands fa-youtube" style="color:#fff"></i></div>
+        <span>YouTube</span>
+      </a>
+      <div class="share-opt" onclick="nativeShare()">
+        <div class="si" style="background:linear-gradient(135deg,var(--red),var(--blush))"><i class="fa-solid fa-ellipsis" style="color:#fff"></i></div>
+        <span>More</span>
+      </div>
+    </div>
+    <div class="copy-link-box">
+      <span id="copyLinkUrl">https://naledi-spikili.music/</span>
+      <button class="copy-btn" onclick="copyLink()"><i class="fa-solid fa-copy"></i> Copy</button>
+    </div>
+    <br>
+    <button class="close-btn" onclick="closeShare()"><i class="fa-solid fa-xmark"></i> &nbsp;Close</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
 <!-- Audio -->
 <audio id="audio0" src="naledi.mp3" preload="metadata"></audio>
@@ -366,73 +503,100 @@
 <audio id="audio2" src="naledi-spikili.mp3" preload="metadata"></audio>
 
 <script>
-// Floating hearts
+/* ==============================
+   HEARTS BACKGROUND
+============================== */
 const hb = document.getElementById('heartsBg');
-['❤️','💕','💖','💗','💓','💞','🌹'].forEach((c,_) => {
+const hch = ['❤️','💕','💖','💗','💓','💞','🌹'];
+hch.forEach(c => {
   for (let j = 0; j < 4; j++) {
     const h = document.createElement('div');
     h.className = 'heart-particle';
     h.textContent = c;
     h.style.left = Math.random() * 100 + 'vw';
-    h.style.fontSize = (0.8 + Math.random() * 1.3) + 'rem';
-    const dur = 7 + Math.random() * 10;
-    h.style.animation = `floatUp ${dur}s ${Math.random() * 14}s linear infinite`;
+    h.style.fontSize = (.8 + Math.random() * 1.3) + 'rem';
+    h.style.animation = `floatUp ${7 + Math.random() * 10}s ${Math.random() * 14}s linear infinite`;
     hb.appendChild(h);
   }
 });
 
-// Audio player
-const audios = [
-  document.getElementById('audio0'),
-  document.getElementById('audio1'),
-  document.getElementById('audio2')
+/* ==============================
+   STATE
+============================== */
+const SONGS = [
+  { name:'Naledi', file:'naledi.mp3', dl:'Naledi - Njabulo-JB Music and Studio.mp3' },
+  { name:'Spikili', file:'spikili.mp3', dl:'Spikili - Njabulo-JB Music and Studio.mp3' },
+  { name:'Naledi × Spikili', file:'naledi-spikili.mp3', dl:'Naledi x Spikili - Njabulo-JB Music and Studio.mp3' }
 ];
-let currentPlaying = -1;
 
-const songInfo = [
-  { title: 'Naledi', desc: '"Naledi" — a soul-stirring love anthem dedicated to the shining star in every heart. A timeless track proudly produced by Njabulo-JB Music & Studio. 💖' },
-  { title: 'Spikili', desc: '"Spikili" — a powerful, passionate declaration of love and loyalty. Njabulo-JB Music & Studio brings emotion and energy together in this unforgettable track. 💕' },
-  { title: 'Naledi × Spikili', desc: '"Naledi × Spikili" — the ultimate love duet. Two hearts, one song, forever intertwined. Proudly produced by Njabulo-JB Music & Studio. ❤️' }
+// Persist state in sessionStorage
+function loadState() {
+  try { return JSON.parse(sessionStorage.getItem('njabulo_state') || '{}'); } catch(e){ return {}; }
+}
+function saveState(s) {
+  try { sessionStorage.setItem('njabulo_state', JSON.stringify(s)); } catch(e){}
+}
+let STATE = loadState();
+if (!STATE.likes) STATE.likes = [false, false, false];
+if (!STATE.likeCounts) STATE.likeCounts = [48, 61, 93];
+if (!STATE.views) STATE.views = [1240, 875, 2103];
+if (!STATE.comments) STATE.comments = [
+  [{name:'Thabo', text:'This song is fire! 🔥❤️'}],
+  [{name:'Zanele', text:'Spikili hits different 💕'}],
+  [{name:'Mpho', text:'Forever love this! 🎵'}]
 ];
+if (!STATE.totalPlays) STATE.totalPlays = 0;
+if (!STATE.subscribed) STATE.subscribed = false;
+
+/* ==============================
+   AUDIO PLAYER
+============================== */
+const audios = [0,1,2].map(i => document.getElementById('audio'+i));
+let currentPlaying = -1;
+let shuffleOn = false;
 
 function fmt(s) {
   if (!s || isNaN(s) || !isFinite(s)) return '0:00';
-  return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
+  return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+}
+function fmtNum(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000) return (n/1000).toFixed(1)+'K';
+  return n.toString();
 }
 
 function setPlayBtn(idx, playing) {
-  const btn = document.getElementById('playBtn' + idx);
-  if (playing) {
-    btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
-    btn.classList.add('is-playing');
-  } else {
-    btn.innerHTML = '<i class="fa-solid fa-play"></i> Play';
-    btn.classList.remove('is-playing');
-  }
+  const btn = document.getElementById('playBtn'+idx);
+  btn.innerHTML = playing
+    ? '<i class="fa-solid fa-pause"></i> Pause'
+    : '<i class="fa-solid fa-play"></i> Play';
+  btn.classList.toggle('is-playing', playing);
 }
 
 audios.forEach((a, i) => {
   a.addEventListener('timeupdate', () => {
     if (a.duration) {
-      document.getElementById('prog' + i).style.width = (a.currentTime / a.duration * 100) + '%';
-      document.getElementById('cur' + i).textContent = fmt(a.currentTime);
+      document.getElementById('prog'+i).style.width = (a.currentTime/a.duration*100)+'%';
+      document.getElementById('cur'+i).textContent = fmt(a.currentTime);
     }
   });
   a.addEventListener('loadedmetadata', () => {
-    document.getElementById('dur' + i).textContent = fmt(a.duration);
+    document.getElementById('dur'+i).textContent = fmt(a.duration);
   });
   a.addEventListener('ended', () => {
-    document.getElementById('card' + i).classList.remove('playing');
+    document.getElementById('card'+i).classList.remove('playing');
     setPlayBtn(i, false);
     currentPlaying = -1;
-    // Auto advance
-    setTimeout(() => playPause((i + 1) % 3), 500);
+    let next = shuffleOn
+      ? Math.floor(Math.random()*3)
+      : (i+1)%3;
+    setTimeout(() => playPause(next), 500);
   });
 });
 
 function playPause(idx) {
   const audio = audios[idx];
-  const card = document.getElementById('card' + idx);
+  const card = document.getElementById('card'+idx);
   if (currentPlaying === idx) {
     audio.pause();
     card.classList.remove('playing');
@@ -441,21 +605,24 @@ function playPause(idx) {
   } else {
     if (currentPlaying >= 0) {
       audios[currentPlaying].pause();
-      document.getElementById('card' + currentPlaying).classList.remove('playing');
+      document.getElementById('card'+currentPlaying).classList.remove('playing');
       setPlayBtn(currentPlaying, false);
     }
     const p = audio.play();
-    if (p) {
-      p.then(() => {
-        card.classList.add('playing');
-        setPlayBtn(idx, true);
-        currentPlaying = idx;
-      }).catch(err => console.warn(err));
-    } else {
+    const proceed = () => {
       card.classList.add('playing');
       setPlayBtn(idx, true);
       currentPlaying = idx;
-    }
+      // Increment view count & plays
+      STATE.views[idx]++;
+      STATE.totalPlays++;
+      document.getElementById('views'+idx).textContent = fmtNum(STATE.views[idx]);
+      document.getElementById('totalPlays').textContent = fmtNum(STATE.totalPlays);
+      updateTotals();
+      saveState(STATE);
+    };
+    if (p) p.then(proceed).catch(err => console.warn('Playback blocked:', err));
+    else proceed();
   }
 }
 
@@ -463,38 +630,146 @@ function seekAudio(e, idx) {
   const a = audios[idx];
   if (!a.duration) return;
   const rect = e.currentTarget.getBoundingClientRect();
-  a.currentTime = ((e.clientX - rect.left) / rect.width) * a.duration;
+  a.currentTime = ((e.clientX - rect.left)/rect.width)*a.duration;
 }
 
 function navSong(dir) {
   let next;
-  if (currentPlaying < 0) {
-    next = dir === 1 ? 0 : 2;
+  if (shuffleOn) {
+    next = Math.floor(Math.random()*3);
+  } else if (currentPlaying < 0) {
+    next = dir===1 ? 0 : 2;
   } else {
-    audios[currentPlaying].pause();
-    document.getElementById('card' + currentPlaying).classList.remove('playing');
-    setPlayBtn(currentPlaying, false);
     next = (currentPlaying + dir + 3) % 3;
+  }
+  if (currentPlaying >= 0) {
+    audios[currentPlaying].pause();
+    document.getElementById('card'+currentPlaying).classList.remove('playing');
+    setPlayBtn(currentPlaying, false);
     currentPlaying = -1;
   }
   playPause(next);
-  document.getElementById('card' + next).scrollIntoView({ behavior:'smooth', block:'center' });
+  document.getElementById('card'+next).scrollIntoView({behavior:'smooth', block:'center'});
 }
 
+function toggleShuffle() {
+  shuffleOn = !shuffleOn;
+  document.getElementById('shuffleBtn').classList.toggle('on', shuffleOn);
+  showToast(shuffleOn ? '🔀 Shuffle ON' : '➡️ Shuffle OFF');
+}
+
+/* ==============================
+   LIKES
+============================== */
+function toggleLike(idx) {
+  STATE.likes[idx] = !STATE.likes[idx];
+  STATE.likeCounts[idx] += STATE.likes[idx] ? 1 : -1;
+  const btn = document.getElementById('likeBtn'+idx);
+  btn.classList.toggle('liked', STATE.likes[idx]);
+  document.getElementById('likeCount'+idx).textContent = fmtNum(STATE.likeCounts[idx]);
+  updateTotals();
+  saveState(STATE);
+  showToast(STATE.likes[idx] ? '❤️ Liked!' : '💔 Unliked');
+}
+
+/* ==============================
+   LYRICS TOGGLE
+============================== */
 function toggleLyrics(idx) {
-  const lp = document.getElementById('lyrics' + idx);
-  const btn = document.getElementById('lyrBtn' + idx);
+  const lp = document.getElementById('lyrics'+idx);
+  const btn = document.getElementById('lyrBtn'+idx);
   const isOpen = lp.classList.toggle('open');
+  // Also show comment section together with lyrics
+  document.getElementById('comments'+idx).classList.toggle('open', isOpen);
   btn.classList.toggle('lyr-open', isOpen);
   btn.innerHTML = isOpen
     ? '<i class="fa-solid fa-chevron-up"></i> Hide'
     : '<i class="fa-solid fa-scroll"></i> Lyrics';
 }
 
+/* ==============================
+   COMMENTS
+============================== */
+function renderComments(idx) {
+  const list = document.getElementById('clist'+idx);
+  list.innerHTML = STATE.comments[idx].map(c => `
+    <div class="comment-item">
+      <div class="comment-avatar">${c.name[0].toUpperCase()}</div>
+      <div class="comment-body">
+        <div class="comment-name">${c.name}</div>
+        <div class="comment-text">${c.text}</div>
+      </div>
+    </div>`).join('');
+}
+function postComment(idx) {
+  const inp = document.getElementById('cinput'+idx);
+  const text = inp.value.trim();
+  if (!text) return;
+  const name = 'Fan ' + (STATE.comments[idx].length+1);
+  STATE.comments[idx].unshift({name, text});
+  inp.value = '';
+  renderComments(idx);
+  saveState(STATE);
+  showToast('💬 Comment posted!');
+}
+
+/* ==============================
+   TOTALS & INIT
+============================== */
+function updateTotals() {
+  const tv = STATE.views.reduce((a,b)=>a+b,0);
+  const tl = STATE.likeCounts.reduce((a,b)=>a+b,0);
+  document.getElementById('totalViews').textContent = fmtNum(tv);
+  document.getElementById('totalLikes').textContent = fmtNum(tl);
+}
+
+function initUI() {
+  [0,1,2].forEach(i => {
+    document.getElementById('likeCount'+i).textContent = fmtNum(STATE.likeCounts[i]);
+    document.getElementById('likeBtn'+i).classList.toggle('liked', STATE.likes[i]);
+    document.getElementById('views'+i).textContent = fmtNum(STATE.views[i]);
+    document.getElementById('totalPlays').textContent = fmtNum(STATE.totalPlays);
+    renderComments(i);
+  });
+  updateTotals();
+  // YouTube subscribe state
+  if (STATE.subscribed) {
+    const btn = document.getElementById('ytSubBtn');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Subscribed';
+    btn.classList.add('subscribed');
+  }
+  // Fake YouTube sub count (replace with real API if you have key)
+  document.getElementById('ytSubCount').innerHTML =
+    '<i class="fa-solid fa-users" style="color:#ff9999;font-size:.7rem"></i> '
+    + fmtNum(3800) + ' subscribers';
+}
+initUI();
+
+/* ==============================
+   YOUTUBE SUBSCRIBE
+============================== */
+function markSubscribed() {
+  STATE.subscribed = true;
+  saveState(STATE);
+  setTimeout(() => {
+    const btn = document.getElementById('ytSubBtn');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Subscribed';
+    btn.classList.add('subscribed');
+  }, 800);
+  showToast('🔔 Subscribed to Njabulo-JB!');
+}
+
+/* ==============================
+   ABOUT MODAL
+============================== */
+const songInfo = [
+  { title:'Naledi', desc:'"Naledi" — a soul-stirring love anthem dedicated to the shining star in every heart. A timeless track proudly produced by Njabulo-JB Music & Studio. 💖' },
+  { title:'Spikili', desc:'"Spikili" — a powerful, passionate declaration of love and loyalty. Njabulo-JB Music & Studio brings emotion and energy together in this unforgettable track. 💕' },
+  { title:'Naledi × Spikili', desc:'"Naledi × Spikili" — the ultimate love duet. Two hearts, one song, forever intertwined. Proudly produced by Njabulo-JB Music & Studio. ❤️' }
+];
 function openAbout(idx) {
-  const info = songInfo[idx];
-  document.getElementById('modalTitle').textContent = info.title;
-  document.getElementById('modalDesc').textContent = info.desc;
+  document.getElementById('modalTitle').textContent = songInfo[idx].title;
+  document.getElementById('modalDesc').textContent = songInfo[idx].desc;
   document.getElementById('aboutModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -502,9 +777,67 @@ function closeAbout() {
   document.getElementById('aboutModal').classList.remove('open');
   document.body.style.overflow = '';
 }
-document.getElementById('aboutModal').addEventListener('click', function(e) {
-  if (e.target === this) closeAbout();
-});
+document.getElementById('aboutModal').addEventListener('click', function(e){ if(e.target===this) closeAbout(); });
+
+/* ==============================
+   SHARE MODAL
+============================== */
+let currentShareIdx = -1;
+function openShare(idx) {
+  currentShareIdx = idx;
+  const name = SONGS[idx].name;
+  const url = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent(`🎵 Listen to "${name}" by Njabulo-JB Music & Studio ❤️`);
+  document.getElementById('shareTitle').textContent = name;
+  document.getElementById('shareFb').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+  document.getElementById('shareWa').href = `https://wa.me/?text=${text}%20${url}`;
+  document.getElementById('shareX').href  = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+  document.getElementById('shareTg').href = `https://t.me/share/url?url=${url}&text=${text}`;
+  document.getElementById('copyLinkUrl').textContent = window.location.href;
+  document.getElementById('shareModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeShare() {
+  document.getElementById('shareModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('shareModal').addEventListener('click', function(e){ if(e.target===this) closeShare(); });
+
+function copyLink() {
+  const url = window.location.href;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copied!'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = url; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('🔗 Link copied!');
+  }
+}
+
+function nativeShare() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Naledi Aphiwe & Spikili — Forever ❤️',
+      text: '🎵 Listen to amazing music by Njabulo-JB Music & Studio!',
+      url: window.location.href
+    }).catch(()=>{});
+  } else {
+    copyLink();
+  }
+}
+
+/* ==============================
+   TOAST
+============================== */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
 </script>
 </body>
 </html>
