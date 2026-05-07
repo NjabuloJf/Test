@@ -3,7 +3,6 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Chat UI</title>
-<!-- FontAwesome CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,20 +15,49 @@
     flex-direction: column;
   }
 
-  /* 1. Header */
+  /* 1. FIXED HEADER - matches your screenshot */
   .header {
     background: #FFFFFF;
     padding: 12px 16px;
     border-bottom: 1px solid #e5e5e5;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between; /* THIS FIXES IT */
   }
-  .header-title { font-weight: 600; }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .menu-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #000;
+  }
+  .header-center {
+    flex: 1;
+  }
+  .header-title { 
+    font-weight: 600; 
+    font-size: 16px;
+  }
   .instant-badge {
     background: #e6f4ff; color: #007aff; 
     font-size: 12px; padding: 2px 6px; border-radius: 4px;
-    display: flex; align-items: center; gap: 4px;
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 2px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-icon {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #000;
   }
 
   /* 2. Chat Area */
@@ -54,6 +82,7 @@
   }
   .msg-actions {
     display: flex; gap: 12px; margin-top: 6px; opacity: 0.6;
+    justify-content: flex-end;
   }
   .msg-actions i { cursor: pointer; font-size: 14px; }
 
@@ -108,10 +137,19 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- FIXED HEADER - Now matches your green circle -->
   <div class="header">
-    <span class="header-title">Greeting and Assistance Offer</span>
-    <span class="instant-badge"><i class="fas fa-bolt"></i> Instant</span>
+    <div class="header-left">
+      <button class="menu-btn"><i class="fas fa-bars"></i></button>
+      <div class="header-center">
+        <div class="header-title">Greeting and Assistance Offer</div>
+        <div class="instant-badge"><i class="fas fa-bolt"></i> Instant</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="header-icon"><i class="far fa-plus-square"></i></button>
+      <button class="header-icon"><i class="fas fa-share"></i></button>
+    </div>
   </div>
 
   <!-- Chat Area -->
@@ -160,4 +198,4 @@
   </div>
 
 </body>
-</html>
+     </html>
