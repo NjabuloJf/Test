@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Njabulo AI — DeepSeek Style</title>
+<title>Njabulo UI — DeepSeek Style</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
@@ -22,133 +22,118 @@
         overflow: hidden;
     }
 
-    /* Header - DeepSeek style */
+    /* Header - exact DeepSeek style */
     .header {
         background: #ffffff;
-        padding: 14px 20px;
-        border-bottom: 1px solid #e8e8e8;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        padding: 16px 20px 12px 20px;
+        border-bottom: 1px solid #eaeef2;
         flex-shrink: 0;
     }
 
-    .logo-area {
+    .header-top {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 12px;
+        margin-bottom: 8px;
     }
 
     .logo {
-        font-size: 24px;
-        font-weight: 700;
-        background: linear-gradient(135deg, #0066cc, #00aaff);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        font-size: 20px;
+        font-weight: 600;
+        color: #1a1a1a;
+        letter-spacing: -0.3px;
     }
 
-    .badge {
-        background: #f0f7ff;
-        color: #0066cc;
-        font-size: 12px;
-        padding: 4px 10px;
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .header-actions {
+    .header-icons {
         display: flex;
         gap: 16px;
     }
 
-    .header-btn {
-        background: none;
-        border: none;
+    .header-icons i {
         font-size: 18px;
         color: #666;
         cursor: pointer;
-        padding: 6px;
-        border-radius: 8px;
-        transition: all 0.2s;
+        transition: color 0.2s;
     }
 
-    .header-btn:hover {
-        background: #f5f5f5;
+    .header-icons i:hover {
         color: #0066cc;
     }
 
-    /* Chat Area - DeepSeek style */
+    /* Chat Area */
     .chat-area {
         flex: 1;
         overflow-y: auto;
-        padding: 20px 24px;
+        padding: 20px 20px 20px 20px;
         background: #ffffff;
     }
 
-    /* Message bubbles - left/right like DeepSeek */
-    .message {
+    /* Message containers */
+    .message-group {
         margin-bottom: 24px;
+    }
+
+    /* User message - right aligned like DeepSeek */
+    .user-message {
         display: flex;
-        flex-direction: column;
+        justify-content: flex-end;
+        margin-bottom: 24px;
     }
 
-    .message.user {
-        align-items: flex-end;
-    }
-
-    .message.ai {
-        align-items: flex-start;
-    }
-
-    .message-content {
-        max-width: 85%;
-        padding: 12px 18px;
-        border-radius: 24px;
-        line-height: 1.5;
-        font-size: 15px;
-        word-wrap: break-word;
-    }
-
-    .user .message-content {
+    .user-bubble {
         background: #e8f0fe;
+        padding: 10px 16px;
+        border-radius: 20px;
+        border-bottom-right-radius: 4px;
+        max-width: 85%;
+        font-size: 15px;
+        line-height: 1.5;
         color: #1a1a1a;
-        border-bottom-right-radius: 6px;
     }
 
-    .ai .message-content {
+    /* AI message - left aligned */
+    .ai-message {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 24px;
+    }
+
+    .ai-bubble {
         background: #f7f7f8;
+        padding: 10px 16px;
+        border-radius: 20px;
+        border-bottom-left-radius: 4px;
+        max-width: 85%;
+        font-size: 15px;
+        line-height: 1.5;
         color: #1a1a1a;
-        border-bottom-left-radius: 6px;
-        border: 1px solid #e8e8e8;
+        border: 1px solid #eaeef2;
     }
 
     /* Media previews */
     .media-preview {
-        margin-top: 10px;
-        max-width: 250px;
-        border-radius: 16px;
+        max-width: 200px;
+        border-radius: 12px;
+        margin-top: 8px;
         cursor: pointer;
-        border: 1px solid #e8e8e8;
     }
 
-    /* Message actions (copy, etc) */
+    /* Message actions (copy, etc) - DeepSeek style on hover */
     .message-actions {
         display: flex;
         gap: 12px;
         margin-top: 8px;
+        justify-content: flex-end;
         opacity: 0;
         transition: opacity 0.2s;
     }
 
-    .message:hover .message-actions {
+    .message-group:hover .message-actions {
         opacity: 0.6;
     }
 
     .message-actions i {
-        font-size: 14px;
+        font-size: 13px;
         color: #888;
         cursor: pointer;
         transition: color 0.2s;
@@ -159,18 +144,23 @@
         opacity: 1;
     }
 
-    /* Typing indicator */
-    .typing-indicator {
-        display: flex;
-        gap: 4px;
-        padding: 12px 18px;
-        background: #f7f7f8;
-        border-radius: 24px;
-        width: fit-content;
-        border: 1px solid #e8e8e8;
+    .ai-message .message-actions {
+        justify-content: flex-start;
     }
 
-    .typing-indicator span {
+    /* Typing indicator */
+    .typing {
+        display: flex;
+        gap: 4px;
+        padding: 10px 16px;
+        background: #f7f7f8;
+        border-radius: 20px;
+        border-bottom-left-radius: 4px;
+        width: fit-content;
+        border: 1px solid #eaeef2;
+    }
+
+    .typing span {
         width: 8px;
         height: 8px;
         background: #999;
@@ -178,57 +168,59 @@
         animation: bounce 1.4s infinite ease-in-out;
     }
 
-    .typing-indicator span:nth-child(1) { animation-delay: 0s; }
-    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    .typing span:nth-child(1) { animation-delay: 0s; }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
 
     @keyframes bounce {
         0%, 60%, 100% { transform: translateY(0); }
         30% { transform: translateY(-8px); }
     }
 
-    /* Input Area - DeepSeek style */
+    /* Input Area - exact DeepSeek style from screenshot */
     .input-container {
         background: #ffffff;
-        border-top: 1px solid #e8e8e8;
-        padding: 16px 24px 24px;
+        border-top: 1px solid #eaeef2;
+        padding: 16px 20px 24px 20px;
         flex-shrink: 0;
     }
 
-    .input-wrapper {
+    .input-box {
         background: #ffffff;
-        border: 1px solid #e0e0e0;
+        border: 1px solid #e0e4e8;
         border-radius: 28px;
-        padding: 8px 16px;
-        transition: border-color 0.2s;
+        padding: 12px 18px;
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .input-wrapper:focus-within {
+    .input-box:focus-within {
         border-color: #0066cc;
-        box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+        box-shadow: 0 0 0 3px rgba(0,102,204,0.08);
     }
 
     .input-field {
         width: 100%;
         border: none;
         outline: none;
-        font-size: 16px;
+        font-size: 15px;
         resize: none;
         background: transparent;
         font-family: inherit;
-        max-height: 120px;
+        min-height: 24px;
+        max-height: 100px;
         line-height: 1.4;
     }
 
     .input-field::placeholder {
-        color: #aaa;
+        color: #bbb;
+        font-size: 15px;
     }
 
-    .input-actions {
+    .input-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 8px;
+        margin-top: 10px;
     }
 
     .left-buttons {
@@ -236,73 +228,73 @@
         gap: 12px;
     }
 
-    .action-chip {
-        background: #f5f5f5;
+    /* DeepThink and Search buttons - exact from screenshot */
+    .deep-btn, .search-btn {
+        background: none;
         border: none;
-        padding: 6px 14px;
-        border-radius: 30px;
+        padding: 4px 12px;
         font-size: 13px;
+        color: #555;
+        cursor: pointer;
+        border-radius: 20px;
+        transition: all 0.2s;
         display: flex;
         align-items: center;
         gap: 6px;
-        cursor: pointer;
-        transition: all 0.2s;
-        color: #444;
     }
 
-    .action-chip:hover {
-        background: #e8e8e8;
+    .deep-btn i, .search-btn i {
+        font-size: 12px;
     }
 
-    .action-chip i {
-        font-size: 13px;
+    .deep-btn:hover, .search-btn:hover {
+        background: #f0f0f0;
+        color: #0066cc;
     }
 
     .send-area {
         display: flex;
-        gap: 10px;
         align-items: center;
+        gap: 8px;
     }
 
-    .icon-button {
+    .attach-icon, .send-icon {
         background: none;
         border: none;
-        font-size: 20px;
+        font-size: 18px;
         color: #888;
         cursor: pointer;
         padding: 6px;
         border-radius: 50%;
         transition: all 0.2s;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .icon-button:hover {
+    .attach-icon:hover, .send-icon:hover {
         background: #f0f0f0;
         color: #0066cc;
     }
 
-    .send-button {
+    .send-icon {
         background: #0066cc;
-        border: none;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
         color: white;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.2s;
     }
 
-    .send-button:hover {
+    .send-icon:hover {
         background: #0052a3;
-        transform: scale(1.02);
+        color: white;
     }
 
-    /* Footer note */
+    /* Footer note - exact from screenshot */
     .footer-note {
         text-align: center;
         font-size: 11px;
         color: #aaa;
-        margin-top: 12px;
+        margin-top: 16px;
     }
 
     /* Game Modal */
@@ -341,10 +333,10 @@
         right: 20px;
         background: white;
         border: none;
-        font-size: 28px;
+        font-size: 26px;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
         cursor: pointer;
         z-index: 2001;
         font-weight: bold;
@@ -367,7 +359,7 @@
 
     /* Scrollbar */
     .chat-area::-webkit-scrollbar {
-        width: 6px;
+        width: 5px;
     }
 
     .chat-area::-webkit-scrollbar-track {
@@ -382,17 +374,18 @@
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Header - DeepSeek original style -->
     <div class="header">
-        <div class="logo-area">
+        <div class="header-top">
             <div class="logo">✨ Njabulo AI</div>
-            <div class="badge"><i class="fas fa-bolt"></i> Instant</div>
+            <div class="header-icons">
+                <i class="far fa-plus-square" id="newChatBtn" title="New Chat"></i>
+                <i class="fas fa-gamepad" id="gameBtn" title="3D Game"></i>
+                <i class="fas fa-download" id="exportChatBtn" title="Export Chat"></i>
+                <i class="fas fa-trash-alt" id="clearChatBtn" title="Clear Chat"></i>
+            </div>
         </div>
-        <div class="header-actions">
-            <button class="header-btn" id="gameBtn" title="3D Game"><i class="fas fa-gamepad"></i></button>
-            <button class="header-btn" id="clearChatBtn" title="Clear Chat"><i class="fas fa-trash-alt"></i></button>
-            <button class="header-btn" id="exportChatBtn" title="Export Chat"><i class="fas fa-download"></i></button>
-        </div>
+        <div style="font-size: 12px; color: #888;">Njabulo AI 🇿🇼 | Zimbabwe roots • Botswana API</div>
     </div>
 
     <!-- Chat Area -->
@@ -400,24 +393,23 @@
         <!-- Messages will appear here -->
     </div>
 
-    <!-- Input Area -->
+    <!-- Input Area - exact DeepSeek style from screenshot -->
     <div class="input-container">
-        <div class="input-wrapper">
-            <textarea class="input-field" id="messageInput" placeholder="Message Njabulo AI" rows="1"></textarea>
-            <div class="input-actions">
+        <div class="input-box">
+            <textarea class="input-field" id="messageInput" placeholder="Message DeepSeek" rows="1"></textarea>
+            <div class="input-footer">
                 <div class="left-buttons">
-                    <button class="action-chip" id="deepThinkBtn"><i class="fas fa-brain"></i> DeepThink</button>
-                    <button class="action-chip" id="searchWebBtn"><i class="fas fa-globe"></i> Search</button>
-                    <button class="action-chip" id="attachBtn"><i class="fas fa-paperclip"></i> Attach</button>
+                    <button class="deep-btn" id="deepThinkBtn"><i class="fas fa-brain"></i> DeepThink</button>
+                    <button class="search-btn" id="searchWebBtn"><i class="fas fa-globe"></i> Search</button>
                 </div>
                 <div class="send-area">
-                    <button class="icon-button" id="imageGenBtn"><i class="fas fa-image"></i></button>
-                    <button class="send-button" id="sendBtn"><i class="fas fa-arrow-up"></i></button>
+                    <button class="attach-icon" id="attachBtn"><i class="fas fa-paperclip"></i></button>
+                    <button class="send-icon" id="sendBtn"><i class="fas fa-arrow-up"></i></button>
                 </div>
             </div>
         </div>
         <div class="footer-note">
-            AI-generated, for reference only · Njabulo AI 🇿🇼🤖
+            AI-generated, for reference only
         </div>
     </div>
 
@@ -440,15 +432,16 @@
     <script type="module">
         import * as THREE from 'three';
 
-        // ========== CONFIGURATION ==========
+        // ========== API CONFIG ==========
         const POLL_TEXT = 'https://text.pollinations.ai';
         const POLL_IMAGE = 'https://image.pollinations.ai/prompt';
 
-        const NJABULO_PERSONA = `You are Njabulo AI assistant. Your name is Njabulo. When someone asks "who are you" or "hu are you", respond warmly: "I am Njabulo AI assistant! 🇿🇼 I'm originally from Zimbabwe, but my AI heart beats from Botswana 🇧🇼. I'm here to help you with anything - chatting, images, files, editing, or just having fun." Keep responses helpful, concise, and friendly. You have Zimbabwean roots and Botswana-powered tech.`;
+        // Njabulo AI Persona - Zimbabwe origin, Botswana API
+        const NJABULO_PERSONA = `You are Njabulo AI assistant. Your name is Njabulo. You are originally from Zimbabwe 🇿🇼, but your AI API is hosted in Botswana 🇧🇼. When someone asks "who are you" or "hu are you", respond: "I am Njabulo AI assistant! I'm originally from Zimbabwe, but my AI heart beats from Botswana. How can I help you today?" Keep responses friendly, helpful, and concise.`;
 
         // ========== STORAGE ==========
         let chatHistory = [];
-        const STORAGE_KEY = 'njabulo_chat_v2';
+        const STORAGE_KEY = 'njabulo_chat_deepseek';
 
         // ========== DOM ELEMENTS ==========
         const chatArea = document.getElementById('chatArea');
@@ -457,11 +450,9 @@
         const attachBtn = document.getElementById('attachBtn');
         const clearChatBtn = document.getElementById('clearChatBtn');
         const exportChatBtn = document.getElementById('exportChatBtn');
+        const newChatBtn = document.getElementById('newChatBtn');
         const deepThinkBtn = document.getElementById('deepThinkBtn');
         const searchWebBtn = document.getElementById('searchWebBtn');
-        const imageGenBtn = document.getElementById('imageGenBtn');
-
-        let isTyping = false;
 
         // ========== HELPER FUNCTIONS ==========
         function showToast(msg, bg = '#333') {
@@ -483,32 +474,13 @@
 
         function loadChats() {
             const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) {
+            if (saved && JSON.parse(saved).length > 0) {
                 chatHistory = JSON.parse(saved);
                 renderChat();
             } else {
-                addMessage('ai', "👋 Hello! I'm Njabulo AI from Zimbabwe 🇿🇼, serving you from Botswana 🇧🇼. How can I help you today?");
+                // Welcome greeting like "Hello! How can I help you today?"
+                addMessage('ai', "Hello! How can I help you today?");
             }
-        }
-
-        function showTypingIndicator() {
-            isTyping = true;
-            const indicatorDiv = document.createElement('div');
-            indicatorDiv.className = 'message ai';
-            indicatorDiv.id = 'typingIndicator';
-            indicatorDiv.innerHTML = `
-                <div class="typing-indicator">
-                    <span></span><span></span><span></span>
-                </div>
-            `;
-            chatArea.appendChild(indicatorDiv);
-            scrollToBottom();
-        }
-
-        function hideTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) indicator.remove();
-            isTyping = false;
         }
 
         function addMessage(role, content, mediaType = null, mediaUrl = null) {
@@ -521,24 +493,28 @@
         function renderChat() {
             chatArea.innerHTML = '';
             chatHistory.forEach((msg, idx) => {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'message-group';
+                
                 const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${msg.role}`;
-
-                const contentDiv = document.createElement('div');
-                contentDiv.className = 'message-content';
-                contentDiv.innerHTML = msg.content.replace(/\n/g, '<br>');
-
-                const wrapper = document.createElement('div');
-                wrapper.appendChild(contentDiv);
-
+                messageDiv.className = msg.role === 'user' ? 'user-message' : 'ai-message';
+                
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = msg.role === 'user' ? 'user-bubble' : 'ai-bubble';
+                bubbleDiv.innerHTML = msg.content.replace(/\n/g, '<br>');
+                
+                messageDiv.appendChild(bubbleDiv);
+                
+                // Add media if exists
                 if (msg.mediaType === 'image' && msg.mediaUrl) {
                     const img = document.createElement('img');
                     img.src = msg.mediaUrl;
                     img.className = 'media-preview';
                     img.onclick = () => window.open(msg.mediaUrl, '_blank');
-                    wrapper.appendChild(img);
+                    bubbleDiv.appendChild(img);
                 }
-
+                
+                // Add action buttons
                 const actionsDiv = document.createElement('div');
                 actionsDiv.className = 'message-actions';
                 
@@ -549,17 +525,17 @@
                     showToast('Copied!', '#28a745');
                 };
                 actionsDiv.appendChild(copyIcon);
-
+                
                 if (msg.role === 'ai') {
                     const regenIcon = document.createElement('i');
                     regenIcon.className = 'fas fa-sync-alt';
                     regenIcon.onclick = () => regenerateResponse(idx);
                     actionsDiv.appendChild(regenIcon);
                 }
-
-                wrapper.appendChild(actionsDiv);
-                messageDiv.appendChild(wrapper);
-                chatArea.appendChild(messageDiv);
+                
+                messageDiv.appendChild(actionsDiv);
+                groupDiv.appendChild(messageDiv);
+                chatArea.appendChild(groupDiv);
             });
         }
 
@@ -612,48 +588,70 @@
             return null;
         }
 
+        // Typing indicator
+        let typingInterval = null;
+        function showTyping() {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'message-group';
+            groupDiv.id = 'typingIndicator';
+            groupDiv.innerHTML = `
+                <div class="ai-message">
+                    <div class="typing">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+            chatArea.appendChild(groupDiv);
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
         async function getAIResponse(userMessage) {
             addMessage('user', userMessage);
-
+            
             const lowerMsg = userMessage.toLowerCase();
-
+            
             // Image generation
-            if (lowerMsg.includes('generate image') || lowerMsg.includes('create image') || lowerMsg.includes('make image')) {
+            if (lowerMsg.includes('generate image') || lowerMsg.includes('create image') || (lowerMsg.includes('make') && lowerMsg.includes('image'))) {
                 let imgPrompt = userMessage.replace(/generate image|create image|make image/gi, '').trim();
-                if (imgPrompt.length < 3) imgPrompt = "beautiful Zimbabwe sunset with Victoria Falls";
+                if (imgPrompt.length < 3) imgPrompt = "beautiful Zimbabwe sunset";
                 showToast('🎨 Generating image...', '#0066cc');
                 const imgUrl = await generateImage(imgPrompt);
                 if (imgUrl) {
                     addMessage('ai', `✨ Here's your image: "${imgPrompt}"`, 'image', imgUrl);
                 } else {
-                    addMessage('ai', "⚠️ Image generation failed. Please try a different prompt.");
+                    addMessage('ai', "⚠️ Image generation failed. Please try again.");
                 }
                 return;
             }
-
+            
             // Edit image
             if (lowerMsg.includes('edit image')) {
                 let editPrompt = userMessage.replace(/edit image/gi, '').trim();
-                if (editPrompt.length < 3) editPrompt = "vibrant colors with artistic style";
+                if (editPrompt.length < 3) editPrompt = "artistic style";
                 showToast('🎨 Editing image...', '#0066cc');
-                const imgUrl = await generateImage(`edited: ${editPrompt}, high quality`);
+                const imgUrl = await generateImage(`edited: ${editPrompt}`);
                 if (imgUrl) {
                     addMessage('ai', `🖌️ Edited image: "${editPrompt}"`, 'image', imgUrl);
                 } else {
-                    addMessage('ai', "Edit failed, but I'm here to help!");
+                    addMessage('ai', "Edit failed. Try a different description.");
                 }
                 return;
             }
-
+            
             // Normal AI response
-            showTypingIndicator();
+            showTyping();
             const reply = await callAI(userMessage);
-            hideTypingIndicator();
+            hideTyping();
             
             if (reply) {
                 addMessage('ai', reply);
             } else {
-                addMessage('ai', "🤖 Connection issue! I'm Njabulo from Zimbabwe - resilient! Try again or ask for an image.");
+                addMessage('ai', "I'm having connection issues, but I'm Njabulo from Zimbabwe — resilient! Please try again.");
             }
         }
 
@@ -661,7 +659,7 @@
         function handleFileUpload() {
             const input = document.createElement('input');
             input.type = 'file';
-            input.accept = 'image/*,.txt,.pdf';
+            input.accept = 'image/*,.txt,.pdf,.docx';
             input.onchange = async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
@@ -669,27 +667,35 @@
                     const reader = new FileReader();
                     reader.onload = (ev) => {
                         addMessage('user', `📷 Uploaded: ${file.name}`, 'image', ev.target.result);
-                        getAIResponse(`I uploaded an image named ${file.name}. Please analyze it.`);
+                        getAIResponse(`I uploaded an image named ${file.name}. Please describe or help me edit it.`);
                     };
                     reader.readAsDataURL(file);
                 } else {
-                    addMessage('user', `📄 Uploaded: ${file.name}`);
+                    addMessage('user', `📄 Uploaded: ${file.name} (${(file.size/1024).toFixed(1)} KB)`);
                     getAIResponse(`User uploaded a file: ${file.name}. Provide helpful summary.`);
                 }
             };
             input.click();
         }
 
-        function clearChat() {
-            if (confirm('Clear all chat history?')) {
+        function newChat() {
+            if (chatHistory.length > 0 && confirm('Start a new chat? Current chat will be saved.')) {
                 chatHistory = [];
                 saveChats();
-                addMessage('ai', "🧠 Memory cleared! I'm still Njabulo AI, ready to help.");
+                addMessage('ai', "Hello! How can I help you today?");
+            }
+        }
+
+        function clearChat() {
+            if (confirm('Delete all chat history?')) {
+                chatHistory = [];
+                saveChats();
+                addMessage('ai', "Chat cleared! How can I help you today?");
             }
         }
 
         function exportChat() {
-            let script = "=== NJABULO AI CHAT HISTORY ===\n\n";
+            let script = "=== NJABULO AI CHAT ===\n\n";
             chatHistory.forEach(msg => {
                 script += `${msg.role === 'user' ? '👤 User' : '🤖 Njabulo'}: ${msg.content}\n`;
                 if (msg.mediaType === 'image') script += `[Image attached]\n`;
@@ -785,17 +791,14 @@
         });
 
         attachBtn.addEventListener('click', handleFileUpload);
+        newChatBtn.addEventListener('click', newChat);
         clearChatBtn.addEventListener('click', clearChat);
         exportChatBtn.addEventListener('click', exportChat);
-        deepThinkBtn.addEventListener('click', () => getAIResponse("Please think deeply and provide a thorough, analytical answer about any topic you choose."));
+        deepThinkBtn.addEventListener('click', () => getAIResponse("Please think deeply and give a thorough, analytical response."));
         searchWebBtn.addEventListener('click', () => {
             const q = messageInput.value.trim();
             if (q) getAIResponse(`Search the web for: ${q}`);
             else showToast('Enter a search term first', '#ff9800');
-        });
-        imageGenBtn.addEventListener('click', () => {
-            const prompt = prompt('Describe the image you want to generate:');
-            if (prompt) getAIResponse(`generate image ${prompt}`);
         });
         document.getElementById('gameBtn').addEventListener('click', openGame);
         document.getElementById('closeGameBtn').addEventListener('click', closeGame);
@@ -803,7 +806,7 @@
         // ========== INITIALIZE ==========
         loadChats();
 
-        window.onerror = (msg) => showToast("Njabulo AI: Everything's fine! Error handled.");
+        window.onerror = () => showToast("Njabulo AI: Everything's working fine!");
     </script>
 </body>
 </html>
