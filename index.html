@@ -2,986 +2,697 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Telegram – Njabulo Jb</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Telegram</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --tg-blue: #2AABEE;
-    --tg-dark-blue: #1a8fcf;
-    --tg-bg: #f0f2f5;
-    --tg-white: #ffffff;
-    --tg-text: #000000;
-    --tg-sub: #999;
-    --tg-green: #4CAF50;
-    --tg-red: #e53935;
-    --tg-bubble-out: #dcf8c6;
-    --tg-bubble-in: #ffffff;
-    --nav-h: 60px;
-    --story-bg: linear-gradient(135deg, #f09433,#e6683c,#dc2743,#cc2366,#bc1888);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { font-family: 'Segoe UI', sans-serif; background: var(--tg-bg); height: 100vh; overflow: hidden; max-width: 480px; margin: 0 auto; position: relative; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--blue:#2aabee;--green:#4cd964;--red:#ff3b30;--orange:#ff9500;--grey:#8e8e93;--border:#e0e0e0;--inp:#f1f1f1;--bg2:#f2f2f7;}
+html,body{height:100%;width:100%;overflow:hidden;}
+body{font-family:'Roboto',sans-serif;background:#fff;max-width:430px;margin:0 auto;position:relative;}
 
-  /* ── SCREENS ── */
-  .screen { position: absolute; inset: 0; background: var(--tg-bg); display: none; flex-direction: column; overflow: hidden; }
-  .screen.active { display: flex; }
+/* SCREENS */
+.screen{position:absolute;inset:0;display:none;flex-direction:column;background:#fff;overflow:hidden;}
+.screen.active{display:flex;}
+.scrl{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scrl::-webkit-scrollbar{display:none;}
 
-  /* ── TOP BAR ── */
-  .topbar {
-    background: var(--tg-white);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 16px;
-    border-bottom: 1px solid #e8e8e8;
-    min-height: 56px;
-    z-index: 10;
-    flex-shrink: 0;
-  }
-  .topbar h1 { font-size: 22px; font-weight: 700; color: var(--tg-blue); }
-  .topbar-icons { display: flex; gap: 16px; color: #555; font-size: 20px; }
-  .topbar-icons i { cursor: pointer; }
+/* STATUS BAR */
+.sb{background:inherit;padding:6px 14px 4px;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:500;flex-shrink:0;z-index:5;}
+.sb-r{display:flex;align-items:center;gap:3px;font-size:11px;}
+.bat{background:#d00;color:#fff;border-radius:2px;padding:0 4px;font-size:10px;font-weight:700;}
 
-  /* ── SCROLLABLE BODY ── */
-  .scroll-body { flex: 1; overflow-y: auto; overflow-x: hidden; }
-  .scroll-body::-webkit-scrollbar { display: none; }
+/* HEADER */
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:4px 16px 10px;flex-shrink:0;}
 
-  /* ── BOTTOM NAV ── */
-  .bottom-nav {
-    display: flex; background: var(--tg-white);
-    border-top: 1px solid #e0e0e0;
-    height: var(--nav-h); flex-shrink: 0; z-index: 100;
-  }
-  .nav-btn {
-    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 3px; cursor: pointer; color: #999; font-size: 11px; font-weight: 500;
-    transition: color .2s;
-    position: relative;
-  }
-  .nav-btn i { font-size: 22px; }
-  .nav-btn.active { color: var(--tg-blue); }
-  .badge {
-    position: absolute; top: 6px; left: calc(50% + 4px);
-    background: var(--tg-blue); color: #fff; font-size: 10px; font-weight: 700;
-    border-radius: 10px; padding: 1px 5px; min-width: 18px; text-align: center;
-    line-height: 16px;
-  }
+/* STORIES */
+.stories{display:flex;gap:10px;padding:2px 12px 14px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.stories::-webkit-scrollbar{display:none;}
+.si{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;cursor:pointer;}
+.sr{width:62px;height:62px;border-radius:50%;padding:2.5px;background:conic-gradient(var(--blue) 0%,var(--blue) 100%);}
+.sr.seen{background:conic-gradient(#c7c7cc 0%,#c7c7cc 100%);}
+.sr.grn{background:conic-gradient(var(--green) 0%,var(--green) 100%);}
+.sr.add{background:none;border:2.5px dashed var(--blue);}
+.sav{width:100%;height:100%;border-radius:50%;border:2.5px solid #fff;background:#ccc;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff;overflow:hidden;position:relative;}
+.sav img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.splus{position:absolute;bottom:-1px;right:-1px;width:20px;height:20px;background:var(--blue);border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;line-height:1;}
+.sn{font-size:11px;color:#333;max-width:62px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
-  /* ─────────── CHATS SCREEN ─────────── */
-  .stories-row {
-    background: var(--tg-white);
-    display: flex; gap: 12px; padding: 10px 12px;
-    overflow-x: auto; border-bottom: 1px solid #eee; flex-shrink: 0;
-  }
-  .stories-row::-webkit-scrollbar { display: none; }
-  .story-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; flex-shrink: 0; }
-  .story-ring {
-    width: 56px; height: 56px; border-radius: 50%;
-    padding: 2px;
-    background: var(--story-bg);
-  }
-  .story-ring.new { background: var(--story-bg); }
-  .story-ring.seen { background: #ccc; }
-  .story-ring.mine { background: var(--tg-blue); position: relative; }
-  .story-avatar {
-    width: 100%; height: 100%; border-radius: 50%;
-    border: 2.5px solid white;
-    object-fit: cover; background: #ddd;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; color: #888; overflow: hidden;
-  }
-  .story-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .story-plus {
-    position: absolute; bottom: -1px; right: -1px;
-    background: var(--tg-blue); color: white; border-radius: 50%;
-    width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; border: 2px solid white;
-  }
-  .story-name { font-size: 11px; color: #333; max-width: 60px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* SEARCH */
+.sw{padding:0 12px 10px;flex-shrink:0;}
+.sb2{display:flex;align-items:center;gap:8px;background:var(--inp);border-radius:12px;padding:8px 14px;}
+.sb2 input{border:none;background:transparent;outline:none;font-size:16px;color:#333;width:100%;font-family:'Roboto',sans-serif;}
+.sb2 input::placeholder{color:#aaa;}
 
-  .search-bar {
-    padding: 8px 12px; background: var(--tg-white); border-bottom: 1px solid #eee; flex-shrink: 0;
-  }
-  .search-bar input {
-    width: 100%; border: none; background: #f0f2f5; border-radius: 20px;
-    padding: 8px 14px 8px 36px; font-size: 14px; color: #333; outline: none;
-  }
-  .search-wrap { position: relative; }
-  .search-wrap i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: #999; font-size: 14px; }
+/* TABS */
+.tabs{display:flex;gap:6px;padding:0 12px 10px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.tabs::-webkit-scrollbar{display:none;}
+.tb{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .15s;}
+.tb.on{background:var(--blue);color:#fff;}
+.tb:not(.on){background:var(--inp);color:#555;}
+.tbdg{border-radius:10px;padding:1px 6px;font-size:12px;font-weight:600;}
+.tb.on .tbdg{background:rgba(255,255,255,.28);color:#fff;}
+.tb:not(.on) .tbdg{background:#d0d0d0;color:#555;}
 
-  .filter-tabs {
-    display: flex; gap: 8px; padding: 8px 12px; background: var(--tg-white);
-    overflow-x: auto; border-bottom: 1px solid #eee; flex-shrink: 0;
-  }
-  .filter-tabs::-webkit-scrollbar { display: none; }
-  .ftab {
-    display: flex; align-items: center; gap: 5px; padding: 4px 12px;
-    border-radius: 20px; background: #f0f2f5; font-size: 13px; font-weight: 500; white-space: nowrap;
-    cursor: pointer; color: #555; transition: all .2s;
-  }
-  .ftab.active { background: var(--tg-blue); color: white; }
-  .ftab .cnt { background: rgba(0,0,0,.15); border-radius: 10px; padding: 1px 5px; font-size: 11px; }
-  .ftab.active .cnt { background: rgba(255,255,255,.25); }
+/* BANNER */
+.banner{margin:0 12px 4px;border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0;}
+.banner h4{font-size:14px;font-weight:600;margin-bottom:3px;}
+.banner p{font-size:13px;color:#888;}
+.bx{color:#bbb;font-size:20px;cursor:pointer;padding:0 2px;line-height:1;}
 
-  /* Birthday banner */
-  .bday-banner {
-    background: var(--tg-white); margin: 8px 12px; border-radius: 12px;
-    padding: 10px 14px; display: flex; align-items: center; gap: 10px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.08);
-  }
-  .bday-banner .bday-icon { font-size: 24px; }
-  .bday-banner .bday-text { flex: 1; }
-  .bday-banner .bday-text strong { font-size: 14px; display: block; }
-  .bday-banner .bday-text span { font-size: 12px; color: #777; }
-  .bday-banner .close-btn { color: #aaa; cursor: pointer; font-size: 18px; }
+/* CHAT LIST */
+.cli .ci{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;transition:background .1s;position:relative;}
+.cli .ci:active{background:#f5f5f5;}
+.cli .ci+.ci::before{content:'';position:absolute;top:0;left:72px;right:0;height:.5px;background:var(--border);}
+.cav{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff;flex-shrink:0;overflow:hidden;position:relative;}
+.cav img{width:100%;height:100%;object-fit:cover;}
+.odot{position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:var(--green);border:2.5px solid #fff;}
+.cb{flex:1;min-width:0;}
+.ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
+.cn{font-size:16px;font-weight:600;color:#000;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:6px;}
+.ctm{font-size:12px;color:#888;flex-shrink:0;}
+.ctm.bl{color:var(--blue);}
+.cp{display:flex;justify-content:space-between;align-items:center;}
+.cpv{font-size:14px;color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:6px;}
+.cpv.bl{color:var(--blue);}
+.bdg{background:var(--blue);color:#fff;border-radius:12px;font-size:12px;font-weight:600;padding:2px 7px;min-width:22px;text-align:center;flex-shrink:0;}
+.bdg.gy{background:#c7c7cc;}
 
-  /* Chat list */
-  .chat-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 14px; background: var(--tg-white);
-    border-bottom: 1px solid #f5f5f5; cursor: pointer;
-    transition: background .15s;
-    position: relative;
-  }
-  .chat-item:active { background: #f0f0f0; }
-  .chat-avatar {
-    width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
-    background: var(--tg-blue); display: flex; align-items: center;
-    justify-content: center; font-size: 20px; font-weight: 700;
-    color: white; overflow: hidden; position: relative;
-  }
-  .chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .chat-avatar .online-dot {
-    position: absolute; bottom: 2px; right: 2px;
-    width: 12px; height: 12px; background: var(--tg-green);
-    border-radius: 50%; border: 2px solid white;
-  }
-  .chat-info { flex: 1; min-width: 0; }
-  .chat-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
-  .chat-name { font-size: 15px; font-weight: 600; color: #111; }
-  .chat-time { font-size: 12px; color: #999; flex-shrink: 0; }
-  .chat-time.unread { color: var(--tg-blue); }
-  .chat-preview-row { display: flex; justify-content: space-between; align-items: center; }
-  .chat-preview { font-size: 13px; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
-  .unread-badge { background: var(--tg-blue); color: white; border-radius: 10px; padding: 2px 7px; font-size: 11px; font-weight: 700; min-width: 20px; text-align: center; flex-shrink: 0; }
-  .unread-badge.muted { background: #ccc; }
-  .chat-err { color: var(--tg-red); font-size: 18px; }
+/* ARCHIVED */
+.arc{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;border-bottom:.5px solid var(--border);}
+.ari{width:52px;height:52px;border-radius:50%;background:var(--inp);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
-  .archived-item { background: #f8f8f8; }
+/* BOTTOM NAV */
+.bnav{border-top:.5px solid #ddd;display:flex;background:#fff;flex-shrink:0;}
+.ni{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;flex:1;padding:7px 0 9px;}
+.ni-i{position:relative;color:var(--grey);}
+.ni-i.on{color:var(--blue);}
+.ni-l{font-size:10px;color:var(--grey);}
+.ni-l.on{color:var(--blue);font-weight:500;}
+.nbdg{position:absolute;top:-5px;right:-10px;background:var(--blue);color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 5px;min-width:18px;text-align:center;}
 
-  /* FAB */
-  .fab {
-    position: absolute; bottom: 76px; right: 16px;
-    width: 54px; height: 54px; border-radius: 50%;
-    background: var(--tg-blue); color: white;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; box-shadow: 0 4px 16px rgba(42,171,238,.45);
-    cursor: pointer; z-index: 50; transition: transform .2s;
-  }
-  .fab:active { transform: scale(.92); }
-  .fab .fab-badge {
-    position: absolute; top: -4px; right: -4px;
-    background: var(--tg-red); color: white; border-radius: 50%;
-    width: 20px; height: 20px; font-size: 11px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    border: 2px solid white;
-  }
+/* FAB */
+.fab{position:absolute;bottom:68px;right:16px;width:54px;height:54px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(42,171,238,.45);cursor:pointer;z-index:50;}
+.fab2{position:absolute;top:-3px;right:-3px;background:var(--blue);border:2px solid #fff;border-radius:10px;font-size:10px;font-weight:700;color:#fff;padding:0 5px;min-width:17px;text-align:center;}
 
-  /* ─────────── CONTACTS SCREEN ─────────── */
-  .contacts-topbar { background: var(--tg-white); padding: 12px 16px; border-bottom: 1px solid #eee; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; }
-  .contacts-topbar h1 { font-size: 20px; font-weight: 700; }
-  .section-label { padding: 8px 14px 4px; font-size: 13px; color: var(--tg-blue); font-weight: 600; background: var(--tg-bg); }
-  .contact-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 14px; background: var(--tg-white);
-    border-bottom: 1px solid #f5f5f5; cursor: pointer;
-  }
-  .contact-avatar { width: 50px; height: 50px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #888; }
-  .contact-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .contact-avatar.has-ring { outline: 2.5px solid var(--tg-blue); outline-offset: 2px; }
-  .contact-info .name { font-size: 15px; font-weight: 600; }
-  .contact-info .status { font-size: 13px; }
-  .status-online { color: var(--tg-blue); }
-  .status-seen { color: #999; }
-  .contact-util { display: flex; gap: 10px; padding: 10px 14px; background: var(--tg-white); border-bottom: 1px solid #f0f0f0; cursor: pointer; align-items: center; }
-  .contact-util-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-  .contact-util-text { font-size: 15px; }
+/* CONTACTS SCREEN */
+.cc{margin:0 12px 8px;background:#fff;border-radius:14px;overflow:hidden;}
+.cbtn{display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;transition:background .1s;}
+.cbtn:active{background:#f5f5f5;}
+.cbtn:not(:last-child){border-bottom:.5px solid var(--border);}
+.cbic{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.csh{padding:8px 16px 5px;font-size:14px;font-weight:500;color:var(--blue);}
+.cct{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;transition:background .1s;}
+.cct:active{background:#f5f5f5;}
+.cct:not(:last-child){border-bottom:.5px solid var(--border);}
+.cca{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0;position:relative;}
+.cca img{width:100%;height:100%;object-fit:cover;}
+.cring{position:absolute;inset:-2.5px;border-radius:50%;border:2.5px solid var(--blue);}
+.cring.g{border-color:var(--green);}
+.ccn{font-size:15px;font-weight:600;color:#000;}
+.ccs{font-size:13px;}
+.ccs.ol{color:var(--blue);}
+.ccs.ls{color:#888;}
 
-  /* ─────────── SETTINGS SCREEN ─────────── */
-  .settings-profile-box {
-    background: var(--tg-white); padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px;
-    flex-shrink: 0; position: relative;
-  }
-  .settings-avatar-wrap { position: relative; }
-  .settings-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #eee; overflow: hidden; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 32px; }
-  .settings-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .settings-cam { position: absolute; bottom: 0; right: 0; background: var(--tg-blue); color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; }
-  .settings-name { font-size: 18px; font-weight: 700; }
-  .settings-sub { font-size: 13px; color: #666; }
-  .confirm-card {
-    background: var(--tg-white); margin: 8px 12px; border-radius: 12px;
-    padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08);
-  }
-  .confirm-card p { font-size: 15px; font-weight: 600; text-align: center; margin-bottom: 4px; }
-  .confirm-card small { font-size: 12px; color: #666; display: block; text-align: center; margin-bottom: 12px; }
-  .confirm-card small a { color: var(--tg-blue); }
-  .confirm-btns { display: flex; gap: 10px; }
-  .btn-no, .btn-yes {
-    flex: 1; padding: 11px; border-radius: 24px; border: none;
-    font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity .2s;
-  }
-  .btn-no { background: var(--tg-blue); color: white; }
-  .btn-yes { background: var(--tg-blue); color: white; }
-  .btn-no:active, .btn-yes:active { opacity: .8; }
-  .settings-list { background: var(--tg-white); margin: 8px 0; }
-  .settings-row {
-    display: flex; align-items: center; gap: 14px; padding: 14px 16px;
-    border-bottom: 1px solid #f5f5f5; cursor: pointer;
-  }
-  .settings-row:active { background: #f5f5f5; }
-  .settings-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; flex-shrink: 0; }
-  .settings-row-info .title { font-size: 15px; font-weight: 500; }
-  .settings-row-info .sub { font-size: 12px; color: #999; }
+/* SETTINGS SCREEN */
+.phead{background:var(--bg2);display:flex;flex-direction:column;align-items:center;padding:10px 16px 16px;flex-shrink:0;}
+.pavi{width:90px;height:90px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#fff;font-size:32px;position:relative;cursor:pointer;}
+.pavi img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.pcam{position:absolute;bottom:2px;right:2px;width:28px;height:28px;border-radius:50%;background:var(--blue);border:2.5px solid var(--bg2);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.pnm{font-size:19px;font-weight:700;text-align:center;margin-top:10px;color:#000;}
+.psb{font-size:13px;color:#888;margin-top:3px;}
+.vcard{margin:8px 12px;background:#fff;border-radius:14px;padding:16px;}
+.vcard .vt{font-size:15px;font-weight:700;text-align:center;margin-bottom:6px;}
+.vcard .vs{font-size:13px;color:#555;text-align:center;line-height:1.5;margin-bottom:14px;}
+.vcard .vs a{color:var(--blue);}
+.vbtns{display:flex;gap:10px;}
+.vbn{flex:1;padding:12px;border-radius:24px;border:none;font-size:16px;font-weight:600;cursor:pointer;font-family:'Roboto',sans-serif;background:var(--blue);color:#fff;}
+.sc{margin:8px 12px;background:#fff;border-radius:14px;overflow:hidden;}
+.si2{display:flex;align-items:center;gap:14px;padding:13px 16px;cursor:pointer;transition:background .1s;}
+.si2:active{background:#f5f5f5;}
+.si2:not(:last-child){border-bottom:.5px solid var(--border);}
+.sic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stx{flex:1;}
+.stx .st{font-size:16px;font-weight:500;color:#000;}
+.stx .ss{font-size:13px;color:#888;}
+.sar{color:#c7c7cc;font-size:20px;font-weight:300;}
 
-  /* ─────────── PROFILE SCREEN ─────────── */
-  .profile-header { background: var(--tg-white); padding: 24px 16px 16px; display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
-  .profile-avatar { width: 90px; height: 90px; border-radius: 50%; overflow: hidden; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 36px; }
-  .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .profile-name { font-size: 20px; font-weight: 700; text-align: center; }
-  .profile-online { font-size: 13px; color: var(--tg-blue); }
-  .profile-actions { display: flex; gap: 8px; margin: 10px 0; }
-  .profile-action-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 8px; background: #f0f2f5; border-radius: 12px; cursor: pointer; font-size: 12px; font-weight: 500; color: #333; border: none; }
-  .profile-action-btn i { font-size: 20px; color: #555; }
-  .profile-action-btn:active { background: #e0e0e0; }
-  .profile-section { background: var(--tg-white); margin: 8px 0; }
-  .channel-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
-  .channel-avatar { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: #ddd; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .channel-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .channel-info { flex: 1; }
-  .channel-info .ch-name { font-size: 15px; font-weight: 600; }
-  .channel-info .ch-preview { font-size: 12px; color: #888; }
-  .channel-meta { text-align: right; }
-  .channel-meta .ch-date { font-size: 12px; color: #999; }
-  .channel-meta .ch-tick { color: var(--tg-blue); font-size: 13px; }
-  .info-row { padding: 12px 16px; border-bottom: 1px solid #f5f5f5; }
-  .info-row .val { font-size: 15px; color: #111; }
-  .info-row .lbl { font-size: 12px; color: #999; margin-top: 2px; }
-  .info-row a { color: var(--tg-blue); font-size: 14px; word-break: break-all; }
-  .section-header { padding: 8px 14px 4px; font-size: 13px; color: var(--tg-blue); font-weight: 600; }
-  .posts-tabs { display: flex; padding: 6px 12px; gap: 8px; background: var(--tg-bg); }
-  .posts-tab { flex: 1; text-align: center; padding: 8px; border-radius: 20px; font-size: 14px; font-weight: 500; cursor: pointer; }
-  .posts-tab.active { background: white; color: var(--tg-blue); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+/* PROFILE SCREEN */
+.pphead{background:var(--bg2);display:flex;flex-direction:column;align-items:center;padding:6px 14px 14px;flex-shrink:0;position:relative;}
+.pptop{width:100%;display:flex;justify-content:space-between;margin-bottom:8px;}
+.ppacts{display:flex;gap:8px;width:100%;margin-top:10px;}
+.ppab{flex:1;background:#fff;border-radius:12px;border:none;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:500;cursor:pointer;font-family:'Roboto',sans-serif;color:#000;}
+.ppab span{font-size:20px;}
+.icard{margin:8px 12px;background:#fff;border-radius:14px;overflow:hidden;}
+.iit{padding:12px 16px;}
+.iit:not(:last-child){border-bottom:.5px solid var(--border);}
+.iv{font-size:16px;color:#000;margin-bottom:2px;}
+.iv a{color:var(--blue);font-size:13px;word-break:break-all;}
+.il{font-size:13px;color:#888;}
+.ptabs{display:flex;margin:8px 12px;background:var(--inp);border-radius:22px;padding:3px;}
+.ptb{flex:1;text-align:center;padding:7px;border-radius:20px;font-size:14px;font-weight:500;cursor:pointer;color:#888;transition:all .2s;}
+.ptb.on{background:#fff;color:#000;box-shadow:0 1px 4px rgba(0,0,0,.12);}
 
-  /* ─────────── CHAT WINDOW ─────────── */
-  #screen-chat { background: #e8f4e0; }
-  .chat-topbar {
-    background: var(--tg-white); display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px; border-bottom: 1px solid #eee; flex-shrink: 0;
-  }
-  .chat-topbar .back { font-size: 22px; color: var(--tg-blue); cursor: pointer; padding: 4px; }
-  .chat-topbar-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: #ddd; flex-shrink: 0; }
-  .chat-topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .chat-topbar-info { flex: 1; }
-  .chat-topbar-info .ct-name { font-size: 16px; font-weight: 600; }
-  .chat-topbar-info .ct-status { font-size: 12px; color: #888; }
-  .chat-topbar-icons { display: flex; gap: 14px; color: #555; font-size: 20px; }
-  .chat-topbar-icons i { cursor: pointer; }
-  .chat-messages { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
-  .chat-messages::-webkit-scrollbar { display: none; }
-  .date-sep { text-align: center; margin: 8px 0; }
-  .date-sep span { background: rgba(0,0,0,.3); color: white; font-size: 12px; border-radius: 10px; padding: 3px 10px; }
-  .system-msg { text-align: center; margin: 4px 0; }
-  .system-msg span { background: rgba(0,0,0,.25); color: white; font-size: 12px; border-radius: 10px; padding: 3px 10px; }
-  .msg-bubble {
-    max-width: 75%; padding: 8px 12px; border-radius: 16px;
-    font-size: 14px; line-height: 1.5; position: relative; word-break: break-word;
-  }
-  .msg-out { background: var(--tg-bubble-out); align-self: flex-end; border-bottom-right-radius: 4px; }
-  .msg-in { background: var(--tg-bubble-in); align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.1); }
-  .msg-time { font-size: 11px; color: #aaa; text-align: right; margin-top: 2px; display: flex; align-items: center; justify-content: flex-end; gap: 3px; }
-  .msg-time .ticks { color: var(--tg-blue); }
-  .typing-indicator { display: flex; gap: 4px; align-items: center; padding: 10px 14px; background: var(--tg-bubble-in); border-radius: 16px; border-bottom-left-radius: 4px; align-self: flex-start; box-shadow: 0 1px 2px rgba(0,0,0,.1); }
-  .typing-dot { width: 7px; height: 7px; background: #aaa; border-radius: 50%; animation: typingAnim 1.2s infinite; }
-  .typing-dot:nth-child(2) { animation-delay: .2s; }
-  .typing-dot:nth-child(3) { animation-delay: .4s; }
-  @keyframes typingAnim { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
-  .chat-input-bar {
-    display: flex; align-items: center; gap: 8px; padding: 8px 10px;
-    background: var(--tg-white); border-top: 1px solid #eee; flex-shrink: 0;
-  }
-  .chat-input-inner { flex: 1; display: flex; align-items: center; background: #f0f2f5; border-radius: 22px; padding: 6px 12px; gap: 8px; }
-  .chat-input-inner i { color: #aaa; font-size: 18px; cursor: pointer; }
-  #msg-input { flex: 1; border: none; background: transparent; font-size: 15px; outline: none; color: #111; }
-  .send-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--tg-blue); color: white; border: none; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: transform .2s; }
-  .send-btn:active { transform: scale(.9); }
-  .chat-wallpaper {
-    position: absolute; inset: 0; opacity: .15;
-    background-image: repeating-linear-gradient(45deg, #a8d5a2 0, #a8d5a2 1px, transparent 0, transparent 50%);
-    background-size: 20px 20px;
-    pointer-events: none;
-  }
+/* CHAT VIEW */
+#sv{position:relative;}
+.cvbg-grad{position:absolute;inset:0;background:linear-gradient(160deg,#c8dfc8 0%,#9dc99d 40%,#78b77a 70%,#a8ca8a 100%);z-index:0;}
+.cvbg-pat{position:absolute;inset:0;z-index:1;opacity:.15;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Ccircle cx='25' cy='25' r='9' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Crect x='52' y='16' width='18' height='14' rx='4' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Cpath d='M90 18 Q100 7 110 18 Q100 32 90 18Z' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Ccircle cx='150' cy='24' r='8' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Cpath d='M175 13 L185 34 L165 34Z' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Cpath d='M8 75 Q20 60 35 75' stroke='%23004400' fill='none' stroke-width='1.5'/%3E%3Ccircle cx='60' cy='68' r='6' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Ccircle cx='60' cy='57' r='4' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Crect x='90' y='62' width='16' height='12' rx='4' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Ccircle cx='135' cy='70' r='9' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Cpath d='M160 58 Q173 50 183 58 Q173 72 160 58Z' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Cpath d='M10 130 Q24 116 38 130 L24 148Z' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Crect x='60' y='120' width='18' height='13' rx='4' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Ccircle cx='108' cy='130' r='8' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Ccircle cx='108' cy='117' r='5' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Cpath d='M138 114 L150 136 L126 136Z' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Ccircle cx='175' cy='128' r='10' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Ccircle cx='25' cy='178' r='8' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Cellipse cx='65' cy='174' rx='11' ry='7' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Crect x='95' y='168' width='16' height='12' rx='3' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Cpath d='M133 160 Q147 152 157 160 Q147 175 133 160Z' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3Cpath d='M168 158 L180 180 L156 180Z' fill='none' stroke='%23004400' stroke-width='1.5'/%3E%3C/svg%3E");}
+.cvhdr{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#fff;flex-shrink:0;position:relative;z-index:10;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.cvback{font-size:28px;color:var(--blue);cursor:pointer;flex-shrink:0;line-height:1;font-weight:300;}
+.cvav{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0;}
+.cvav img{width:100%;height:100%;object-fit:cover;}
+.cvnm{font-size:16px;font-weight:600;color:#000;}
+.cvst{font-size:13px;color:#888;}
+.cvst.typ{color:var(--blue);}
+.cvacts{display:flex;gap:16px;margin-left:auto;flex-shrink:0;}
+.cvacts span{font-size:20px;cursor:pointer;color:#555;}
+.msgs{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 10px 8px;display:flex;flex-direction:column;gap:3px;position:relative;z-index:2;}
+.msgs::-webkit-scrollbar{display:none;}
+.dsep{display:flex;justify-content:center;margin:6px 0;}
+.dsep span,.sysmsg span{background:rgba(0,70,0,.28);color:#fff;border-radius:12px;font-size:12px;padding:4px 14px;font-weight:500;}
+.sysmsg{display:flex;justify-content:center;margin:3px 0;}
+.msg{display:flex;flex-direction:column;max-width:74%;}
+.msg.s{align-self:flex-end;align-items:flex-end;}
+.msg.r{align-self:flex-start;align-items:flex-start;}
+.mb{padding:8px 12px;border-radius:18px;font-size:15px;line-height:1.45;word-break:break-word;}
+.msg.s .mb{background:#e8fdb6;border-bottom-right-radius:4px;color:#000;}
+.msg.r .mb{background:#fff;border-bottom-left-radius:4px;color:#000;}
+.mt{font-size:11px;color:#888;margin-top:2px;display:flex;align-items:center;gap:3px;}
+.msg.s .mt{justify-content:flex-end;}
+.tk{color:#4cb04f;font-size:13px;}
+.tk.g{color:#aaa;}
+.typi{display:inline-flex;align-items:center;gap:4px;background:#fff;border-radius:18px;border-bottom-left-radius:4px;padding:11px 16px;}
+.td{width:7px;height:7px;border-radius:50%;background:#bbb;animation:tp 1.4s infinite ease-in-out;}
+.td:nth-child(2){animation-delay:.22s;}
+.td:nth-child(3){animation-delay:.44s;}
+@keyframes tp{0%,80%,100%{transform:scale(.55);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+.cinput{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#f2f2f7;flex-shrink:0;position:relative;z-index:10;}
+.ciw{flex:1;display:flex;align-items:center;gap:8px;background:#fff;border-radius:24px;padding:9px 14px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.ciw input{flex:1;border:none;outline:none;font-size:16px;background:transparent;font-family:'Roboto',sans-serif;color:#000;}
+.ciw input::placeholder{color:#aaa;}
+.csend{width:44px;height:44px;border-radius:50%;background:var(--blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(42,171,238,.35);}
+.csend svg{pointer-events:none;}
 
-  /* ─────────── MODALS / TOASTS ─────────── */
-  .toast {
-    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: rgba(0,0,0,.75); color: white; padding: 8px 18px; border-radius: 20px;
-    font-size: 13px; opacity: 0; transition: all .3s; pointer-events: none; z-index: 200;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* Slide-in transition */
-  .slide-right { animation: slideRight .25s ease; }
-  @keyframes slideRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-  .slide-left { animation: slideLeft .25s ease; }
-  @keyframes slideLeft { from { transform: translateX(-20%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+/* COLORS */
+.av-pur{background:#8B69C8;} .av-bl{background:var(--blue);} .av-grn{background:var(--green);}
+.av-or{background:var(--orange);} .av-rd{background:var(--red);} .av-tl{background:#5AC8FA;}
+.av-in{background:#5856D6;} .av-gy{background:var(--grey);} .av-gl{background:#4E9AF1;}
+.av-dk{background:#333;} .av-car{background:linear-gradient(135deg,#1a1a2e,#0f3460);}
 </style>
 </head>
 <body>
 
-<!-- ══════════════ CHATS SCREEN ══════════════ -->
-<div id="screen-chats" class="screen active">
-  <div class="topbar">
-    <h1><i class="fa-brands fa-telegram" style="margin-right:4px"></i>Telegram</h1>
-    <div class="topbar-icons">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <i class="fa-solid fa-ellipsis-vertical"></i>
-    </div>
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║  SCREEN 1 — CHATS               ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<div id="sc" class="screen active">
+  <div class="sb" style="background:#fff;">
+    <span style="font-size:11.5px;font-weight:600;">Mascom|MASCOM 🌐</span>
+    <div class="sb-r">⏰ &nbsp;📶 4G&nbsp;<span style="font-size:10px;">📶</span>&nbsp;<span class="bat">7</span>🍃 &nbsp;4:31 PM</div>
   </div>
-
-  <div class="scroll-body">
+  <div class="hdr">
+    <span style="font-size:28px;font-weight:700;color:var(--blue);">Telegram</span>
+    <span style="font-size:24px;cursor:pointer;color:#555;line-height:1;">⋮</span>
+  </div>
+  <div class="scrl">
     <!-- Stories -->
-    <div class="stories-row">
-      <div class="story-item">
-        <div class="story-ring mine" style="position:relative">
-          <div class="story-avatar"><img src="image.png" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fa-solid fa-car\' style=\'color:#2AABEE\'></i>'"></div>
-          <div class="story-plus"><i class="fa-solid fa-plus" style="font-size:10px"></i></div>
-        </div>
-        <span class="story-name">My Story</span>
+    <div class="stories">
+      <div class="si" onclick="openChat('self')">
+        <div class="sr add"><div class="sav av-car"><img src="" onerror="this.style.display='none'" alt=""><div class="splus">+</div></div></div>
+        <span class="sn">My Story</span>
       </div>
-      <div class="story-item" onclick="showToast('Sasu\'s story')">
-        <div class="story-ring new"><div class="story-avatar"><div style="width:100%;height:100%;background:linear-gradient(135deg,#f9c784,#e8975a);display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:50%;">👩</div></div></div>
-        <span class="story-name">Sasu</span>
+      <div class="si" onclick="openChat('sasu')">
+        <div class="sr grn"><div class="sav av-or">S</div></div>
+        <span class="sn">Sasu</span>
       </div>
-      <div class="story-item" onclick="showToast('Riddimstar\'s story')">
-        <div class="story-ring new"><div class="story-avatar"><div style="width:100%;height:100%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:50%;">🎵</div></div></div>
-        <span class="story-name">Riddimstar</span>
+      <div class="si" onclick="openChat('riddimstar')">
+        <div class="sr"><div class="sav av-rd">R</div></div>
+        <span class="sn">Riddimstar</span>
       </div>
-      <div class="story-item" onclick="showToast('Lhegacy\'s story')">
-        <div class="story-ring seen"><div class="story-avatar"><div style="width:100%;height:100%;background:linear-gradient(135deg,#6a0572,#2c003e);display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:50%;">⚡</div></div></div>
-        <span class="story-name">Lhegacy</span>
+      <div class="si" onclick="openChat('lhegacy')">
+        <div class="sr" style="border:2.5px dashed var(--blue);background:transparent;"><div class="sav av-in">L</div></div>
+        <span class="sn">Lhegacy</span>
       </div>
-      <div class="story-item" onclick="showToast('EDIPON\'s story')">
-        <div class="story-ring new"><div class="story-avatar"><div style="width:100%;height:100%;background:linear-gradient(135deg,#e0c3fc,#8ec5fc);display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:50%;">👤</div></div></div>
-        <span class="story-name">EDIPON</span>
+      <div class="si" onclick="openChat('edipon')">
+        <div class="sr"><div class="sav av-tl">E</div></div>
+        <span class="sn">EDIPON</span>
       </div>
-      <div class="story-item" onclick="showToast('Kwame\'s story')">
-        <div class="story-ring seen"><div class="story-avatar"><div style="width:100%;height:100%;background:#333;display:flex;align-items:center;justify-content:center;font-size:22px;border-radius:50%;">👤</div></div></div>
-        <span class="story-name">Kwame</span>
+      <div class="si" onclick="openChat('kwame')">
+        <div class="sr seen"><div class="sav av-gy">K</div></div>
+        <span class="sn">Kwame</span>
+      </div>
+      <div class="si" onclick="openChat('parker')">
+        <div class="sr"><div class="sav av-bl">P</div></div>
+        <span class="sn">Parker</span>
       </div>
     </div>
 
     <!-- Search -->
-    <div class="search-bar">
-      <div class="search-wrap">
-        <i class="fa-solid fa-magnifying-glass"></i>
+    <div class="sw">
+      <div class="sb2">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" placeholder="Search Chats">
       </div>
     </div>
 
-    <!-- Filter tabs -->
-    <div class="filter-tabs">
-      <div class="ftab active">All <span class="cnt">107</span></div>
-      <div class="ftab">Personal <span class="cnt">95</span></div>
-      <div class="ftab">Unread <span class="cnt">109</span></div>
-      <div class="ftab">Gucci🇮🇹🍕 <span class="cnt">•</span></div>
-      <div class="ftab">Big Boys</div>
+    <!-- Tabs -->
+    <div class="tabs" id="chat-tabs">
+      <div class="tb on" onclick="selTab(this)">All <span class="tbdg">107</span></div>
+      <div class="tb" onclick="selTab(this)">Personal <span class="tbdg">95</span></div>
+      <div class="tb" onclick="selTab(this)">Unread <span class="tbdg">109</span></div>
+      <div class="tb" onclick="selTab(this)">Gucci 🇮🇹🧂</div>
+      <div class="tb" onclick="selTab(this)">Big !</div>
     </div>
 
     <!-- Birthday banner -->
-    <div class="bday-banner" id="bday-banner">
-      <span class="bday-icon">🎂</span>
-      <div class="bday-text">
-        <strong>Add your birthday!</strong>
-        <span>Let your contacts know when you're celebrating</span>
-      </div>
-      <i class="fa-solid fa-xmark close-btn" onclick="document.getElementById('bday-banner').remove()"></i>
+    <div class="banner" id="bday">
+      <div><h4>Add your birthday! 🎂</h4><p>Let your contacts know when you're celebrating</p></div>
+      <span class="bx" onclick="document.getElementById('bday').remove()">✕</span>
     </div>
 
     <!-- Chat List -->
-    <div style="background:#f0f2f5; padding-bottom:8px;">
+    <div class="cli">
       <!-- Archived -->
-      <div class="chat-item archived-item" onclick="showToast('Archived chats')">
-        <div class="chat-avatar" style="background:#9e9e9e;">
-          <i class="fa-solid fa-box-archive" style="font-size:22px;"></i>
-        </div>
-        <div class="chat-info">
-          <div class="chat-name-row">
-            <span class="chat-name">Archived Chats</span>
-          </div>
-          <div class="chat-preview-row">
-            <span class="chat-preview"><b>Hot Vidz 💋</b>, EIMLI ✗MD BOT, Crypto Ne…</span>
-            <span class="unread-badge muted">1</span>
-          </div>
-        </div>
+      <div class="arc" onclick="openChat('archived')">
+        <div class="ari"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5" rx="1"/><line x1="10" y1="12" x2="14" y2="12"/></svg></div>
+        <div class="cb"><div class="ct"><span class="cn">Archived Chats</span></div><div class="cp"><span class="cpv"><b>Hot Vidz 💋</b>, <b>EIMLI ✗MD BOT</b>, Crypto Ne…</span><span class="bdg gy">1</span></div></div>
       </div>
-
       <!-- Maurice -->
-      <div class="chat-item" onclick="openChat('Maurice','4:23 PM')">
-        <div class="chat-avatar" style="background:#1a1a2e;"><img src="" onerror="this.style.display='none'" style="display:none"><span style="font-size:22px;">🐱</span></div>
-        <div class="chat-info">
-          <div class="chat-name-row">
-            <span class="chat-name">Maurice</span>
-            <span class="chat-time">4:23 PM</span>
-          </div>
-          <div class="chat-preview-row">
-            <span class="chat-preview">Hi</span>
-            <i class="fa-solid fa-circle-exclamation chat-err"></i>
-          </div>
-        </div>
+      <div class="ci" onclick="openChat('maurice')">
+        <div class="cav av-dk" style="font-size:28px;">🐱</div>
+        <div class="cb"><div class="ct"><span class="cn">Maurice</span><span class="ctm">4:23 PM</span></div><div class="cp"><span class="cpv">Hi</span><span style="color:var(--red);font-size:20px;">❗</span></div></div>
       </div>
-
       <!-- S£x Rants -->
-      <div class="chat-item" onclick="showToast('S£x💋Rants')">
-        <div class="chat-avatar" style="background:linear-gradient(135deg,#ff6b6b,#ee5a24);"><span style="font-size:22px;">💋</span></div>
-        <div class="chat-info">
-          <div class="chat-name-row">
-            <span class="chat-name">S£x💋Rants</span>
-            <span class="chat-time unread">4:00 PM</span>
-          </div>
-          <div class="chat-preview-row">
-            <span class="chat-preview">📋🚨 Credit Alert ₦600,000 Credited R…</span>
-            <span class="unread-badge">376</span>
-          </div>
-        </div>
+      <div class="ci" onclick="openChat('srants')">
+        <div class="cav av-rd" style="font-size:11px;letter-spacing:-.5px;">SR</div>
+        <div class="cb"><div class="ct"><span class="cn">S£x💋Rants</span><span class="ctm bl">4:00 PM</span></div><div class="cp"><span class="cpv">📋 🚨 Credit Alert ₦600,000 Credited R…</span><span class="bdg">376</span></div></div>
       </div>
-
       <!-- APKPure -->
-      <div class="chat-item" onclick="showToast('APKPure_Official')">
-        <div class="chat-avatar" style="background:#4CAF50; border-radius:14px; overflow:visible;">
-          <span style="font-size:28px; color:white; font-weight:900;">A</span>
-        </div>
-        <div class="chat-info">
-          <div class="chat-name-row">
-            <span class="chat-name">APKPure_Official</span>
-            <span class="chat-time unread">1:00 PM</span>
-          </div>
-          <div class="chat-preview-row">
-            <span class="chat-preview">🖼️🆓REDEEM CODES🆓🏁#NTE Re…</span>
-            <span class="unread-badge">131</span>
-          </div>
-        </div>
+      <div class="ci" onclick="openChat('apkpure')">
+        <div class="cav" style="background:#2e7d32;color:#66bb6a;font-size:22px;font-weight:700;">A</div>
+        <div class="cb"><div class="ct"><span class="cn">APKPure_Official</span><span class="ctm bl">1:00 PM</span></div><div class="cp"><span class="cpv">🎮 FREE REDEEM CODES 🏎️ #NTE Re…</span><span class="bdg">131</span></div></div>
       </div>
-
       <!-- Greg Lawman -->
-      <div class="chat-item" onclick="showToast('Greg Lawman joined Telegram!')">
-        <div class="chat-avatar" style="background:#2AABEE;"><span style="font-size:16px; font-weight:700;">GL</span></div>
-        <div class="chat-info">
-          <div class="chat-name-row">
-            <span class="chat-name">Greg Lawman</span>
-            <span class="chat-time">3:16 AM</span>
-          </div>
-          <div class="chat-preview-row">
-            <span class="chat-preview" style="color:#2AABEE;">Greg Lawman joined Telegram!</span>
-            <i class="fa-solid fa-camera" style="color:#ccc; font-size:16px;"></i>
-          </div>
-        </div>
+      <div class="ci" onclick="openChat('greg')">
+        <div class="cav av-gl" style="font-size:13px;">GL</div>
+        <div class="cb"><div class="ct"><span class="cn">Greg Lawman</span><span class="ctm">3:16 AM</span></div><div class="cp"><span class="cpv bl">Greg Lawman joined Telegram!</span><div style="display:flex;align-items:center;gap:4px;"><span style="font-size:18px;color:#c7c7cc;">📷</span><span style="font-size:16px;">🌙</span></div></div></div>
       </div>
-
       <!-- Sasu -->
-      <div class="chat-item" onclick="openChat('Sasu','just now')">
-        <div class="chat-avatar" style="background:linear-gradient(135deg,#f9c784,#e8975a);">
-          <span style="font-size:22px;">👩</span>
-          <div class="online-dot"></div>
-        </div>
-        <div class="chat-info">
-          <div class="chat-name-row">
-            <span class="chat-name">Sasu ⭐</span>
-            <span class="chat-time unread">just now</span>
-          </div>
-          <div class="chat-preview-row">
-            <span class="chat-preview">Am good u</span>
-            <span class="unread-badge">1</span>
-          </div>
-        </div>
+      <div class="ci" onclick="openChat('sasu')">
+        <div class="cav av-or" style="position:relative;">S<div class="odot"></div></div>
+        <div class="cb"><div class="ct"><span class="cn">Sasu ⭐</span><span class="ctm"></span></div><div class="cp"><span class="cpv">Am good u</span><span class="bdg">1</span></div></div>
       </div>
-
       <!-- Njabulo Jb -->
-      <div class="chat-item" onclick="openChat('Njabulo Jb','May 11')">
-        <div class="chat-avatar">
-          <img src="image.png" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:22px;\'>⚽</span>'">
-          <div class="online-dot"></div>
-        </div>
-        <div class="chat-info">
-          <div class="chat-name-row">
-            <span class="chat-name">Njabulo Jb</span>
-            <span class="chat-time">May 11</span>
-          </div>
-          <div class="chat-preview-row">
-            <span class="chat-preview">/start</span>
-          </div>
-        </div>
+      <div class="ci" onclick="openChat('njabulo')">
+        <div class="cav av-car"><img src="" onerror="this.style.display='none'" alt="">🚗</div>
+        <div class="cb"><div class="ct"><span class="cn">Njabulo Jb</span><span class="ctm">Tue</span></div><div class="cp"><span class="cpv">last seen at 10:50 AM</span></div></div>
+      </div>
+      <!-- Riddimstar -->
+      <div class="ci" onclick="openChat('riddimstar')">
+        <div class="cav av-rd">R</div>
+        <div class="cb"><div class="ct"><span class="cn">Riddimstar ✅</span><span class="ctm bl">Yesterday</span></div><div class="cp"><span class="cpv">🔥🔥</span><span class="bdg">3</span></div></div>
+      </div>
+      <!-- Ella -->
+      <div class="ci" onclick="openChat('ella')">
+        <div class="cav" style="background:#ff2d55;">E</div>
+        <div class="cb"><div class="ct"><span class="cn">Ella</span><span class="ctm">Yesterday</span></div><div class="cp"><span class="cpv">Okay 😊</span></div></div>
       </div>
     </div>
-  </div>
+    <div style="height:10px;"></div>
+  </div><!-- /scrl -->
 
   <!-- FAB -->
-  <div class="fab" onclick="showToast('New message')">
-    <i class="fa-solid fa-pen-to-square"></i>
-    <div class="fab-badge">5</div>
+  <div class="fab" onclick="openChat('njabulo')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <div class="fab2">2</div>
   </div>
 
   <!-- Bottom Nav -->
-  <div class="bottom-nav">
-    <div class="nav-btn active" onclick="navigate('chats')">
-      <i class="fa-solid fa-message"></i>
-      <span>Chats</span>
-      <div class="badge">107</div>
-    </div>
-    <div class="nav-btn" onclick="navigate('contacts')">
-      <i class="fa-solid fa-user"></i>
-      <span>Contacts</span>
-    </div>
-    <div class="nav-btn" onclick="navigate('settings')">
-      <i class="fa-solid fa-gear"></i>
-      <span>Settings</span>
-    </div>
-    <div class="nav-btn" onclick="navigate('profile')">
-      <div style="width:30px;height:30px;border-radius:50%;overflow:hidden;background:#ddd;display:flex;align-items:center;justify-content:center;">
-        <img src="image.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
-      </div>
-      <span>Profile</span>
-    </div>
+  <div class="bnav">
+    <div class="ni" onclick="go('sc')"><div class="ni-i on" style="position:relative;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="nbdg">107</span></div><span class="ni-l on">Chats</span></div>
+    <div class="ni" onclick="go('scontacts')"><div class="ni-i"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="ni-l">Contacts</span></div>
+    <div class="ni" onclick="go('ssettings')"><div class="ni-i"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33A1.65 1.65 0 0 0 13 21a2 2 0 0 1-4 0 1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><span class="ni-l">Settings</span></div>
+    <div class="ni" onclick="go('sprofile')"><div class="ni-i" style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#1a1a2e,#0f3460);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;">🚗</div><span class="ni-l">Profile</span></div>
   </div>
 </div>
 
-<!-- ══════════════ CONTACTS SCREEN ══════════════ -->
-<div id="screen-contacts" class="screen">
-  <div class="contacts-topbar">
-    <h1>Contacts</h1>
-    <i class="fa-solid fa-arrow-down-a-z" style="font-size:20px; color:#555; cursor:pointer;" onclick="showToast('Sorted A-Z')"></i>
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║  SCREEN 2 — CONTACTS            ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<div id="scontacts" class="screen" style="background:var(--bg2);">
+  <div class="sb" style="background:var(--bg2);">
+    <span style="font-weight:600;">Mascom|MASCOM 🌐</span>
+    <div class="sb-r">⏰ 📶 4G 📶 <span class="bat">5</span>🍃 &nbsp;4:31 PM</div>
   </div>
-
-  <div class="scroll-body">
-    <div class="search-bar">
-      <div class="search-wrap">
-        <i class="fa-solid fa-magnifying-glass"></i>
+  <div class="hdr" style="padding-top:4px;">
+    <span style="font-size:26px;font-weight:700;">Contacts</span>
+    <span style="font-size:22px;cursor:pointer;color:#555;">≡<sub style="font-size:10px;vertical-align:baseline;">A</sub></span>
+  </div>
+  <div class="scrl">
+    <div class="sw">
+      <div class="sb2" style="background:#e4e4ea;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" placeholder="Search Contacts">
       </div>
     </div>
-
-    <!-- Utilities -->
-    <div style="background:var(--tg-white); margin-bottom:8px;">
-      <div class="contact-util" onclick="showToast('Invite Friends')">
-        <div class="contact-util-icon" style="background:#e3f2fd;"><i class="fa-solid fa-user-plus" style="color:#2AABEE"></i></div>
-        <span class="contact-util-text">Invite Friends</span>
+    <div class="cc">
+      <div class="cbtn">
+        <div class="cbic" style="background:var(--blue);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+        <span style="font-size:16px;font-weight:500;">Invite Friends</span>
       </div>
-      <div class="contact-util" onclick="showToast('Recent Calls')">
-        <div class="contact-util-icon" style="background:#e8f5e9;"><i class="fa-solid fa-phone" style="color:#4CAF50"></i></div>
-        <span class="contact-util-text">Recent calls</span>
+      <div class="cbtn">
+        <div class="cbic" style="background:var(--green);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.5 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.41 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <span style="font-size:16px;font-weight:500;">Recent calls</span>
       </div>
     </div>
-
-    <div class="section-label">Sorted by last seen time</div>
-
-    <div class="contact-item" onclick="openChat('Riddimstar','online')">
-      <div class="contact-avatar has-ring"><div style="width:100%;height:100%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:22px;">🎵</div></div>
-      <div class="contact-info">
-        <div class="name">Riddimstar <i class="fa-solid fa-circle-check" style="color:#2AABEE;font-size:13px;"></i></div>
-        <div class="status status-online">online</div>
+    <p class="csh">Sorted by last seen time</p>
+    <div class="cc">
+      <div class="cct" onclick="openChat('riddimstar')">
+        <div class="cca av-rd" style="position:relative;">R<div class="cring"></div></div>
+        <div><div class="ccn">Riddimstar ✅</div><div class="ccs ol">online</div></div>
+      </div>
+      <div class="cct" onclick="openChat('sasu')">
+        <div class="cca av-or" style="position:relative;">S<div class="cring g"></div></div>
+        <div><div class="ccn">Sasu ⭐</div><div class="ccs ol">online</div></div>
+      </div>
+      <div class="cct" onclick="openChat('lhegacy')">
+        <div class="cca av-in" style="position:relative;">L<div class="cring"></div></div>
+        <div><div class="ccn">Lhegacy ⚡⭐</div><div class="ccs ol">online</div></div>
+      </div>
+      <div class="cct" onclick="openChat('roban')">
+        <div class="cca av-pur" style="position:relative;">R<div class="cring g"></div></div>
+        <div><div class="ccn">Roban Store</div><div class="ccs ol">online</div></div>
+      </div>
+      <div class="cct" onclick="openChat('riddimoff')">
+        <div class="cca" style="background:#111;font-size:22px;">👾</div>
+        <div><div class="ccn">Riddimstar Official</div><div class="ccs ls">last seen at 4:30 PM</div></div>
+      </div>
+      <div class="cct" onclick="openChat('zami')">
+        <div class="cca" style="background:#111;font-size:22px;">🌑</div>
+        <div><div class="ccn">Zami</div><div class="ccs ls">last seen at 4:30 PM</div></div>
+      </div>
+      <div class="cct" onclick="openChat('ella')">
+        <div class="cca" style="background:#ff2d55;">E</div>
+        <div><div class="ccn">Ella</div><div class="ccs ls">last seen at 4:29 PM</div></div>
+      </div>
+      <div class="cct" onclick="openChat('ultraxas')">
+        <div class="cca" style="background:#111;font-size:9px;font-weight:700;text-align:center;line-height:1.2;color:#fff;">ULTRA<br>XAS</div>
+        <div><div class="ccn">Ultraxas ⚡</div><div class="ccs ls">last seen at 4:28 PM</div></div>
+      </div>
+      <div class="cct" onclick="openChat('sorvon')">
+        <div class="cca av-tl">S</div>
+        <div><div class="ccn">Sor von ✨</div><div class="ccs ls">last seen at 4:23 PM</div></div>
       </div>
     </div>
-    <div class="contact-item" onclick="openChat('Sasu','online')">
-      <div class="contact-avatar has-ring"><div style="width:100%;height:100%;background:linear-gradient(135deg,#f9c784,#e8975a);display:flex;align-items:center;justify-content:center;font-size:22px;">👩</div></div>
-      <div class="contact-info">
-        <div class="name">Sasu ⭐</div>
-        <div class="status status-online">online</div>
-      </div>
-    </div>
-    <div class="contact-item" onclick="openChat('Lhegacy','online')">
-      <div class="contact-avatar has-ring"><div style="width:100%;height:100%;background:linear-gradient(135deg,#6a0572,#2c003e);display:flex;align-items:center;justify-content:center;font-size:22px;">⚡</div></div>
-      <div class="contact-info">
-        <div class="name">Lhegacy ⚡⭐</div>
-        <div class="status status-online">online</div>
-      </div>
-    </div>
-    <div class="contact-item" onclick="showToast('Roban Store')">
-      <div class="contact-avatar has-ring"><div style="width:100%;height:100%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:22px;">🏪</div></div>
-      <div class="contact-info">
-        <div class="name">Roban Store</div>
-        <div class="status status-online">online</div>
-      </div>
-    </div>
-    <div class="contact-item" onclick="showToast('Riddimstar Official')">
-      <div class="contact-avatar"><div style="width:100%;height:100%;background:#000;display:flex;align-items:center;justify-content:center;font-size:22px;">😈</div></div>
-      <div class="contact-info">
-        <div class="name">Riddimstar Official</div>
-        <div class="status status-seen">last seen at 4:30 PM</div>
-      </div>
-    </div>
-    <div class="contact-item" onclick="showToast('Zami')">
-      <div class="contact-avatar"><div style="width:100%;height:100%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:orange;">DT</div></div>
-      <div class="contact-info">
-        <div class="name">Zami</div>
-        <div class="status status-seen">last seen at 4:30 PM</div>
-      </div>
-    </div>
-    <div class="contact-item" onclick="openChat('Ella','4:29 PM')">
-      <div class="contact-avatar"><div style="width:100%;height:100%;background:linear-gradient(135deg,#ff6b6b,#ee5a24);display:flex;align-items:center;justify-content:center;font-size:22px;">👩‍🦱</div></div>
-      <div class="contact-info">
-        <div class="name">Ella</div>
-        <div class="status status-seen">last seen at 4:29 PM</div>
-      </div>
-    </div>
-    <div class="contact-item" onclick="showToast('Ultraxas ⚡')">
-      <div class="contact-avatar"><div style="width:100%;height:100%;background:#000;display:flex;align-items:center;justify-content:center;"><img src="" style="display:none"><span style="color:#00ff88;font-size:11px;font-weight:700;">ULTRA</span></div></div>
-      <div class="contact-info">
-        <div class="name">Ultraxas ⚡</div>
-        <div class="status status-seen">last seen at 4:28 PM</div>
-      </div>
-    </div>
+    <div style="height:12px;"></div>
   </div>
-
-  <div class="bottom-nav">
-    <div class="nav-btn" onclick="navigate('chats')">
-      <i class="fa-solid fa-message"></i><span>Chats</span>
-      <div class="badge">107</div>
-    </div>
-    <div class="nav-btn active" onclick="navigate('contacts')">
-      <i class="fa-solid fa-user"></i><span>Contacts</span>
-    </div>
-    <div class="nav-btn" onclick="navigate('settings')">
-      <i class="fa-solid fa-gear"></i><span>Settings</span>
-    </div>
-    <div class="nav-btn" onclick="navigate('profile')">
-      <div style="width:30px;height:30px;border-radius:50%;overflow:hidden;background:#ddd;"><img src="image.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"></div>
-      <span>Profile</span>
-    </div>
+  <div class="fab" style="position:absolute;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="go('sc')"><div class="ni-i" style="position:relative;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="nbdg">107</span></div><span class="ni-l">Chats</span></div>
+    <div class="ni" onclick="go('scontacts')"><div class="ni-i on"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="ni-l on">Contacts</span></div>
+    <div class="ni" onclick="go('ssettings')"><div class="ni-i"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33A1.65 1.65 0 0 0 13 21a2 2 0 0 1-4 0 1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><span class="ni-l">Settings</span></div>
+    <div class="ni" onclick="go('sprofile')"><div class="ni-i" style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#1a1a2e,#0f3460);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;">🚗</div><span class="ni-l">Profile</span></div>
   </div>
 </div>
 
-<!-- ══════════════ SETTINGS SCREEN ══════════════ -->
-<div id="screen-settings" class="screen">
-  <div class="topbar" style="justify-content:flex-end; padding-right:16px;">
-    <div class="topbar-icons">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <i class="fa-solid fa-ellipsis-vertical"></i>
-    </div>
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║  SCREEN 3 — SETTINGS            ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<div id="ssettings" class="screen" style="background:var(--bg2);">
+  <div class="sb" style="background:var(--bg2);">
+    <span style="font-weight:600;">Mascom|MASCOM 🌐</span>
+    <div class="sb-r">⏰ 📶 4G 📶 <span class="bat">5</span>🍃 &nbsp;4:31 PM</div>
   </div>
-
-  <div class="scroll-body">
-    <div class="settings-profile-box">
-      <div class="settings-avatar-wrap">
-        <div class="settings-avatar">
-          <img src="image.png" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fa-solid fa-car\' style=\'color:#2AABEE;font-size:32px\'></i>'">
-        </div>
-        <div class="settings-cam"><i class="fa-solid fa-camera" style="font-size:12px;"></i></div>
-      </div>
-      <div class="settings-name">Njabulo Jb Whatsapp and Telegram B…</div>
-      <div class="settings-sub">+267 77821911 • @njabuloOFC</div>
-    </div>
-
-    <div class="confirm-card">
-      <p>Is +267 77821911 still your number?</p>
-      <small>Keep your number up to date to ensure you can always log into Telegram. <a href="#">Learn more</a></small>
-      <div class="confirm-btns">
-        <button class="btn-no" onclick="showToast('Number not changed')">No</button>
-        <button class="btn-yes" onclick="showToast('✅ Number confirmed!')">👍 Yes</button>
-      </div>
-    </div>
-
-    <div class="settings-list">
-      <div class="settings-row" onclick="showToast('Account settings')">
-        <div class="settings-icon" style="background:#2AABEE;"><i class="fa-solid fa-user"></i></div>
-        <div class="settings-row-info"><div class="title">Account</div><div class="sub">Number, Username, Bio</div></div>
-        <i class="fa-solid fa-chevron-right" style="color:#ccc; margin-left:auto;"></i>
-      </div>
-      <div class="settings-row" onclick="showToast('Chat Settings')">
-        <div class="settings-icon" style="background:#f5a623;"><i class="fa-solid fa-comment"></i></div>
-        <div class="settings-row-info"><div class="title">Chat Settings</div><div class="sub">Wallpaper, Night Mode, Animations</div></div>
-        <i class="fa-solid fa-chevron-right" style="color:#ccc; margin-left:auto;"></i>
-      </div>
-      <div class="settings-row" onclick="showToast('Privacy & Security')">
-        <div class="settings-icon" style="background:#4CAF50;"><i class="fa-solid fa-key"></i></div>
-        <div class="settings-row-info"><div class="title">Privacy &amp; Security</div><div class="sub">Last Seen, Devices, Passkeys</div></div>
-        <i class="fa-solid fa-chevron-right" style="color:#ccc; margin-left:auto;"></i>
-      </div>
-      <div class="settings-row" onclick="showToast('Notifications')">
-        <div class="settings-icon" style="background:#e53935;"><i class="fa-solid fa-bell"></i></div>
-        <div class="settings-row-info"><div class="title">Notifications</div><div class="sub">Sounds, Calls, Badges</div></div>
-        <i class="fa-solid fa-chevron-right" style="color:#ccc; margin-left:auto;"></i>
-      </div>
-      <div class="settings-row" onclick="showToast('Data and Storage')">
-        <div class="settings-icon" style="background:#3F51B5;"><i class="fa-solid fa-hard-drive"></i></div>
-        <div class="settings-row-info"><div class="title">Data and Storage</div><div class="sub">Media download settings</div></div>
-        <i class="fa-solid fa-chevron-right" style="color:#ccc; margin-left:auto;"></i>
-      </div>
-      <div class="settings-row" onclick="showToast('Chat Folders')">
-        <div class="settings-icon" style="background:#2AABEE;"><i class="fa-solid fa-folder"></i></div>
-        <div class="settings-row-info"><div class="title">Chat Folders</div><div class="sub">Manage chat folders</div></div>
-        <i class="fa-solid fa-chevron-right" style="color:#ccc; margin-left:auto;"></i>
-      </div>
-      <div class="settings-row" onclick="showToast('Connected Devices')">
-        <div class="settings-icon" style="background:#00BCD4;"><i class="fa-solid fa-laptop"></i></div>
-        <div class="settings-row-info"><div class="title">Devices</div><div class="sub">Manage connected devices</div></div>
-        <i class="fa-solid fa-chevron-right" style="color:#ccc; margin-left:auto;"></i>
-      </div>
-      <div class="settings-row" onclick="showToast('Power Saving mode')">
-        <div class="settings-icon" style="background:#FF9800;"><i class="fa-solid fa-bolt"></i></div>
-        <div class="settings-row-info"><div class="title">Power Saving</div><div class="sub">Manage battery usage</div></div>
-        <i class="fa-solid fa-chevron-right" style="color:#ccc; margin-left:auto;"></i>
-      </div>
-    </div>
+  <div style="display:flex;justify-content:flex-end;padding:4px 14px 8px;gap:18px;flex-shrink:0;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2.2" stroke-linecap="round" style="cursor:pointer;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span style="font-size:24px;cursor:pointer;color:#555;line-height:1;">⋮</span>
   </div>
-
-  <div class="bottom-nav">
-    <div class="nav-btn" onclick="navigate('chats')"><i class="fa-solid fa-message"></i><span>Chats</span><div class="badge">107</div></div>
-    <div class="nav-btn" onclick="navigate('contacts')"><i class="fa-solid fa-user"></i><span>Contacts</span></div>
-    <div class="nav-btn active" onclick="navigate('settings')"><i class="fa-solid fa-gear"></i><span>Settings</span></div>
-    <div class="nav-btn" onclick="navigate('profile')">
-      <div style="width:30px;height:30px;border-radius:50%;overflow:hidden;background:#ddd;"><img src="image.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"></div>
-      <span>Profile</span>
+  <div class="scrl">
+    <div class="phead">
+      <div class="pavi" onclick="go('sprofile')">
+        <img src="" onerror="this.style.display='none'" alt="">🚗
+        <div class="pcam">📷</div>
+      </div>
+      <div class="pnm">Njabulo Jb Whatsapp and Telegram B…</div>
+      <div class="psb">+267 77821911 · @njabuloOFC</div>
     </div>
+    <!-- Verify number card -->
+    <div class="vcard" id="vcard">
+      <p class="vt">Is +267 77821911 still your number?</p>
+      <p class="vs">Keep your number up to date to ensure you can always log into Telegram. <a href="#">Learn more</a></p>
+      <div class="vbtns">
+        <button class="vbn" onclick="document.getElementById('vcard').remove()">No</button>
+        <button class="vbn" onclick="document.getElementById('vcard').remove()">👍 Yes</button>
+      </div>
+    </div>
+    <!-- Settings Menu -->
+    <div class="sc">
+      <div class="si2"><div class="sic" style="background:var(--blue);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="stx"><div class="st">Account</div><div class="ss">Number, Username, Bio</div></div><span class="sar">›</span></div>
+      <div class="si2"><div class="sic" style="background:var(--orange);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="stx"><div class="st">Chat Settings</div><div class="ss">Wallpaper, Night Mode, Animations</div></div><span class="sar">›</span></div>
+      <div class="si2"><div class="sic" style="background:var(--green);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="stx"><div class="st">Privacy &amp; Security</div><div class="ss">Last Seen, Devices, Passkeys</div></div><span class="sar">›</span></div>
+      <div class="si2"><div class="sic" style="background:var(--red);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="stx"><div class="st">Notifications</div><div class="ss">Sounds, Calls, Badges</div></div><span class="sar">›</span></div>
+      <div class="si2"><div class="sic" style="background:#5856D6;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="stx"><div class="st">Data and Storage</div><div class="ss">Media download settings</div></div><span class="sar">›</span></div>
+      <div class="si2"><div class="sic" style="background:var(--blue);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="stx"><div class="st">Chat Folders</div><div class="ss">Organize your chats</div></div><span class="sar">›</span></div>
+      <div class="si2"><div class="sic" style="background:#555;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="stx"><div class="st">Manage connected devices</div><div class="ss">Active sessions</div></div><span class="sar">›</span></div>
+      <div class="si2"><div class="sic" style="background:#8e8e93;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="stx"><div class="st">Power Saving</div><div class="ss">Reduce animations &amp; effects</div></div><span class="sar">›</span></div>
+    </div>
+    <div style="height:12px;"></div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="go('sc')"><div class="ni-i" style="position:relative;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="nbdg">107</span></div><span class="ni-l">Chats</span></div>
+    <div class="ni" onclick="go('scontacts')"><div class="ni-i"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="ni-l">Contacts</span></div>
+    <div class="ni" onclick="go('ssettings')"><div class="ni-i on"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33A1.65 1.65 0 0 0 13 21a2 2 0 0 1-4 0 1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><span class="ni-l on">Settings</span></div>
+    <div class="ni" onclick="go('sprofile')"><div class="ni-i" style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#1a1a2e,#0f3460);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;">🚗</div><span class="ni-l">Profile</span></div>
   </div>
 </div>
 
-<!-- ══════════════ PROFILE SCREEN ══════════════ -->
-<div id="screen-profile" class="screen">
-  <div class="topbar">
-    <div style="display:flex;gap:8px;align-items:center;">
-      <i class="fa-solid fa-qrcode" style="font-size:20px; color:#555; cursor:pointer;" onclick="showToast('QR Code')"></i>
-    </div>
-    <div class="topbar-icons">
-      <i class="fa-solid fa-ellipsis-vertical"></i>
-    </div>
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║  SCREEN 4 — PROFILE             ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<div id="sprofile" class="screen" style="background:var(--bg2);">
+  <div class="sb" style="background:var(--bg2);">
+    <span style="font-weight:600;">Mascom|MASCOM 🌐</span>
+    <div class="sb-r">⏰ 📶 4G 📶 <span class="bat">5</span>🍃 &nbsp;4:31 PM</div>
   </div>
-
-  <div class="scroll-body">
-    <div class="profile-header">
-      <div class="profile-avatar">
-        <img src="image.png" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fa-solid fa-car\' style=\'color:#2AABEE;font-size:36px\'></i>'">
+  <div class="scrl">
+    <div class="pphead">
+      <div class="pptop">
+        <span style="font-size:22px;cursor:pointer;color:#555;">⊞</span>
+        <span style="font-size:24px;cursor:pointer;color:#555;line-height:1;">⋮</span>
       </div>
-      <div class="profile-name">Njabulo Jb Whatsapp and Telegram Bot OFC &nbsp;<span style="font-size:14px;color:#2AABEE">Njabulo Jb</span></div>
-      <div class="profile-online">online</div>
-      <div class="profile-actions">
-        <button class="profile-action-btn" onclick="showToast('Set Photo')">
-          <i class="fa-solid fa-camera-plus"></i>Set Photo
-        </button>
-        <button class="profile-action-btn" onclick="showToast('Edit Info')">
-          <i class="fa-solid fa-pen"></i>Edit Info
-        </button>
-        <button class="profile-action-btn" onclick="navigate('settings')">
-          <i class="fa-solid fa-gear"></i>Settings
-        </button>
+      <div class="pavi" style="width:92px;height:92px;">
+        <img src="" onerror="this.style.display='none'" alt="">🚗
+      </div>
+      <div style="font-size:17px;font-weight:700;text-align:center;margin-top:8px;color:#000;">Njabulo Jb Whatsapp and Telegram Bot OFC &nbsp;·&nbsp; Njabulo Jb</div>
+      <div style="font-size:13px;color:var(--blue);margin-top:4px;">online</div>
+      <div class="ppacts">
+        <button class="ppab"><span>📷</span>Set Photo</button>
+        <button class="ppab"><span>✏️</span>Edit Info</button>
+        <button class="ppab" onclick="go('ssettings')"><span>⚙️</span>Settings</button>
       </div>
     </div>
-
-    <!-- Channel -->
-    <div class="section-header">Channel <span style="background:#e3f2fd;color:#2AABEE;border-radius:10px;padding:2px 8px;font-size:12px;">29 subscribers</span></div>
-    <div class="profile-section">
-      <div class="channel-row" onclick="showToast('Njabulo Jb OFC channel')">
-        <div class="channel-avatar"><div style="width:100%;height:100%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:22px;">👥</div></div>
-        <div class="channel-info">
-          <div class="ch-name">Njabulo Jb OFC</div>
-          <div class="ch-preview">Done enjoy</div>
-          <div class="ch-preview">WhatsApp name njabulo jb small availa…</div>
+    <!-- Channel preview -->
+    <div style="margin:8px 12px;background:#fff;border-radius:14px;padding:14px;">
+      <div style="font-size:14px;font-weight:600;margin-bottom:10px;"><span style="color:var(--blue);">Channel</span> &nbsp;<span style="color:#888;font-weight:400;font-size:13px;">29 subscribers</span></div>
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👥</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:15px;font-weight:600;">Njabulo Jb OFC</div>
+          <div style="font-size:13px;color:#888;">Done enjoy</div>
+          <div style="font-size:12px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">WhatsApp name njabulo jb small availa…</div>
         </div>
-        <div class="channel-meta">
-          <div class="ch-tick"><i class="fa-solid fa-check-double"></i></div>
-          <div class="ch-date">Jan 31</div>
+        <div style="flex-shrink:0;text-align:right;">
+          <div style="font-size:12px;color:#888;">Jan 31</div>
+          <div style="color:#4cb04f;font-size:14px;">✓✓</div>
         </div>
       </div>
     </div>
-
-    <!-- Info -->
-    <div class="profile-section" style="margin-top:8px;">
-      <div class="info-row">
-        <div class="val">+267 77821911</div>
-        <div class="lbl">Mobile</div>
-      </div>
-      <div class="info-row" onclick="showToast('Opening bot link…')">
-        <div class="lbl" style="margin-bottom:4px;">Bot</div>
-        <div><a href="#">https://t.me/njabullo_bot?start=_tgr_Hs_aefs3NjBk</a></div>
-        <div class="lbl">Bio</div>
-      </div>
-      <div class="info-row">
-        <div class="val">@njabuloOFC</div>
-        <div class="lbl">Username</div>
-      </div>
+    <!-- Info card -->
+    <div class="icard">
+      <div class="iit"><div class="iv">+267 77821911</div><div class="il">Mobile</div></div>
+      <div class="iit"><div class="iv">Bot</div><div class="il"><a href="#">https://t.me/njabullo_bot?start=_tgr_Hs_aefs3NjBk</a></div></div>
+      <div class="iit"><div class="iv">@njabuloOFC</div><div class="il">Username</div></div>
     </div>
-
     <!-- Posts tabs -->
-    <div class="posts-tabs">
-      <div class="posts-tab active">Posts</div>
-      <div class="posts-tab">Archived Posts</div>
+    <div class="ptabs">
+      <div class="ptb on" onclick="this.classList.add('on');this.nextElementSibling.classList.remove('on')">Posts</div>
+      <div class="ptb" onclick="this.classList.add('on');this.previousElementSibling.classList.remove('on')">Archived Posts</div>
     </div>
-
-    <!-- Post preview -->
-    <div style="padding:8px; display:grid; grid-template-columns:1fr 1fr; gap:4px;">
-      <div style="height:120px;background:linear-gradient(135deg,#232526,#414345);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:30px;">🎵</div>
-      <div style="height:120px;background:linear-gradient(135deg,#0f0c29,#302b63);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:30px;">⚡</div>
-    </div>
+    <div style="margin:8px 12px;border-radius:14px;height:180px;background:linear-gradient(135deg,#111,#1a2a3e);display:flex;align-items:center;justify-content:center;font-size:60px;color:#333;">🖼</div>
+    <div style="height:12px;"></div>
   </div>
-
-  <div class="bottom-nav">
-    <div class="nav-btn" onclick="navigate('chats')"><i class="fa-solid fa-message"></i><span>Chats</span><div class="badge">107</div></div>
-    <div class="nav-btn" onclick="navigate('contacts')"><i class="fa-solid fa-user"></i><span>Contacts</span></div>
-    <div class="nav-btn" onclick="navigate('settings')"><i class="fa-solid fa-gear"></i><span>Settings</span></div>
-    <div class="nav-btn active" onclick="navigate('profile')">
-      <div style="width:30px;height:30px;border-radius:50%;overflow:hidden;background:#ddd;border:2px solid #2AABEE;"><img src="image.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"></div>
-      <span style="color:#2AABEE">Profile</span>
-    </div>
+  <div class="bnav">
+    <div class="ni" onclick="go('sc')"><div class="ni-i" style="position:relative;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="nbdg">107</span></div><span class="ni-l">Chats</span></div>
+    <div class="ni" onclick="go('scontacts')"><div class="ni-i"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="ni-l">Contacts</span></div>
+    <div class="ni" onclick="go('ssettings')"><div class="ni-i"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33A1.65 1.65 0 0 0 13 21a2 2 0 0 1-4 0 1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><span class="ni-l">Settings</span></div>
+    <div class="ni" onclick="go('sprofile')"><div class="ni-i on" style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#1a1a2e,#0f3460);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;">🚗</div><span class="ni-l on">Profile</span></div>
   </div>
 </div>
 
-<!-- ══════════════ CHAT WINDOW SCREEN ══════════════ -->
-<div id="screen-chat" class="screen">
-  <div class="chat-wallpaper"></div>
-  <div class="chat-topbar">
-    <span class="back" onclick="navigate('chats')"><i class="fa-solid fa-arrow-left"></i></span>
-    <div class="chat-topbar-avatar">
-      <img src="image.png" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#2AABEE,#1a8fcf)';this.parentNode.innerHTML='<span style=\'font-size:18px;color:white;font-weight:700;\'>NJ</span>'">
+<!-- ╔══════════════════════════════════╗ -->
+<!-- ║  SCREEN 5 — CHAT VIEW           ║ -->
+<!-- ╚══════════════════════════════════╝ -->
+<div id="sv" class="screen">
+  <div class="cvbg-grad"></div>
+  <div class="cvbg-pat"></div>
+  <!-- Status bar -->
+  <div class="sb" style="background:rgba(255,255,255,.97);flex-shrink:0;position:relative;z-index:10;">
+    <span style="font-weight:600;">Mascom|MASCOM 🌐</span>
+    <div class="sb-r">⏰ 📶 4G 📶 <span class="bat">5</span>🍃 &nbsp;4:31 PM</div>
+  </div>
+  <!-- Chat header -->
+  <div class="cvhdr">
+    <span class="cvback" onclick="go(prevSc)">‹</span>
+    <div class="cvav av-car" id="cv-av">🚗</div>
+    <div style="flex:1;min-width:0;">
+      <div class="cvnm" id="cv-nm">Njabulo Jb</div>
+      <div class="cvst" id="cv-st">last seen at 10:50 AM</div>
     </div>
-    <div class="chat-topbar-info">
-      <div class="ct-name" id="chat-contact-name">Njabulo Jb</div>
-      <div class="ct-status" id="chat-contact-status">last seen at 10:50 AM</div>
-    </div>
-    <div class="chat-topbar-icons">
-      <i class="fa-solid fa-phone" onclick="showToast('Calling…')"></i>
-      <i class="fa-solid fa-ellipsis-vertical" onclick="showToast('More options')"></i>
+    <div class="cvacts">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.5 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.41 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span style="font-size:24px;cursor:pointer;line-height:1;">⋮</span>
     </div>
   </div>
-
-  <div class="chat-messages" id="chat-messages">
-    <div class="date-sep"><span>March 25</span></div>
-    <div class="system-msg"><span>Njabulo Jb joined Telegram!</span></div>
-    <div class="date-sep"><span>May 10</span></div>
-    <div class="msg-bubble msg-out">
-      Hi
-      <div class="msg-time">8:57 PM <span class="ticks"><i class="fa-solid fa-check-double"></i></span></div>
+  <!-- Messages area -->
+  <div class="msgs" id="msgs-area"></div>
+  <!-- Input -->
+  <div class="cinput">
+    <div class="ciw">
+      <span style="font-size:24px;cursor:pointer;">😊</span>
+      <input type="text" id="cinput" placeholder="Message" onkeydown="if(event.key==='Enter')sendMsg()">
+      <span style="font-size:22px;cursor:pointer;color:#aaa;">📎</span>
     </div>
-    <div class="msg-bubble msg-out">
-      /start
-      <div class="msg-time">8:57 PM <span class="ticks"><i class="fa-solid fa-check-double"></i></span></div>
-    </div>
-    <div class="date-sep"><span>May 11</span></div>
-    <div class="msg-bubble msg-in">
-      /start
-      <div class="msg-time">12:05 AM</div>
-    </div>
-  </div>
-
-  <div class="chat-input-bar">
-    <div class="chat-input-inner">
-      <i class="fa-regular fa-face-smile"></i>
-      <input type="text" id="msg-input" placeholder="Send" onkeydown="if(event.key==='Enter')sendMessage()">
-      <i class="fa-solid fa-paperclip"></i>
-    </div>
-    <button class="send-btn" onclick="sendMessage()">
-      <i class="fa-solid fa-paper-plane" id="send-icon"></i>
+    <button class="csend" onclick="sendMsg()">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="#fff"/></svg>
     </button>
   </div>
 </div>
 
-<!-- Toast -->
-<div class="toast" id="toast"></div>
-
 <script>
-  // ── Navigation ──
-  const screens = ['chats','contacts','settings','profile','chat'];
-  function navigate(id) {
-    screens.forEach(s => {
-      const el = document.getElementById('screen-'+s);
-      el.classList.remove('active');
-    });
-    const target = document.getElementById('screen-'+id);
-    target.classList.add('active');
-    target.classList.add('slide-left');
-    setTimeout(()=>target.classList.remove('slide-left'),300);
-  }
+// ── NAVIGATION ──────────────────────────────────
+let prevSc = 'sc';
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) { el.classList.add('active'); }
+}
+function selTab(el){
+  el.closest('.tabs').querySelectorAll('.tb').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+}
 
-  function openChat(name, time) {
-    document.getElementById('chat-contact-name').textContent = name;
-    document.getElementById('chat-contact-status').textContent =
-      time === 'online' ? 'online' : 'last seen at ' + time;
-    // Clear & rebuild messages for this contact
-    const msgs = document.getElementById('chat-messages');
-    msgs.innerHTML = `
-      <div class="date-sep"><span>May 10</span></div>
-      <div class="msg-bubble msg-in">Hey! 👋<div class="msg-time">9:00 AM</div></div>
-      <div class="msg-bubble msg-out">Hi 😊<div class="msg-time">9:01 AM <span class="ticks"><i class="fa-solid fa-check-double"></i></span></div></div>
-    `;
-    navigate('chat');
-    // Show typing after 1s
-    setTimeout(showTyping, 1200);
-  }
+// ── CHAT DATA ────────────────────────────────────
+const CHATS = {
+  njabulo:{nm:'Njabulo Jb',st:'last seen at 10:50 AM',av:'🚗',cls:'av-car',
+    msgs:[
+      {t:'sep',tx:'March 25'},
+      {t:'sys',tx:'Njabulo Jb joined Telegram!'},
+      {t:'sep',tx:'May 10'},
+      {t:'s',tx:'Hi',tm:'8:57 PM',rd:true},
+      {t:'s',tx:'/start',tm:'8:57 PM',rd:true},
+      {t:'sep',tx:'May 11'},
+      {t:'r',tx:'/start',tm:'12:05 AM'},
+    ]},
+  sasu:{nm:'Sasu ⭐',st:'online',av:'S',cls:'av-or',msgs:[{t:'sep',tx:'Today'},{t:'r',tx:'Am good u',tm:'Just now'}]},
+  maurice:{nm:'Maurice',st:'last seen recently',av:'🐱',cls:'av-dk',msgs:[{t:'sep',tx:'Today'},{t:'r',tx:'Hi',tm:'4:23 PM'}]},
+  srants:{nm:'S£x💋Rants',st:'online',av:'SR',cls:'av-rd',msgs:[{t:'sep',tx:'Today'},{t:'r',tx:'📋 🚨 Credit Alert ₦600,000 Credited R…',tm:'4:00 PM'}]},
+  apkpure:{nm:'APKPure_Official',st:'online',av:'A',cls:'',sty:'background:#2e7d32;color:#66bb6a;',msgs:[{t:'sep',tx:'Today'},{t:'r',tx:'🎮 FREE REDEEM CODES 🏎️ #NTE Re…',tm:'1:00 PM'}]},
+  greg:{nm:'Greg Lawman',st:'joined Telegram',av:'GL',cls:'av-gl',msgs:[{t:'sys',tx:'Greg Lawman joined Telegram!'}]},
+  sasu:{nm:'Sasu ⭐',st:'online',av:'S',cls:'av-or',msgs:[{t:'r',tx:'Am good u',tm:'Just now'}]},
+  ella:{nm:'Ella',st:'last seen at 4:29 PM',av:'E',cls:'',sty:'background:#ff2d55;',msgs:[{t:'sep',tx:'Yesterday'},{t:'r',tx:'Okay 😊',tm:'Yesterday'}]},
+  riddimstar:{nm:'Riddimstar ✅',st:'online',av:'R',cls:'av-rd',msgs:[{t:'sep',tx:'Yesterday'},{t:'r',tx:'🔥🔥',tm:'Yesterday'}]},
+  lhegacy:{nm:'Lhegacy ⚡⭐',st:'online',av:'L',cls:'av-in',msgs:[{t:'r',tx:'Hey! ⚡',tm:'Just now'}]},
+  roban:{nm:'Roban Store',st:'online',av:'R',cls:'av-pur',msgs:[{t:'r',tx:'Check our new store!',tm:'Just now'}]},
+  riddimoff:{nm:'Riddimstar Official',st:'last seen at 4:30 PM',av:'👾',cls:'',sty:'background:#111;',msgs:[]},
+  zami:{nm:'Zami',st:'last seen at 4:30 PM',av:'🌑',cls:'',sty:'background:#111;',msgs:[]},
+  ultraxas:{nm:'Ultraxas ⚡',st:'last seen at 4:28 PM',av:'U',cls:'',sty:'background:#111;',msgs:[]},
+  sorvon:{nm:'Sor von ✨',st:'last seen at 4:23 PM',av:'S',cls:'av-tl',msgs:[]},
+  edipon:{nm:'EDIPON',st:'online',av:'E',cls:'av-tl',msgs:[{t:'r',tx:'Hey! 👋',tm:'Just now'}]},
+  kwame:{nm:'Kwame',st:'last seen recently',av:'K',cls:'av-gy',msgs:[]},
+  parker:{nm:'Parker',st:'online',av:'P',cls:'av-bl',msgs:[{t:'r',tx:'Yo!',tm:'Just now'}]},
+  self:{nm:'Saved Messages',st:'',av:'🔖',cls:'av-bl',msgs:[]},
+  archived:{nm:'Archived Chats',st:'',av:'🗄',cls:'',sty:'background:#8e8e93;',msgs:[{t:'sys',tx:'Archived chats'}]},
+};
+const REPLIES = [
+  'Hey! 👋','What's up?','How are you?','Okay cool 😊','Tell me more','Got it 👍',
+  'Sure thing!','Lol 😂','That\'s great!','Interesting...','No way 😮','For real?!',
+  'Haha yeah','Sounds good!','💯','Let me know','Yep!','Hmm 🤔','Nice!',
+  'I was thinking the same!','Thanks 🙏','Will do!','Okay! 👌','Sure, why not!',
+];
+const history={}, replies={};
+let curChat='njabulo';
 
-  // ── Typing Indicator ──
-  let typingTimeout;
-  function showTyping() {
-    const msgs = document.getElementById('chat-messages');
-    const t = document.createElement('div');
-    t.className = 'typing-indicator';
-    t.id = 'typing-bubble';
-    t.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-    msgs.appendChild(t);
-    msgs.scrollTop = msgs.scrollHeight;
-    typingTimeout = setTimeout(()=>{
-      t.remove();
-      receiveMessage();
-    }, 2500);
+function openChat(id){
+  if(!CHATS[id]) return;
+  prevSc = document.querySelector('.screen.active')?.id || 'sc';
+  curChat = id;
+  const c = CHATS[id];
+  // Set header
+  const avEl = document.getElementById('cv-av');
+  avEl.className = 'cvav ' + (c.cls||'');
+  avEl.style.cssText = (c.sty||'');
+  avEl.textContent = c.av;
+  document.getElementById('cv-nm').textContent = c.nm;
+  document.getElementById('cv-st').textContent = c.st;
+  document.getElementById('cv-st').className = 'cvst' + (c.st==='online'?' typ':'');
+  // Render msgs
+  const area = document.getElementById('msgs-area');
+  if(history[id]){
+    area.innerHTML = history[id];
+  } else {
+    area.innerHTML='';
+    (c.msgs||[]).forEach(m=>addMsg(m,false));
+    history[id] = area.innerHTML;
   }
+  go('sv');
+  scrollEnd();
+}
 
-  const autoReplies = [
-    "How are you? 😊", "What's up?", "Sup bro 🤙", "Yooo!", "I'm online 👀",
-    "Let's talk 💬", "Send me something 😂", "Hey there!", "Watseka? 🔥", "Nice 👍"
-  ];
-  let replyIdx = 0;
-  function receiveMessage() {
-    const msgs = document.getElementById('chat-messages');
-    const b = document.createElement('div');
-    b.className = 'msg-bubble msg-in';
-    const now = new Date();
-    b.innerHTML = autoReplies[replyIdx % autoReplies.length] + `<div class="msg-time">${fmt(now)}</div>`;
-    msgs.appendChild(b);
-    msgs.scrollTop = msgs.scrollHeight;
-    replyIdx++;
-  }
+function addMsg(m, save=true){
+  const area = document.getElementById('msgs-area');
+  const el = document.createElement('div');
+  if(m.t==='sep'){ el.className='dsep'; el.innerHTML=`<span>${m.tx}</span>`; }
+  else if(m.t==='sys'){ el.className='sysmsg'; el.innerHTML=`<span>${m.tx}</span>`; }
+  else if(m.t==='s'){ el.className='msg s'; el.innerHTML=`<div class="mb">${esc(m.tx)}</div><div class="mt">${m.tm||''}&nbsp;<span class="tk ${m.rd?'':'g'}">${m.rd?'✓✓':'✓'}</span></div>`; }
+  else if(m.t==='r'){ el.className='msg r'; el.innerHTML=`<div class="mb">${esc(m.tx)}</div><div class="mt">${m.tm||''}</div>`; }
+  else if(m.t==='typ'){ el.className='msg r'; el.id='typ-el'; el.innerHTML=`<div class="typi"><div class="td"></div><div class="td"></div><div class="td"></div></div>`; }
+  area.appendChild(el);
+  if(save) history[curChat] = area.innerHTML;
+  scrollEnd();
+}
 
-  // ── Send Message ──
-  function sendMessage() {
-    const input = document.getElementById('msg-input');
-    const text = input.value.trim();
-    if (!text) return;
-    const msgs = document.getElementById('chat-messages');
-    const b = document.createElement('div');
-    b.className = 'msg-bubble msg-out';
-    const now = new Date();
-    b.innerHTML = escHtml(text) + `<div class="msg-time">${fmt(now)} <span class="ticks"><i class="fa-solid fa-check-double"></i></span></div>`;
-    msgs.appendChild(b);
-    msgs.scrollTop = msgs.scrollHeight;
-    input.value = '';
-    // Auto-reply typing after random delay
-    clearTimeout(typingTimeout);
-    setTimeout(showTyping, 800 + Math.random()*1200);
-  }
+function sendMsg(){
+  const inp = document.getElementById('cinput');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  inp.value='';
+  const tm = now();
+  addMsg({t:'s',tx:txt,tm,rd:false});
+  // typing indicator after short delay
+  setTimeout(()=>{
+    const st = document.getElementById('cv-st');
+    if(st){ st.textContent='typing...'; st.className='cvst typ'; }
+    addMsg({t:'typ'});
+    setTimeout(()=>{
+      const ty=document.getElementById('typ-el'); if(ty) ty.remove();
+      if(!replies[curChat]) replies[curChat]=0;
+      const rep = REPLIES[replies[curChat]++ % REPLIES.length];
+      const c=CHATS[curChat];
+      const st2=document.getElementById('cv-st');
+      if(st2){ st2.textContent=c.st; st2.className='cvst'+(c.st==='online'?' typ':''); }
+      addMsg({t:'r',tx:rep,tm:now()});
+      // double tick sent msgs
+      document.querySelectorAll('#msgs-area .msg.s .tk').forEach(t=>{t.textContent='✓✓';t.classList.remove('g');});
+      history[curChat]=document.getElementById('msgs-area').innerHTML;
+    },1700);
+  },600);
+}
 
-  function fmt(d) {
-    return d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true}).replace(' ','').toUpperCase().replace('AM',' AM').replace('PM',' PM').trim();
-  }
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
-  // ── Toast ──
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 2200);
-  }
-
-  // Keep chat scrolled to bottom
-  const chatMsgs = document.getElementById('chat-messages');
-  const mo = new MutationObserver(()=>{ chatMsgs.scrollTop = chatMsgs.scrollHeight; });
-  mo.observe(chatMsgs, {childList:true});
+function scrollEnd(){ const a=document.getElementById('msgs-area'); setTimeout(()=>{ a.scrollTop=a.scrollHeight; },50); }
+function now(){ const d=new Date(),h=d.getHours(),m=d.getMinutes(),p=h>=12?'PM':'AM'; return `${h%12||12}:${String(m).padStart(2,'0')} ${p}`; }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
 </body>
 </html>
