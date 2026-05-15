@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
         sendLog(`[SYSTEM] Preparing workspace in: /deployments/${botFolder}`, 'log-white');
 
         // STEP 1: Clone the Repository
-        sendLog(`-----> Cloning GitHub Repository: ${repoUrl}`, 'log-purple');
+        sendLog(`-----> Clohning GitHub Repository: ${repoUrl}`, 'log-purple');
         const gitClone = spawn('git', ['clone', repoUrl, targetPath]);
 
         gitClone.stdout.on('data', (data) => sendLog(data.toString()));
