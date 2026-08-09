@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pair Code · Njabulo JB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>QR Scan · Njabulo JB</title>
   <!-- Font Awesome 5 (free) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- html5-qrcode library -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
   <style>
     * {
       margin: 0;
@@ -25,7 +27,7 @@
       overflow-x: hidden;
     }
 
-    /* ===== MOVING BACKGROUND (white with subtle grid & blobs) ===== */
+    /* ===== MOVING BACKGROUND ===== */
     .bg-grid {
       position: fixed;
       top: 0;
@@ -106,7 +108,7 @@
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       border-radius: 48px 12px 48px 12px;
-      padding: 34px 28px 30px;
+      padding: 28px 22px 30px;
       box-shadow: 
         0 20px 50px rgba(0, 0, 0, 0.06),
         0 0 0 1px rgba(0, 0, 0, 0.02),
@@ -166,7 +168,7 @@
       100% { opacity: 0.3; transform: scale(1.3); }
     }
 
-    /* ===== PROFILE LOGO – njabulo.png with verified ===== */
+    /* ===== PROFILE LOGO ===== */
     .profile-wrap {
       display: flex;
       flex-direction: column;
@@ -176,8 +178,8 @@
 
     .avatar-round {
       position: relative;
-      width: 100px;
-      height: 100px;
+      width: 85px;
+      height: 85px;
       border-radius: 50%;
       background: linear-gradient(145deg, #ece6ff, #d6caff);
       box-shadow: 0 8px 24px rgba(89, 53, 172, 0.15);
@@ -198,28 +200,26 @@
       display: block;
     }
 
-    /* fallback icon if image missing */
     .avatar-round .fallback-icon {
-      font-size: 3.5rem;
+      font-size: 3rem;
       color: #5935ac;
       opacity: 0.6;
       display: none;
     }
 
-    /* Verified badge */
     .verified-badge {
       position: absolute;
-      bottom: 2px;
-      right: 2px;
+      bottom: 0px;
+      right: 0px;
       background: #1a8cd8;
       color: white;
-      width: 30px;
-      height: 30px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       box-shadow: 0 2px 12px rgba(26, 140, 216, 0.5);
       border: 2.5px solid white;
       animation: verifiedPulse 2.4s infinite alternate;
@@ -230,7 +230,6 @@
       100% { box-shadow: 0 0 0 10px rgba(26, 140, 216, 0); }
     }
 
-    /* status ring (random / animated) */
     .status-ring {
       position: absolute;
       top: -5px;
@@ -265,10 +264,9 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* name + verified text */
     .profile-name {
       font-weight: 700;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       color: #1a1528;
       display: flex;
       align-items: center;
@@ -278,12 +276,12 @@
 
     .profile-name i {
       color: #1a8cd8;
-      font-size: 1rem;
+      font-size: 0.95rem;
       animation: verifiedPulse 2.4s infinite alternate;
     }
 
     .profile-sub {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: #7a72a0;
       letter-spacing: 0.5px;
       margin-top: -2px;
@@ -294,17 +292,12 @@
       justify-content: center;
     }
 
-    .profile-sub i {
-      color: #5935ac;
-      font-size: 0.65rem;
-    }
-
     .profile-sub .verified-tag {
       background: rgba(26, 140, 216, 0.1);
       color: #1a8cd8;
       padding: 2px 10px;
       border-radius: 20px;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       font-weight: 600;
       border: 1px solid rgba(26, 140, 216, 0.15);
     }
@@ -314,128 +307,225 @@
       color: #5935ac;
       padding: 2px 10px;
       border-radius: 20px;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       font-weight: 600;
       border: 1px solid rgba(89, 53, 172, 0.1);
     }
 
-    /* ===== OTHER ELEMENTS ===== */
-    .input-group {
+    /* ===== QR SCANNER SECTION ===== */
+    .scan-section {
+      margin: 14px 0 8px;
+    }
+
+    .scan-header {
       display: flex;
-      background: rgba(240, 235, 255, 0.6);
-      border-radius: 80px;
-      padding: 5px 5px 5px 20px;
-      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #3d3560;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+
+    .scan-header i {
+      color: #5935ac;
+      font-size: 1.1rem;
+      animation: scanPulse 1.6s infinite;
+    }
+
+    @keyframes scanPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    #qr-reader {
+      width: 100%;
+      max-width: 380px;
+      margin: 0 auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      background: #f8f6ff;
+      position: relative;
+    }
+
+    #qr-reader video {
+      border-radius: 20px;
+      width: 100%;
+      height: auto;
+    }
+
+    #qr-reader__scan_region {
+      border-radius: 20px;
+    }
+
+    .scan-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 180px;
+      height: 180px;
+      border: 2.5px solid rgba(89, 53, 172, 0.3);
+      border-radius: 16px;
+      pointer-events: none;
+      box-shadow: 0 0 0 4000px rgba(255, 255, 255, 0.4);
+      animation: scanBox 2.4s ease-in-out infinite;
+    }
+
+    .scan-overlay::before,
+    .scan-overlay::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-color: #5935ac;
+      border-style: solid;
+      border-width: 0;
+    }
+
+    .scan-overlay::before {
+      top: -2px;
+      left: -2px;
+      border-top-width: 4px;
+      border-left-width: 4px;
+      border-radius: 4px 0 0 0;
+    }
+
+    .scan-overlay::after {
+      bottom: -2px;
+      right: -2px;
+      border-bottom-width: 4px;
+      border-right-width: 4px;
+      border-radius: 0 0 4px 0;
+    }
+
+    .scan-overlay .corner-br {
+      position: absolute;
+      bottom: -2px;
+      left: -2px;
+      width: 30px;
+      height: 30px;
+      border-bottom-width: 4px;
+      border-left-width: 4px;
+      border-color: #5935ac;
+      border-style: solid;
+      border-radius: 0 0 0 4px;
+    }
+
+    .scan-overlay .corner-tl {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 30px;
+      height: 30px;
+      border-top-width: 4px;
+      border-right-width: 4px;
+      border-color: #5935ac;
+      border-style: solid;
+      border-radius: 0 4px 0 0;
+    }
+
+    @keyframes scanBox {
+      0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.03); }
+    }
+
+    /* ===== SCAN RESULT ===== */
+    #scan-result {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: rgba(245, 240, 255, 0.6);
       border: 1px solid rgba(0, 0, 0, 0.04);
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02), 0 0 20px rgba(89, 53, 172, 0.03);
-      transition: 0.25s;
-      margin: 16px 0 12px;
-    }
-
-    .input-group:focus-within {
-      border-color: #8b17b6;
-      box-shadow: 0 0 30px rgba(139, 23, 182, 0.08), inset 0 2px 8px rgba(0, 0, 0, 0.02);
-    }
-
-    .input-group input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 14px 0;
-      color: #1a1528;
-      font-size: 1rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      outline: none;
-      min-width: 0;
-    }
-
-    .input-group input::placeholder {
-      color: #8a80a8;
-      font-weight: 400;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 0.9rem;
+      color: #3d3560;
+      transition: 0.3s;
+      word-break: break-all;
+      text-align: center;
     }
 
-    .input-group button {
+    #scan-result.success {
+      background: rgba(26, 140, 216, 0.06);
+      border-color: rgba(26, 140, 216, 0.15);
+      color: #1a6d9e;
+    }
+
+    #scan-result .result-icon {
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    /* ===== CONTROLS ===== */
+    .scan-controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .scan-controls button {
       background: linear-gradient(145deg, #5935ac, #7b2fbe);
       border: none;
-      border-radius: 60px;
-      padding: 12px 24px;
-      font-weight: 700;
+      border-radius: 40px;
+      padding: 10px 24px;
+      font-weight: 600;
       color: white;
-      font-size: 0.9rem;
-      letter-spacing: 1px;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
       display: flex;
       align-items: center;
       gap: 8px;
       cursor: pointer;
       transition: 0.2s;
-      box-shadow: 0 4px 14px rgba(89, 53, 172, 0.2);
-      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(89, 53, 172, 0.15);
     }
 
-    .input-group button:hover {
-      background: linear-gradient(145deg, #7b2fbe, #a02cd6);
-      transform: scale(1.02);
-      box-shadow: 0 6px 24px rgba(139, 23, 182, 0.25);
+    .scan-controls button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 24px rgba(139, 23, 182, 0.2);
     }
 
-    .input-group button:active {
+    .scan-controls button:active {
       transform: scale(0.96);
     }
 
-    #waiting-message {
-      display: none;
-      color: #3d3560;
-      margin: 8px 0 0;
-      font-size: 0.9rem;
-      gap: 8px;
-      align-items: center;
-      justify-content: center;
-    }
-    #waiting-message i {
-      animation: spin 1.2s linear infinite;
+    .scan-controls button.secondary {
+      background: rgba(89, 53, 172, 0.08);
       color: #5935ac;
-    }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    #pair {
-      margin-top: 18px;
-      min-height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+      box-shadow: none;
+      border: 1px solid rgba(89, 53, 172, 0.1);
     }
 
-    .code-box {
-      background: rgba(245, 240, 255, 0.7);
-      backdrop-filter: blur(6px);
-      padding: 14px 28px;
-      border-radius: 60px;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      box-shadow: 0 0 30px rgba(89, 53, 172, 0.04);
-      transition: 0.25s;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
+    .scan-controls button.secondary:hover {
+      background: rgba(89, 53, 172, 0.12);
+    }
+
+    /* ===== OTHER ===== */
+    .loading-line {
       width: 100%;
-      justify-content: center;
+      height: 3px;
+      background: linear-gradient(90deg, #5935ac, #8b17b6, #c01736, #8b17b6, #5935ac);
+      background-size: 300% 100%;
+      border-radius: 10px;
+      margin: 12px 0 4px;
+      animation: loadSlide 2.4s ease-in-out infinite;
+      opacity: 0.15;
     }
-    .code-box:hover {
-      background: rgba(235, 225, 255, 0.8);
-      border-color: #8b17b6;
-      box-shadow: 0 0 40px rgba(139, 23, 182, 0.08);
-      transform: translateY(-2px);
+    @keyframes loadSlide {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 300% 0%; }
     }
-    .code-label { color: #3d3560; font-weight: 500; font-size: 0.9rem; }
-    .code-value { color: #2d1b6e; font-weight: 700; font-size: 1.4rem; letter-spacing: 2px; }
-    .copy-hint { font-size: 0.7rem; color: #7a72a0; background: rgba(0,0,0,0.02); padding: 2px 12px; border-radius: 40px; }
 
     .rules-section {
-      margin-top: 22px;
-      padding-top: 16px;
+      margin-top: 18px;
+      padding-top: 14px;
       border-top: 1px solid rgba(0, 0, 0, 0.04);
       display: flex;
       flex-wrap: wrap;
@@ -445,7 +535,7 @@
     }
     .rules-section .rule-item {
       color: #3d3560;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -454,57 +544,41 @@
       border-radius: 40px;
       border: 1px solid rgba(0, 0, 0, 0.03);
     }
-    .rules-section .rule-item i { color: #5935ac; font-size: 0.6rem; }
+    .rules-section .rule-item i { color: #5935ac; font-size: 0.55rem; }
 
     .footer-note {
-      margin-top: 18px;
+      margin-top: 14px;
       text-align: center;
       color: #8a80a8;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       letter-spacing: 1px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
     }
-    .footer-note i { color: #5935ac; font-size: 0.7rem; }
+    .footer-note i { color: #5935ac; font-size: 0.65rem; }
 
     .extra-hint {
-      margin-top: 10px; 
+      margin-top: 8px; 
       display: flex; 
       justify-content: center; 
       gap: 12px; 
       flex-wrap: wrap; 
-      font-size: 0.65rem; 
+      font-size: 0.6rem; 
       color: #8a80a8;
     }
     .extra-hint i { color: #5935ac; }
 
-    .loading-line {
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, #5935ac, #8b17b6, #c01736, #8b17b6, #5935ac);
-      background-size: 300% 100%;
-      border-radius: 10px;
-      margin: 16px 0 4px;
-      animation: loadSlide 2.4s ease-in-out infinite;
-      opacity: 0.15;
-    }
-    @keyframes loadSlide {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 300% 0%; }
-    }
-
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 480px) {
-      .box { padding: 24px 18px; border-radius: 36px 8px 36px 8px; }
-      .input-group { flex-wrap: wrap; background: transparent; padding: 0; box-shadow: none; gap: 8px; }
-      .input-group input { background: rgba(240, 235, 255, 0.5); border-radius: 60px; padding: 14px 20px; width: 100%; }
-      .input-group button { width: 100%; justify-content: center; padding: 14px; }
-      .code-box { padding: 12px 16px; flex-wrap: wrap; }
-      .code-value { font-size: 1.2rem; }
-      .avatar-round { width: 80px; height: 80px; }
-      .verified-badge { width: 26px; height: 26px; font-size: 0.75rem; }
-      .profile-name { font-size: 1.2rem; }
+      .box { padding: 20px 16px 24px; border-radius: 36px 8px 36px 8px; }
+      .avatar-round { width: 70px; height: 70px; }
+      .verified-badge { width: 22px; height: 22px; font-size: 0.65rem; }
+      .profile-name { font-size: 1.1rem; }
+      .scan-overlay { width: 140px; height: 140px; }
+      #qr-reader { max-width: 100%; }
+      .scan-controls button { padding: 8px 16px; font-size: 0.7rem; }
     }
   </style>
 </head>
@@ -522,34 +596,29 @@
 
       <div style="text-align: center; position: relative; z-index: 2;">
 
-        <!-- ===== PROFILE: njabulo.png with verified & budget ===== -->
+        <!-- ===== PROFILE ===== -->
         <div class="profile-wrap">
           <div class="avatar-round">
-            <!-- status ring (random moving) -->
             <div class="status-ring"></div>
-            <!-- IMAGE: njabulo.png (place this file in the same folder) -->
             <img src="njabulo.png" 
                  alt="Njabulo JB" 
                  id="profileImg"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <i class="fas fa-user-circle fallback-icon"></i>
-            <!-- verified badge -->
             <div class="verified-badge">
               <i class="fas fa-check"></i>
             </div>
           </div>
 
-          <!-- Name: Njabulo JB with verified icon -->
           <div class="profile-name">
             Njabulo JB
             <i class="fas fa-check-circle"></i>
           </div>
 
-          <!-- Verified & Budget tags -->
           <div class="profile-sub">
             <span class="verified-tag"><i class="fas fa-shield-alt"></i> Verified</span>
             <span class="budget-tag"><i class="fas fa-wallet"></i> Budget</span>
-            <span style="color:#8a80a8; font-size:0.6rem;">
+            <span style="color:#8a80a8; font-size:0.55rem;">
               <i class="fas fa-circle" style="font-size:0.3rem; color:#8a80a8;"></i> original
             </span>
           </div>
@@ -558,19 +627,31 @@
         <!-- loading line -->
         <div class="loading-line"></div>
 
-        <!-- input group -->
-        <div class="input-group">
-          <input type="text" id="number" placeholder="+254 792 021 944" value="">
-          <button id="submit"><i class="fas fa-paper-plane"></i> Pair</button>
-        </div>
+        <!-- ===== QR SCANNER ===== -->
+        <div class="scan-section">
+          <div class="scan-header">
+            <i class="fas fa-qrcode"></i>
+            <span>SCAN QR CODE</span>
+            <i class="fas fa-camera"></i>
+          </div>
 
-        <div id="waiting-message">
-          <i class="fas fa-circle-notch"></i> loading round · generating code
-        </div>
+          <!-- QR reader container -->
+          <div id="qr-reader" style="position: relative;">
+            <!-- overlay will be added by JS -->
+          </div>
 
-        <main id="pair">
-          <!-- dynamic code display -->
-        </main>
+          <!-- scan result -->
+          <div id="scan-result">
+            <span><i class="fas fa-info-circle" style="color:#8a80a8; margin-right:8px;"></i> Point camera at QR code</span>
+          </div>
+
+          <!-- controls -->
+          <div class="scan-controls">
+            <button id="start-scan"><i class="fas fa-play"></i> Start Scan</button>
+            <button id="stop-scan" class="secondary"><i class="fas fa-stop"></i> Stop</button>
+            <button id="reset-scan" class="secondary"><i class="fas fa-sync-alt"></i> Reset</button>
+          </div>
+        </div>
 
         <!-- rules -->
         <div class="rules-section">
@@ -597,102 +678,185 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
   <script>
-    (function(){
-      const pairDisplay = document.getElementById("pair");
-      const submitBtn = document.getElementById("submit");
-      const numberInput = document.getElementById("number");
-      const waitingMsg = document.getElementById("waiting-message");
+    (function() {
+      const resultDiv = document.getElementById('scan-result');
+      const readerContainer = document.getElementById('qr-reader');
+      let html5QrCode = null;
+      let isScanning = false;
 
-      window.Copy = async function() {
-        const codeEl = document.getElementById("copyTarget");
-        if (!codeEl) return;
-        const rawCode = codeEl.innerText.replace('CODE: ', '').trim();
-        try {
-          await navigator.clipboard.writeText(rawCode);
-          codeEl.innerText = "✓ COPIED!";
-          codeEl.style.color = "#1a7a3a";
-          setTimeout(() => {
-            codeEl.innerText = "CODE: " + rawCode;
-            codeEl.style.color = "#2d1b6e";
-          }, 1500);
-        } catch (e) {
-          alert("Manual copy: " + rawCode);
-        }
-      };
-
-      function cleanNumber(str) { return str.replace(/[^0-9]/g, ""); }
-      function formatDisplay(raw) {
-        if (!raw) return "";
-        let s = raw.replace(/[^0-9]/g, "");
-        let parts = [];
-        if (s.length > 3) { parts.push(s.slice(0,3)); s = s.slice(3); }
-        if (s.length > 0) { parts.push(s.slice(0,3)); s = s.slice(3); }
-        if (s.length > 0) { parts.push(s); }
-        return "+" + parts.join(" ");
+      // ===== Create overlay =====
+      function createOverlay() {
+        const overlay = document.createElement('div');
+        overlay.className = 'scan-overlay';
+        overlay.innerHTML = `
+          <div class="corner-br"></div>
+          <div class="corner-tl"></div>
+        `;
+        return overlay;
       }
 
-      submitBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const raw = numberInput.value;
-        const digits = cleanNumber(raw);
-
-        if (!digits || digits.length < 9) {
-          pairDisplay.innerHTML = `<div class="code-box" style="border-color:#c01736;">
-            <span style="color:#b33a5a;font-weight:500;"><i class="fas fa-exclamation-triangle"></i> enter valid number with country code</span>
-          </div>`;
-          return;
+      // ===== Initialize reader =====
+      function initReader() {
+        if (html5QrCode) {
+          html5QrCode.clear();
+          html5QrCode = null;
         }
 
-        waitingMsg.style.display = "flex";
-        pairDisplay.innerHTML = `<div class="code-box">
-          <i class="fas fa-spinner fa-pulse" style="color:#5935ac;"></i>
-          <span style="color:#3d3560;">pairing round ...</span>
-        </div>`;
+        // Clear container
+        readerContainer.innerHTML = '';
+        
+        // Create new instance
+        html5QrCode = new Html5Qrcode("qr-reader");
 
-        numberInput.value = formatDisplay(digits);
+        // Add overlay after video loads
+        const observer = new MutationObserver(() => {
+          const video = readerContainer.querySelector('video');
+          if (video && !readerContainer.querySelector('.scan-overlay')) {
+            readerContainer.appendChild(createOverlay());
+            observer.disconnect();
+          }
+        });
+        observer.observe(readerContainer, { childList: true, subtree: true });
+
+        // Also add overlay after a delay (fallback)
+        setTimeout(() => {
+          if (!readerContainer.querySelector('.scan-overlay')) {
+            readerContainer.appendChild(createOverlay());
+          }
+        }, 500);
+      }
+
+      // ===== Start scanning =====
+      async function startScan() {
+        if (isScanning) return;
 
         try {
-          const { data } = await axios(`/code?number=${digits}`);
-          const code = data.code || "267" + digits.slice(-4);
-          pairDisplay.innerHTML = `
-            <div class="code-box" id="copyTarget" onclick="Copy()">
-              <span class="code-label">CODE:</span>
-              <span class="code-value">${code}</span>
-              <span class="copy-hint"><i class="far fa-copy"></i> tap</span>
-            </div>
-          `;
-          const extraNote = document.createElement('div');
-          extraNote.style.cssText = 'margin-top:6px;font-size:0.6rem;color:#8a80a8;display:flex;gap:10px;justify-content:center;';
-          extraNote.innerHTML = `<i class="fas fa-flag"></i> county code · ${digits.slice(0,3)} | box 267`;
-          pairDisplay.appendChild(extraNote);
+          resultDiv.innerHTML = '<span><i class="fas fa-spinner fa-pulse" style="color:#5935ac; margin-right:8px;"></i> Initializing camera...</span>';
+          resultDiv.className = '';
 
-        } catch (error) {
-          pairDisplay.innerHTML = `
-            <div class="code-box" style="border-color:#c01736;">
-              <span style="color:#b33a5a;"><i class="fas fa-times-circle"></i> service unavailable · try again</span>
-            </div>
-          `;
-        } finally {
-          waitingMsg.style.display = "none";
+          if (!html5QrCode) {
+            initReader();
+          }
+
+          const config = {
+            fps: 15,
+            qrbox: { width: 220, height: 220 },
+            aspectRatio: 1.0
+          };
+
+          // Check if camera is available
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const cameras = devices.filter(d => d.kind === 'videoinput');
+          
+          if (cameras.length === 0) {
+            resultDiv.innerHTML = '<span style="color:#b33a5a;"><i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i> No camera found</span>';
+            return;
+          }
+
+          await html5QrCode.start(
+            { facingMode: "environment" },
+            config,
+            onScanSuccess,
+            onScanError
+          );
+
+          isScanning = true;
+          resultDiv.innerHTML = '<span><i class="fas fa-camera" style="color:#5935ac; margin-right:8px;"></i> Scanning... point at QR code</span>';
+          resultDiv.className = '';
+
+        } catch (err) {
+          console.error('Scan start error:', err);
+          resultDiv.innerHTML = `<span style="color:#b33a5a;"><i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i> ${err.message || 'Camera access denied'}</span>`;
+          resultDiv.className = '';
+        }
+      }
+
+      // ===== Stop scanning =====
+      async function stopScan() {
+        if (html5QrCode && isScanning) {
+          try {
+            await html5QrCode.stop();
+            isScanning = false;
+            resultDiv.innerHTML = '<span><i class="fas fa-pause-circle" style="color:#8a80a8; margin-right:8px;"></i> Scanner stopped</span>';
+            resultDiv.className = '';
+          } catch (err) {
+            console.warn('Stop error:', err);
+          }
+        }
+      }
+
+      // ===== Reset =====
+      function resetScan() {
+        stopScan().then(() => {
+          if (html5QrCode) {
+            html5QrCode.clear();
+            html5QrCode = null;
+          }
+          readerContainer.innerHTML = '';
+          // Show a placeholder
+          const placeholder = document.createElement('div');
+          placeholder.style.cssText = 'padding:40px 20px;text-align:center;color:#8a80a8;background:#f8f6ff;border-radius:20px;';
+          placeholder.innerHTML = '<i class="fas fa-qrcode" style="font-size:2.5rem;color:#d6caff;display:block;margin-bottom:10px;"></i><span style="font-size:0.85rem;">Ready to scan</span>';
+          readerContainer.appendChild(placeholder);
+          resultDiv.innerHTML = '<span><i class="fas fa-info-circle" style="color:#8a80a8; margin-right:8px;"></i> Click "Start Scan" to begin</span>';
+          resultDiv.className = '';
+          isScanning = false;
+        });
+      }
+
+      // ===== Success callback =====
+      function onScanSuccess(decodedText, decodedResult) {
+        // Success - show result
+        resultDiv.innerHTML = `
+          <span class="result-icon"><i class="fas fa-check-circle" style="color:#1a8cd8;"></i></span>
+          <span style="font-weight:500;">QR Scanned:</span>
+          <span style="color:#1a1528; font-weight:600; word-break:break-all;">${decodedText}</span>
+        `;
+        resultDiv.className = 'success';
+
+        // Auto-stop after successful scan
+        stopScan();
+
+        // Beep / vibrate if available
+        try {
+          if (navigator.vibrate) navigator.vibrate(100);
+        } catch(e) {}
+      }
+
+      // ===== Error callback =====
+      function onScanError(err) {
+        // Ignore frequent errors (they're normal during scanning)
+        // Only show if it's a real critical error
+        if (err && err.includes('NotFoundException')) {
+          // normal - no QR found
+          return;
+        }
+        // console.debug('Scan error:', err);
+      }
+
+      // ===== Init =====
+      document.addEventListener('DOMContentLoaded', () => {
+        // Show placeholder
+        const placeholder = document.createElement('div');
+        placeholder.style.cssText = 'padding:40px 20px;text-align:center;color:#8a80a8;background:#f8f6ff;border-radius:20px;';
+        placeholder.innerHTML = '<i class="fas fa-qrcode" style="font-size:2.5rem;color:#d6caff;display:block;margin-bottom:10px;"></i><span style="font-size:0.85rem;">Ready to scan</span>';
+        readerContainer.appendChild(placeholder);
+
+        // Buttons
+        document.getElementById('start-scan').addEventListener('click', startScan);
+        document.getElementById('stop-scan').addEventListener('click', stopScan);
+        document.getElementById('reset-scan').addEventListener('click', resetScan);
+      });
+
+      // Cleanup on page unload
+      window.addEventListener('beforeunload', async () => {
+        if (html5QrCode && isScanning) {
+          try { await html5QrCode.stop(); } catch(e) {}
         }
       });
 
-      // initial hint
-      pairDisplay.innerHTML = `
-        <div class="code-box" style="opacity:0.7; cursor:default;">
-          <span style="color:#7a72a0;"><i class="fas fa-flag"></i> enter number · code 267</span>
-          <span style="color:#a098c0; font-size:0.7rem;">all county</span>
-        </div>
-      `;
-
-      numberInput.addEventListener("blur", function() {
-        const d = cleanNumber(this.value);
-        if (d.length > 3) this.value = formatDisplay(d);
-      });
-
-      // random status ring speed
+      // Random ring speed
       const ring = document.querySelector('.status-ring');
       if (ring) {
         const speeds = ['2.8s', '3.6s', '4.2s', '3.0s'];
