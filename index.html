@@ -19,13 +19,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #0b0b1a;
+      background: #ffffff;  /* PURE WHITE BACKGROUND */
       padding: 20px;
       position: relative;
       overflow-x: hidden;
     }
 
-    /* ===== ANIMATED BACKGROUND (moving grid + glow) ===== */
+    /* ===== MOVING BACKGROUND ELEMENTS (on white) ===== */
     .bg-grid {
       position: fixed;
       top: 0;
@@ -35,67 +35,68 @@
       z-index: 0;
       pointer-events: none;
       background: 
-        linear-gradient(rgba(89, 53, 172, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(89, 53, 172, 0.08) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridMove 18s linear infinite;
+        linear-gradient(rgba(89, 53, 172, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(89, 53, 172, 0.06) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+      opacity: 0.6;
     }
 
     @keyframes gridMove {
       0% { transform: translate(0, 0) rotate(0deg); }
-      50% { transform: translate(30px, 15px) rotate(0.5deg); }
+      50% { transform: translate(20px, 10px) rotate(0.3deg); }
       100% { transform: translate(0, 0) rotate(0deg); }
     }
 
-    /* floating orbs / moving blobs */
+    /* floating soft blobs – very light on white */
     .moving-blob {
       position: fixed;
       border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.35;
+      filter: blur(80px);
+      opacity: 0.15;
       z-index: 0;
       pointer-events: none;
-      animation: blobFloat 22s infinite alternate ease-in-out;
+      animation: blobFloat 24s infinite alternate ease-in-out;
     }
 
     .blob1 {
       width: 500px;
       height: 500px;
-      background: #5935ac;
-      top: -10%;
+      background: #b389f0;
+      top: -15%;
       left: -10%;
-      animation-duration: 26s;
+      animation-duration: 28s;
     }
 
     .blob2 {
       width: 450px;
       height: 450px;
-      background: #8b17b6;
+      background: #a77bff;
       bottom: -15%;
       right: -10%;
-      animation-duration: 30s;
+      animation-duration: 32s;
       animation-delay: -6s;
     }
 
     .blob3 {
       width: 350px;
       height: 350px;
-      background: #c01736;
+      background: #c9b0ff;
       top: 40%;
       left: 60%;
-      animation-duration: 20s;
+      animation-duration: 22s;
       animation-delay: -12s;
-      opacity: 0.25;
+      opacity: 0.12;
     }
 
     @keyframes blobFloat {
       0% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(60px, -40px) scale(1.1); }
-      66% { transform: translate(-30px, 50px) scale(0.9); }
-      100% { transform: translate(20px, -20px) scale(1.05); }
+      33% { transform: translate(40px, -30px) scale(1.1); }
+      66% { transform: translate(-20px, 40px) scale(0.9); }
+      100% { transform: translate(15px, -15px) scale(1.05); }
     }
 
-    /* ===== MAIN CARD ===== */
+    /* ===== MAIN CARD (white background, subtle shadow) ===== */
     .container {
       position: relative;
       z-index: 10;
@@ -104,31 +105,27 @@
     }
 
     .box {
-      background: rgba(10, 10, 25, 0.75);
-      backdrop-filter: blur(16px) saturate(180%);
-      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       border-radius: 48px 12px 48px 12px;  /* opposite diagonal curve */
       padding: 34px 28px 30px;
       box-shadow: 
-        0 30px 60px rgba(0,0,0,0.8),
-        0 0 0 1px rgba(255,255,255,0.06),
-        0 0 40px rgba(89, 53, 172, 0.3),
-        inset 0 0 30px rgba(139, 23, 182, 0.15);
+        0 20px 50px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(0, 0, 0, 0.02),
+        0 0 30px rgba(89, 53, 172, 0.06);
       transition: transform 0.25s ease, box-shadow 0.3s;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       position: relative;
       overflow: hidden;
     }
 
     .box:hover {
-      transform: scale(1.01) perspective(800px) rotateY(2deg);
-      box-shadow: 
-        0 40px 80px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(255,255,255,0.1),
-        0 0 60px rgba(139, 23, 182, 0.4);
+      transform: scale(1.01) perspective(800px) rotateY(1.5deg);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(89, 53, 172, 0.08);
     }
 
-    /* inner glow lines (decorative) */
+    /* subtle inner glow */
     .box::before {
       content: '';
       position: absolute;
@@ -136,9 +133,9 @@
       border-radius: inherit;
       padding: 2px;
       background: conic-gradient(from 120deg at 50% 50%, 
-        rgba(89, 53, 172, 0.3), 
-        rgba(192, 23, 54, 0.2), 
-        rgba(139, 23, 182, 0.3), 
+        rgba(89, 53, 172, 0.08), 
+        rgba(192, 23, 54, 0.04), 
+        rgba(139, 23, 182, 0.08), 
         transparent 60%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -147,66 +144,62 @@
       pointer-events: none;
     }
 
-    /* corner accents */
+    /* corner accents – very light */
     .corner-accent {
       position: absolute;
       width: 100px;
       height: 100px;
       border-radius: 50%;
       filter: blur(50px);
-      opacity: 0.5;
+      opacity: 0.2;
       z-index: -1;
     }
     .corner-accent.tl {
       top: -40px;
       left: -40px;
-      background: #5935ac;
+      background: #b389f0;
       animation: pulseCorner 4s infinite alternate;
     }
     .corner-accent.br {
       bottom: -40px;
       right: -40px;
-      background: #c01736;
+      background: #a77bff;
       animation: pulseCorner 5s infinite alternate-reverse;
     }
 
     @keyframes pulseCorner {
-      0% { opacity: 0.3; transform: scale(0.9); }
-      100% { opacity: 0.7; transform: scale(1.3); }
+      0% { opacity: 0.1; transform: scale(0.9); }
+      100% { opacity: 0.3; transform: scale(1.3); }
     }
 
-    /* ===== TYPOGRAPHY ===== */
+    /* ===== TYPOGRAPHY (dark text for white bg) ===== */
     .user-icon {
       font-size: 2.8rem;
-      color: #b389f0;
-      text-shadow: 0 0 20px #5935ac, 0 0 40px #8b17b6;
+      color: #5935ac;
+      text-shadow: 0 0 20px rgba(89, 53, 172, 0.15);
       margin-bottom: 6px;
       display: inline-block;
       animation: iconGlow 3s infinite alternate;
     }
 
     @keyframes iconGlow {
-      0% { text-shadow: 0 0 10px #5935ac, 0 0 20px #8b17b6; }
-      100% { text-shadow: 0 0 30px #8b17b6, 0 0 60px #c01736, 0 0 90px #5935ac; }
+      0% { text-shadow: 0 0 10px rgba(89, 53, 172, 0.1), 0 0 20px rgba(89, 53, 172, 0.05); }
+      100% { text-shadow: 0 0 30px rgba(89, 53, 172, 0.25), 0 0 60px rgba(139, 23, 182, 0.1); }
     }
 
     .brand-title {
-      color: #f0edff;
+      color: #1a1528;
       font-weight: 700;
       font-size: 1.7rem;
       letter-spacing: -0.5px;
       margin: 6px 0 2px;
-      background: linear-gradient(135deg, #d4c4ff, #b389f0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
 
     .subhead {
-      color: #b8b0d0;
+      color: #3d3560;
       font-weight: 400;
       font-size: 0.95rem;
-      border-bottom: 1px dashed rgba(255,255,255,0.08);
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.06);
       padding-bottom: 12px;
       margin-bottom: 18px;
       display: flex;
@@ -217,7 +210,7 @@
     }
 
     .subhead i {
-      color: #b389f0;
+      color: #5935ac;
       font-size: 0.8rem;
     }
 
@@ -225,36 +218,35 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(89, 53, 172, 0.25);
+      background: rgba(89, 53, 172, 0.08);
       padding: 4px 14px 4px 10px;
       border-radius: 40px;
       font-size: 0.7rem;
-      color: #cbbaff;
-      border: 1px solid rgba(139, 23, 182, 0.2);
-      margin: 2px 4px;
+      color: #2d2350;
+      border: 1px solid rgba(89, 53, 172, 0.08);
     }
 
     .rule-badge i {
       font-size: 0.65rem;
-      color: #b389f0;
+      color: #5935ac;
     }
 
-    /* ===== INPUT GROUP ===== */
+    /* ===== INPUT GROUP (light) ===== */
     .input-group {
       display: flex;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(240, 235, 255, 0.6);
       border-radius: 80px;
       padding: 5px 5px 5px 20px;
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(89, 53, 172, 0.15);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02), 0 0 20px rgba(89, 53, 172, 0.03);
       transition: 0.25s;
       margin: 16px 0 12px;
     }
 
     .input-group:focus-within {
       border-color: #8b17b6;
-      box-shadow: 0 0 30px rgba(139, 23, 182, 0.3), inset 0 2px 8px rgba(0,0,0,0.6);
+      box-shadow: 0 0 30px rgba(139, 23, 182, 0.08), inset 0 2px 8px rgba(0, 0, 0, 0.02);
     }
 
     .input-group input {
@@ -262,7 +254,7 @@
       background: transparent;
       border: none;
       padding: 14px 0;
-      color: #f0edff;
+      color: #1a1528;
       font-size: 1rem;
       font-weight: 500;
       letter-spacing: 0.5px;
@@ -271,7 +263,7 @@
     }
 
     .input-group input::placeholder {
-      color: #7a729a;
+      color: #8a80a8;
       font-weight: 400;
       font-size: 0.9rem;
       letter-spacing: 0.2px;
@@ -291,7 +283,7 @@
       gap: 8px;
       cursor: pointer;
       transition: 0.2s;
-      box-shadow: 0 4px 14px rgba(89, 53, 172, 0.5);
+      box-shadow: 0 4px 14px rgba(89, 53, 172, 0.2);
       white-space: nowrap;
     }
 
@@ -302,7 +294,7 @@
     .input-group button:hover {
       background: linear-gradient(145deg, #7b2fbe, #a02cd6);
       transform: scale(1.02);
-      box-shadow: 0 6px 24px rgba(139, 23, 182, 0.6);
+      box-shadow: 0 6px 24px rgba(139, 23, 182, 0.25);
     }
 
     .input-group button:active {
@@ -312,7 +304,7 @@
     /* ===== WAITING / PAIR OUTPUT ===== */
     #waiting-message {
       display: none;
-      color: #b8b0d0;
+      color: #3d3560;
       margin: 8px 0 0;
       font-size: 0.9rem;
       gap: 8px;
@@ -322,6 +314,7 @@
 
     #waiting-message i {
       animation: spin 1.2s linear infinite;
+      color: #5935ac;
     }
 
     @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -332,15 +325,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
     }
 
     .code-box {
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(8px);
+      background: rgba(245, 240, 255, 0.7);
+      backdrop-filter: blur(6px);
       padding: 14px 28px;
       border-radius: 60px;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 0 30px rgba(89, 53, 172, 0.15);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 0 30px rgba(89, 53, 172, 0.04);
       transition: 0.25s;
       cursor: pointer;
       display: inline-flex;
@@ -351,41 +345,41 @@
     }
 
     .code-box:hover {
-      background: rgba(20, 15, 40, 0.7);
+      background: rgba(235, 225, 255, 0.8);
       border-color: #8b17b6;
-      box-shadow: 0 0 40px rgba(139, 23, 182, 0.3);
+      box-shadow: 0 0 40px rgba(139, 23, 182, 0.08);
       transform: translateY(-2px);
     }
 
     .code-label {
-      color: #b8b0d0;
+      color: #3d3560;
       font-weight: 500;
       font-size: 0.9rem;
       letter-spacing: 1px;
     }
 
     .code-value {
-      color: #d4c4ff;
+      color: #2d1b6e;
       font-weight: 700;
       font-size: 1.4rem;
       letter-spacing: 2px;
-      text-shadow: 0 0 20px #8b17b6;
+      text-shadow: 0 0 20px rgba(89, 53, 172, 0.1);
     }
 
     .copy-hint {
       font-size: 0.7rem;
-      color: #6a628a;
+      color: #7a72a0;
       margin-left: 6px;
-      background: rgba(255,255,255,0.04);
+      background: rgba(0, 0, 0, 0.02);
       padding: 2px 12px;
       border-radius: 40px;
     }
 
-    /* ===== RULES / FOOTER ===== */
+    /* ===== RULES / FOOTER (light) ===== */
     .rules-section {
       margin-top: 22px;
       padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.04);
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -394,26 +388,26 @@
     }
 
     .rules-section .rule-item {
-      color: #9a92b5;
+      color: #3d3560;
       font-size: 0.7rem;
       display: flex;
       align-items: center;
       gap: 5px;
-      background: rgba(0,0,0,0.25);
+      background: rgba(0, 0, 0, 0.02);
       padding: 4px 12px 4px 8px;
       border-radius: 40px;
-      border: 1px solid rgba(255,255,255,0.03);
+      border: 1px solid rgba(0, 0, 0, 0.03);
     }
 
     .rules-section .rule-item i {
-      color: #b389f0;
+      color: #5935ac;
       font-size: 0.6rem;
     }
 
     .footer-note {
       margin-top: 18px;
       text-align: center;
-      color: #5a527a;
+      color: #8a80a8;
       font-size: 0.7rem;
       letter-spacing: 1px;
       display: flex;
@@ -423,7 +417,7 @@
     }
 
     .footer-note i {
-      color: #7b2fbe;
+      color: #5935ac;
       font-size: 0.7rem;
     }
 
@@ -432,14 +426,14 @@
       .box { padding: 24px 18px; border-radius: 36px 8px 36px 8px; }
       .brand-title { font-size: 1.4rem; }
       .input-group { flex-wrap: wrap; background: transparent; padding: 0; box-shadow: none; gap: 8px; }
-      .input-group input { background: rgba(0,0,0,0.5); border-radius: 60px; padding: 14px 20px; width: 100%; }
+      .input-group input { background: rgba(240, 235, 255, 0.5); border-radius: 60px; padding: 14px 20px; width: 100%; }
       .input-group button { width: 100%; justify-content: center; padding: 14px; }
       .code-box { padding: 12px 16px; flex-wrap: wrap; }
       .code-value { font-size: 1.2rem; }
       .rules-section .rule-item { font-size: 0.65rem; }
     }
 
-    /* loading line (random round) — subtle bar */
+    /* loading line – subtle */
     .loading-line {
       width: 100%;
       height: 3px;
@@ -455,10 +449,22 @@
       0% { background-position: 0% 0%; }
       100% { background-position: 300% 0%; }
     }
+
+    /* extra: number on box & lines */
+    .extra-hint {
+      margin-top: 10px; 
+      display: flex; 
+      justify-content: center; 
+      gap: 12px; 
+      flex-wrap: wrap; 
+      font-size: 0.65rem; 
+      color: #8a80a8;
+    }
+    .extra-hint i { color: #5935ac; }
   </style>
 </head>
 <body>
-  <!-- moving background elements -->
+  <!-- moving background elements (on white) -->
   <div class="bg-grid"></div>
   <div class="moving-blob blob1"></div>
   <div class="moving-blob blob2"></div>
@@ -505,8 +511,8 @@
           <span class="rule-item"><i class="fas fa-database"></i> all county</span>
         </div>
 
-        <!-- extra small hint: number on box & lines -->
-        <div style="margin-top: 10px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 0.65rem; color: #5a527a;">
+        <!-- extra: number on box & lines -->
+        <div class="extra-hint">
           <span><i class="fas fa-hashtag"></i> box code · 267</span>
           <span><i class="fas fa-flag"></i> KE · UG · TZ · ZA</span>
           <span><i class="fas fa-edit"></i> edit grid · moving bg</span>
@@ -529,7 +535,7 @@
       const numberInput = document.getElementById("number");
       const waitingMsg = document.getElementById("waiting-message");
 
-      // Copy function (global for onclick)
+      // Copy function (global)
       window.Copy = async function() {
         const codeEl = document.getElementById("copyTarget");
         if (!codeEl) return;
@@ -537,22 +543,20 @@
         try {
           await navigator.clipboard.writeText(rawCode);
           codeEl.innerText = "✓ COPIED!";
-          codeEl.style.color = "#a0f0a0";
+          codeEl.style.color = "#1a7a3a";
           setTimeout(() => {
             codeEl.innerText = "CODE: " + rawCode;
-            codeEl.style.color = "#d4c4ff";
+            codeEl.style.color = "#2d1b6e";
           }, 1500);
         } catch (e) {
           alert("Manual copy: " + rawCode);
         }
       };
 
-      // clean number (digits only)
       function cleanNumber(str) {
         return str.replace(/[^0-9]/g, "");
       }
 
-      // format display with country code hint
       function formatDisplay(raw) {
         if (!raw) return "";
         let s = raw.replace(/[^0-9]/g, "");
@@ -568,29 +572,24 @@
         const raw = numberInput.value;
         const digits = cleanNumber(raw);
 
-        // validation
         if (!digits || digits.length < 9) {
           pairDisplay.innerHTML = `<div class="code-box" style="border-color:#c01736;">
-            <span style="color:#ff8a8a;font-weight:500;"><i class="fas fa-exclamation-triangle"></i> enter valid number with country code</span>
+            <span style="color:#b33a5a;font-weight:500;"><i class="fas fa-exclamation-triangle"></i> enter valid number with country code</span>
           </div>`;
           return;
         }
 
-        // show loading
         waitingMsg.style.display = "flex";
         pairDisplay.innerHTML = `<div class="code-box">
-          <i class="fas fa-spinner fa-pulse" style="color:#b389f0;"></i>
-          <span style="color:#b8b0d0;">pairing round ...</span>
+          <i class="fas fa-spinner fa-pulse" style="color:#5935ac;"></i>
+          <span style="color:#3d3560;">pairing round ...</span>
         </div>`;
 
-        // format input (nice display)
         numberInput.value = formatDisplay(digits);
 
         try {
-          // simulate / actual endpoint
           const { data } = await axios(`/code?number=${digits}`);
           const code = data.code || "267" + digits.slice(-4);
-          // show code with copy
           pairDisplay.innerHTML = `
             <div class="code-box" id="copyTarget" onclick="Copy()">
               <span class="code-label">CODE:</span>
@@ -598,16 +597,15 @@
               <span class="copy-hint"><i class="far fa-copy"></i> tap</span>
             </div>
           `;
-          // extra: also show "all county number" in a subtle way
           const extraNote = document.createElement('div');
-          extraNote.style.cssText = 'margin-top:6px;font-size:0.6rem;color:#5a527a;display:flex;gap:10px;justify-content:center;';
+          extraNote.style.cssText = 'margin-top:6px;font-size:0.6rem;color:#8a80a8;display:flex;gap:10px;justify-content:center;';
           extraNote.innerHTML = `<i class="fas fa-flag"></i> county code · ${digits.slice(0,3)} | box 267`;
           pairDisplay.appendChild(extraNote);
 
         } catch (error) {
           pairDisplay.innerHTML = `
             <div class="code-box" style="border-color:#c01736;">
-              <span style="color:#ff8a8a;"><i class="fas fa-times-circle"></i> service unavailable · try again</span>
+              <span style="color:#b33a5a;"><i class="fas fa-times-circle"></i> service unavailable · try again</span>
             </div>
           `;
         } finally {
@@ -615,15 +613,14 @@
         }
       });
 
-      // initial hint: show country flag & button code 267
+      // initial hint
       pairDisplay.innerHTML = `
         <div class="code-box" style="opacity:0.7; cursor:default;">
-          <span style="color:#7a729a;"><i class="fas fa-flag"></i> enter number · code 267</span>
-          <span style="color:#4a427a; font-size:0.7rem;">all county</span>
+          <span style="color:#7a72a0;"><i class="fas fa-flag"></i> enter number · code 267</span>
+          <span style="color:#a098c0; font-size:0.7rem;">all county</span>
         </div>
       `;
 
-      // live format (optional)
       numberInput.addEventListener("blur", function() {
         const d = cleanNumber(this.value);
         if (d.length > 3) this.value = formatDisplay(d);
@@ -632,4 +629,4 @@
     })();
   </script>
 </body>
-  </html>
+</html>
