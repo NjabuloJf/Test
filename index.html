@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JetX Tracker — Powered by Njabulo Jb</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #ffffff;
+    color: #111;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  header {
+    text-align: center;
+    padding: 25px 15px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 25px;
+  }
+  header h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: #0a0a0a;
+  }
+  header h1 i { color: #e63946; }
+  .powered {
+    color: #666;
+    font-size: 0.95rem;
+    margin-top: 6px;
+  }
+  .status-bar {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    font-size: 0.95rem;
+  }
+  .status-bar .pill {
+    background: #f4f4f4;
+    padding: 8px 16px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 0 rgba(34,197,94,0.7);
+    animation: pulse 1.8s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
+    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+  }
+  .clock-big {
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 20px 0 5px;
+    letter-spacing: 1px;
+  }
+  .date-big {
+    text-align: center;
+    color: #555;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+  }
+  .warning {
+    background: #fff8e1;
+    border-left: 5px solid #f59e0b;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 0.92rem;
+    color: #664d03;
+    line-height: 1.5;
+  }
+  .warning i { color: #f59e0b; margin-right: 6px; }
+  .card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  }
+  .card h2 {
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+    color: #111;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h2 i { color: #e63946; }
+  .controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px 26px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  button:active { transform: scale(0.97); }
+  .btn-start {
+    background: #22c55e;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(34,197,94,0.35);
+  }
+  .btn-start:hover { box-shadow: 0 6px 16px rgba(34,197,94,0.45); }
+  .btn-stop {
+    background: #e63946;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(230,57,70,0.35);
+  }
+  .btn-log {
+    background: #111;
+    color: #fff;
+  }
+  .btn-clear {
+    background: #f1f1f1;
+    color: #333;
+  }
+  input[type="number"] {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    width: 140px;
+    text-align: center;
+  }
+  input[type="number"]:focus {
+    outline: none;
+    border-color: #e63946;
+  }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .history {
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .round-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #fafafa;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+  .round-item .num {
+    font-weight: 700;
+    color: #888;
+    min-width: 45px;
+  }
+  .round-item .mult {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #111;
+  }
+  .round-item .time {
+    color: #888;
+    font-size: 0.85rem;
+  }
+  .empty {
+    text-align: center;
+    color: #aaa;
+    padding: 30px;
+    font-style: italic;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .stat {
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .stat .label { font-size: 0.8rem; color: #777; margin-bottom: 6px; }
+  .stat .value { font-size: 1.3rem; font-weight: 700; color: #111; }
+  footer {
+    text-align: center;
+    padding: 25px 15px;
+    color: #999;
+    font-size: 0.85rem;
+    border-top: 1px solid #eee;
+    margin-top: 20px;
+  }
+  @media (max-width: 500px) {
+    .clock-big { font-size: 1.8rem; }
+    header h1 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><i class="fas fa-chart-line"></i> JetX Round Tracker</h1>
+    <div class="powered">Powered by Njabulo Jb</div>
+    <div class="status-bar">
+      <div class="pill"><span class="dot"></span> <span id="statusText">Online</span></div>
+      <div class="pill"><i class="fas fa-calendar-day"></i> <span id="dateSmall">--</span></div>
+    </div>
+  </header>
+
+  <div class="clock-big" id="clockBig">--:--:-- --</div>
+  <div class="date-big" id="dateBig">--</div>
+
+  <div class="warning">
+    <i class="fas fa-triangle-exclamation"></i>
+    <strong>This is a tracker, not a predictor.</strong> JetX uses a certified RNG — no app can know the next multiplier. This tool only records rounds you see and helps you track your bankroll and stop-loss. Never bet money you can't afford to lose.
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-gamepad"></i> Session Control</h2>
+    <div class="row">
+      <input type="number" id="bankrollInput" placeholder="Bankroll" min="0" step="1">
+      <button class="btn-start" id="startBtn"><i class="fas fa-play"></i> Start Session</button>
+      <button class="btn-stop" id="stopBtn"><i class="fas fa-stop"></i> Stop Session</button>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><div class="label">Session</div><div class="value" id="sessionState">Idle</div></div>
+      <div class="stat"><div class="label">Duration</div><div class="value" id="durationVal">00:00</div></div>
+      <div class="stat"><div class="label">Rounds Logged</div><div class="value" id="roundCount">0</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-plus-circle"></i> Log a Round</h2>
+    <div class="row">
+      <input type="number" id="multInput" placeholder="Multiplier (e.g. 2.5)" step="0.01" min="1">
+      <button class="btn-log" id="logBtn"><i class="fas fa-check"></i> Log Round</button>
+      <button class="btn-clear" id="clearBtn"><i class="fas fa-trash"></i> Clear All</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-list-ol"></i> Round History</h2>
+    <div class="history" id="historyList">
+      <div class="empty">No rounds logged yet.</div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><div class="label">Highest</div><div class="value" id="statHigh">—</div></div>
+      <div class="stat"><div class="label">Lowest</div><div class="value" id="statLow">—</div></div>
+      <div class="stat"><div class="label">Average</div><div class="value" id="statAvg">—</div></div>
+    </div>
+  </div>
+
+  <footer>
+    <i class="fas fa-shield-halved"></i> For entertainment & record-keeping only. Not affiliated with Betway or JetX.
+  </footer>
+</div>
+
+<script>
+  // ---------- Clock ----------
+  function updateClock() {
+    const now = new Date();
+    let h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12; if (h === 0) h = 12;
+    document.getElementById('clockBig').textContent =
+      `${String(h).padStart(2,'0')}:${m}:${s} ${ampm}`;
+    const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+    const dstr = now.toLocaleDateString(undefined, opts);
+    document.getElementById('dateBig').textContent = dstr;
+    document.getElementById('dateSmall').textContent = dstr;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ---------- State ----------
+  let sessionActive = false;
+  let sessionStart = null;
+  let sessionTimer = null;
+  let rounds = [];
+
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const logBtn = document.getElementById('logBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const multInput = document.getElementById('multInput');
+  const historyList = document.getElementById('historyList');
+  const sessionState = document.getElementById('sessionState');
+  const durationVal = document.getElementById('durationVal');
+  const roundCount = document.getElementById('roundCount');
+  const statHigh = document.getElementById('statHigh');
+  const statLow = document.getElementById('statLow');
+  const statAvg = document.getElementById('statAvg');
+
+  function fmtDuration(ms) {
+    const total = Math.floor(ms/1000);
+    const mm = String(Math.floor(total/60)).padStart(2,'0');
+    const ss = String(total%60).padStart(2,'0');
+    return `${mm}:${ss}`;
+  }
+
+  startBtn.addEventListener('click', () => {
+    if (sessionActive) return;
+    sessionActive = true;
+    sessionStart = Date.now();
+    sessionState.textContent = 'Running';
+    sessionState.style.color = '#22c55e';
+    sessionTimer = setInterval(() => {
+      durationVal.textContent = fmtDuration(Date.now() - sessionStart);
+    }, 1000);
+  });
+
+  stopBtn.addEventListener('click', () => {
+    if (!sessionActive) return;
+    sessionActive = false;
+    clearInterval(sessionTimer);
+    sessionState.textContent = 'Stopped';
+    sessionState.style.color = '#e63946';
+  });
+
+  function render() {
+    if (rounds.length === 0) {
+      historyList.innerHTML = '<div class="empty">No rounds logged yet.</div>';
+      statHigh.textContent = statLow.textContent = statAvg.textContent = '—';
+      roundCount.textContent = '0';
+      return;
+    }
+    // Show newest first
+    const html = rounds.slice().reverse().map((r, i) => {
+      const seq = rounds.length - i;
+      return `<div class="round-item">
+        <span class="num">#${seq}</span>
+        <span class="mult">${r.mult.toFixed(2)}x</span>
+        <span class="time">${r.time}</span>
+      </div>`;
+    }).join('');
+    historyList.innerHTML = html;
+
+    const vals = rounds.map(r => r.mult);
+    statHigh.textContent = Math.max(...vals).toFixed(2) + 'x';
+    statLow.textContent = Math.min(...vals).toFixed(2) + 'x';
+    statAvg.textContent = (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2) + 'x';
+    roundCount.textContent = rounds.length;
+  }
+
+  logBtn.addEventListener('click', () => {
+    const v = parseFloat(multInput.value);
+    if (isNaN(v) || v < 1) {
+      multInput.focus();
+      return;
+    }
+    const now = new Date();
+    let h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12; if (h === 0) h = 12;
+    rounds.push({ mult: v, time: `${h}:${m} ${ampm}` });
+    multInput.value = '';
+    multInput.focus();
+    render();
+  });
+
+  multInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') logBtn.click();
+  });
+
+  clearBtn.addEventListener('click', () => {
+    if (rounds.length === 0) return;
+    if (confirm('Clear all logged rounds?')) {
+      rounds = [];
+      render();
+    }
+  });
+
+  render();
+</script>
+</body>
+  </html> 
