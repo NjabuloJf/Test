@@ -3,260 +3,359 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JetX Tracker — Powered by Njabulo Jb</title>
+<title>JetX Session Planner — by Njabulo Jb</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background: #ffffff;
     color: #111;
     min-height: 100vh;
-    padding: 20px;
+    padding: 24px 16px 60px;
   }
-  .wrap { max-width: 900px; margin: 0 auto; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+
+  /* ---------- Header ---------- */
   header {
     text-align: center;
-    padding: 25px 15px;
-    border-bottom: 2px solid #eee;
-    margin-bottom: 25px;
+    padding: 20px 10px 28px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 28px;
   }
   header h1 {
-    font-size: 2rem;
-    margin-bottom: 8px;
-    color: #0a0a0a;
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
   }
-  header h1 i { color: #e63946; }
+  header h1 i { color: #e63946; margin-right: 8px; }
   .powered {
-    color: #666;
-    font-size: 0.95rem;
-    margin-top: 6px;
+    color: #888;
+    font-size: 0.9rem;
+    letter-spacing: 0.3px;
   }
   .status-bar {
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-top: 15px;
-    font-size: 0.95rem;
+    margin-top: 18px;
   }
-  .status-bar .pill {
-    background: #f4f4f4;
+  .pill {
+    background: #f6f6f6;
     padding: 8px 16px;
-    border-radius: 30px;
-    display: flex;
+    border-radius: 40px;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
   }
   .dot {
-    width: 10px; height: 10px; border-radius: 50%;
+    width: 9px; height: 9px; border-radius: 50%;
     background: #22c55e;
-    box-shadow: 0 0 0 0 rgba(34,197,94,0.7);
+    box-shadow: 0 0 0 0 rgba(34,197,94,0.6);
     animation: pulse 1.8s infinite;
   }
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
+    0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
+    70%  { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
     100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
   }
+
+  /* ---------- Clock ---------- */
   .clock-big {
-    font-size: 2.4rem;
-    font-weight: 700;
     text-align: center;
-    margin: 20px 0 5px;
+    font-size: 3.2rem;
+    font-weight: 800;
     letter-spacing: 1px;
+    margin: 18px 0 4px;
+    font-variant-numeric: tabular-nums;
   }
   .date-big {
     text-align: center;
-    color: #555;
-    font-size: 1.1rem;
-    margin-bottom: 25px;
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 26px;
   }
+
+  /* ---------- Warning ---------- */
   .warning {
     background: #fff8e1;
     border-left: 5px solid #f59e0b;
-    padding: 14px 18px;
-    border-radius: 8px;
-    margin-bottom: 25px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin-bottom: 26px;
     font-size: 0.92rem;
     color: #664d03;
-    line-height: 1.5;
+    line-height: 1.55;
   }
-  .warning i { color: #f59e0b; margin-right: 6px; }
+  .warning i { color: #f59e0b; margin-right: 8px; }
+
+  /* ---------- Cards ---------- */
   .card {
     background: #fff;
     border: 1px solid #eee;
-    border-radius: 16px;
-    padding: 22px;
+    border-radius: 18px;
+    padding: 24px;
     margin-bottom: 22px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 2px 14px rgba(0,0,0,0.03);
   }
   .card h2 {
-    font-size: 1.15rem;
-    margin-bottom: 16px;
-    color: #111;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 18px;
     display: flex;
     align-items: center;
     gap: 10px;
   }
   .card h2 i { color: #e63946; }
-  .controls {
+
+  /* ---------- Inputs & buttons ---------- */
+  .row {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
   }
-  button {
-    font-family: inherit;
-    font-size: 1rem;
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .field label {
+    font-size: 0.78rem;
+    color: #777;
     font-weight: 600;
-    padding: 14px 26px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-left: 4px;
   }
-  button:active { transform: scale(0.97); }
-  .btn-start {
-    background: #22c55e;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(34,197,94,0.35);
-  }
-  .btn-start:hover { box-shadow: 0 6px 16px rgba(34,197,94,0.45); }
-  .btn-stop {
-    background: #e63946;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(230,57,70,0.35);
-  }
-  .btn-log {
-    background: #111;
-    color: #fff;
-  }
-  .btn-clear {
-    background: #f1f1f1;
-    color: #333;
-  }
-  input[type="number"] {
+  input[type="number"], input[type="time"], input[type="text"] {
     font-family: inherit;
     font-size: 1rem;
     padding: 12px 16px;
-    border: 1px solid #ddd;
+    border: 1.5px solid #e5e5e5;
     border-radius: 50px;
-    width: 140px;
+    background: #fff;
+    color: #111;
+    text-align: center;
+    transition: border-color 0.15s;
+  }
+  input:focus { outline: none; border-color: #e63946; }
+  input[type="number"] { width: 120px; }
+  input[type="time"] { width: 150px; font-weight: 700; }
+
+  button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 13px 26px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.15s, background 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.2px;
+  }
+  button:active { transform: scale(0.97); }
+  .btn-primary {
+    background: #111; color: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  }
+  .btn-primary:hover { background: #000; box-shadow: 0 6px 18px rgba(0,0,0,0.22); }
+  .btn-green {
+    background: #22c55e; color: #fff;
+    box-shadow: 0 4px 14px rgba(34,197,94,0.3);
+  }
+  .btn-green:hover { box-shadow: 0 6px 18px rgba(34,197,94,0.4); }
+  .btn-red {
+    background: #e63946; color: #fff;
+    box-shadow: 0 4px 14px rgba(230,57,70,0.3);
+  }
+  .btn-red:hover { box-shadow: 0 6px 18px rgba(230,57,70,0.4); }
+  .btn-ghost {
+    background: #f3f3f3; color: #333;
+  }
+  .btn-ghost:hover { background: #eaeaea; }
+
+  /* ---------- Countdown ---------- */
+  .countdown-box {
+    text-align: center;
+    padding: 12px 0;
+  }
+  .countdown-time {
+    font-size: 2.6rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: #111;
+    letter-spacing: 1px;
+  }
+  .countdown-label {
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 6px;
+  }
+  .countdown-time.ready { color: #22c55e; }
+
+  /* ---------- Stats ---------- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .stat {
+    background: #fafafa;
+    border-radius: 14px;
+    padding: 16px 10px;
     text-align: center;
   }
-  input[type="number"]:focus {
-    outline: none;
-    border-color: #e63946;
+  .stat .label {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+    font-weight: 600;
   }
-  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .stat .value {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #111;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- History ---------- */
   .history {
-    max-height: 320px;
+    max-height: 300px;
     overflow-y: auto;
+    margin-bottom: 12px;
   }
   .round-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 14px;
-    border-radius: 10px;
+    padding: 12px 16px;
+    border-radius: 12px;
     background: #fafafa;
     margin-bottom: 8px;
     font-size: 0.95rem;
   }
-  .round-item .num {
-    font-weight: 700;
-    color: #888;
-    min-width: 45px;
-  }
-  .round-item .mult {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #111;
-  }
-  .round-item .time {
-    color: #888;
-    font-size: 0.85rem;
-  }
+  .round-item .num { font-weight: 800; color: #999; min-width: 48px; }
+  .round-item .mult { font-weight: 800; font-size: 1.1rem; }
+  .round-item .time { color: #888; font-size: 0.85rem; }
+  .round-item.hit { background: #e8f9ee; }
   .empty {
     text-align: center;
-    color: #aaa;
-    padding: 30px;
+    color: #bbb;
+    padding: 34px;
     font-style: italic;
+    font-size: 0.95rem;
   }
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 12px;
-    margin-top: 14px;
-  }
-  .stat {
-    background: #fafafa;
-    border-radius: 12px;
-    padding: 14px;
-    text-align: center;
-  }
-  .stat .label { font-size: 0.8rem; color: #777; margin-bottom: 6px; }
-  .stat .value { font-size: 1.3rem; font-weight: 700; color: #111; }
+
   footer {
     text-align: center;
-    padding: 25px 15px;
-    color: #999;
-    font-size: 0.85rem;
+    padding: 30px 16px 10px;
+    color: #aaa;
+    font-size: 0.82rem;
     border-top: 1px solid #eee;
-    margin-top: 20px;
+    margin-top: 24px;
   }
-  @media (max-width: 500px) {
-    .clock-big { font-size: 1.8rem; }
-    header h1 { font-size: 1.4rem; }
+
+  @media (max-width: 520px) {
+    .clock-big { font-size: 2.3rem; }
+    header h1 { font-size: 1.5rem; }
+    .countdown-time { font-size: 2rem; }
+    button { padding: 12px 20px; font-size: 0.95rem; }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <header>
-    <h1><i class="fas fa-chart-line"></i> JetX Round Tracker</h1>
+    <h1><i class="fas fa-paper-plane"></i> JetX Session Planner</h1>
     <div class="powered">Powered by Njabulo Jb</div>
     <div class="status-bar">
-      <div class="pill"><span class="dot"></span> <span id="statusText">Online</span></div>
-      <div class="pill"><i class="fas fa-calendar-day"></i> <span id="dateSmall">--</span></div>
+      <span class="pill"><span class="dot"></span> Online</span>
+      <span class="pill"><i class="fas fa-calendar-day"></i> <span id="dateSmall">—</span></span>
+      <span class="pill"><i class="fas fa-user-shield"></i> Not a predictor</span>
     </div>
   </header>
 
   <div class="clock-big" id="clockBig">--:--:-- --</div>
-  <div class="date-big" id="dateBig">--</div>
+  <div class="date-big" id="dateBig">—</div>
 
   <div class="warning">
     <i class="fas fa-triangle-exclamation"></i>
-    <strong>This is a tracker, not a predictor.</strong> JetX uses a certified RNG — no app can know the next multiplier. This tool only records rounds you see and helps you track your bankroll and stop-loss. Never bet money you can't afford to lose.
+    <strong>Honest truth:</strong> No app can predict JetX. The game uses a certified RNG — every round is independent. This planner lets <em>you</em> choose a time to play and a target multiplier. It reminds you and records what happened. It does not guess the future, and it never will.
   </div>
 
+  <!-- PLAN -->
   <div class="card">
-    <h2><i class="fas fa-gamepad"></i> Session Control</h2>
+    <h2><i class="fas fa-bullseye"></i> My Plan</h2>
     <div class="row">
-      <input type="number" id="bankrollInput" placeholder="Bankroll" min="0" step="1">
-      <button class="btn-start" id="startBtn"><i class="fas fa-play"></i> Start Session</button>
-      <button class="btn-stop" id="stopBtn"><i class="fas fa-stop"></i> Stop Session</button>
+      <div class="field">
+        <label>Play at</label>
+        <input type="time" id="planTime" value="10:00">
+      </div>
+      <div class="field">
+        <label>Target multiplier</label>
+        <input type="number" id="planMult" value="2" step="0.1" min="1">
+      </div>
+      <div class="field">
+        <label>Stop-loss (loss limit)</label>
+        <input type="number" id="planLoss" value="50" min="0" step="1">
+      </div>
+      <button class="btn-primary" id="setPlanBtn"><i class="fas fa-check"></i> Set Plan</button>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="card">
+    <h2><i class="fas fa-hourglass-half"></i> Countdown to My Time</h2>
+    <div class="countdown-box">
+      <div class="countdown-time" id="countdown">—</div>
+      <div class="countdown-label" id="countdownLabel">Set your plan above to begin.</div>
+    </div>
+  </div>
+
+  <!-- SESSION -->
+  <div class="card">
+    <h2><i class="fas fa-gamepad"></i> Session</h2>
+    <div class="row">
+      <button class="btn-green" id="startBtn"><i class="fas fa-play"></i> Start Session</button>
+      <button class="btn-red" id="stopBtn"><i class="fas fa-stop"></i> Stop Session</button>
+      <button class="btn-ghost" id="clearBtn"><i class="fas fa-trash"></i> Clear All</button>
     </div>
     <div class="stat-grid">
       <div class="stat"><div class="label">Session</div><div class="value" id="sessionState">Idle</div></div>
       <div class="stat"><div class="label">Duration</div><div class="value" id="durationVal">00:00</div></div>
-      <div class="stat"><div class="label">Rounds Logged</div><div class="value" id="roundCount">0</div></div>
+      <div class="stat"><div class="label">Rounds</div><div class="value" id="roundCount">0</div></div>
+      <div class="stat"><div class="label">Target Hits</div><div class="value" id="hitCount">0</div></div>
     </div>
   </div>
 
+  <!-- LOG ROUND -->
   <div class="card">
     <h2><i class="fas fa-plus-circle"></i> Log a Round</h2>
     <div class="row">
-      <input type="number" id="multInput" placeholder="Multiplier (e.g. 2.5)" step="0.01" min="1">
-      <button class="btn-log" id="logBtn"><i class="fas fa-check"></i> Log Round</button>
-      <button class="btn-clear" id="clearBtn"><i class="fas fa-trash"></i> Clear All</button>
+      <div class="field">
+        <label>Multiplier seen</label>
+        <input type="number" id="multInput" placeholder="e.g. 2.5" step="0.01" min="1">
+      </div>
+      <button class="btn-primary" id="logBtn"><i class="fas fa-check"></i> Log Round</button>
     </div>
   </div>
 
+  <!-- HISTORY -->
   <div class="card">
     <h2><i class="fas fa-list-ol"></i> Round History</h2>
     <div class="history" id="historyList">
@@ -270,52 +369,92 @@
   </div>
 
   <footer>
-    <i class="fas fa-shield-halved"></i> For entertainment & record-keeping only. Not affiliated with Betway or JetX.
+    <i class="fas fa-shield-halved"></i> For personal record-keeping only. Not affiliated with Betway or JetX. Play responsibly.
   </footer>
+
 </div>
 
 <script>
-  // ---------- Clock ----------
-  function updateClock() {
-    const now = new Date();
-    let h = now.getHours();
-    const m = String(now.getMinutes()).padStart(2, '0');
-    const s = String(now.getSeconds()).padStart(2, '0');
+  // ---------------- Clock ----------------
+  function fmtTime(d) {
+    let h = d.getHours();
+    const m = String(d.getMinutes()).padStart(2, '0');
+    const s = String(d.getSeconds()).padStart(2, '0');
     const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12; if (h === 0) h = 12;
-    document.getElementById('clockBig').textContent =
-      `${String(h).padStart(2,'0')}:${m}:${s} ${ampm}`;
-    const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
-    const dstr = now.toLocaleDateString(undefined, opts);
-    document.getElementById('dateBig').textContent = dstr;
-    document.getElementById('dateSmall').textContent = dstr;
+    h = h % 12 || 12;
+    return `${String(h).padStart(2,'0')}:${m}:${s} ${ampm}`;
   }
-  updateClock();
-  setInterval(updateClock, 1000);
+  function fmtDate(d) {
+    return d.toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  }
+  function nowHHMM(d) {
+    return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+  }
 
-  // ---------- State ----------
+  const clockBig = document.getElementById('clockBig');
+  const dateBig = document.getElementById('dateBig');
+  const dateSmall = document.getElementById('dateSmall');
+
+  function tickClock() {
+    const now = new Date();
+    clockBig.textContent = fmtTime(now);
+    dateBig.textContent = fmtDate(now);
+    dateSmall.textContent = fmtDate(now);
+    tickCountdown(now);
+  }
+
+  // ---------------- Plan + countdown ----------------
+  let plan = { time: null, mult: 2, loss: 50, set: false };
+  const planTime = document.getElementById('planTime');
+  const planMult = document.getElementById('planMult');
+  const planLoss = document.getElementById('planLoss');
+  const setPlanBtn = document.getElementById('setPlanBtn');
+  const countdownEl = document.getElementById('countdown');
+  const countdownLabel = document.getElementById('countdownLabel');
+
+  setPlanBtn.addEventListener('click', () => {
+    if (!planTime.value) { planTime.focus(); return; }
+    plan.time = planTime.value;
+    plan.mult = parseFloat(planMult.value) || 2;
+    plan.loss = parseFloat(planLoss.value) || 0;
+    plan.set = true;
+    countdownLabel.textContent = `Plan set for ${plan.time} — target ${plan.mult}x, stop-loss ${plan.loss}`;
+  });
+
+  function tickCountdown(now) {
+    if (!plan.set) { countdownEl.textContent = '—'; return; }
+    const [ph, pm] = plan.time.split(':').map(Number);
+    const target = new Date(now);
+    target.setHours(ph, pm, 0, 0);
+    if (target <= now) target.setDate(target.getDate() + 1); // next occurrence
+    const diff = target - now;
+    const hh = Math.floor(diff / 3600000);
+    const mm = Math.floor((diff % 3600000) / 60000);
+    const ss = Math.floor((diff % 60000) / 1000);
+    countdownEl.textContent =
+      `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+    if (nowHHMM(now) === plan.time) {
+      countdownEl.classList.add('ready');
+      countdownEl.textContent = 'GO — it is your chosen time';
+      countdownLabel.textContent = `Your chosen time. Target: ${plan.mult}x. Stop if you hit loss limit of ${plan.loss}.`;
+    } else {
+      countdownEl.classList.remove('ready');
+    }
+  }
+
+  // ---------------- Session ----------------
   let sessionActive = false;
   let sessionStart = null;
   let sessionTimer = null;
-  let rounds = [];
-
-  const startBtn = document.getElementById('startBtn');
-  const stopBtn = document.getElementById('stopBtn');
-  const logBtn = document.getElementById('logBtn');
-  const clearBtn = document.getElementById('clearBtn');
-  const multInput = document.getElementById('multInput');
-  const historyList = document.getElementById('historyList');
   const sessionState = document.getElementById('sessionState');
   const durationVal = document.getElementById('durationVal');
-  const roundCount = document.getElementById('roundCount');
-  const statHigh = document.getElementById('statHigh');
-  const statLow = document.getElementById('statLow');
-  const statAvg = document.getElementById('statAvg');
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
 
   function fmtDuration(ms) {
-    const total = Math.floor(ms/1000);
-    const mm = String(Math.floor(total/60)).padStart(2,'0');
-    const ss = String(total%60).padStart(2,'0');
+    const total = Math.floor(ms / 1000);
+    const mm = String(Math.floor(total / 60)).padStart(2, '0');
+    const ss = String(total % 60).padStart(2, '0');
     return `${mm}:${ss}`;
   }
 
@@ -338,17 +477,31 @@
     sessionState.style.color = '#e63946';
   });
 
+  // ---------------- Rounds ----------------
+  let rounds = [];
+  const multInput = document.getElementById('multInput');
+  const logBtn = document.getElementById('logBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const historyList = document.getElementById('historyList');
+  const roundCount = document.getElementById('roundCount');
+  const hitCount = document.getElementById('hitCount');
+  const statHigh = document.getElementById('statHigh');
+  const statLow = document.getElementById('statLow');
+  const statAvg = document.getElementById('statAvg');
+
   function render() {
     if (rounds.length === 0) {
       historyList.innerHTML = '<div class="empty">No rounds logged yet.</div>';
       statHigh.textContent = statLow.textContent = statAvg.textContent = '—';
       roundCount.textContent = '0';
+      hitCount.textContent = '0';
       return;
     }
-    // Show newest first
+    const target = plan.set ? plan.mult : Infinity;
     const html = rounds.slice().reverse().map((r, i) => {
       const seq = rounds.length - i;
-      return `<div class="round-item">
+      const hit = r.mult >= target ? ' hit' : '';
+      return `<div class="round-item${hit}">
         <span class="num">#${seq}</span>
         <span class="mult">${r.mult.toFixed(2)}x</span>
         <span class="time">${r.time}</span>
@@ -359,40 +512,40 @@
     const vals = rounds.map(r => r.mult);
     statHigh.textContent = Math.max(...vals).toFixed(2) + 'x';
     statLow.textContent = Math.min(...vals).toFixed(2) + 'x';
-    statAvg.textContent = (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2) + 'x';
+    statAvg.textContent = (vals.reduce((a,b)=>a+b,0) / vals.length).toFixed(2) + 'x';
     roundCount.textContent = rounds.length;
+    hitCount.textContent = vals.filter(v => v >= target).length;
   }
 
   logBtn.addEventListener('click', () => {
     const v = parseFloat(multInput.value);
-    if (isNaN(v) || v < 1) {
-      multInput.focus();
-      return;
-    }
+    if (isNaN(v) || v < 1) { multInput.focus(); return; }
     const now = new Date();
-    let h = now.getHours();
-    const m = String(now.getMinutes()).padStart(2,'0');
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12; if (h === 0) h = 12;
-    rounds.push({ mult: v, time: `${h}:${m} ${ampm}` });
+    rounds.push({ mult: v, time: fmtTime(now).slice(0, -3) }); // HH:MM AM/PM
     multInput.value = '';
     multInput.focus();
     render();
   });
 
-  multInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') logBtn.click();
-  });
+  multInput.addEventListener('keydown', e => { if (e.key === 'Enter') logBtn.click(); });
 
   clearBtn.addEventListener('click', () => {
     if (rounds.length === 0) return;
-    if (confirm('Clear all logged rounds?')) {
+    if (confirm('Clear all logged rounds and reset session?')) {
       rounds = [];
+      sessionActive = false;
+      clearInterval(sessionTimer);
+      sessionState.textContent = 'Idle';
+      sessionState.style.color = '#111';
+      durationVal.textContent = '00:00';
       render();
     }
   });
 
+  // ---------------- Init ----------------
+  tickClock();
+  setInterval(tickClock, 1000);
   render();
 </script>
 </body>
-  </html> 
+ </html>
