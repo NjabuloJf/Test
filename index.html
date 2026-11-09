@@ -1,551 +1,999 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JetX Session Planner — by Njabulo Jb</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: #ffffff;
-    color: #111;
-    min-height: 100vh;
-    padding: 24px 16px 60px;
-  }
-  .wrap { max-width: 960px; margin: 0 auto; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Njabulo JB MiniBot</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/NjabuloJf/njabulo-data/main/njabuloimg/njabuloimg3.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-  /* ---------- Header ---------- */
-  header {
-    text-align: center;
-    padding: 20px 10px 28px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 28px;
-  }
-  header h1 {
-    font-size: 2.1rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 6px;
-  }
-  header h1 i { color: #e63946; margin-right: 8px; }
-  .powered {
-    color: #888;
-    font-size: 0.9rem;
-    letter-spacing: 0.3px;
-  }
-  .status-bar {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 18px;
-  }
-  .pill {
-    background: #f6f6f6;
-    padding: 8px 16px;
-    border-radius: 40px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: #333;
-    font-weight: 500;
-  }
-  .dot {
-    width: 9px; height: 9px; border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 0 0 rgba(34,197,94,0.6);
-    animation: pulse 1.8s infinite;
-  }
-  @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
-    70%  { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
-    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
-  }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  /* ---------- Clock ---------- */
-  .clock-big {
-    text-align: center;
-    font-size: 3.2rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    margin: 18px 0 4px;
-    font-variant-numeric: tabular-nums;
-  }
-  .date-big {
-    text-align: center;
-    color: #666;
-    font-size: 1rem;
-    margin-bottom: 26px;
-  }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-  /* ---------- Warning ---------- */
-  .warning {
-    background: #fff8e1;
-    border-left: 5px solid #f59e0b;
-    padding: 16px 20px;
-    border-radius: 10px;
-    margin-bottom: 26px;
-    font-size: 0.92rem;
-    color: #664d03;
-    line-height: 1.55;
-  }
-  .warning i { color: #f59e0b; margin-right: 8px; }
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: 
+                linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 15s linear infinite;
+            pointer-events: none;
+        }
 
-  /* ---------- Cards ---------- */
-  .card {
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 18px;
-    padding: 24px;
-    margin-bottom: 22px;
-    box-shadow: 0 2px 14px rgba(0,0,0,0.03);
-  }
-  .card h2 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .card h2 i { color: #e63946; }
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
 
-  /* ---------- Inputs & buttons ---------- */
-  .row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    align-items: flex-start;
-  }
-  .field label {
-    font-size: 0.78rem;
-    color: #777;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding-left: 4px;
-  }
-  input[type="number"], input[type="time"], input[type="text"] {
-    font-family: inherit;
-    font-size: 1rem;
-    padding: 12px 16px;
-    border: 1.5px solid #e5e5e5;
-    border-radius: 50px;
-    background: #fff;
-    color: #111;
-    text-align: center;
-    transition: border-color 0.15s;
-  }
-  input:focus { outline: none; border-color: #e63946; }
-  input[type="number"] { width: 120px; }
-  input[type="time"] { width: 150px; font-weight: 700; }
+        .dots-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+            animation: dotPulse 4s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
 
-  button {
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 13px 26px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.15s, background 0.15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    letter-spacing: 0.2px;
-  }
-  button:active { transform: scale(0.97); }
-  .btn-primary {
-    background: #111; color: #fff;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-  }
-  .btn-primary:hover { background: #000; box-shadow: 0 6px 18px rgba(0,0,0,0.22); }
-  .btn-green {
-    background: #22c55e; color: #fff;
-    box-shadow: 0 4px 14px rgba(34,197,94,0.3);
-  }
-  .btn-green:hover { box-shadow: 0 6px 18px rgba(34,197,94,0.4); }
-  .btn-red {
-    background: #e63946; color: #fff;
-    box-shadow: 0 4px 14px rgba(230,57,70,0.3);
-  }
-  .btn-red:hover { box-shadow: 0 6px 18px rgba(230,57,70,0.4); }
-  .btn-ghost {
-    background: #f3f3f3; color: #333;
-  }
-  .btn-ghost:hover { background: #eaeaea; }
+        @keyframes dotPulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
 
-  /* ---------- Countdown ---------- */
-  .countdown-box {
-    text-align: center;
-    padding: 12px 0;
-  }
-  .countdown-time {
-    font-size: 2.6rem;
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
-    color: #111;
-    letter-spacing: 1px;
-  }
-  .countdown-label {
-    color: #777;
-    font-size: 0.9rem;
-    margin-top: 6px;
-  }
-  .countdown-time.ready { color: #22c55e; }
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 520px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 40px 35px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.06),
+                0 8px 24px rgba(0, 0, 0, 0.03),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-  /* ---------- Stats ---------- */
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 12px;
-    margin-top: 16px;
-  }
-  .stat {
-    background: #fafafa;
-    border-radius: 14px;
-    padding: 16px 10px;
-    text-align: center;
-  }
-  .stat .label {
-    font-size: 0.75rem;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 6px;
-    font-weight: 600;
-  }
-  .stat .value {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: #111;
-    font-variant-numeric: tabular-nums;
-  }
+        .container:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.08),
+                0 10px 30px rgba(0, 0, 0, 0.04);
+        }
 
-  /* ---------- History ---------- */
-  .history {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 12px;
-  }
-  .round-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    border-radius: 12px;
-    background: #fafafa;
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-  }
-  .round-item .num { font-weight: 800; color: #999; min-width: 48px; }
-  .round-item .mult { font-weight: 800; font-size: 1.1rem; }
-  .round-item .time { color: #888; font-size: 0.85rem; }
-  .round-item.hit { background: #e8f9ee; }
-  .empty {
-    text-align: center;
-    color: #bbb;
-    padding: 34px;
-    font-style: italic;
-    font-size: 0.95rem;
-  }
+        .logo-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
 
-  footer {
-    text-align: center;
-    padding: 30px 16px 10px;
-    color: #aaa;
-    font-size: 0.82rem;
-    border-top: 1px solid #eee;
-    margin-top: 24px;
-  }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid rgba(102, 126, 234, 0.2);
+            box-shadow: 
+                0 10px 40px rgba(102, 126, 234, 0.25),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2);
+            animation: float 5s ease-in-out infinite;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            user-select: none;
+            background: #f8f9fc;
+        }
 
-  @media (max-width: 520px) {
-    .clock-big { font-size: 2.3rem; }
-    header h1 { font-size: 1.5rem; }
-    .countdown-time { font-size: 2rem; }
-    button { padding: 12px 20px; font-size: 0.95rem; }
-  }
-</style>
+        .logo:hover {
+            transform: scale(1.05);
+            border-color: #667eea;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .title span {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 400;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle i {
+            color: #764ba2;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin: 0 auto 22px;
+            border-radius: 10px;
+        }
+
+        .pair-section {
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 20px 22px;
+            margin-bottom: 24px;
+            border: 1px solid #eef0f5;
+        }
+
+        .pair-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .pair-title i {
+            color: #667eea;
+            margin-right: 6px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+            color: #1a1a2e;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group input::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        .input-group input::-webkit-outer-spin-button,
+        .input-group input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .input-group input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .btn-pair {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-pair:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-pair:active {
+            transform: scale(0.97);
+        }
+
+        .btn-pair:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .code-display {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 14px 18px;
+            border: 2px dashed #d4c9f0;
+            text-align: center;
+            margin-top: 12px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .code-display.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .code-display .code-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .code-display .code-value {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #764ba2;
+            font-family: 'Inter', monospace;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: #f3f0ff;
+            display: inline-block;
+            transition: all 0.3s ease;
+            user-select: all;
+        }
+
+        .code-display .code-value:hover {
+            background: #e8e0ff;
+            transform: scale(1.02);
+        }
+
+        .code-display .code-value.copied {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .code-display .copy-hint {
+            font-size: 0.65rem;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .btn-copy-code {
+            margin-top: 10px;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-copy-code:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .status-card {
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            border: 1px solid #eef0f5;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eef0f5;
+        }
+
+        .status-row:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            color: #6b7280;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-value {
+            color: #1a1a2e;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .status-badge.online {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.offline {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.connecting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+
+        .status-dot.online {
+            background: #10b981;
+        }
+
+        .status-dot.offline {
+            background: #ef4444;
+        }
+
+        .status-dot.connecting {
+            background: #f59e0b;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .feature-item {
+            background: #f8f9fc;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid #eef0f5;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .feature-item:hover {
+            background: #f0f2f7;
+            transform: translateY(-2px);
+            border-color: #d4c9f0;
+        }
+
+        .feature-item .icon {
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+
+        .feature-item .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #4b5563;
+            letter-spacing: 0.3px;
+        }
+
+        .commands-section {
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 18px 22px;
+            border: 1px solid #eef0f5;
+        }
+
+        .commands-section h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .command-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .command-item {
+            background: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: default;
+            font-family: 'Inter', monospace;
+        }
+
+        .command-item:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .command-item.premium {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .footer .heart {
+            color: #ef4444;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #764ba2;
+        }
+
+        .footer .dot {
+            color: #d1d5db;
+        }
+
+        .last-update {
+            font-size: 0.65rem;
+            color: #9ca3af;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 28px 18px;
+                border-radius: 24px;
+            }
+
+            .logo {
+                width: 90px;
+                height: 90px;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .btn-pair {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .feature-item {
+                padding: 10px 6px;
+            }
+
+            .feature-item .icon {
+                font-size: 1.1rem;
+            }
+
+            .feature-item .label {
+                font-size: 0.65rem;
+            }
+
+            .status-card {
+                padding: 14px 16px;
+            }
+
+            .pair-section {
+                padding: 16px 16px;
+            }
+
+            .commands-section {
+                padding: 14px 16px;
+            }
+
+            .command-item {
+                font-size: 0.65rem;
+                padding: 4px 10px;
+            }
+
+            .code-display .code-value {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: 20px 12px;
+            }
+
+            .title {
+                font-size: 1.2rem;
+            }
+
+            .logo {
+                width: 70px;
+                height: 70px;
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header>
-    <h1><i class="fas fa-paper-plane"></i> JetX Session Planner</h1>
-    <div class="powered">Powered by Njabulo Jb</div>
-    <div class="status-bar">
-      <span class="pill"><span class="dot"></span> Online</span>
-      <span class="pill"><i class="fas fa-calendar-day"></i> <span id="dateSmall">—</span></span>
-      <span class="pill"><i class="fas fa-user-shield"></i> Not a predictor</span>
+    <div class="grid-bg"></div>
+    <div class="dots-bg"></div>
+
+    <div class="container">
+
+        <div class="logo-wrapper">
+            <div class="logo" id="logo">
+                <img src="https://raw.githubusercontent.com/NjabuloJf/njabulo-data/main/njabuloimg/njabuloimg3.png" alt="Njabulo JB MiniBot">
+            </div>
+        </div>
+
+        <h1 class="title"><span>NJABULO-JB</span></h1>
+        <p class="subtitle"><i class="fas fa-bolt"></i> WhatsApp Bot • Multi-Device</p>
+        <div class="divider"></div>
+
+        <div class="pair-section">
+            <div class="pair-title">
+                <i class="fas fa-link"></i> Pair Your Device
+            </div>
+            <div class="input-group">
+                <input type="number" id="phoneNumber" placeholder="26777821911" autofocus>
+                <button class="btn-pair" id="pairBtn">
+                    <i class="fas fa-link" style="margin-right:6px;"></i> Pair
+                </button>
+            </div>
+            <div id="loadingIndicator" style="display:none; text-align:center; padding:8px 0;">
+                <span class="spinner"></span>
+                <span style="color:#6b7280; font-size:0.85rem; margin-left:8px;">Generating code...</span>
+            </div>
+            <div class="code-display" id="codeDisplay">
+                <div class="code-label"><i class="fas fa-key"></i> Your Pairing Code</div>
+                <div class="code-value" id="codeValue">123456</div>
+                <div class="copy-hint">⬆️ Click code to copy</div>
+                <button class="btn-copy-code" id="copyBtn">
+                    <i class="fas fa-copy" style="margin-right:6px;"></i> Copy Code
+                </button>
+            </div>
+        </div>
+
+        <div class="status-card">
+            <div class="status-row">
+                <span class="status-label"><i class="fas fa-circle" style="color:#10b981;font-size:0.6rem;"></i> Status</span>
+                <span class="status-value">
+                    <span class="status-badge" id="statusBadge">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span id="statusText">Checking...</span>
+                    </span>
+                </span>
+            </div>
+            <div class="status-row">
+                <span class="status-label"><i class="far fa-clock"></i> Uptime</span>
+                <span class="status-value" id="uptime">--</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label"><i class="fas fa-phone-alt"></i> Connected</span>
+                <span class="status-value" id="connected">--</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label"><i class="fas fa-memory"></i> Memory</span>
+                <span class="status-value" id="memory">--</span>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-item">
+                <span class="icon">🌍</span>
+                <span class="label">Multi-Language</span>
+            </div>
+            <div class="feature-item">
+                <span class="icon">🛡️</span>
+                <span class="label">Anti-Link</span>
+            </div>
+            <div class="feature-item">
+                <span class="icon">🤖</span>
+                <span class="label">AI Chatbot</span>
+            </div>
+            <div class="feature-item">
+                <span class="icon">🎵</span>
+                <span class="label">Music Download</span>
+            </div>
+            <div class="feature-item">
+                <span class="icon">📸</span>
+                <span class="label">Media Tools</span>
+            </div>
+            <div class="feature-item">
+                <span class="icon">🔒</span>
+                <span class="label">Auto-Mod</span>
+            </div>
+        </div>
+
+        <div class="commands-section">
+            <h3><i class="fas fa-bolt" style="color:#667eea;"></i> Quick Commands</h3>
+            <div class="command-grid">
+                <span class="command-item">.menu</span>
+                <span class="command-item">.ping</span>
+                <span class="command-item">.ai</span>
+                <span class="command-item">.sticker</span>
+                <span class="command-item">.play</span>
+                <span class="command-item">.song</span>
+                <span class="command-item">.setlang</span>
+                <span class="command-item">.owner</span>
+                <span class="command-item">.alive</span>
+                <span class="command-item premium">.pair</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>© 2026</span>
+            <span class="dot">•</span>
+            <span>Made with <span class="heart">❤</span> by <a href="#" target="_blank">Njabulo JB</a></span>
+            <span class="dot">•</span>
+            <span>v1.0</span>
+        </div>
+        <div class="last-update" id="lastUpdate">Last updated: --</div>
+
     </div>
-  </header>
 
-  <div class="clock-big" id="clockBig">--:--:-- --</div>
-  <div class="date-big" id="dateBig">—</div>
+    <script>
+        // ========== RANDOM LOGO IMAGES ==========
+        const logoImages = [
+            "https://raw.githubusercontent.com/NjabuloJf/njabulo-data/main/njabuloimg/njabuloimg.png",
+            "https://raw.githubusercontent.com/NjabuloJf/njabulo-data/main/njabuloimg/njabuloimg2.png",
+            "https://raw.githubusercontent.com/NjabuloJf/njabulo-data/main/njabuloimg/njabuloimg3.png",
+            "https://raw.githubusercontent.com/NjabuloJf/njabulo-data/main/njabuloimg/njabuloimg4.png",
+            "https://raw.githubusercontent.com/NjabuloJf/njabulo-data/main/njabuloimg/njabuloimg5.png"
+        ];
 
-  <div class="warning">
-    <i class="fas fa-triangle-exclamation"></i>
-    <strong>Honest truth:</strong> No app can predict JetX. The game uses a certified RNG — every round is independent. This planner lets <em>you</em> choose a time to play and a target multiplier. It reminds you and records what happened. It does not guess the future, and it never will.
-  </div>
+        function changeLogo() {
+            const logoEl = document.querySelector('.logo img');
+            if (logoEl) {
+                const randomIndex = Math.floor(Math.random() * logoImages.length);
+                logoEl.src = logoImages[randomIndex];
+            }
+        }
 
-  <!-- PLAN -->
-  <div class="card">
-    <h2><i class="fas fa-bullseye"></i> My Plan</h2>
-    <div class="row">
-      <div class="field">
-        <label>Play at</label>
-        <input type="time" id="planTime" value="10:00">
-      </div>
-      <div class="field">
-        <label>Target multiplier</label>
-        <input type="number" id="planMult" value="2" step="0.1" min="1">
-      </div>
-      <div class="field">
-        <label>Stop-loss (loss limit)</label>
-        <input type="number" id="planLoss" value="50" min="0" step="1">
-      </div>
-      <button class="btn-primary" id="setPlanBtn"><i class="fas fa-check"></i> Set Plan</button>
-    </div>
-  </div>
+        setInterval(changeLogo, 10000);
 
-  <!-- COUNTDOWN -->
-  <div class="card">
-    <h2><i class="fas fa-hourglass-half"></i> Countdown to My Time</h2>
-    <div class="countdown-box">
-      <div class="countdown-time" id="countdown">—</div>
-      <div class="countdown-label" id="countdownLabel">Set your plan above to begin.</div>
-    </div>
-  </div>
+        // ========== PAIRING FUNCTION ==========
+        const phoneInput = document.getElementById('phoneNumber');
+        const pairBtn = document.getElementById('pairBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const codeValue = document.getElementById('codeValue');
+        const copyBtn = document.getElementById('copyBtn');
 
-  <!-- SESSION -->
-  <div class="card">
-    <h2><i class="fas fa-gamepad"></i> Session</h2>
-    <div class="row">
-      <button class="btn-green" id="startBtn"><i class="fas fa-play"></i> Start Session</button>
-      <button class="btn-red" id="stopBtn"><i class="fas fa-stop"></i> Stop Session</button>
-      <button class="btn-ghost" id="clearBtn"><i class="fas fa-trash"></i> Clear All</button>
-    </div>
-    <div class="stat-grid">
-      <div class="stat"><div class="label">Session</div><div class="value" id="sessionState">Idle</div></div>
-      <div class="stat"><div class="label">Duration</div><div class="value" id="durationVal">00:00</div></div>
-      <div class="stat"><div class="label">Rounds</div><div class="value" id="roundCount">0</div></div>
-      <div class="stat"><div class="label">Target Hits</div><div class="value" id="hitCount">0</div></div>
-    </div>
-  </div>
+        let currentCode = '';
 
-  <!-- LOG ROUND -->
-  <div class="card">
-    <h2><i class="fas fa-plus-circle"></i> Log a Round</h2>
-    <div class="row">
-      <div class="field">
-        <label>Multiplier seen</label>
-        <input type="number" id="multInput" placeholder="e.g. 2.5" step="0.01" min="1">
-      </div>
-      <button class="btn-primary" id="logBtn"><i class="fas fa-check"></i> Log Round</button>
-    </div>
-  </div>
+        async function generatePairCode() {
+            const number = phoneInput.value.trim().replace(/[^0-9]/g, '');
 
-  <!-- HISTORY -->
-  <div class="card">
-    <h2><i class="fas fa-list-ol"></i> Round History</h2>
-    <div class="history" id="historyList">
-      <div class="empty">No rounds logged yet.</div>
-    </div>
-    <div class="stat-grid">
-      <div class="stat"><div class="label">Highest</div><div class="value" id="statHigh">—</div></div>
-      <div class="stat"><div class="label">Lowest</div><div class="value" id="statLow">—</div></div>
-      <div class="stat"><div class="label">Average</div><div class="value" id="statAvg">—</div></div>
-    </div>
-  </div>
+            if (!number || number.length < 10) {
+                phoneInput.style.borderColor = '#ef4444';
+                phoneInput.style.boxShadow = '0 0 0 4px rgba(239,68,68,0.1)';
+                setTimeout(() => {
+                    phoneInput.style.borderColor = '#e5e7eb';
+                    phoneInput.style.boxShadow = 'none';
+                }, 2000);
+                return;
+            }
 
-  <footer>
-    <i class="fas fa-shield-halved"></i> For personal record-keeping only. Not affiliated with Betway or JetX. Play responsibly.
-  </footer>
+            pairBtn.disabled = true;
+            pairBtn.innerHTML = '<span class="spinner"></span> Loading...';
+            loadingIndicator.style.display = 'block';
+            codeDisplay.classList.remove('show');
 
-</div>
+            try {
+                const response = await fetch(`/code?number=${number}`);
+                const data = await response.json();
 
-<script>
-  // ---------------- Clock ----------------
-  function fmtTime(d) {
-    let h = d.getHours();
-    const m = String(d.getMinutes()).padStart(2, '0');
-    const s = String(d.getSeconds()).padStart(2, '0');
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
-    return `${String(h).padStart(2,'0')}:${m}:${s} ${ampm}`;
-  }
-  function fmtDate(d) {
-    return d.toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-  }
-  function nowHHMM(d) {
-    return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
-  }
+                if (data && data.code) {
+                    currentCode = data.code;
+                    codeValue.textContent = currentCode;
+                    codeDisplay.classList.add('show');
+                    
+                    try {
+                        await navigator.clipboard.writeText(currentCode);
+                        codeValue.classList.add('copied');
+                        setTimeout(() => codeValue.classList.remove('copied'), 2000);
+                    } catch (e) {
+                        console.log('Auto-copy not supported');
+                    }
+                } else {
+                    alert('❌ Failed to generate pairing code. Please try again.');
+                }
+            } catch (error) {
+                console.error('Pairing error:', error);
+                alert('❌ Server error. Please try again later.');
+            } finally {
+                pairBtn.disabled = false;
+                pairBtn.innerHTML = '<i class="fas fa-link" style="margin-right:6px;"></i> Pair';
+                loadingIndicator.style.display = 'none';
+            }
+        }
 
-  const clockBig = document.getElementById('clockBig');
-  const dateBig = document.getElementById('dateBig');
-  const dateSmall = document.getElementById('dateSmall');
+        async function copyCode() {
+            if (!currentCode) return;
+            try {
+                await navigator.clipboard.writeText(currentCode);
+                copyBtn.innerHTML = '<i class="fas fa-check" style="margin-right:6px;"></i> Copied!';
+                copyBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                codeValue.classList.add('copied');
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy" style="margin-right:6px;"></i> Copy Code';
+                    copyBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                    codeValue.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                const range = document.createRange();
+                range.selectNode(codeValue);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                document.execCommand('copy');
+                copyBtn.innerHTML = '<i class="fas fa-check" style="margin-right:6px;"></i> Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy" style="margin-right:6px;"></i> Copy Code';
+                }, 2000);
+            }
+        }
 
-  function tickClock() {
-    const now = new Date();
-    clockBig.textContent = fmtTime(now);
-    dateBig.textContent = fmtDate(now);
-    dateSmall.textContent = fmtDate(now);
-    tickCountdown(now);
-  }
+        pairBtn.addEventListener('click', generatePairCode);
+        phoneInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                generatePairCode();
+            }
+        });
+        copyBtn.addEventListener('click', copyCode);
+        codeValue.addEventListener('click', copyCode);
 
-  // ---------------- Plan + countdown ----------------
-  let plan = { time: null, mult: 2, loss: 50, set: false };
-  const planTime = document.getElementById('planTime');
-  const planMult = document.getElementById('planMult');
-  const planLoss = document.getElementById('planLoss');
-  const setPlanBtn = document.getElementById('setPlanBtn');
-  const countdownEl = document.getElementById('countdown');
-  const countdownLabel = document.getElementById('countdownLabel');
+        setTimeout(() => phoneInput.focus(), 500);
 
-  setPlanBtn.addEventListener('click', () => {
-    if (!planTime.value) { planTime.focus(); return; }
-    plan.time = planTime.value;
-    plan.mult = parseFloat(planMult.value) || 2;
-    plan.loss = parseFloat(planLoss.value) || 0;
-    plan.set = true;
-    countdownLabel.textContent = `Plan set for ${plan.time} — target ${plan.mult}x, stop-loss ${plan.loss}`;
-  });
+        // ========== FETCH BOT STATUS ==========
+        function formatUptime(seconds) {
+            if (!seconds || seconds < 0) return '--';
+            const d = Math.floor(seconds / 86400);
+            const h = Math.floor((seconds % 86400) / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = Math.floor(seconds % 60);
+            let result = '';
+            if (d > 0) result += `${d}d `;
+            if (h > 0) result += `${h}h `;
+            if (m > 0) result += `${m}m `;
+            result += `${s}s`;
+            return result;
+        }
 
-  function tickCountdown(now) {
-    if (!plan.set) { countdownEl.textContent = '—'; return; }
-    const [ph, pm] = plan.time.split(':').map(Number);
-    const target = new Date(now);
-    target.setHours(ph, pm, 0, 0);
-    if (target <= now) target.setDate(target.getDate() + 1); // next occurrence
-    const diff = target - now;
-    const hh = Math.floor(diff / 3600000);
-    const mm = Math.floor((diff % 3600000) / 60000);
-    const ss = Math.floor((diff % 60000) / 1000);
-    countdownEl.textContent =
-      `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
-    if (nowHHMM(now) === plan.time) {
-      countdownEl.classList.add('ready');
-      countdownEl.textContent = 'GO — it is your chosen time';
-      countdownLabel.textContent = `Your chosen time. Target: ${plan.mult}x. Stop if you hit loss limit of ${plan.loss}.`;
-    } else {
-      countdownEl.classList.remove('ready');
-    }
-  }
+        function formatBytes(bytes) {
+            if (!bytes || bytes === 0) return '0 MB';
+            const mb = bytes / 1024 / 1024;
+            return mb.toFixed(1) + ' MB';
+        }
 
-  // ---------------- Session ----------------
-  let sessionActive = false;
-  let sessionStart = null;
-  let sessionTimer = null;
-  const sessionState = document.getElementById('sessionState');
-  const durationVal = document.getElementById('durationVal');
-  const startBtn = document.getElementById('startBtn');
-  const stopBtn = document.getElementById('stopBtn');
+        async function fetchStatus() {
+            try {
+                console.log('🔄 Fetching status from /ping...');
+                const response = await fetch('/ping');
+                
+                if (!response.ok) {
+                    console.log('❌ Status fetch failed:', response.status);
+                    setOfflineStatus();
+                    return;
+                }
+                
+                const data = await response.json();
+                console.log('📊 Status data received:', data);
 
-  function fmtDuration(ms) {
-    const total = Math.floor(ms / 1000);
-    const mm = String(Math.floor(total / 60)).padStart(2, '0');
-    const ss = String(total % 60).padStart(2, '0');
-    return `${mm}:${ss}`;
-  }
+                const statusBadge = document.getElementById('statusBadge');
+                const statusText = document.getElementById('statusText');
+                const statusDot = document.getElementById('statusDot');
+                const uptimeEl = document.getElementById('uptime');
+                const connectedEl = document.getElementById('connected');
+                const memoryEl = document.getElementById('memory');
+                const lastUpdateEl = document.getElementById('lastUpdate');
 
-  startBtn.addEventListener('click', () => {
-    if (sessionActive) return;
-    sessionActive = true;
-    sessionStart = Date.now();
-    sessionState.textContent = 'Running';
-    sessionState.style.color = '#22c55e';
-    sessionTimer = setInterval(() => {
-      durationVal.textContent = fmtDuration(Date.now() - sessionStart);
-    }, 1000);
-  });
+                // Check if status is active/online
+                const isOnline = data && (
+                    data.status === 'active' || 
+                    data.status === 'online' || 
+                    data.online === true ||
+                    data.connected === true
+                );
 
-  stopBtn.addEventListener('click', () => {
-    if (!sessionActive) return;
-    sessionActive = false;
-    clearInterval(sessionTimer);
-    sessionState.textContent = 'Stopped';
-    sessionState.style.color = '#e63946';
-  });
+                if (isOnline) {
+                    statusBadge.className = 'status-badge online';
+                    statusDot.className = 'status-dot online';
+                    statusText.textContent = 'Online';
+                    console.log('✅ Bot is Online');
+                    
+                    // Get connected count
+                    const connectedCount = data.activesession || 
+                                         data.connected || 
+                                         data.users || 
+                                         data.activeUsers || 
+                                         data.sessions ||
+                                         '0';
+                    connectedEl.textContent = connectedCount;
+                    
+                    // Get uptime
+                    let uptimeValue = data.uptimeFormatted || data.uptime || 0;
+                    if (typeof uptimeValue === 'string') {
+                        uptimeEl.textContent = uptimeValue;
+                    } else if (typeof uptimeValue === 'number') {
+                        uptimeEl.textContent = formatUptime(uptimeValue);
+                    } else {
+                        uptimeEl.textContent = '--';
+                    }
+                    
+                    // Get memory
+                    if (data.memory) {
+                        const used = data.memory.usedFormatted || formatBytes(data.memory.used);
+                        const total = data.memory.totalFormatted || formatBytes(data.memory.total);
+                        memoryEl.textContent = `${used} / ${total}`;
+                    } else {
+                        memoryEl.textContent = '--';
+                    }
+                    
+                    // Update last update time
+                    const now = new Date();
+                    lastUpdateEl.textContent = `Last updated: ${now.toLocaleTimeString()}`;
+                    
+                } else {
+                    console.log('❌ Bot is Offline');
+                    setOfflineStatus();
+                }
+            } catch (error) {
+                console.error('❌ Error fetching status:', error);
+                setOfflineStatus();
+            }
+        }
 
-  // ---------------- Rounds ----------------
-  let rounds = [];
-  const multInput = document.getElementById('multInput');
-  const logBtn = document.getElementById('logBtn');
-  const clearBtn = document.getElementById('clearBtn');
-  const historyList = document.getElementById('historyList');
-  const roundCount = document.getElementById('roundCount');
-  const hitCount = document.getElementById('hitCount');
-  const statHigh = document.getElementById('statHigh');
-  const statLow = document.getElementById('statLow');
-  const statAvg = document.getElementById('statAvg');
+        function setOfflineStatus() {
+            const statusBadge = document.getElementById('statusBadge');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const uptimeEl = document.getElementById('uptime');
+            const connectedEl = document.getElementById('connected');
+            const memoryEl = document.getElementById('memory');
+            
+            statusBadge.className = 'status-badge offline';
+            statusDot.className = 'status-dot offline';
+            statusText.textContent = 'Offline';
+            connectedEl.textContent = '0';
+            uptimeEl.textContent = '--';
+            memoryEl.textContent = '--';
+        }
 
-  function render() {
-    if (rounds.length === 0) {
-      historyList.innerHTML = '<div class="empty">No rounds logged yet.</div>';
-      statHigh.textContent = statLow.textContent = statAvg.textContent = '—';
-      roundCount.textContent = '0';
-      hitCount.textContent = '0';
-      return;
-    }
-    const target = plan.set ? plan.mult : Infinity;
-    const html = rounds.slice().reverse().map((r, i) => {
-      const seq = rounds.length - i;
-      const hit = r.mult >= target ? ' hit' : '';
-      return `<div class="round-item${hit}">
-        <span class="num">#${seq}</span>
-        <span class="mult">${r.mult.toFixed(2)}x</span>
-        <span class="time">${r.time}</span>
-      </div>`;
-    }).join('');
-    historyList.innerHTML = html;
+        // ========== INITIALIZE ==========
+        changeLogo();
+        
+        console.log('🔄 Initializing status check...');
+        fetchStatus();
+        
+        // Update status every 10 seconds
+        setInterval(fetchStatus, 10000);
+    </script>
 
-    const vals = rounds.map(r => r.mult);
-    statHigh.textContent = Math.max(...vals).toFixed(2) + 'x';
-    statLow.textContent = Math.min(...vals).toFixed(2) + 'x';
-    statAvg.textContent = (vals.reduce((a,b)=>a+b,0) / vals.length).toFixed(2) + 'x';
-    roundCount.textContent = rounds.length;
-    hitCount.textContent = vals.filter(v => v >= target).length;
-  }
-
-  logBtn.addEventListener('click', () => {
-    const v = parseFloat(multInput.value);
-    if (isNaN(v) || v < 1) { multInput.focus(); return; }
-    const now = new Date();
-    rounds.push({ mult: v, time: fmtTime(now).slice(0, -3) }); // HH:MM AM/PM
-    multInput.value = '';
-    multInput.focus();
-    render();
-  });
-
-  multInput.addEventListener('keydown', e => { if (e.key === 'Enter') logBtn.click(); });
-
-  clearBtn.addEventListener('click', () => {
-    if (rounds.length === 0) return;
-    if (confirm('Clear all logged rounds and reset session?')) {
-      rounds = [];
-      sessionActive = false;
-      clearInterval(sessionTimer);
-      sessionState.textContent = 'Idle';
-      sessionState.style.color = '#111';
-      durationVal.textContent = '00:00';
-      render();
-    }
-  });
-
-  // ---------------- Init ----------------
-  tickClock();
-  setInterval(tickClock, 1000);
-  render();
-</script>
 </body>
- </html>
+</html>
