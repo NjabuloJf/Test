@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Njabulo JB · QR Link Device</title>
+<title>Njabulo JB · Welcome</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,system-ui,sans-serif;}
@@ -93,7 +93,7 @@
   /* ===== LOGO ===== */
   .logo-wrapper{display:flex;justify-content:center;}
   .logo{
-    position:relative;width:100px;height:100px;margin-bottom:16px;
+    position:relative;width:110px;height:110px;margin-bottom:16px;
     border-radius:50%;filter:drop-shadow(0 0 24px rgba(139,92,246,.35));
   }
   .logo::before{
@@ -141,139 +141,110 @@
     opacity:.8;
   }
 
-  /* ===== QR SECTION ===== */
-  .qr-title{
-    display:flex;align-items:center;justify-content:center;gap:9px;
-    font-size:.8rem;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
-    color:#c4b5fd;margin-bottom:16px;
+  /* ===== HERO ===== */
+  .hero{text-align:center;margin:4px 0 22px;}
+  .hero-tag{
+    font-size:1.05rem;font-weight:700;color:#e9e4ff;
+    letter-spacing:.3px;margin-bottom:6px;
   }
-  .qr-title i{color:var(--cyan);}
+  .hero-sub{
+    font-size:.74rem;color:#9a8fc4;line-height:1.6;letter-spacing:.3px;
+  }
 
-  .qr-frame{
-    position:relative;width:100%;max-width:270px;aspect-ratio:1/1;
-    margin:0 auto;border-radius:28px;padding:14px;
-    background:linear-gradient(145deg,#ffffff,#f3edff);
+  /* ===== MAIN CTA BUTTON → goes to /pair (which serves qr.html) ===== */
+  .main-cta{
+    display:flex;align-items:center;gap:14px;
+    padding:16px 20px;margin:8px 0 4px;
+    border-radius:24px;text-decoration:none;color:#fff;
+    background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 45%,#4f46e5 100%);
     box-shadow:
-      0 20px 50px rgba(0,0,0,.55),
-      0 0 60px rgba(139,92,246,.28),
-      inset 0 0 0 1px rgba(139,92,246,.15);
-    display:grid;place-items:center;overflow:hidden;
+      0 12px 40px rgba(109,40,217,.5),
+      0 0 60px rgba(139,92,246,.35),
+      inset 0 1px 0 rgba(255,255,255,.25);
+    transition:.3s cubic-bezier(.2,.8,.2,1);
+    position:relative;overflow:hidden;isolation:isolate;
+  }
+  .main-cta::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at 20% 50%, rgba(34,211,238,.35), transparent 60%);
+    opacity:0;transition:opacity .3s;z-index:-1;
+  }
+  .main-cta:hover{
+    transform:translateY(-3px);
+    box-shadow:
+      0 18px 50px rgba(109,40,217,.65),
+      0 0 90px rgba(139,92,246,.5),
+      inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .main-cta:hover::before{opacity:1;}
+
+  .cta-icon{
+    flex:0 0 48px;height:48px;border-radius:16px;
+    display:grid;place-items:center;
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.3);
+    font-size:1.3rem;
+    box-shadow:0 0 20px rgba(34,211,238,.5);
+    animation:ctaIconPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes ctaIconPulse{
+    0%,100%{box-shadow:0 0 20px rgba(34,211,238,.5);}
+    50%{box-shadow:0 0 32px rgba(34,211,238,.9);}
   }
 
-  .qr-frame::before{
-    content:'';position:absolute;inset:-60%;
-    background:conic-gradient(from 0deg,transparent 0 70%,rgba(139,92,246,.55) 85%,transparent 100%);
-    animation:qrSweep 4.5s linear infinite;pointer-events:none;opacity:.6;
-  }
-  @keyframes qrSweep{to{transform:rotate(360deg);}}
+  .cta-text{flex:1;display:flex;flex-direction:column;text-align:left;gap:2px;}
+  .cta-text strong{font-size:1.05rem;font-weight:800;letter-spacing:.5px;}
+  .cta-text small{font-size:.68rem;font-weight:500;letter-spacing:.3px;opacity:.85;}
 
-  .qr-inner{
-    position:relative;width:100%;height:100%;border-radius:18px;
-    background:#fff;display:grid;place-items:center;overflow:hidden;z-index:1;
-  }
+  .cta-arrow{font-size:1rem;opacity:.8;transition:.25s;}
+  .main-cta:hover .cta-arrow{transform:translateX(4px);opacity:1;}
 
-  #qrImg{
-    width:100%;height:100%;object-fit:contain;display:none;
-    border-radius:14px;background:#fff;
+  .cta-hint{
+    text-align:center;font-size:.62rem;color:#7d72a3;
+    margin-top:12px;letter-spacing:.4px;
+    display:flex;align-items:center;justify-content:center;gap:6px;
   }
+  .cta-hint i{color:#4ade80;}
 
-  .qr-placeholder{
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:12px;color:#6d28d9;text-align:center;padding:16px;
-  }
-  .qr-placeholder i{font-size:2.6rem;color:#8b5cf6;opacity:.75;}
-  .qr-placeholder span{font-size:.7rem;font-weight:600;letter-spacing:.4px;color:#5b4a8f;}
-
-  /* scanning line */
-  .scan-line{
-    position:absolute;left:8px;right:8px;height:2px;border-radius:10px;
-    background:linear-gradient(90deg,transparent,#22d3ee,#8b5cf6,#22d3ee,transparent);
-    box-shadow:0 0 18px rgba(34,211,238,.9);
-    animation:scanMove 2.6s ease-in-out infinite;z-index:2;display:none;
-  }
-  @keyframes scanMove{
-    0%,100%{top:12%;opacity:.9;}
-    50%{top:86%;opacity:1;}
-  }
-  .qr-frame.scanning .scan-line{display:block;}
-
-  /* timer bar */
-  .timer-wrap{
-    max-width:270px;margin:16px auto 0;
-    height:4px;border-radius:10px;background:rgba(167,139,250,.15);overflow:hidden;
-  }
-  .timer-bar{
-    height:100%;width:100%;border-radius:10px;
-    background:linear-gradient(90deg,#8b5cf6,#22d3ee,#f472b6);
-    transition:width 1s linear;
-  }
-
-  .qr-status{
-    max-width:270px;margin:12px auto 0;text-align:center;
-    font-size:.7rem;letter-spacing:.4px;color:#b7a9e6;
-    display:flex;align-items:center;justify-content:center;gap:7px;min-height:18px;
-  }
-  .qr-status i{color:var(--violet-2);}
-  .qr-status.error{color:#fda4af;}
-  .qr-status.error i{color:#fb7185;}
-  .qr-status.ok{color:#86efac;}
-  .qr-status.ok i{color:#4ade80;}
-
-  .refresh-btn{
-    display:flex;align-items:center;justify-content:center;gap:9px;
-    margin:18px auto 0;width:fit-content;
-    padding:11px 26px;border:none;border-radius:60px;cursor:pointer;
-    font-size:.78rem;font-weight:700;letter-spacing:1px;color:#fff;
-    background:linear-gradient(145deg,#8b5cf6,#6d28d9 60%,#4f46e5);
-    box-shadow:0 8px 26px rgba(109,40,217,.5),inset 0 1px 0 rgba(255,255,255,.22);
-    transition:.22s;
-  }
-  .refresh-btn:hover{
-    background:linear-gradient(145deg,#a78bfa,#7c3aed 60%,#6366f1);
-    box-shadow:0 10px 34px rgba(139,92,246,.65),inset 0 1px 0 rgba(255,255,255,.3);
-    transform:translateY(-1px);
-  }
-  .refresh-btn:active{transform:scale(.96);}
-  .refresh-btn i{font-size:.75rem;}
-
-  /* ===== STEPS ===== */
-  .steps{
-    margin-top:24px;padding-top:18px;border-top:1px solid var(--line);
-    display:flex;flex-direction:column;gap:9px;
-  }
-  .step{
-    display:flex;align-items:center;gap:11px;
-    padding:10px 14px;border-radius:16px;
+  /* ===== FEATURES ===== */
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:26px;}
+  .feature-item{
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    padding:15px 6px;border-radius:18px;
     background:rgba(255,255,255,.03);border:1px solid var(--line);
-    font-size:.72rem;color:#b3a7dd;transition:.25s;
+    transition:.3s cubic-bezier(.2,.8,.2,1);
   }
-  .step:hover{
-    background:rgba(139,92,246,.12);border-color:rgba(167,139,250,.45);
-    transform:translateX(2px);color:#e9e4ff;
+  .feature-item:hover{
+    transform:translateY(-3px);background:rgba(139,92,246,.12);
+    border-color:rgba(167,139,250,.45);box-shadow:0 10px 26px rgba(124,58,237,.22);
   }
-  .step .num{
-    flex:0 0 22px;height:22px;border-radius:50%;
-    display:grid;place-items:center;font-size:.62rem;font-weight:800;
-    color:#0d0919;background:linear-gradient(145deg,#a78bfa,#22d3ee);
-    box-shadow:0 0 14px rgba(139,92,246,.5);
-  }
+  .feature-item .icon{font-size:1.25rem;line-height:1;filter:drop-shadow(0 0 8px rgba(139,92,246,.4));}
+  .feature-item .label{font-size:.6rem;letter-spacing:.4px;color:#b3a7dd;text-align:center;font-weight:600;}
 
-  .note{
-    margin-top:16px;padding:12px 16px;border-radius:16px;
-    font-size:.66rem;line-height:1.7;color:#9a8fc4;
-    background:rgba(244,63,94,.06);border:1px dashed rgba(244,63,94,.28);
+  /* ===== COMMANDS ===== */
+  .commands-section{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);}
+  .commands-section h3{
+    display:flex;align-items:center;gap:8px;font-size:.68rem;letter-spacing:1.4px;
+    text-transform:uppercase;color:#b7a9e6;margin-bottom:13px;font-weight:700;
   }
-  .note i{color:#fb7185;margin-right:5px;}
-  .note b{color:#fda4af;}
-
-  .alt-link{
-    margin-top:16px;text-align:center;font-size:.66rem;color:#8578b0;
+  .commands-section h3 i{color:var(--violet-2);}
+  .command-grid{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;}
+  .command-item{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:.66rem;padding:6px 13px;border-radius:30px;color:#c4b5fd;
+    background:rgba(139,92,246,.10);border:1px solid rgba(139,92,246,.22);
+    transition:.2s;cursor:default;
   }
-  .alt-link a{
-    color:#c4b5fd;font-weight:700;text-decoration:none;
-    border-bottom:1px dashed rgba(167,139,250,.5);padding-bottom:1px;
+  .command-item:hover{
+    background:rgba(139,92,246,.28);color:#fff;transform:translateY(-1px);
+    border-color:rgba(167,139,250,.5);
   }
-  .alt-link a:hover{color:#fff;border-color:#fff;}
+  .command-item.premium{
+    background:linear-gradient(135deg,rgba(244,114,182,.22),rgba(139,92,246,.22));
+    border-color:rgba(244,114,182,.5);color:#fbcfe8;
+    box-shadow:0 0 18px rgba(244,114,182,.22);font-weight:700;
+  }
 
   /* ===== FOOTER ===== */
   .footer-note{
@@ -285,16 +256,19 @@
 
   @media(max-width:480px){
     .container{padding:28px 18px 24px;border-radius:36px;}
-    .logo{width:86px;height:86px;}
+    .logo{width:94px;height:94px;}
     .title{font-size:1.4rem;letter-spacing:1.5px;}
-    .qr-frame{max-width:230px;padding:11px;border-radius:22px;}
-    .timer-wrap,.qr-status{max-width:230px;}
-    .step{font-size:.68rem;padding:9px 12px;}
+    .hero-tag{font-size:.95rem;}
+    .main-cta{padding:14px 16px;gap:11px;}
+    .cta-icon{flex:0 0 42px;height:42px;font-size:1.15rem;}
+    .cta-text strong{font-size:.95rem;}
+    .features{grid-template-columns:repeat(2,1fr);}
   }
 </style>
 </head>
 <body>
 
+  <!-- night background -->
   <div class="bg-grid"></div>
   <div class="blob b1"></div>
   <div class="blob b2"></div>
@@ -312,57 +286,61 @@
     </div>
 
     <h1 class="title"><span>NJABULO-JB</span></h1>
-    <p class="subtitle"><i class="fas fa-qrcode"></i> Scan QR · Link Device</p>
+    <p class="subtitle"><i class="fas fa-bolt"></i> WhatsApp Bot • Multi-Device</p>
 
     <div class="status-pill"><span class="dot"></span> online · night show</div>
 
     <div class="divider"></div>
 
-    <!-- QR SECTION -->
-    <div class="qr-section">
-      <div class="qr-title"><i class="fas fa-qrcode"></i> Scan to Link</div>
+    <!-- HERO -->
+    <div class="hero">
+      <p class="hero-tag">Connect your WhatsApp in seconds</p>
+      <p class="hero-sub">Scan a QR code to link your device and unlock the full power of Njabulo JB.</p>
+    </div>
 
-      <div class="qr-frame" id="qrFrame">
-        <div class="scan-line"></div>
-        <div class="qr-inner">
-          <img id="qrImg" alt="WhatsApp Link QR">
-          <div class="qr-placeholder" id="qrPlaceholder">
-            <i class="fas fa-spinner fa-pulse"></i>
-            <span>loading QR code…</span>
-          </div>
-        </div>
+    <!-- ══════════ MAIN BUTTON → opens qr.html (served at /pair) ══════════ -->
+    <!-- If you ever change your route, only edit the href below. -->
+    <a href="/pair" class="main-cta">
+      <span class="cta-icon"><i class="fas fa-qrcode"></i></span>
+      <span class="cta-text">
+        <strong>Link Device</strong>
+        <small>Scan QR code to connect</small>
+      </span>
+      <i class="fas fa-arrow-right cta-arrow"></i>
+    </a>
+
+    <p class="cta-hint">
+      <i class="fas fa-shield-alt"></i> End-to-end encrypted · private
+    </p>
+
+    <!-- FEATURES -->
+    <div class="features">
+      <div class="feature-item"><span class="icon">🌍</span><span class="label">Multi-Language</span></div>
+      <div class="feature-item"><span class="icon">🛡️</span><span class="label">Anti-Link</span></div>
+      <div class="feature-item"><span class="icon">🤖</span><span class="label">AI Chatbot</span></div>
+      <div class="feature-item"><span class="icon">🎵</span><span class="label">Music Download</span></div>
+      <div class="feature-item"><span class="icon">📸</span><span class="label">Media Tools</span></div>
+      <div class="feature-item"><span class="icon">🔒</span><span class="label">Auto-Mod</span></div>
+    </div>
+
+    <!-- COMMANDS -->
+    <div class="commands-section">
+      <h3><i class="fas fa-bolt"></i> Quick Commands</h3>
+      <div class="command-grid">
+        <span class="command-item">.menu</span>
+        <span class="command-item">.ping</span>
+        <span class="command-item">.ai</span>
+        <span class="command-item">.sticker</span>
+        <span class="command-item">.play</span>
+        <span class="command-item">.song</span>
+        <span class="command-item">.setlang</span>
+        <span class="command-item">.owner</span>
+        <span class="command-item">.alive</span>
+        <span class="command-item premium">.pair</span>
       </div>
-
-      <div class="timer-wrap"><div class="timer-bar" id="timerBar"></div></div>
-
-      <div class="qr-status" id="qrStatus">
-        <i class="fas fa-circle-notch fa-spin"></i> waiting for QR…
-      </div>
-
-      <button class="refresh-btn" id="refreshBtn">
-        <i class="fas fa-sync-alt"></i> Refresh QR
-      </button>
     </div>
 
-    <!-- STEPS -->
-    <div class="steps">
-      <div class="step"><span class="num">1</span> Open WhatsApp on your phone</div>
-      <div class="step"><span class="num">2</span> Go to <b>&nbsp;Linked Devices</b></div>
-      <div class="step"><span class="num">3</span> Tap <b>&nbsp;Link a Device</b></div>
-      <div class="step"><span class="num">4</span> Scan this QR code</div>
-      <div class="step"><span class="num">5</span> Wait for confirmation ✅</div>
-    </div>
-
-    <div class="note">
-      <i class="fas fa-shield-alt"></i>
-      <b>Keep it private.</b> Never share your QR or session with anyone.
-      The QR expires quickly — if it fails, tap <b>Refresh QR</b>.
-    </div>
-
-    <div class="alt-link">
-      QR not working? <a href="pair.html">Use pair code instead →</a>
-    </div>
-
+    <!-- FOOTER -->
     <div class="footer-note">
       <i class="fas fa-bolt"></i> humans for humans
       <span class="sep"></span>
@@ -371,140 +349,5 @@
 
   </div>
 
-  <!-- ==================================================================
-       QR SCRIPT
-       Only reads from your existing endpoint. Nothing else touched.
-       ⚠️ If your backend route is not /qr, change ONE line below:
-          const QR_ENDPOINT = '/qr';
-       Expected response (any of these works):
-          { "qr": "<image data-url or http url>" }
-          { "qr": "<raw qr string>" }   → needs QRCode lib (see note)
-          { "connected": true }
-       ================================================================== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
-  <script>
-    (function () {
-      const QR_ENDPOINT = '/qr';   // ← change this if your route differs
-
-      const qrImg        = document.getElementById('qrImg');
-      const qrPlaceholder= document.getElementById('qrPlaceholder');
-      const qrFrame      = document.getElementById('qrFrame');
-      const qrStatus     = document.getElementById('qrStatus');
-      const timerBar     = document.getElementById('timerBar');
-      const refreshBtn   = document.getElementById('refreshBtn');
-
-      let timerId = null;
-      let countdown = 0;
-      let totalTime = 20;
-      let loading = false;
-
-      function setStatus(text, type, spin) {
-        let icon = spin
-          ? '<i class="fas fa-circle-notch fa-spin"></i>'
-          : '<i class="fas fa-check-circle"></i>';
-        if (type === 'error') icon = '<i class="fas fa-exclamation-triangle"></i>';
-        if (type === 'ok')    icon = '<i class="fas fa-check-circle"></i>';
-        if (type === 'wait')  icon = '<i class="fas fa-circle-notch fa-spin"></i>';
-        qrStatus.className = 'qr-status' + (type && type !== 'wait' ? ' ' + type : '');
-        qrStatus.innerHTML = icon + ' ' + text;
-      }
-
-      function startTimer(seconds) {
-        clearInterval(timerId);
-        totalTime = seconds || 20;
-        countdown = totalTime;
-        timerBar.style.width = '100%';
-        timerId = setInterval(function () {
-          countdown--;
-          timerBar.style.width = Math.max(0, (countdown / totalTime) * 100) + '%';
-          if (countdown <= 0) {
-            clearInterval(timerId);
-            setStatus('QR expired — refreshing…', 'wait', true);
-            fetchQR();
-          }
-        }, 1000);
-      }
-
-      function stopTimer() {
-        clearInterval(timerId);
-        timerBar.style.width = '0%';
-      }
-
-      function showQR(src) {
-        qrImg.src = src;
-        qrImg.style.display = 'block';
-        qrPlaceholder.style.display = 'none';
-        qrFrame.classList.add('scanning');
-      }
-
-      function showPlaceholder(text, spin) {
-        qrImg.style.display = 'none';
-        qrPlaceholder.style.display = 'flex';
-        qrPlaceholder.innerHTML =
-          (spin ? '<i class="fas fa-spinner fa-pulse"></i>' : '<i class="fas fa-qrcode"></i>') +
-          '<span>' + text + '</span>';
-        qrFrame.classList.remove('scanning');
-      }
-
-      async function fetchQR() {
-        if (loading) return;
-        loading = true;
-        refreshBtn.disabled = true;
-        stopTimer();
-        showPlaceholder('loading QR code…', true);
-        setStatus('fetching new QR…', 'wait', true);
-
-        try {
-          const { data } = await axios.get(QR_ENDPOINT);
-
-          // already connected
-          if (data && data.connected) {
-            showPlaceholder('device already linked ✅', false);
-            qrPlaceholder.innerHTML =
-              '<i class="fas fa-check-circle" style="color:#16a34a;"></i>' +
-              '<span>device linked successfully</span>';
-            setStatus('device connected ✅', 'ok');
-            stopTimer();
-            return;
-          }
-
-          const qr = data && (data.qr || data.code || data.image);
-
-          if (!qr) throw new Error('no qr in response');
-
-          // if it's an image url / data-url, show it directly
-          if (typeof qr === 'string' && (qr.startsWith('data:image') || qr.startsWith('http'))) {
-            showQR(qr);
-            setStatus('QR ready — scan now', 'ok');
-            startTimer(20);
-          } else {
-            // raw QR string — no QR lib loaded, so guide instead of breaking
-            showPlaceholder('QR string received — needs QRCode lib', false);
-            setStatus('QR received as text (add QRCode lib)', 'wait', false);
-          }
-
-        } catch (err) {
-          showPlaceholder('QR unavailable', false);
-          setStatus('could not load QR · try refresh', 'error');
-          stopTimer();
-        } finally {
-          loading = false;
-          refreshBtn.disabled = false;
-        }
-      }
-
-      qrImg.addEventListener('error', function () {
-        showPlaceholder('QR failed to load', false);
-        setStatus('QR image error · try refresh', 'error');
-        stopTimer();
-      });
-
-      refreshBtn.addEventListener('click', fetchQR);
-
-      // first load
-      fetchQR();
-
-    })();
-  </script>
 </body>
 </html>
