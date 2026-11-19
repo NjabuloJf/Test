@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Njabulo JB · Pair Your Device</title>
+<title>Njabulo JB · QR Link Device</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,system-ui,sans-serif;}
@@ -90,10 +90,10 @@
   }
   @keyframes pulseCorner{0%{opacity:.15;transform:scale(.9);}100%{opacity:.35;transform:scale(1.25);}}
 
-  /* ===== LOGO + STATUS RING (original JS targets .status-ring) ===== */
+  /* ===== LOGO ===== */
   .logo-wrapper{display:flex;justify-content:center;}
   .logo{
-    position:relative;width:118px;height:118px;margin-bottom:16px;
+    position:relative;width:100px;height:100px;margin-bottom:16px;
     border-radius:50%;filter:drop-shadow(0 0 24px rgba(139,92,246,.35));
   }
   .logo::before{
@@ -102,15 +102,6 @@
     filter:blur(20px);opacity:.55;z-index:-1;animation:ringSpin 8s linear infinite;
   }
   @keyframes ringSpin{to{transform:rotate(360deg);}}
-
-  .status-ring{
-    position:absolute;inset:-6px;border-radius:50%;
-    border:2px solid transparent;
-    border-top-color:#a78bfa;border-right-color:#22d3ee;border-bottom-color:#f472b6;
-    animation:spinRing 4s linear infinite;pointer-events:none;z-index:0;
-  }
-  @keyframes spinRing{to{transform:rotate(360deg);}}
-
   .logo img{
     position:absolute;inset:0;width:100%;height:100%;
     border-radius:50%;object-fit:cover;border:4px solid #0d0919;
@@ -150,114 +141,139 @@
     opacity:.8;
   }
 
-  /* ===== PAIR SECTION ===== */
-  .pair-title{
+  /* ===== QR SECTION ===== */
+  .qr-title{
     display:flex;align-items:center;justify-content:center;gap:9px;
     font-size:.8rem;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
-    color:#c4b5fd;margin-bottom:14px;
+    color:#c4b5fd;margin-bottom:16px;
   }
-  .pair-title i{color:var(--cyan);}
+  .qr-title i{color:var(--cyan);}
 
-  .input-group{
-    display:flex;align-items:center;gap:6px;
-    padding:6px 6px 6px 20px;border-radius:80px;
-    background:rgba(255,255,255,.045);border:1px solid var(--line);
-    box-shadow:inset 0 2px 12px rgba(0,0,0,.35);transition:.3s;
+  .qr-frame{
+    position:relative;width:100%;max-width:270px;aspect-ratio:1/1;
+    margin:0 auto;border-radius:28px;padding:14px;
+    background:linear-gradient(145deg,#ffffff,#f3edff);
+    box-shadow:
+      0 20px 50px rgba(0,0,0,.55),
+      0 0 60px rgba(139,92,246,.28),
+      inset 0 0 0 1px rgba(139,92,246,.15);
+    display:grid;place-items:center;overflow:hidden;
   }
-  .input-group:focus-within{
-    border-color:rgba(139,92,246,.65);
-    box-shadow:0 0 0 3px rgba(139,92,246,.12),inset 0 2px 12px rgba(0,0,0,.35);
-  }
-  .input-group input{
-    flex:1;min-width:0;background:transparent;border:none;outline:none;
-    padding:13px 0;font-size:.95rem;font-weight:500;letter-spacing:.4px;color:#f2eeff;
-  }
-  .input-group input::placeholder{color:#7d72a3;font-weight:400;font-size:.86rem;}
 
-  .input-group button{
-    display:flex;align-items:center;gap:8px;padding:13px 26px;border:none;border-radius:60px;
-    font-size:.84rem;font-weight:700;letter-spacing:1px;color:#fff;cursor:pointer;white-space:nowrap;
+  .qr-frame::before{
+    content:'';position:absolute;inset:-60%;
+    background:conic-gradient(from 0deg,transparent 0 70%,rgba(139,92,246,.55) 85%,transparent 100%);
+    animation:qrSweep 4.5s linear infinite;pointer-events:none;opacity:.6;
+  }
+  @keyframes qrSweep{to{transform:rotate(360deg);}}
+
+  .qr-inner{
+    position:relative;width:100%;height:100%;border-radius:18px;
+    background:#fff;display:grid;place-items:center;overflow:hidden;z-index:1;
+  }
+
+  #qrImg{
+    width:100%;height:100%;object-fit:contain;display:none;
+    border-radius:14px;background:#fff;
+  }
+
+  .qr-placeholder{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:12px;color:#6d28d9;text-align:center;padding:16px;
+  }
+  .qr-placeholder i{font-size:2.6rem;color:#8b5cf6;opacity:.75;}
+  .qr-placeholder span{font-size:.7rem;font-weight:600;letter-spacing:.4px;color:#5b4a8f;}
+
+  /* scanning line */
+  .scan-line{
+    position:absolute;left:8px;right:8px;height:2px;border-radius:10px;
+    background:linear-gradient(90deg,transparent,#22d3ee,#8b5cf6,#22d3ee,transparent);
+    box-shadow:0 0 18px rgba(34,211,238,.9);
+    animation:scanMove 2.6s ease-in-out infinite;z-index:2;display:none;
+  }
+  @keyframes scanMove{
+    0%,100%{top:12%;opacity:.9;}
+    50%{top:86%;opacity:1;}
+  }
+  .qr-frame.scanning .scan-line{display:block;}
+
+  /* timer bar */
+  .timer-wrap{
+    max-width:270px;margin:16px auto 0;
+    height:4px;border-radius:10px;background:rgba(167,139,250,.15);overflow:hidden;
+  }
+  .timer-bar{
+    height:100%;width:100%;border-radius:10px;
+    background:linear-gradient(90deg,#8b5cf6,#22d3ee,#f472b6);
+    transition:width 1s linear;
+  }
+
+  .qr-status{
+    max-width:270px;margin:12px auto 0;text-align:center;
+    font-size:.7rem;letter-spacing:.4px;color:#b7a9e6;
+    display:flex;align-items:center;justify-content:center;gap:7px;min-height:18px;
+  }
+  .qr-status i{color:var(--violet-2);}
+  .qr-status.error{color:#fda4af;}
+  .qr-status.error i{color:#fb7185;}
+  .qr-status.ok{color:#86efac;}
+  .qr-status.ok i{color:#4ade80;}
+
+  .refresh-btn{
+    display:flex;align-items:center;justify-content:center;gap:9px;
+    margin:18px auto 0;width:fit-content;
+    padding:11px 26px;border:none;border-radius:60px;cursor:pointer;
+    font-size:.78rem;font-weight:700;letter-spacing:1px;color:#fff;
     background:linear-gradient(145deg,#8b5cf6,#6d28d9 60%,#4f46e5);
     box-shadow:0 8px 26px rgba(109,40,217,.5),inset 0 1px 0 rgba(255,255,255,.22);
     transition:.22s;
   }
-  .input-group button:hover{
+  .refresh-btn:hover{
     background:linear-gradient(145deg,#a78bfa,#7c3aed 60%,#6366f1);
     box-shadow:0 10px 34px rgba(139,92,246,.65),inset 0 1px 0 rgba(255,255,255,.3);
     transform:translateY(-1px);
   }
-  .input-group button:active{transform:scale(.96);}
+  .refresh-btn:active{transform:scale(.96);}
+  .refresh-btn i{font-size:.75rem;}
 
-  #waiting-message{
-    display:none;align-items:center;justify-content:center;gap:9px;
-    margin:12px 0 0;font-size:.78rem;letter-spacing:.4px;color:#b7a9e6;
+  /* ===== STEPS ===== */
+  .steps{
+    margin-top:24px;padding-top:18px;border-top:1px solid var(--line);
+    display:flex;flex-direction:column;gap:9px;
   }
-  #waiting-message i{color:var(--violet-2);animation:spin 1.1s linear infinite;}
-  @keyframes spin{to{transform:rotate(360deg);}}
-
-  #pair{margin-top:16px;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-
-  /* code-box: light lavender panel so your JS's inline dark colors stay readable */
-  .code-box{
-    width:100%;display:flex;align-items:center;justify-content:center;gap:12px;
-    padding:15px 22px;border-radius:60px;cursor:pointer;
-    color:#2d1b6e;font-weight:600;font-size:1rem;
-    background:linear-gradient(145deg,#faf7ff,#f0eaff);
-    border:1px solid rgba(167,139,250,.4);
-    box-shadow:0 8px 30px rgba(124,58,237,.2),inset 0 1px 0 #fff;
-    transition:.28s cubic-bezier(.2,.8,.2,1);
-  }
-  .code-box:hover{
-    transform:translateY(-2px);
-    border-color:rgba(139,92,246,.7);
-    box-shadow:0 12px 36px rgba(124,58,237,.28),inset 0 1px 0 #fff;
-  }
-  .code-label{font-size:.72rem;letter-spacing:2px;font-weight:600;color:#6d28d9;}
-  .code-value{font-size:1.36rem;font-weight:800;letter-spacing:3px;color:#1a1528;}
-  .copy-hint{
-    display:inline-flex;align-items:center;gap:5px;font-size:.6rem;
-    padding:3px 11px;border-radius:30px;color:#5935ac;
-    background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.28);
-  }
-
-  /* ===== FEATURES ===== */
-  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px;}
-  .feature-item{
-    display:flex;flex-direction:column;align-items:center;gap:8px;
-    padding:15px 6px;border-radius:18px;
+  .step{
+    display:flex;align-items:center;gap:11px;
+    padding:10px 14px;border-radius:16px;
     background:rgba(255,255,255,.03);border:1px solid var(--line);
-    transition:.3s cubic-bezier(.2,.8,.2,1);
+    font-size:.72rem;color:#b3a7dd;transition:.25s;
   }
-  .feature-item:hover{
-    transform:translateY(-3px);background:rgba(139,92,246,.12);
-    border-color:rgba(167,139,250,.45);box-shadow:0 10px 26px rgba(124,58,237,.22);
+  .step:hover{
+    background:rgba(139,92,246,.12);border-color:rgba(167,139,250,.45);
+    transform:translateX(2px);color:#e9e4ff;
   }
-  .feature-item .icon{font-size:1.25rem;line-height:1;filter:drop-shadow(0 0 8px rgba(139,92,246,.4));}
-  .feature-item .label{font-size:.6rem;letter-spacing:.4px;color:#b3a7dd;text-align:center;font-weight:600;}
+  .step .num{
+    flex:0 0 22px;height:22px;border-radius:50%;
+    display:grid;place-items:center;font-size:.62rem;font-weight:800;
+    color:#0d0919;background:linear-gradient(145deg,#a78bfa,#22d3ee);
+    box-shadow:0 0 14px rgba(139,92,246,.5);
+  }
 
-  /* ===== COMMANDS ===== */
-  .commands-section{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);}
-  .commands-section h3{
-    display:flex;align-items:center;gap:8px;font-size:.68rem;letter-spacing:1.4px;
-    text-transform:uppercase;color:#b7a9e6;margin-bottom:13px;font-weight:700;
+  .note{
+    margin-top:16px;padding:12px 16px;border-radius:16px;
+    font-size:.66rem;line-height:1.7;color:#9a8fc4;
+    background:rgba(244,63,94,.06);border:1px dashed rgba(244,63,94,.28);
   }
-  .commands-section h3 i{color:var(--violet-2);}
-  .command-grid{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;}
-  .command-item{
-    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-    font-size:.66rem;padding:6px 13px;border-radius:30px;color:#c4b5fd;
-    background:rgba(139,92,246,.10);border:1px solid rgba(139,92,246,.22);
-    transition:.2s;cursor:default;
+  .note i{color:#fb7185;margin-right:5px;}
+  .note b{color:#fda4af;}
+
+  .alt-link{
+    margin-top:16px;text-align:center;font-size:.66rem;color:#8578b0;
   }
-  .command-item:hover{
-    background:rgba(139,92,246,.28);color:#fff;transform:translateY(-1px);
-    border-color:rgba(167,139,250,.5);
+  .alt-link a{
+    color:#c4b5fd;font-weight:700;text-decoration:none;
+    border-bottom:1px dashed rgba(167,139,250,.5);padding-bottom:1px;
   }
-  .command-item.premium{
-    background:linear-gradient(135deg,rgba(244,114,182,.22),rgba(139,92,246,.22));
-    border-color:rgba(244,114,182,.5);color:#fbcfe8;
-    box-shadow:0 0 18px rgba(244,114,182,.22);font-weight:700;
-  }
+  .alt-link a:hover{color:#fff;border-color:#fff;}
 
   /* ===== FOOTER ===== */
   .footer-note{
@@ -269,17 +285,11 @@
 
   @media(max-width:480px){
     .container{padding:28px 18px 24px;border-radius:36px;}
-    .logo{width:96px;height:96px;}
+    .logo{width:86px;height:86px;}
     .title{font-size:1.4rem;letter-spacing:1.5px;}
-    .input-group{flex-wrap:wrap;gap:8px;padding:0;background:transparent;border:none;box-shadow:none;}
-    .input-group input{
-      width:100%;padding:14px 20px;border-radius:60px;
-      background:rgba(255,255,255,.05);border:1px solid var(--line);
-    }
-    .input-group button{width:100%;justify-content:center;padding:14px;}
-    .features{grid-template-columns:repeat(2,1fr);}
-    .code-box{padding:13px 16px;flex-wrap:wrap;gap:8px;}
-    .code-value{font-size:1.15rem;letter-spacing:2px;}
+    .qr-frame{max-width:230px;padding:11px;border-radius:22px;}
+    .timer-wrap,.qr-status{max-width:230px;}
+    .step{font-size:.68rem;padding:9px 12px;}
   }
 </style>
 </head>
@@ -292,62 +302,65 @@
 
   <div class="container">
 
-    <!-- LOGO — .status-ring kept so original JS can randomize its speed -->
+    <!-- LOGO -->
     <div class="logo-wrapper">
       <div class="logo" id="logo">
-        <span class="status-ring" aria-hidden="true"></span>
         <img src="https://raw.githubusercontent.com/NjabuloJf/njabulo-data/main/njabuloimg/njabuloimg3.png"
              alt="Njabulo JB MiniBot"
-             onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(145deg,#2a1b52,#150e2b)';this.parentNode.innerHTML+='<i class=\'fas fa-robot\' style=\'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.6rem;color:#a78bfa;z-index:1;\'></i>';">
+             onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(145deg,#2a1b52,#150e2b)';this.parentNode.innerHTML+='<i class=\'fas fa-robot\' style=\'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:#a78bfa;z-index:1;\'></i>';">
       </div>
     </div>
 
     <h1 class="title"><span>NJABULO-JB</span></h1>
-    <p class="subtitle"><i class="fas fa-bolt"></i> WhatsApp Bot • Multi-Device</p>
+    <p class="subtitle"><i class="fas fa-qrcode"></i> Scan QR · Link Device</p>
 
     <div class="status-pill"><span class="dot"></span> online · night show</div>
 
     <div class="divider"></div>
 
-    <!-- PAIR SECTION — IDs match your original JS exactly -->
-    <div class="pair-section">
-      <div class="pair-title"><i class="fas fa-link"></i> Pair Your Device</div>
+    <!-- QR SECTION -->
+    <div class="qr-section">
+      <div class="qr-title"><i class="fas fa-qrcode"></i> Scan to Link</div>
 
-      <div class="input-group">
-        <input type="text" id="number" placeholder="e.g. 267 71 234 567" autocomplete="off">
-        <button id="submit"><i class="fas fa-paper-plane"></i> Pair</button>
+      <div class="qr-frame" id="qrFrame">
+        <div class="scan-line"></div>
+        <div class="qr-inner">
+          <img id="qrImg" alt="WhatsApp Link QR">
+          <div class="qr-placeholder" id="qrPlaceholder">
+            <i class="fas fa-spinner fa-pulse"></i>
+            <span>loading QR code…</span>
+          </div>
+        </div>
       </div>
 
-      <div id="waiting-message">
-        <i class="fas fa-circle-notch"></i> loading round · generating code
+      <div class="timer-wrap"><div class="timer-bar" id="timerBar"></div></div>
+
+      <div class="qr-status" id="qrStatus">
+        <i class="fas fa-circle-notch fa-spin"></i> waiting for QR…
       </div>
 
-      <main id="pair"></main>
+      <button class="refresh-btn" id="refreshBtn">
+        <i class="fas fa-sync-alt"></i> Refresh QR
+      </button>
     </div>
 
-    <div class="features">
-      <div class="feature-item"><span class="icon">🌍</span><span class="label">Multi-Language</span></div>
-      <div class="feature-item"><span class="icon">🛡️</span><span class="label">Anti-Link</span></div>
-      <div class="feature-item"><span class="icon">🤖</span><span class="label">AI Chatbot</span></div>
-      <div class="feature-item"><span class="icon">🎵</span><span class="label">Music Download</span></div>
-      <div class="feature-item"><span class="icon">📸</span><span class="label">Media Tools</span></div>
-      <div class="feature-item"><span class="icon">🔒</span><span class="label">Auto-Mod</span></div>
+    <!-- STEPS -->
+    <div class="steps">
+      <div class="step"><span class="num">1</span> Open WhatsApp on your phone</div>
+      <div class="step"><span class="num">2</span> Go to <b>&nbsp;Linked Devices</b></div>
+      <div class="step"><span class="num">3</span> Tap <b>&nbsp;Link a Device</b></div>
+      <div class="step"><span class="num">4</span> Scan this QR code</div>
+      <div class="step"><span class="num">5</span> Wait for confirmation ✅</div>
     </div>
 
-    <div class="commands-section">
-      <h3><i class="fas fa-bolt"></i> Quick Commands</h3>
-      <div class="command-grid">
-        <span class="command-item">.menu</span>
-        <span class="command-item">.ping</span>
-        <span class="command-item">.ai</span>
-        <span class="command-item">.sticker</span>
-        <span class="command-item">.play</span>
-        <span class="command-item">.song</span>
-        <span class="command-item">.setlang</span>
-        <span class="command-item">.owner</span>
-        <span class="command-item">.alive</span>
-        <span class="command-item premium">.pair</span>
-      </div>
+    <div class="note">
+      <i class="fas fa-shield-alt"></i>
+      <b>Keep it private.</b> Never share your QR or session with anyone.
+      The QR expires quickly — if it fails, tap <b>Refresh QR</b>.
+    </div>
+
+    <div class="alt-link">
+      QR not working? <a href="pair.html">Use pair code instead →</a>
     </div>
 
     <div class="footer-note">
@@ -359,111 +372,137 @@
   </div>
 
   <!-- ==================================================================
-       ORIGINAL SCRIPT — UNTOUCHED
-       Same /code axios call · Same Copy() · Same formatDisplay
-       Same IDs: pair, submit, number, waiting-message, copyTarget, status-ring
+       QR SCRIPT
+       Only reads from your existing endpoint. Nothing else touched.
+       ⚠️ If your backend route is not /qr, change ONE line below:
+          const QR_ENDPOINT = '/qr';
+       Expected response (any of these works):
+          { "qr": "<image data-url or http url>" }
+          { "qr": "<raw qr string>" }   → needs QRCode lib (see note)
+          { "connected": true }
        ================================================================== -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
   <script>
-    (function(){
-      const pairDisplay = document.getElementById("pair");
-      const submitBtn = document.getElementById("submit");
-      const numberInput = document.getElementById("number");
-      const waitingMsg = document.getElementById("waiting-message");
+    (function () {
+      const QR_ENDPOINT = '/qr';   // ← change this if your route differs
 
-      window.Copy = async function() {
-        const codeEl = document.getElementById("copyTarget");
-        if (!codeEl) return;
-        const rawCode = codeEl.innerText.replace('CODE: ', '').trim();
-        try {
-          await navigator.clipboard.writeText(rawCode);
-          codeEl.innerText = "✓ COPIED!";
-          codeEl.style.color = "#1a7a3a";
-          setTimeout(() => {
-            codeEl.innerText = "CODE: " + rawCode;
-            codeEl.style.color = "#2d1b6e";
-          }, 1500);
-        } catch (e) {
-          alert("Manual copy: " + rawCode);
-        }
-      };
+      const qrImg        = document.getElementById('qrImg');
+      const qrPlaceholder= document.getElementById('qrPlaceholder');
+      const qrFrame      = document.getElementById('qrFrame');
+      const qrStatus     = document.getElementById('qrStatus');
+      const timerBar     = document.getElementById('timerBar');
+      const refreshBtn   = document.getElementById('refreshBtn');
 
-      function cleanNumber(str) { return str.replace(/[^0-9]/g, ""); }
-      function formatDisplay(raw) {
-        if (!raw) return "";
-        let s = raw.replace(/[^0-9]/g, "");
-        let parts = [];
-        if (s.length > 3) { parts.push(s.slice(0,3)); s = s.slice(3); }
-        if (s.length > 0) { parts.push(s.slice(0,3)); s = s.slice(3); }
-        if (s.length > 0) { parts.push(s); }
-        return "+" + parts.join(" ");
+      let timerId = null;
+      let countdown = 0;
+      let totalTime = 20;
+      let loading = false;
+
+      function setStatus(text, type, spin) {
+        let icon = spin
+          ? '<i class="fas fa-circle-notch fa-spin"></i>'
+          : '<i class="fas fa-check-circle"></i>';
+        if (type === 'error') icon = '<i class="fas fa-exclamation-triangle"></i>';
+        if (type === 'ok')    icon = '<i class="fas fa-check-circle"></i>';
+        if (type === 'wait')  icon = '<i class="fas fa-circle-notch fa-spin"></i>';
+        qrStatus.className = 'qr-status' + (type && type !== 'wait' ? ' ' + type : '');
+        qrStatus.innerHTML = icon + ' ' + text;
       }
 
-      submitBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const raw = numberInput.value;
-        const digits = cleanNumber(raw);
+      function startTimer(seconds) {
+        clearInterval(timerId);
+        totalTime = seconds || 20;
+        countdown = totalTime;
+        timerBar.style.width = '100%';
+        timerId = setInterval(function () {
+          countdown--;
+          timerBar.style.width = Math.max(0, (countdown / totalTime) * 100) + '%';
+          if (countdown <= 0) {
+            clearInterval(timerId);
+            setStatus('QR expired — refreshing…', 'wait', true);
+            fetchQR();
+          }
+        }, 1000);
+      }
 
-        if (!digits || digits.length < 9) {
-          pairDisplay.innerHTML = `<div class="code-box" style="border-color:#c01736;">
-            <span style="color:#b33a5a;font-weight:500;"><i class="fas fa-exclamation-triangle"></i> enter valid number with country code</span>
-          </div>`;
-          return;
-        }
+      function stopTimer() {
+        clearInterval(timerId);
+        timerBar.style.width = '0%';
+      }
 
-        waitingMsg.style.display = "flex";
-        pairDisplay.innerHTML = `<div class="code-box">
-          <i class="fas fa-spinner fa-pulse" style="color:#5935ac;"></i>
-          <span style="color:#3d3560;">pairing round ...</span>
-        </div>`;
+      function showQR(src) {
+        qrImg.src = src;
+        qrImg.style.display = 'block';
+        qrPlaceholder.style.display = 'none';
+        qrFrame.classList.add('scanning');
+      }
 
-        numberInput.value = formatDisplay(digits);
+      function showPlaceholder(text, spin) {
+        qrImg.style.display = 'none';
+        qrPlaceholder.style.display = 'flex';
+        qrPlaceholder.innerHTML =
+          (spin ? '<i class="fas fa-spinner fa-pulse"></i>' : '<i class="fas fa-qrcode"></i>') +
+          '<span>' + text + '</span>';
+        qrFrame.classList.remove('scanning');
+      }
+
+      async function fetchQR() {
+        if (loading) return;
+        loading = true;
+        refreshBtn.disabled = true;
+        stopTimer();
+        showPlaceholder('loading QR code…', true);
+        setStatus('fetching new QR…', 'wait', true);
 
         try {
-          const { data } = await axios(`/code?number=${digits}`);
-          const code = data.code || "267" + digits.slice(-4);
-          pairDisplay.innerHTML = `
-            <div class="code-box" id="copyTarget" onclick="Copy()">
-              <span class="code-label">CODE:</span>
-              <span class="code-value">${code}</span>
-              <span class="copy-hint"><i class="far fa-copy"></i> tap</span>
-            </div>
-          `;
-          const extraNote = document.createElement('div');
-          extraNote.style.cssText = 'margin-top:6px;font-size:0.6rem;color:#8a80a8;display:flex;gap:10px;justify-content:center;';
-          extraNote.innerHTML = `<i class="fas fa-flag"></i> county code · ${digits.slice(0,3)} | box 267`;
-          pairDisplay.appendChild(extraNote);
+          const { data } = await axios.get(QR_ENDPOINT);
 
-        } catch (error) {
-          pairDisplay.innerHTML = `
-            <div class="code-box" style="border-color:#c01736;">
-              <span style="color:#b33a5a;"><i class="fas fa-times-circle"></i> service unavailable · try again</span>
-            </div>
-          `;
+          // already connected
+          if (data && data.connected) {
+            showPlaceholder('device already linked ✅', false);
+            qrPlaceholder.innerHTML =
+              '<i class="fas fa-check-circle" style="color:#16a34a;"></i>' +
+              '<span>device linked successfully</span>';
+            setStatus('device connected ✅', 'ok');
+            stopTimer();
+            return;
+          }
+
+          const qr = data && (data.qr || data.code || data.image);
+
+          if (!qr) throw new Error('no qr in response');
+
+          // if it's an image url / data-url, show it directly
+          if (typeof qr === 'string' && (qr.startsWith('data:image') || qr.startsWith('http'))) {
+            showQR(qr);
+            setStatus('QR ready — scan now', 'ok');
+            startTimer(20);
+          } else {
+            // raw QR string — no QR lib loaded, so guide instead of breaking
+            showPlaceholder('QR string received — needs QRCode lib', false);
+            setStatus('QR received as text (add QRCode lib)', 'wait', false);
+          }
+
+        } catch (err) {
+          showPlaceholder('QR unavailable', false);
+          setStatus('could not load QR · try refresh', 'error');
+          stopTimer();
         } finally {
-          waitingMsg.style.display = "none";
+          loading = false;
+          refreshBtn.disabled = false;
         }
-      });
-
-      // initial hint
-      pairDisplay.innerHTML = `
-        <div class="code-box" style="opacity:0.7; cursor:default;">
-          <span style="color:#7a72a0;"><i class="fas fa-flag"></i> enter number · code 267</span>
-          <span style="color:#a098c0; font-size:0.7rem;">all county</span>
-        </div>
-      `;
-
-      numberInput.addEventListener("blur", function() {
-        const d = cleanNumber(this.value);
-        if (d.length > 3) this.value = formatDisplay(d);
-      });
-
-      // random status ring speed
-      const ring = document.querySelector('.status-ring');
-      if (ring) {
-        const speeds = ['2.8s', '3.6s', '4.2s', '3.0s'];
-        ring.style.animationDuration = speeds[Math.floor(Math.random() * speeds.length)];
       }
+
+      qrImg.addEventListener('error', function () {
+        showPlaceholder('QR failed to load', false);
+        setStatus('QR image error · try refresh', 'error');
+        stopTimer();
+      });
+
+      refreshBtn.addEventListener('click', fetchQR);
+
+      // first load
+      fetchQR();
 
     })();
   </script>
